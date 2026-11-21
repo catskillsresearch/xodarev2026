@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. **Everything is unverified TBD** until listed in `VERIFIED` in `scripts/build_holes.py`.
 
-**Updated:** 2026-11-21T03:08:49Z
-**Holes:** 15 open+blocked · 11 open · 4 blocked · 79 done.
+**Updated:** 2026-11-21T03:19:30Z
+**Holes:** 8 open+blocked · 7 open · 1 blocked · 86 done.
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
 
@@ -16,21 +16,17 @@ scripts/serve_holes.sh          # http://127.0.0.1:8766/holes.html
 
 | Id | File |
 |---|---|
-| `ItoCalculusKit` | `SignatureVolatility/ItoCalculusKit.lean` |
 | `Lemma32SignatureInTw` | `SignatureVolatility/Lemma32SignatureInTw.lean` |
 | `Remark219BlackScholesRiccati` | `SignatureVolatility/Remark219BlackScholesRiccati.lean` |
-| `ShuffleIdentity` | `SignatureVolatility/ShuffleIdentity.lean` |
-| `SignatureFiltrationEqBrownianFiltration` | `SignatureVolatility/SignatureFiltrationEqBrownianFiltration.lean` |
-| `SignatureRiccatiKit` | `SignatureVolatility/SignatureRiccatiKit.lean` |
-| `SignatureVolatilityModel.Sigma` | `SignatureVolatility/SignatureVolatilityModel/Sigma.lean` |
 | `TailNorm2wInvLeRatioMulNormW` | `SignatureVolatility/TailNorm2wInvLeRatioMulNormW.lean` |
+| `TheoremA` | `SignatureVolatility/TheoremA.lean` |
+| `TheoremB` | `SignatureVolatility/TheoremB.lean` |
 | `TheoremC` | `SignatureVolatility/TheoremC.lean` |
 | `TheoremD` | `SignatureVolatility/TheoremD.lean` |
-| `WeightedTruncationEstimates` | `SignatureVolatility/WeightedTruncationEstimates.lean` |
 
 ## By group
 
-### Top-level modules — 14 hole(s)
+### Top-level modules — 8 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -52,7 +48,7 @@ scripts/serve_holes.sh          # http://127.0.0.1:8766/holes.html
 | done | `IndexedFiltration` | `SignatureVolatility/IndexedFiltration.lean` |
 | done | `InfiniteGeometricSignatureModel` | `SignatureVolatility/InfiniteGeometricSignatureModel.lean` |
 | done | `IsSpecialSemimartingale` | `SignatureVolatility/IsSpecialSemimartingale.lean` |
-| open | `ItoCalculusKit` | `SignatureVolatility/ItoCalculusKit.lean` |
+| done | `ItoCalculusKit` | `SignatureVolatility/ItoCalculusKit.lean` |
 | open | `Lemma32SignatureInTw` | `SignatureVolatility/Lemma32SignatureInTw.lean` |
 | done | `Lemma61GramPosDef` | `SignatureVolatility/Lemma61GramPosDef.lean` |
 | done | `Letter` | `SignatureVolatility/Letter.lean` |
@@ -83,24 +79,24 @@ scripts/serve_holes.sh          # http://127.0.0.1:8766/holes.html
 | done | `SatisfiesNFLVR` | `SignatureVolatility/SatisfiesNFLVR.lean` |
 | done | `Section71BlackScholesCompleteness` | `SignatureVolatility/Section71BlackScholesCompleteness.lean` |
 | done | `ShuffleFinite` | `SignatureVolatility/ShuffleFinite.lean` |
-| open | `ShuffleIdentity` | `SignatureVolatility/ShuffleIdentity.lean` |
-| open | `SignatureFiltrationEqBrownianFiltration` | `SignatureVolatility/SignatureFiltrationEqBrownianFiltration.lean` |
+| done | `ShuffleIdentity` | `SignatureVolatility/ShuffleIdentity.lean` |
+| done | `SignatureFiltrationEqBrownianFiltration` | `SignatureVolatility/SignatureFiltrationEqBrownianFiltration.lean` |
 | done | `SignatureHestonLevel2Model` | `SignatureVolatility/SignatureHestonLevel2Model.lean` |
-| blocked | `SignaturePriceSolution` | `SignatureVolatility/SignaturePriceSolution.lean` |
-| open | `SignatureRiccatiKit` | `SignatureVolatility/SignatureRiccatiKit.lean` |
+| done | `SignaturePriceSolution` | `SignatureVolatility/SignaturePriceSolution.lean` |
+| done | `SignatureRiccatiKit` | `SignatureVolatility/SignatureRiccatiKit.lean` |
 | done | `SignatureVolatilityModel` | `SignatureVolatility/SignatureVolatilityModel.lean` |
 | done | `SmoothIteratedIntegral` | `SignatureVolatility/SmoothIteratedIntegral.lean` |
 | done | `SmoothSignature` | `SignatureVolatility/SmoothSignature.lean` |
 | done | `StratonovichHalfLaplacian` | `SignatureVolatility/StratonovichHalfLaplacian.lean` |
 | done | `SuperfactorialFunctional` | `SignatureVolatility/SuperfactorialFunctional.lean` |
 | open | `TailNorm2wInvLeRatioMulNormW` | `SignatureVolatility/TailNorm2wInvLeRatioMulNormW.lean` |
-| blocked | `TheoremA` | `SignatureVolatility/TheoremA.lean` |
-| blocked | `TheoremB` | `SignatureVolatility/TheoremB.lean` |
+| open | `TheoremA` | `SignatureVolatility/TheoremA.lean` |
+| open | `TheoremB` | `SignatureVolatility/TheoremB.lean` |
 | open | `TheoremC` | `SignatureVolatility/TheoremC.lean` |
 | open | `TheoremD` | `SignatureVolatility/TheoremD.lean` |
 | done | `Tw` | `SignatureVolatility/Tw.lean` |
 | done | `Weight` | `SignatureVolatility/Weight.lean` |
-| open | `WeightedTruncationEstimates` | `SignatureVolatility/WeightedTruncationEstimates.lean` |
+| done | `WeightedTruncationEstimates` | `SignatureVolatility/WeightedTruncationEstimates.lean` |
 | done | `Word` | `SignatureVolatility/Word.lean` |
 | done | `WordsOfLength` | `SignatureVolatility/WordsOfLength.lean` |
 
@@ -148,11 +144,11 @@ scripts/serve_holes.sh          # http://127.0.0.1:8766/holes.html
 | done | `PriceFiltrationSignatureSpace.VInfty` | `SignatureVolatility/PriceFiltrationSignatureSpace/VInfty.lean` |
 | done | `PriceFiltrationSignatureSpace.VSubspace` | `SignatureVolatility/PriceFiltrationSignatureSpace/VSubspace.lean` |
 
-### SignatureVolatilityModel — 1 hole(s)
+### SignatureVolatilityModel — 0 hole(s)
 
 | Status | Id | File |
 |---|---|---|
-| open | `SignatureVolatilityModel.Sigma` | `SignatureVolatility/SignatureVolatilityModel/Sigma.lean` |
+| done | `SignatureVolatilityModel.Sigma` | `SignatureVolatility/SignatureVolatilityModel/Sigma.lean` |
 
 ## Dependency sketch
 

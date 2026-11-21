@@ -1,18 +1,14 @@
 import SignatureVolatility.DualPairing
-import SignatureVolatility.Norm2w
-import SignatureVolatility.Norm2wInv
-import SignatureVolatility.MemL2w
-import SignatureVolatility.MemL2wInv
-import SignatureVolatility.ProjGt
+import SignatureVolatility.ExtTensorAlgebra.LevelInner
 import SignatureVolatility.ExtTensorAlgebra.LevelNorm
 import SignatureVolatility.ExtTensorAlgebra.LevelNormSq
-import SignatureVolatility.ExtTensorAlgebra.LevelInner
-import SignatureVolatility.Weight
+import SignatureVolatility.MemL2w
+import SignatureVolatility.MemL2wInv
+import SignatureVolatility.Norm2w
+import SignatureVolatility.Norm2wInv
 import SignatureVolatility.Preliminaries
-
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
+import SignatureVolatility.ProjGt
+import SignatureVolatility.Weight
 
 noncomputable section
 

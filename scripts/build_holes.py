@@ -64,6 +64,7 @@ VERIFIED: set[str] = {
     "InfiniteGeometricSignatureModel",
     "Lemma61GramPosDef",
     "IsSpecialSemimartingale",
+    "ItoCalculusKit",
     "Letter",
     "MemL2w",
     "MemL2wInv",
@@ -100,8 +101,13 @@ VERIFIED: set[str] = {
     "SatisfiesNFLVR",
     "Section71BlackScholesCompleteness",
     "ShuffleFinite",
+    "ShuffleIdentity",
+    "SignatureFiltrationEqBrownianFiltration",
     "SignatureHestonLevel2Model",
+    "SignaturePriceSolution",
+    "SignatureRiccatiKit",
     "SignatureVolatilityModel",
+    "SignatureVolatilityModel.Sigma",
     "SmoothIteratedIntegral",
     "SmoothSignature",
     "StratonovichHalfLaplacian",
@@ -112,6 +118,7 @@ VERIFIED: set[str] = {
     "Weight",
     "Weight.ConstOne",
     "Weight.Geometric",
+    "WeightedTruncationEstimates",
 }
 
 

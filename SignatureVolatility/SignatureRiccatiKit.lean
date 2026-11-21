@@ -1,11 +1,17 @@
 import SignatureVolatility.ClassicalRiccatiSolution
+import SignatureVolatility.DualPairing
+import SignatureVolatility.ExtTensorAlgebra.FreeTensorAlgebra
+import SignatureVolatility.IsSpecialSemimartingale
+import SignatureVolatility.ProlongedBrownianSetup
+import SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration
+import SignatureVolatility.ProlongedBrownianSetup.WHat
+import SignatureVolatility.SignatureVolatilityModel
 import SignatureVolatility.Weight
-
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
+import SignatureVolatility.Word
 
 noncomputable section
+
+open MeasureTheory Set
 
 namespace SignatureVolatility
 
@@ -20,7 +26,7 @@ structure SignatureRiccatiKit (Ω : Type*) [MeasurableSpace Ω]
   /-- Equivalence between global classical Riccati solvability on `[0, T]` and bounded
   exponential-affine conditional signature transforms `E[exp(⟨u₀, Ŵ_T⟩) | ℱ^{\widehat{W}}_t] =
   exp(⟨ψ(T - t), Ŵ_t⟩)` for `u₀ ∈ 𝒟_fin` (Theorem 4.2(4)). -/
-  affine_riccati_duality : ∀ (u₀ : FreeTensorAlgebra (M.d + 1)),
+  affine_riccati_duality : ∀ (u₀ : ExtTensorAlgebra.FreeTensorAlgebra (M.d + 1)),
     (∃ sol : ClassicalRiccatiSolution M.w M.T R_op u₀.1,
       ∀ t ∈ Icc 0 M.T,
         Integrable (fun ω => Real.exp (dualPairing u₀.1 (setup.W_hat M.T ω))) ℙ ∧

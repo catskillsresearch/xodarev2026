@@ -1,13 +1,11 @@
 import SignatureVolatility.ProlongedBrownianSetup
-import SignatureVolatility.ProlongedBrownianSetup.WHat
 import SignatureVolatility.ProlongedBrownianSetup.BrownianFiltration
 import SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration
-
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
+import SignatureVolatility.ProlongedBrownianSetup.WHat
 
 noncomputable section
+
+open MeasureTheory
 
 namespace SignatureVolatility
 
@@ -21,15 +19,14 @@ theorem signature_filtration_eq_brownian_filtration
   · refine iSup_le fun s => iSup_le fun I => ?_
     exact (setup.sig_adapted_to_W t s I).comap_le
   · refine iSup_le fun s => iSup_le fun i => ?_
-    have hrec : (fun ω => setup.W s.1 ω i) = (fun ω => (setup.W_hat s.1 ω).coeff [i.succ]) := by
-      ext ω
+    have hZ :
+        (fun u i ω => setup.W u ω i) s.1 i =
+          (fun ω => (setup.W_hat s.1 ω).coeff [i.succ]) := by
+      funext ω
       have hsp := setup.sig2_space 0 s.1 ω i
       rw [setup.W_zero ω i, sub_zero] at hsp
       exact hsp.symm
-    rw [hrec]
+    rw [hZ]
     exact le_iSup_of_le s (le_iSup_of_le [i.succ] le_rfl)
-
-
-/-! ## Section 2.3: The Weighted Tensor Algebra `T_w` and its Dual `T_w^*` -/
 
 end SignatureVolatility

@@ -4,6 +4,7 @@ ClassicalRiccatiSolution -hard-> Remark219BlackScholesRiccati
 ClassicalRiccatiSolution -hard-> SignatureRiccatiKit
 DualPairing -hard-> DualPairingLeNormWDualMulNormW
 DualPairing -hard-> ItoCalculusKit
+DualPairing -hard-> SignatureRiccatiKit
 DualPairing -hard-> SignatureVolatilityModel.Sigma
 DualPairing -hard-> WeightedTruncationEstimates
 ExtTensorAlgebra.BasisWord -hard-> BlackScholesModel
@@ -51,6 +52,7 @@ ExtTensorAlgebra.ExtTensorAlgebra -hard-> SignatureVolatilityModel
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> SmoothSignature
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> StratonovichHalfLaplacian
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> SuperfactorialFunctional
+ExtTensorAlgebra.FreeTensorAlgebra -hard-> SignatureRiccatiKit
 ExtTensorAlgebra.IsFinitelySupported -hard-> ExtTensorAlgebra.BasisWord
 ExtTensorAlgebra.IsFinitelySupported -hard-> ExtTensorAlgebra.FreeTensorAlgebra
 ExtTensorAlgebra.IsFinitelySupported -hard-> HypH1OfIsFinitelySupported
@@ -116,6 +118,7 @@ IndexedFiltration -hard-> PriceFiltration
 IndexedFiltration -hard-> ProlongedBrownianSetup
 IndexedFiltration -hard-> ProlongedBrownianSetup.BrownianFiltration
 IndexedFiltration -hard-> ProlongedBrownianSetup.SignatureFiltration
+IsSpecialSemimartingale -hard-> SignatureRiccatiKit
 IsSpecialSemimartingale -hard-> TheoremB
 ItoCalculusKit -hard-> SignaturePriceSolution
 ItoCalculusKit -hard-> TheoremA
@@ -212,6 +215,7 @@ ProlongedBrownianSetup -hard-> ProlongedBrownianSetup.WHat
 ProlongedBrownianSetup -hard-> ShuffleIdentity
 ProlongedBrownianSetup -hard-> SignatureFiltrationEqBrownianFiltration
 ProlongedBrownianSetup -hard-> SignaturePriceSolution
+ProlongedBrownianSetup -hard-> SignatureRiccatiKit
 ProlongedBrownianSetup -hard-> SignatureVolatilityModel.Sigma
 ProlongedBrownianSetup -hard-> TheoremA
 ProlongedBrownianSetup -hard-> TheoremB
@@ -219,11 +223,14 @@ ProlongedBrownianSetup.BrownianFiltration -hard-> SignatureFiltrationEqBrownianF
 ProlongedBrownianSetup.SignatureFiltration -hard-> ItoCalculusKit
 ProlongedBrownianSetup.SignatureFiltration -hard-> SignatureFiltrationEqBrownianFiltration
 ProlongedBrownianSetup.SignatureFiltration -hard-> SignaturePriceSolution
+ProlongedBrownianSetup.SignatureFiltration -hard-> SignatureRiccatiKit
 ProlongedBrownianSetup.WHat -hard-> ItoCalculusKit
 ProlongedBrownianSetup.WHat -hard-> Lemma32SignatureInTw
 ProlongedBrownianSetup.WHat -hard-> ProlongedBrownianSetup.SignatureFiltration
 ProlongedBrownianSetup.WHat -hard-> ShuffleIdentity
 ProlongedBrownianSetup.WHat -hard-> SignatureFiltrationEqBrownianFiltration
+ProlongedBrownianSetup.WHat -hard-> SignaturePriceSolution
+ProlongedBrownianSetup.WHat -hard-> SignatureRiccatiKit
 ProlongedBrownianSetup.WHat -hard-> SignatureVolatilityModel.Sigma
 PureBrownianWord -hard-> SuperfactorialFunctional
 RiccatiOpBounded -hard-> ClassicalRiccatiSolution
@@ -240,10 +247,12 @@ SignatureVolatilityModel -hard-> InfiniteGeometricSignatureModel
 SignatureVolatilityModel -hard-> QuinticOUSignatureModel
 SignatureVolatilityModel -hard-> SignatureHestonLevel2Model
 SignatureVolatilityModel -hard-> SignaturePriceSolution
+SignatureVolatilityModel -hard-> SignatureRiccatiKit
 SignatureVolatilityModel -hard-> SignatureVolatilityModel.Sigma
 SignatureVolatilityModel -hard-> TheoremA
 SignatureVolatilityModel -hard-> TheoremB
 SignatureVolatilityModel.Sigma -hard-> Corollary36SigmaWellDefined
+SignatureVolatilityModel.Sigma -hard-> SignaturePriceSolution
 SmoothIteratedIntegral -hard-> SmoothSignature
 StratonovichHalfLaplacian -hard-> RiccatiOpBounded
 SuperfactorialFunctional -hard-> Proposition311SharpnessOfH1
@@ -290,6 +299,7 @@ Word -hard-> QuinticOUSignatureModel
 Word -hard-> Section71BlackScholesCompleteness
 Word -hard-> ShuffleIdentity
 Word -hard-> SignatureHestonLevel2Model
+Word -hard-> SignatureRiccatiKit
 Word -hard-> SmoothIteratedIntegral
 Word -hard-> WordsOfLength
 WordsOfLength -hard-> ExtTensorAlgebra.LevelInner

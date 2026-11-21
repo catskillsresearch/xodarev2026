@@ -1,18 +1,16 @@
-import SignatureVolatility.ProlongedBrownianSetup
-import SignatureVolatility.Weight
-import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
 import SignatureVolatility.DualPairing
-import SignatureVolatility.Norm2w
+import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
 import SignatureVolatility.HypH1
 import SignatureVolatility.HypH2
-import SignatureVolatility.ProlongedBrownianSetup.WHat
+import SignatureVolatility.Norm2w
+import SignatureVolatility.ProlongedBrownianSetup
 import SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration
-
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
+import SignatureVolatility.ProlongedBrownianSetup.WHat
+import SignatureVolatility.Weight
 
 noncomputable section
+
+open MeasureTheory Set
 
 namespace SignatureVolatility
 
@@ -47,8 +45,8 @@ structure ItoCalculusKit (Ω : Type*) [m₀ : MeasurableSpace Ω]
       (∀ k, ∀ t ∈ Icc 0 T,
         f k t ≤ ((k : ℝ) * norm2w w ℓ) ^ 2 * ∫ s in (0 : ℝ)..t, f k s) ∧
       ((∀ k, ∀ t ∈ Icc 0 T, f k t = 0) → ∀ᵐ ω ∂ℙ, ∀ t ∈ Icc 0 T, S₁ t ω = S₂ t ω))
-  novikov_doob_l2_martingale : ∀ (w : Weight) (hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1))
-    (hℓ : HypH1 w ℓ) (s₀ : ℝ) (hs₀ : 0 < s₀),
+  novikov_doob_l2_martingale : ∀ (w : Weight) (_hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1))
+    (_hℓ : HypH1 w ℓ) (s₀ : ℝ) (_hs₀ : 0 < s₀),
     let σ : ℝ → Ω → ℝ := fun t ω => dualPairing ℓ (setup.W_hat t ω)
     let S : ℝ → Ω → ℝ := fun t ω => s₀ * doleansExp σ t ω
     (∀ ⦃s t : ℝ⦄, 0 ≤ s → s ≤ t → t ≤ T →

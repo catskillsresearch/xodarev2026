@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-21T03:08:49Z",
-  "sorryCount": 15,
+  "updated": "2026-11-21T03:19:30Z",
+  "sorryCount": 8,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -14,7 +14,7 @@
     "Mark a module verified by adding its id to VERIFIED in scripts/build_holes.py.",
     "Blue = done. Green = open. Grey = blocked.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: ItoCalculusKit, Lemma32SignatureInTw, Remark219BlackScholesRiccati, ShuffleIdentity, SignatureFiltrationEqBrownianFiltration, SignatureRiccatiKit, SignatureVolatilityModel.Sigma, TailNorm2wInvLeRatioMulNormW, TheoremC, TheoremD, WeightedTruncationEstimates."
+    "Open tips: Lemma32SignatureInTw, Remark219BlackScholesRiccati, TailNorm2wInvLeRatioMulNormW, TheoremA, TheoremB, TheoremC, TheoremD."
   ],
   "nodes": [
     {
@@ -68,7 +68,7 @@
       "section": 1,
       "file": "SignatureVolatility/Corollary36SigmaWellDefined.lean",
       "status": "blocked",
-      "blocker": "needs SignatureVolatilityModel.Sigma, Lemma32SignatureInTw",
+      "blocker": "needs Lemma32SignatureInTw",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -301,7 +301,7 @@
       "label": "ItoCalculusKit",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -661,7 +661,7 @@
       "label": "ShuffleIdentity",
       "section": 1,
       "file": "SignatureVolatility/ShuffleIdentity.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -670,7 +670,7 @@
       "label": "SignatureFiltrationEqBrownianFiltration",
       "section": 1,
       "file": "SignatureVolatility/SignatureFiltrationEqBrownianFiltration.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -688,8 +688,8 @@
       "label": "SignaturePriceSolution",
       "section": 1,
       "file": "SignatureVolatility/SignaturePriceSolution.lean",
-      "status": "blocked",
-      "blocker": "needs ItoCalculusKit",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -697,7 +697,7 @@
       "label": "SignatureRiccatiKit",
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -715,7 +715,7 @@
       "label": "SignatureVolatilityModel.Sigma",
       "section": 6,
       "file": "SignatureVolatility/SignatureVolatilityModel/Sigma.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -769,8 +769,8 @@
       "label": "TheoremA",
       "section": 1,
       "file": "SignatureVolatility/TheoremA.lean",
-      "status": "blocked",
-      "blocker": "needs SignaturePriceSolution, ItoCalculusKit",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -778,8 +778,8 @@
       "label": "TheoremB",
       "section": 1,
       "file": "SignatureVolatility/TheoremB.lean",
-      "status": "blocked",
-      "blocker": "needs SignatureRiccatiKit",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -841,7 +841,7 @@
       "label": "WeightedTruncationEstimates",
       "section": 1,
       "file": "SignatureVolatility/WeightedTruncationEstimates.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -1126,17 +1126,17 @@
       "kind": "hard"
     },
     {
-      "from": "Norm2w",
-      "to": "ItoCalculusKit",
-      "kind": "hard"
-    },
-    {
       "from": "HypH1",
       "to": "ItoCalculusKit",
       "kind": "hard"
     },
     {
       "from": "HypH2",
+      "to": "ItoCalculusKit",
+      "kind": "hard"
+    },
+    {
+      "from": "Norm2w",
       "to": "ItoCalculusKit",
       "kind": "hard"
     },
@@ -1501,12 +1501,12 @@
       "kind": "hard"
     },
     {
-      "from": "SignatureVolatilityModel",
+      "from": "ItoCalculusKit",
       "to": "SignaturePriceSolution",
       "kind": "hard"
     },
     {
-      "from": "ItoCalculusKit",
+      "from": "SignatureVolatilityModel.Sigma",
       "to": "SignaturePriceSolution",
       "kind": "hard"
     },
@@ -1516,7 +1516,32 @@
       "kind": "hard"
     },
     {
+      "from": "DualPairing",
+      "to": "SignatureRiccatiKit",
+      "kind": "hard"
+    },
+    {
+      "from": "ExtTensorAlgebra.FreeTensorAlgebra",
+      "to": "SignatureRiccatiKit",
+      "kind": "hard"
+    },
+    {
+      "from": "IsSpecialSemimartingale",
+      "to": "SignatureRiccatiKit",
+      "kind": "hard"
+    },
+    {
+      "from": "ProlongedBrownianSetup.SignatureFiltration",
+      "to": "SignatureRiccatiKit",
+      "kind": "hard"
+    },
+    {
       "from": "SignatureVolatilityModel",
+      "to": "SignatureRiccatiKit",
+      "kind": "hard"
+    },
+    {
+      "from": "DualPairing",
       "to": "SignatureVolatilityModel.Sigma",
       "kind": "hard"
     },
@@ -1526,7 +1551,7 @@
       "kind": "hard"
     },
     {
-      "from": "DualPairing",
+      "from": "SignatureVolatilityModel",
       "to": "SignatureVolatilityModel.Sigma",
       "kind": "hard"
     },
@@ -1591,27 +1616,12 @@
       "kind": "hard"
     },
     {
-      "from": "SignatureVolatilityModel",
-      "to": "TheoremB",
-      "kind": "hard"
-    },
-    {
       "from": "SignatureRiccatiKit",
       "to": "TheoremB",
       "kind": "hard"
     },
     {
       "from": "SatisfiesNFLVR",
-      "to": "TheoremB",
-      "kind": "hard"
-    },
-    {
-      "from": "IsSpecialSemimartingale",
-      "to": "TheoremB",
-      "kind": "hard"
-    },
-    {
-      "from": "ProlongedBrownianSetup",
       "to": "TheoremB",
       "kind": "hard"
     },
@@ -1656,22 +1666,22 @@
       "kind": "hard"
     },
     {
-      "from": "Norm2w",
-      "to": "WeightedTruncationEstimates",
-      "kind": "hard"
-    },
-    {
-      "from": "Norm2wInv",
-      "to": "WeightedTruncationEstimates",
-      "kind": "hard"
-    },
-    {
       "from": "MemL2w",
       "to": "WeightedTruncationEstimates",
       "kind": "hard"
     },
     {
       "from": "MemL2wInv",
+      "to": "WeightedTruncationEstimates",
+      "kind": "hard"
+    },
+    {
+      "from": "Norm2w",
+      "to": "WeightedTruncationEstimates",
+      "kind": "hard"
+    },
+    {
+      "from": "Norm2wInv",
       "to": "WeightedTruncationEstimates",
       "kind": "hard"
     },

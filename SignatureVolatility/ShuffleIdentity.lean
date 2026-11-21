@@ -1,14 +1,12 @@
-import SignatureVolatility.ProlongedBrownianSetup
-import SignatureVolatility.ProlongedBrownianSetup.WHat
 import SignatureVolatility.ExtTensorAlgebra.EvalShuffleBasis
 import SignatureVolatility.Letter
+import SignatureVolatility.ProlongedBrownianSetup
+import SignatureVolatility.ProlongedBrownianSetup.WHat
 import SignatureVolatility.Word
 
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
-
 noncomputable section
+
+open MeasureTheory
 
 namespace SignatureVolatility
 
