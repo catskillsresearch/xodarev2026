@@ -23,7 +23,7 @@ def replicableStarProjection {H_S : Type*} [NormedAddCommGroup H_S] [InnerProduc
 lemma replicable_hasOrthProj_of_closed {H_S : Type*} [NormedAddCommGroup H_S] [InnerProductSpace ℝ H_S]
     [CompleteSpace H_S] (K : Submodule ℝ H_S) (hK_closed : IsClosed (K : Set H_S)) :
     K.HasOrthogonalProjection := by
-  haveI : CompleteSpace ↥K := hK_closed.completeSpace_coe
+  have : CompleteSpace ↥K := hK_closed.completeSpace_coe
   exact inferInstance
 
 structure GKWDecompositionSetup (H_S : Type*) [NormedAddCommGroup H_S]

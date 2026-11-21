@@ -37,7 +37,6 @@ theorem remark_2_19_black_scholes_riccati (c₁ : ℝ) :
     simp [hidx]
   have hshuf : (shuffleFinite (rightShift idx1 u₀) (rightShift idx1 u₀) 1).coeff [] = c₁ ^ 2 := by
     dsimp [shuffleFinite]
-    norm_num
     rw [Finset.sum_range_succ, Finset.sum_range_one]
     have hm1 : ∑ n ∈ Finset.range 2,
         ∑ I ∈ wordsOfLength 2 1, ∑ J ∈ wordsOfLength 2 n,
@@ -79,7 +78,7 @@ theorem remark_2_19_black_scholes_riccati (c₁ : ℝ) :
       change c₁ * (if [idx1] = [idx1] then (1 : ℝ) else 0) = c₁
       simp
     have hgoal : u₀.coeff [idx1] ^ 2 = c₁ ^ 2 := by rw [hc1]
-    convert hgoal <;> simp [u₀, ExtTensorAlgebra.basisWord, hidx]
+    convert hgoal <;> simp [ExtTensorAlgebra.basisWord, hidx]
   change (rightShift 0 u₀).coeff [] + (stratonovichHalfLaplacian u₀).coeff [] +
     (1 / 2 : ℝ) * (∑ i : Fin 1,
       (shuffleFinite (rightShift i.succ u₀) (rightShift i.succ u₀) 1).coeff []) = _

@@ -20,7 +20,7 @@ namespace antipode
 lemma basisWord {d : ℕ} (I : Word d) :
     antipode (basisWord I) = ((-1 : ℝ) ^ I.length) • basisWord I.reverse := by
   ext J
-  simp only [antipode, basisWord]
+  simp only [antipode]
   change (-1 : ℝ) ^ J.length * (if J.reverse = I then 1 else 0) =
     (-1 : ℝ) ^ I.length * (if J = I.reverse then 1 else 0)
   by_cases h : J = I.reverse

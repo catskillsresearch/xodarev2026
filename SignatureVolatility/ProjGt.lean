@@ -36,11 +36,11 @@ lemma levelNormSq {d : ℕ} (N : ℕ) (a : ExtTensorAlgebra d) (n : ℕ) :
   · refine Finset.sum_congr rfl fun I hI => ?_
     have hlen : I.length = n := (wordsOfLength.mem (d := d)).1 hI
     have hlt : N < I.length := hlen ▸ h
-    simp [if_pos hlt]
+    simp [ite_eq_left hlt]
   · refine Finset.sum_eq_zero fun I hI => ?_
     have hlen : I.length = n := (wordsOfLength.mem (d := d)).1 hI
     have hnot : ¬ N < I.length := not_lt.mpr (hlen ▸ le_of_not_gt h)
-    simp [if_neg hnot]
+    simp [ite_eq_right hnot]
 
 lemma levelNorm {d : ℕ} (N : ℕ) (a : ExtTensorAlgebra d) (n : ℕ) :
     (projGt N a).levelNorm n = if N < n then a.levelNorm n else 0 := by

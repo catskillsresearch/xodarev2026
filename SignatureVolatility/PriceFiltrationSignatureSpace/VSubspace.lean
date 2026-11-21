@@ -48,7 +48,7 @@ lemma finiteDimensional (PFS : PriceFiltrationSignatureSpace H_S d) (N : ℕ) :
 lemma topologicalClosure_eq (PFS : PriceFiltrationSignatureSpace H_S d) (N : ℕ) :
     (PFS.V_subspace N).topologicalClosure = PFS.V_subspace N := by
   have hfin : FiniteDimensional ℝ (PFS.V_subspace N) := finiteDimensional PFS N
-  letI := hfin
+  let := hfin
   exact Submodule.topologicalClosure_eq_self (PFS.V_subspace N)
 
 end V_subspace

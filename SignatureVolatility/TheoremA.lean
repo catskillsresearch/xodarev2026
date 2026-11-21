@@ -65,7 +65,7 @@ theorem theorem_A {Ω : Type*} [MeasurableSpace Ω]
       S_adapted := hS_adapt
       S_strictly_pos := hS_pos
       doleans_repr := fun t ω => by
-        simpa [S, ito.doleansExp_def, σ] using rfl
+        simp [S, ito.doleansExp_def, σ]
       solves_sde := hsde
       sup_l2_integrable := hsup
       is_martingale := hmart }

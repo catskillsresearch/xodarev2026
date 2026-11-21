@@ -19,6 +19,9 @@ formalization. Every compared theorem's Solution proof uses only `propext` /
 -/
 @[expose] public section
 
+-- Intentional statement stubs for Comparator; Solution supplies the proofs.
+set_option warn.sorry false
+
 open MeasureTheory Set Filter Topology
 open scoped ENNReal NNReal RealInnerProductSpace
 

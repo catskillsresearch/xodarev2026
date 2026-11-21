@@ -44,7 +44,7 @@ theorem theorem_D {H_S : Type*} [NormedAddCommGroup H_S] [InnerProductSpace ℝ 
     -- (3) Zero residual at or above finite completeness depth `N ≥ N^*_S` (when `𝒱^{(∞)}_S = ⊤`):
     (PFS.V_infty = ⊤ → ∀ N : ℕ, PFS.completenessDepth ≤ (N : ℕ∞) →
       ∀ X : H_S, X ∈ gkw.replicableSubspace ⊔ PFS.V_subspace N) := by
-  haveI := gkw.replicable_hasOrthProj
+  have := gkw.replicable_hasOrthProj
   refine ⟨fun X => ?_, fun w' b hb N ρ_N hρ hratio => ?_, fun hVtop N hdepth _X => ?_⟩
   · -- Hilbert projection onto closed replicable subspace (paper: existence/uniqueness via GKW).
     let P_X : H_S := replicableStarProjection gkw.replicableSubspace X
