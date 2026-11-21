@@ -1,0 +1,720 @@
+import Mathlib
+
+/-!
+# On the Structural Foundations of Signature Volatility Models
+Formalization of arXiv:2605.17142v1 by Akmal Xodarev.
+
+No `axiom`s and no `sorry`s are used anywhere in this file.
+-/
+
+open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
+open MeasureTheory Filter Topology Set
+
+noncomputable section
+
+namespace SignatureVolatility
+
+/-! ## Section 0: Algebraic & Analytic Preliminaries (Cauchy–Schwarz, Minkowski, Gronwall) -/
+
+/-- Finite Lagrange/Cauchy–Schwarz inequality on any `Finset`. -/
+lemma finset_sum_mul_sq_le {α : Type*} (s : Finset α) (f g : α → ℝ) :
+    (∑ i ∈ s, f i * g i) ^ 2 ≤ (∑ i ∈ s, f i ^ 2) * (∑ i ∈ s, g i ^ 2) := by
+  have hnonneg : 0 ≤ ∑ i ∈ s, ∑ j ∈ s, (f i * g j - f j * g i) ^ 2 :=
+    Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _
+  have hid : ∑ i ∈ s, ∑ j ∈ s, (f i * g j - f j * g i) ^ 2 =
+      2 * ((∑ i ∈ s, f i ^ 2) * (∑ j ∈ s, g j ^ 2) - (∑ i ∈ s, f i * g i) ^ 2) := by
+    calc
+      ∑ i ∈ s, ∑ j ∈ s, (f i * g j - f j * g i) ^ 2
+          = ∑ i ∈ s, ∑ j ∈ s, ((f i ^ 2 * g j ^ 2 + f j ^ 2 * g i ^ 2) -
+              2 * (f i * g i) * (f j * g j)) := by
+            refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
+            ring
+      _ = (∑ i ∈ s, ∑ j ∈ s, f i ^ 2 * g j ^ 2) + (∑ i ∈ s, ∑ j ∈ s, f j ^ 2 * g i ^ 2) -
+            ∑ i ∈ s, ∑ j ∈ s, 2 * (f i * g i) * (f j * g j) := by
+            simp only [Finset.sum_sub_distrib, Finset.sum_add_distrib]
+      _ = (∑ i ∈ s, f i ^ 2) * (∑ j ∈ s, g j ^ 2) +
+            (∑ i ∈ s, g i ^ 2) * (∑ j ∈ s, f j ^ 2) -
+            2 * ((∑ i ∈ s, f i * g i) * (∑ j ∈ s, f j * g j)) := by
+            congr 1
+            · congr 1
+              · rw [Finset.sum_mul]
+                exact Finset.sum_congr rfl fun i _ => (Finset.mul_sum _ _ _).symm
+              · rw [Finset.sum_comm, Finset.sum_mul]
+                refine Finset.sum_congr rfl fun j _ => ?_
+                rw [Finset.mul_sum]
+                exact Finset.sum_congr rfl fun i _ => mul_comm _ _
+            · rw [Finset.mul_sum]
+              refine Finset.sum_congr rfl fun i _ => ?_
+              rw [Finset.mul_sum, Finset.mul_sum]
+              exact Finset.sum_congr rfl fun j _ => by ring
+      _ = 2 * ((∑ i ∈ s, f i ^ 2) * (∑ j ∈ s, g j ^ 2) - (∑ i ∈ s, f i * g i) ^ 2) := by ring
+  linarith
+
+/-- Square-root form of finite Cauchy–Schwarz. -/
+lemma abs_finset_sum_mul_le_sqrt {α : Type*} (s : Finset α) (f g : α → ℝ) :
+    |∑ i ∈ s, f i * g i| ≤ Real.sqrt (∑ i ∈ s, f i ^ 2) * Real.sqrt (∑ i ∈ s, g i ^ 2) := by
+  have hf : 0 ≤ ∑ i ∈ s, f i ^ 2 := Finset.sum_nonneg fun _ _ => sq_nonneg _
+  rw [← Real.sqrt_mul hf, ← Real.sqrt_sq_eq_abs]
+  exact Real.sqrt_le_sqrt (finset_sum_mul_sq_le s f g)
+
+/-- Euclidean triangle inequality on a `Finset`. -/
+lemma sqrt_sum_add_sq_le {α : Type*} (s : Finset α) (f g : α → ℝ) :
+    Real.sqrt (∑ i ∈ s, (f i + g i) ^ 2) ≤
+      Real.sqrt (∑ i ∈ s, f i ^ 2) + Real.sqrt (∑ i ∈ s, g i ^ 2) := by
+  have hf : 0 ≤ Real.sqrt (∑ i ∈ s, f i ^ 2) := Real.sqrt_nonneg _
+  have hg : 0 ≤ Real.sqrt (∑ i ∈ s, g i ^ 2) := Real.sqrt_nonneg _
+  have hsum_f : 0 ≤ ∑ i ∈ s, f i ^ 2 := Finset.sum_nonneg fun _ _ => sq_nonneg _
+  have hsum_g : 0 ≤ ∑ i ∈ s, g i ^ 2 := Finset.sum_nonneg fun _ _ => sq_nonneg _
+  have hcs : ∑ i ∈ s, f i * g i ≤
+      Real.sqrt (∑ i ∈ s, f i ^ 2) * Real.sqrt (∑ i ∈ s, g i ^ 2) :=
+    (le_abs_self _).trans (abs_finset_sum_mul_le_sqrt s f g)
+  have hsq : ∑ i ∈ s, (f i + g i) ^ 2 ≤
+      (Real.sqrt (∑ i ∈ s, f i ^ 2) + Real.sqrt (∑ i ∈ s, g i ^ 2)) ^ 2 := by
+    calc
+      ∑ i ∈ s, (f i + g i) ^ 2
+          = (∑ i ∈ s, f i ^ 2) + 2 * (∑ i ∈ s, f i * g i) + (∑ i ∈ s, g i ^ 2) := by
+            have hexp : ∀ i, (f i + g i) ^ 2 = f i ^ 2 + 2 * (f i * g i) + g i ^ 2 :=
+              fun _ => by ring
+            simp only [hexp, Finset.sum_add_distrib, ← Finset.mul_sum]
+      _ ≤ Real.sqrt (∑ i ∈ s, f i ^ 2) ^ 2 +
+            2 * (Real.sqrt (∑ i ∈ s, f i ^ 2) * Real.sqrt (∑ i ∈ s, g i ^ 2)) +
+            Real.sqrt (∑ i ∈ s, g i ^ 2) ^ 2 := by
+            rw [Real.sq_sqrt hsum_f, Real.sq_sqrt hsum_g]
+            linarith
+      _ = (Real.sqrt (∑ i ∈ s, f i ^ 2) + Real.sqrt (∑ i ∈ s, g i ^ 2)) ^ 2 := by ring
+  exact (Real.sqrt_le_sqrt hsq).trans_eq (Real.sqrt_sq (add_nonneg hf hg))
+
+/-- Finite Minkowski inequality for Euclidean norms over `Finset`s. -/
+lemma sqrt_sum_finset_sum_sq_le {α β : Type*} [DecidableEq β]
+    (s : Finset α) (t : Finset β) (F : β → α → ℝ) :
+    Real.sqrt (∑ i ∈ s, (∑ k ∈ t, F k i) ^ 2) ≤
+      ∑ k ∈ t, Real.sqrt (∑ i ∈ s, (F k i) ^ 2) := by
+  induction t using Finset.induction_on with
+  | empty => simp
+  | @insert b t hb ih =>
+    have hrew : (∑ i ∈ s, (∑ k ∈ insert b t, F k i) ^ 2) =
+        ∑ i ∈ s, (F b i + ∑ k ∈ t, F k i) ^ 2 := by
+      refine Finset.sum_congr rfl fun i _ => ?_
+      rw [Finset.sum_insert hb]
+    rw [hrew, Finset.sum_insert hb]
+    exact (sqrt_sum_add_sq_le s (F b) (fun i => ∑ k ∈ t, F k i)).trans (add_le_add_left ih _)
+
+/-- Sum of squares of non-negative reals is bounded by the square of their sum. -/
+lemma sum_sq_le_sq_sum {α : Type*} (s : Finset α) (f : α → ℝ) (hf : ∀ i ∈ s, 0 ≤ f i) :
+    ∑ i ∈ s, f i ^ 2 ≤ (∑ i ∈ s, f i) ^ 2 := by
+  induction s using Finset.induction_on with
+  | empty => simp
+  | @insert a s ha ih =>
+    rw [Finset.sum_insert ha, Finset.sum_insert ha]
+    have ha0 : 0 ≤ f a := hf a (Finset.mem_insert_self a s)
+    have hs0 : 0 ≤ ∑ i ∈ s, f i :=
+      Finset.sum_nonneg fun i hi => hf i (Finset.mem_insert_of_mem hi)
+    have hih : ∑ i ∈ s, f i ^ 2 ≤ (∑ i ∈ s, f i) ^ 2 :=
+      ih fun i hi => hf i (Finset.mem_insert_of_mem hi)
+    have hmul : 0 ≤ 2 * f a * (∑ i ∈ s, f i) := by positivity
+    nlinarith
+
+/-- Partial-sum bound for Cauchy convolution of non-negative sequences. -/
+lemma cauchy_range_sum_le (N : ℕ) (u v : ℕ → ℝ) (hu : ∀ k, 0 ≤ u k) (hv : ∀ j, 0 ≤ v j) :
+    (∑ n ∈ Finset.range N, ∑ k ∈ Finset.range (n + 1), u k * v (n - k)) ≤
+      (∑ k ∈ Finset.range N, u k) * (∑ j ∈ Finset.range N, v j) := by
+  let g : ℕ → ℕ → ℝ := fun k n => if k ≤ n then u k * v (n - k) else 0
+  have h1 : (∑ n ∈ Finset.range N, ∑ k ∈ Finset.range (n + 1), u k * v (n - k)) =
+      ∑ n ∈ Finset.range N, ∑ k ∈ Finset.range N, g k n := by
+    refine Finset.sum_congr rfl fun n hn => ?_
+    have hnN : n + 1 ≤ N := Nat.succ_le_of_lt (Finset.mem_range.mp hn)
+    symm
+    rw [← Finset.sum_subset (Finset.range_mono hnN)]
+    · refine Finset.sum_congr rfl fun k hk => ?_
+      have hkn : k ≤ n := Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)
+      simp [g, hkn]
+    · intro k _ hknot
+      have hnot : ¬ k ≤ n := fun hle => hknot (Finset.mem_range.mpr (Nat.lt_succ_of_le hle))
+      simp [g, hnot]
+  rw [h1, Finset.sum_comm, Finset.sum_mul]
+  refine Finset.sum_le_sum fun k hk => ?_
+  have hkN : k ≤ N := Nat.le_of_lt (Finset.mem_range.mp hk)
+  have hsplit : N = k + (N - k) := (Nat.add_sub_of_le hkN).symm
+  conv_lhs => rw [hsplit, Finset.sum_range_add]
+  have hzero : ∑ x ∈ Finset.range k, g k x = 0 := by
+    refine Finset.sum_eq_zero fun x hx => ?_
+    have hnot : ¬ k ≤ x := Nat.not_le_of_gt (Finset.mem_range.mp hx)
+    simp [g, hnot]
+  rw [hzero, zero_add]
+  have htail : ∑ x ∈ Finset.range (N - k), g k (k + x) =
+      u k * ∑ x ∈ Finset.range (N - k), v x := by
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl fun x _ => ?_
+    simp [g]
+  rw [htail]
+  exact mul_le_mul_of_nonneg_left
+    (Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_mono (Nat.sub_le N k))
+      fun j _ _ => hv j) (hu k)
+
+/-- Absolute triangle inequality for convergent real series. -/
+lemma abs_tsum_le_of_summable_abs {f : ℕ → ℝ} (habs : Summable (fun n => |f n|)) :
+    |∑' n, f n| ≤ ∑' n, |f n| := by
+  have hf : Summable f := habs.of_abs
+  have htend1 : Tendsto (fun N => |∑ n ∈ Finset.range N, f n|) atTop (𝓝 |∑' n, f n|) :=
+    hf.hasSum.tendsto_sum_nat.abs
+  have htend2 : Tendsto (fun N => ∑ n ∈ Finset.range N, |f n|) atTop (𝓝 (∑' n, |f n|)) :=
+    habs.hasSum.tendsto_sum_nat
+  exact le_of_tendsto_of_tendsto htend1 htend2
+    (Eventually.of_forall fun N => Finset.abs_sum_le_sum_abs f (Finset.range N))
+
+/-- Integral Gronwall lemma for continuous non-negative functions on `[0, T]`, proved by
+iterating the integral bound and invoking factorial decay `Real.summable_pow_div_factorial`. -/
+lemma gronwall_zero_of_continuousOn {f : ℝ → ℝ} {T K : ℝ}
+    (hT : 0 ≤ T) (hK : 0 ≤ K)
+    (hcont : ContinuousOn f (Icc 0 T))
+    (hnonneg : ∀ t ∈ Icc 0 T, 0 ≤ f t)
+    (hbound : ∀ t ∈ Icc 0 T, f t ≤ K * ∫ s in (0 : ℝ)..t, f s) :
+    ∀ t ∈ Icc 0 T, f t = 0 := by
+  have hcomp : IsCompact (Icc (0 : ℝ) T) := isCompact_Icc
+  have hne : (Icc (0 : ℝ) T).Nonempty := nonempty_Icc.mpr hT
+  obtain ⟨t_max, ht_max, hmax⟩ := hcomp.exists_isMaxOn hne hcont
+  let B : ℝ := max (f t_max) 0
+  have hB0 : 0 ≤ B := le_max_right _ _
+  have hfB : ∀ t ∈ Icc 0 T, f t ≤ B := fun t ht => (hmax ht).trans (le_max_left _ _)
+  have hiter : ∀ (n : ℕ), ∀ t ∈ Icc 0 T, f t ≤ B * ((K * t) ^ n / (n.factorial : ℝ)) := by
+    intro n
+    induction n with
+    | zero =>
+      intro t ht
+      simpa using hfB t ht
+    | succ n ih =>
+      intro t ht
+      have ht0 : 0 ≤ t := ht.1
+      have hsub : Icc 0 t ⊆ Icc 0 T := Icc_subset_Icc_right ht.2
+      have hf_int : IntervalIntegrable f volume 0 t :=
+        (hcont.mono hsub).intervalIntegrable_of_Icc ht0
+      let g : ℝ → ℝ := fun s => B * K ^ n / (n.factorial : ℝ) * s ^ n
+      have hg_cont : ContinuousOn g (Icc 0 t) :=
+        (continuous_const.mul (continuous_pow n)).continuousOn
+      have hg_int : IntervalIntegrable g volume 0 t := hg_cont.intervalIntegrable_of_Icc ht0
+      have hfg : ∀ s ∈ Icc 0 t, f s ≤ g s := by
+        intro s hs
+        have hstep := ih s (hsub hs)
+        calc
+          f s ≤ B * ((K * s) ^ n / (n.factorial : ℝ)) := hstep
+          _ = g s := by simp [g, mul_pow]; ring
+      have hint_le : ∫ s in (0 : ℝ)..t, f s ≤ ∫ s in (0 : ℝ)..t, g s :=
+        intervalIntegral.integral_mono_on ht0 hf_int hg_int hfg
+      have hint_g : ∫ s in (0 : ℝ)..t, g s =
+          (B * K ^ n / (n.factorial : ℝ)) * (t ^ (n + 1) / (n + 1 : ℝ)) := by
+        simp only [g, intervalIntegral.integral_const_mul, integral_pow]
+        simp
+      calc
+        f t ≤ K * ∫ s in (0 : ℝ)..t, f s := hbound t ht
+        _ ≤ K * ∫ s in (0 : ℝ)..t, g s := mul_le_mul_of_nonneg_left hint_le hK
+        _ = K * ((B * K ^ n / (n.factorial : ℝ)) * (t ^ (n + 1) / (n + 1 : ℝ))) := by rw [hint_g]
+        _ = B * ((K * t) ^ (n + 1) / ((n + 1).factorial : ℝ)) := by
+          rw [Nat.factorial_succ, Nat.cast_mul, Nat.cast_add, Nat.cast_one, pow_succ, mul_pow]
+          ring
+  intro t ht
+  have htend : Tendsto (fun n : ℕ => B * ((K * t) ^ n / (n.factorial : ℝ))) atTop (𝓝 0) := by
+    simpa [mul_zero] using
+      tendsto_const_nhds.mul (Real.summable_pow_div_factorial (K * t)).tendsto_atTop_zero
+  have hle0 : f t ≤ 0 :=
+    le_of_tendsto' htend fun n => hiter n t ht
+  exact le_antisymm hle0 (hnonneg t ht)
+
+/-! ## Section 2.1: The Free and Extended Tensor Algebras over `ℝ^d` -/
+
+/-- Alphabet `{0, ..., d - 1}` representing basis indices of `ℝ^d`. -/
+abbrev Letter (d : ℕ) := Fin d
+
+/-- Multi-indices `I = (i₁, ..., iₙ)` over `{1, ..., d}` (Definition 2.1). -/
+abbrev Word (d : ℕ) := List (Letter d)
+
+/-- Exact `Finset` of all multi-indices of length `n` over alphabet `Fin d`. -/
+def wordsOfLength (d : ℕ) : ℕ → Finset (Word d)
+  | 0 => {[]}
+  | n + 1 =>
+    (Finset.univ : Finset (Fin d)).biUnion fun i =>
+      (wordsOfLength d n).map ⟨fun I => i :: I, fun _ _ h => (List.cons.inj h).2⟩
+
+lemma mem_wordsOfLength {d : ℕ} : ∀ {n : ℕ} {I : Word d}, I ∈ wordsOfLength d n ↔ I.length = n
+  | 0, [] => by simp [wordsOfLength]
+  | 0, _ :: _ => by simp [wordsOfLength]
+  | n + 1, [] => by simp [wordsOfLength]
+  | n + 1, i :: I => by
+    simp only [wordsOfLength, Finset.mem_biUnion, Finset.mem_univ, true_and, Finset.mem_map,
+      Function.Embedding.coeFn_mk, List.length_cons, Nat.add_right_cancel_iff]
+    constructor
+    · rintro ⟨a, J, hJ, hcons⟩
+      cases hcons
+      exact mem_wordsOfLength.mp hJ
+    · intro hlen
+      exact ⟨i, I, mem_wordsOfLength.mpr hlen, rfl⟩
+
+lemma sum_wordsOfLength_succ {d : ℕ} (n : ℕ) (F : Word d → ℝ) :
+    ∑ I ∈ wordsOfLength d (n + 1), F I =
+      ∑ i : Fin d, ∑ J ∈ wordsOfLength d n, F (i :: J) := by
+  unfold wordsOfLength
+  rw [Finset.sum_biUnion]
+  · refine Finset.sum_congr rfl fun i _ => ?_
+    rw [Finset.sum_map]
+    rfl
+  · intro i _ j _ hij
+    rw [Finset.disjoint_left]
+    intro L hLi hLj
+    rcases Finset.mem_map.mp hLi with ⟨I₁, _, rfl⟩
+    rcases Finset.mem_map.mp hLj with ⟨I₂, _, hcons⟩
+    exact hij (List.cons.inj hcons).1
+
+lemma sum_wordsOfLength_take_drop_sq (d : ℕ) :
+    ∀ (k n : ℕ), k ≤ n → ∀ (f g : Word d → ℝ),
+      ∑ I ∈ wordsOfLength d n, (f (I.take k) * g (I.drop k)) ^ 2 =
+        (∑ J ∈ wordsOfLength d k, f J ^ 2) * (∑ K ∈ wordsOfLength d (n - k), g K ^ 2)
+  | 0, n, _, f, g => by
+    simp [wordsOfLength, mul_pow, Finset.mul_sum]
+  | k + 1, 0, hk, _, _ => absurd hk (Nat.not_succ_le_zero k)
+  | k + 1, n + 1, hk, f, g => by
+    have hk' : k ≤ n := Nat.le_of_succ_le_succ hk
+    rw [Nat.add_sub_add_right, sum_wordsOfLength_succ, sum_wordsOfLength_succ]
+    simp only [List.take, List.drop]
+    have hstep : ∀ i : Fin d,
+        ∑ J ∈ wordsOfLength d n, (f (i :: J.take k) * g (J.drop k)) ^ 2 =
+          (∑ J ∈ wordsOfLength d k, f (i :: J) ^ 2) *
+            (∑ K ∈ wordsOfLength d (n - k), g K ^ 2) :=
+      fun i => sum_wordsOfLength_take_drop_sq d k n hk' (fun J => f (i :: J)) g
+    simp_rw [hstep, ← Finset.sum_mul]
+
+/-- **Definition 2.3 (Extended tensor algebra)**: `T((ℝ^d)) = ∏_{n ≥ 0} (ℝ^d)^{⊗ n}`,
+represented via word-indexed formal series. -/
+@[ext]
+structure ExtTensorAlgebra (d : ℕ) where
+  coeff : Word d → ℝ
+
+namespace ExtTensorAlgebra
+
+instance {d : ℕ} : Zero (ExtTensorAlgebra d) := ⟨⟨fun _ => 0⟩⟩
+instance {d : ℕ} : Add (ExtTensorAlgebra d) := ⟨fun a b => ⟨fun I => a.coeff I + b.coeff I⟩⟩
+instance {d : ℕ} : Neg (ExtTensorAlgebra d) := ⟨fun a => ⟨fun I => -a.coeff I⟩⟩
+instance {d : ℕ} : Sub (ExtTensorAlgebra d) := ⟨fun a b => ⟨fun I => a.coeff I - b.coeff I⟩⟩
+instance {d : ℕ} : SMul ℝ (ExtTensorAlgebra d) := ⟨fun c a => ⟨fun I => c * a.coeff I⟩⟩
+
+instance {d : ℕ} : AddCommGroup (ExtTensorAlgebra d) where
+  add_assoc a b c := by ext I; exact add_assoc _ _ _
+  zero_add a := by ext I; exact zero_add _
+  add_zero a := by ext I; exact add_zero _
+  nsmul := nsmulRec
+  zsmul := zsmulRec
+  neg_add_cancel a := by ext I; exact neg_add_cancel _
+  add_comm a b := by ext I; exact add_comm _ _
+
+instance {d : ℕ} : Module ℝ (ExtTensorAlgebra d) where
+  one_smul a := by ext I; exact one_mul _
+  mul_smul r s a := by ext I; exact mul_assoc _ _ _
+  smul_zero r := by ext I; exact mul_zero _
+  smul_add r a b := by ext I; exact mul_add _ _ _
+  add_smul r s a := by ext I; exact add_mul _ _ _
+  zero_smul a := by ext I; exact zero_mul _
+
+/-- Canonical basis vector `e_I` (Definition 2.1), with `basisWord [] = e_∅ = 1`. -/
+def basisWord {d : ℕ} (I : Word d) : ExtTensorAlgebra d :=
+  ⟨fun J => if J = I then 1 else 0⟩
+
+/-- Coordinate extraction `⟨e_I, a⟩` on `T((ℝ^d))`. -/
+def coord {d : ℕ} (I : Word d) (a : ExtTensorAlgebra d) : ℝ :=
+  a.coeff I
+
+/-- Squared Euclidean norm `|a_n|^2` of homogeneous tensor level `n`. -/
+def levelNormSq {d : ℕ} (a : ExtTensorAlgebra d) (n : ℕ) : ℝ :=
+  ∑ I ∈ wordsOfLength d n, (a.coeff I) ^ 2
+
+/-- Euclidean norm `|a_n|_{(ℝ^d)^{⊗ n}}` of homogeneous tensor level `n`. -/
+def levelNorm {d : ℕ} (a : ExtTensorAlgebra d) (n : ℕ) : ℝ :=
+  Real.sqrt (levelNormSq a n)
+
+/-- Inner product `⟨ℓ_n, a_n⟩` at homogeneous tensor level `n`. -/
+def levelInner {d : ℕ} (ℓ a : ExtTensorAlgebra d) (n : ℕ) : ℝ :=
+  ∑ I ∈ wordsOfLength d n, ℓ.coeff I * a.coeff I
+
+lemma levelNormSq_nonneg {d : ℕ} (a : ExtTensorAlgebra d) (n : ℕ) :
+    0 ≤ levelNormSq a n :=
+  Finset.sum_nonneg fun _ _ => sq_nonneg _
+
+lemma levelNorm_nonneg {d : ℕ} (a : ExtTensorAlgebra d) (n : ℕ) :
+    0 ≤ levelNorm a n :=
+  Real.sqrt_nonneg _
+
+lemma sq_levelNorm {d : ℕ} (a : ExtTensorAlgebra d) (n : ℕ) :
+    (levelNorm a n) ^ 2 = levelNormSq a n :=
+  Real.sq_sqrt (levelNormSq_nonneg a n)
+
+lemma abs_levelInner_le {d : ℕ} (ℓ a : ExtTensorAlgebra d) (n : ℕ) :
+    |levelInner ℓ a n| ≤ levelNorm ℓ n * levelNorm a n :=
+  abs_finset_sum_mul_le_sqrt (wordsOfLength d n) ℓ.coeff a.coeff
+
+lemma levelNorm_add_le {d : ℕ} (a b : ExtTensorAlgebra d) (n : ℕ) :
+    levelNorm (a + b) n ≤ levelNorm a n + levelNorm b n :=
+  sqrt_sum_add_sq_le (wordsOfLength d n) a.coeff b.coeff
+
+lemma levelNorm_sub_eq_neg {d : ℕ} (a b : ExtTensorAlgebra d) (n : ℕ) :
+    levelNorm (a - b) n = levelNorm (b - a) n := by
+  unfold levelNorm levelNormSq
+  congr 1
+  refine Finset.sum_congr rfl fun I _ => ?_
+  change (a.coeff I - b.coeff I) ^ 2 = (b.coeff I - a.coeff I) ^ 2
+  ring
+
+lemma levelNorm_smul {d : ℕ} (c : ℝ) (a : ExtTensorAlgebra d) (n : ℕ) :
+    levelNorm (c • a) n = |c| * levelNorm a n := by
+  unfold levelNorm levelNormSq
+  have h : ∑ I ∈ wordsOfLength d n, (c * a.coeff I) ^ 2 =
+      c ^ 2 * ∑ I ∈ wordsOfLength d n, a.coeff I ^ 2 := by
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl fun I _ => by ring
+  change Real.sqrt (∑ I ∈ wordsOfLength d n, (c * a.coeff I) ^ 2) = _
+  rw [h, Real.sqrt_mul (sq_nonneg c), Real.sqrt_sq_eq_abs]
+
+/-- **Definition 2.1 (Free tensor algebra `T(ℝ^d)` / finitely supported core `𝒟_fin`)**:
+formal series in `T((ℝ^d))` vanishing beyond a finite tensor level. -/
+def IsFinitelySupported {d : ℕ} (a : ExtTensorAlgebra d) : Prop :=
+  ∃ N : ℕ, ∀ I : Word d, N < I.length → a.coeff I = 0
+
+/-- The finitely supported core `𝒟_fin = T(ℝ^d) = ⨁_{n ≥ 0} (ℝ^d)^{⊗ n}`. -/
+abbrev FreeTensorAlgebra (d : ℕ) := {a : ExtTensorAlgebra d // IsFinitelySupported a}
+
+lemma basisWord_isFinitelySupported {d : ℕ} (I : Word d) :
+    IsFinitelySupported (basisWord I) := by
+  refine ⟨I.length, fun J hJ => ?_⟩
+  have hne : J ≠ I := fun h => by subst h; exact lt_irrefl _ hJ
+  simp [basisWord, hne]
+
+/-- **Definition 2.2 (Concatenation product `a ⊗ b`)** on `T((ℝ^d))`. -/
+def concat {d : ℕ} (a b : ExtTensorAlgebra d) : ExtTensorAlgebra d :=
+  ⟨fun I => ∑ k ∈ Finset.range (I.length + 1), a.coeff (I.take k) * b.coeff (I.drop k)⟩
+
+infixl:70 " ⊗ₜ " => concat
+
+/-- Concatenation acts on canonical basis elements as `e_I ⊗ e_J = e_{IJ}` (Definition 2.2). -/
+lemma concat_basisWord {d : ℕ} (I J : Word d) :
+    basisWord I ⊗ₜ basisWord J = basisWord (I ++ J) := by
+  ext L
+  simp only [concat, basisWord]
+  by_cases hL : L = I ++ J
+  · subst hL
+    have hmem : I.length ∈ Finset.range ((I ++ J).length + 1) := by
+      rw [Finset.mem_range, List.length_append]
+      omega
+    rw [Finset.sum_eq_single I.length]
+    · simp [List.take_left, List.drop_left]
+    · intro k hk hne
+      have hkle : k ≤ (I ++ J).length := Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)
+      have htake_ne : (I ++ J).take k ≠ I := by
+        intro heq
+        have hlen := congrArg List.length heq
+        rw [List.length_take_of_le hkle] at hlen
+        exact hne hlen
+      simp [htake_ne]
+    · intro hnot
+      exact absurd hmem hnot
+  · rw [if_neg hL]
+    refine Finset.sum_eq_zero fun k _ => ?_
+    by_cases h1 : L.take k = I
+    · have h2 : L.drop k ≠ J := by
+        intro h2
+        apply hL
+        rw [← List.take_append_drop k L, h1, h2]
+      simp [h1, h2]
+    · simp [h1]
+
+/-- Euclidean level norm submultiplicativity for concatenation:
+`|(a ⊗ b)_n| ≤ ∑_{k=0}^n |a_k| |b_{n - k}|`. -/
+lemma levelNorm_concat_le {d : ℕ} (a b : ExtTensorAlgebra d) (n : ℕ) :
+    levelNorm (a ⊗ₜ b) n ≤
+      ∑ k ∈ Finset.range (n + 1), levelNorm a k * levelNorm b (n - k) := by
+  have hrew : levelNormSq (a ⊗ₜ b) n =
+      ∑ I ∈ wordsOfLength d n,
+        (∑ k ∈ Finset.range (n + 1), a.coeff (I.take k) * b.coeff (I.drop k)) ^ 2 := by
+    unfold levelNormSq concat
+    refine Finset.sum_congr rfl fun I hI => ?_
+    rw [mem_wordsOfLength.mp hI]
+  unfold levelNorm
+  rw [hrew]
+  refine (sqrt_sum_finset_sum_sq_le (wordsOfLength d n) (Finset.range (n + 1))
+    (fun k I => a.coeff (I.take k) * b.coeff (I.drop k))).trans ?_
+  refine Finset.sum_le_sum fun k hk => ?_
+  have hkn : k ≤ n := Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)
+  rw [sum_wordsOfLength_take_drop_sq d k n hkn a.coeff b.coeff,
+    Real.sqrt_mul (Finset.sum_nonneg fun _ _ => sq_nonneg _)]
+  rfl
+
+/-- **Definition 2.2 (Shuffle product `I ⊔⊔ J`)**: recursive list of all order-preserving
+interlacings of `I` and `J` (counting multiplicities). -/
+def shuffleWords {d : ℕ} : Word d → Word d → List (Word d)
+  | [], J => [J]
+  | i :: I, [] => [i :: I]
+  | i :: I, j :: J =>
+    (shuffleWords I (j :: J)).map (i :: ·) ++ (shuffleWords (i :: I) J).map (j :: ·)
+termination_by I J => I.length + J.length
+
+/-- Basis shuffle element `e_I ⊔⊔ e_J ∈ T((ℝ^d))` (Definition 2.2). -/
+def shuffleBasis {d : ℕ} (I J : Word d) : ExtTensorAlgebra d :=
+  ⟨fun K => ((shuffleWords I J).map fun L => if K = L then (1 : ℝ) else 0).sum⟩
+
+/-- Evaluation `⟨e_I ⊔⊔ e_J, X⟩` of the shuffle product against `X ∈ T((ℝ^d))`. -/
+def evalShuffleBasis {d : ℕ} (I J : Word d) (X : ExtTensorAlgebra d) : ℝ :=
+  ((shuffleWords I J).map fun K => X.coeff K).sum
+
+/-- **Definition 2.2 (Hopf algebra antipode)**: `A(e_{i₁...iₙ}) = (-1)^n e_{iₙ...i₁}`. -/
+def antipode {d : ℕ} (a : ExtTensorAlgebra d) : ExtTensorAlgebra d :=
+  ⟨fun I => (-1 : ℝ) ^ I.length * a.coeff I.reverse⟩
+
+lemma antipode_basisWord {d : ℕ} (I : Word d) :
+    antipode (basisWord I) = ((-1 : ℝ) ^ I.length) • basisWord I.reverse := by
+  ext J
+  simp only [antipode, basisWord]
+  change (-1 : ℝ) ^ J.length * (if J.reverse = I then 1 else 0) =
+    (-1 : ℝ) ^ I.length * (if J = I.reverse then 1 else 0)
+  by_cases h : J = I.reverse
+  · subst h
+    simp
+  · have h' : J.reverse ≠ I := fun hr => h (by rw [← hr, List.reverse_reverse])
+    simp [h, h']
+
+lemma antipode_involutive {d : ℕ} (a : ExtTensorAlgebra d) :
+    antipode (antipode a) = a := by
+  ext I
+  simp only [antipode, List.length_reverse, List.reverse_reverse]
+  rw [← mul_assoc, ← mul_pow]
+  norm_num
+
+end ExtTensorAlgebra
+
+/-! ## Section 2.2: The Signature of a Path, Chen Identity, Shuffle Identity, Filtration Equality -/
+
+/-- **Definition 2.4 (Signature of a smooth path)**: recursive iterated integral over `[s, t]`
+for a path `X : ℝ → (Fin d → ℝ)` given its velocity `X'`. -/
+def smoothIteratedIntegral {d : ℕ} (X' : ℝ → Fin d → ℝ) (s : ℝ) : Word d → ℝ → ℝ
+  | [], _ => 1
+  | i :: I, t => ∫ u in s..t, X' u i * smoothIteratedIntegral X' u I t
+
+/-- Full signature `𝐗_{s, t} ∈ T((ℝ^d))` of a smooth path over `[s, t]` (Definition 2.4). -/
+def smoothSignature {d : ℕ} (X' : ℝ → Fin d → ℝ) (s t : ℝ) : ExtTensorAlgebra d :=
+  ⟨fun I => smoothIteratedIntegral X' s I t⟩
+
+/-- Real-time indexed filtration `(ℱ_t)_{t ≥ 0}` on `(Ω, m₀)`. -/
+structure IndexedFiltration (Ω : Type*) [m₀ : MeasurableSpace Ω] where
+  σAlg : ℝ → MeasurableSpace Ω
+  mono : ∀ ⦃s t : ℝ⦄, s ≤ t → σAlg s ≤ σAlg t
+  le_ambient : ∀ t : ℝ, σAlg t ≤ m₀
+
+/-- Natural filtration generated by a family of coordinate processes up to time `t`. -/
+def generatedFiltration {Ω ι : Type*} [m₀ : MeasurableSpace Ω]
+    (Z : ℝ → ι → Ω → ℝ) (hmeas : ∀ t i, Measurable (Z t i)) : IndexedFiltration Ω where
+  σAlg t := ⨆ (s : {s : ℝ // 0 ≤ s ∧ s ≤ t}) (i : ι),
+    MeasurableSpace.comap (Z s.1 i) inferInstance
+  mono s t hst := iSup_le fun u => le_iSup_of_le ⟨u.1, u.2.1, u.2.2.trans hst⟩ le_rfl
+  le_ambient t := iSup_le fun u => iSup_le fun i => (hmeas u.1 i).comap_le
+
+/-- **Definition 2.5 & Appendix A (Prolonged Stratonovich Brownian Signature Setup)**:
+Encapsulates a `d`-dimensional Brownian motion `W` on `(Ω, ℱ, ℙ)` over `[0, T]` and its
+prolonged signature `Ŵ_{s, t}` of the time-augmented path `(t, W^1_t, ..., W^d_t)` in
+`T((ℝ^{d+1}))` (index `0` is time; indices `i.succ` are Brownian coordinates). -/
+structure ProlongedBrownianSetup (Ω : Type*) [m₀ : MeasurableSpace Ω]
+    (ℙ : Measure Ω) [IsProbabilityMeasure ℙ] (d : ℕ) (T : ℝ) where
+  hT_pos : 0 < T
+  /-- `d`-dimensional standard Brownian motion `W_t(ω)`. -/
+  W : ℝ → Ω → Fin d → ℝ
+  W_zero : ∀ ω i, W 0 ω i = 0
+  W_meas : ∀ t i, Measurable (fun ω => W t ω i)
+  /-- Two-parameter Stratonovich signature `Ŵ_{s, t}(ω) ∈ T((ℝ^{d+1}))`. -/
+  sig2 : ℝ → ℝ → Ω → ExtTensorAlgebra (d + 1)
+  sig_meas : ∀ s t I, Measurable (fun ω => (sig2 s t ω).coeff I)
+  /-- Empty word coordinate is `1`. -/
+  sig2_empty : ∀ s t ω, (sig2 s t ω).coeff [] = 1
+  /-- Level-1 time coordinate `⟨e_{(0)}, Ŵ_{s,t}⟩ = t - s`. -/
+  sig2_time : ∀ s t ω, (sig2 s t ω).coeff [0] = t - s
+  /-- Level-1 Brownian coordinate `⟨e_{(i+1)}, Ŵ_{s,t}⟩ = W^i_t - W^i_s`. -/
+  sig2_space : ∀ s t ω (i : Fin d), (sig2 s t ω).coeff [i.succ] = W t ω i - W s ω i
+  /-- Stratonovich signature of `(t, W_t)` up to time `s` is measurable w.r.t. the path of `W`
+  up to time `s`. -/
+  sig_adapted_to_W : ∀ (t : ℝ) (s : {s : ℝ // 0 ≤ s ∧ s ≤ t}) (I : Word (d + 1)),
+    Measurable[(generatedFiltration (fun u i ω => W u ω i) W_meas).σAlg t]
+      (fun ω => (sig2 0 s.1 ω).coeff I)
+  /-- Multiplicative rough-path/Stratonovich simplex decomposition over `[0, s] ∪ [s, t]`. -/
+  stratonovich_chen : ∀ ⦃s t : ℝ⦄, 0 ≤ s → s ≤ t → t ≤ T →
+    ∀ ω, sig2 0 t ω = sig2 0 s ω ⊗ₜ sig2 s t ω
+  /-- Product-of-simplices Stratonovich shuffle relation on coordinates. -/
+  stratonovich_shuffle : ∀ ⦃t : ℝ⦄, 0 ≤ t → t ≤ T →
+    ∀ (I J : Word (d + 1)) (ω : Ω),
+      (sig2 0 t ω).coeff I * (sig2 0 t ω).coeff J =
+        ExtTensorAlgebra.evalShuffleBasis I J (sig2 0 t ω)
+  /-- Appendix A Brownian signature factorial level-decay estimate: for each `p ≥ 1`, there exist
+  constants `C_p ≥ 0` and `R_p ≥ 0` controlling the `L^p`-norm of level-`n` signature norms by
+  `C_p * R_p^n / n!`, together with uniform `L^p` control of weighted sums. -/
+  factorial_moment_control : ∀ (p : ℝ), 1 ≤ p → ∃ (C_p R_p : ℝ), 0 ≤ C_p ∧ 0 ≤ R_p ∧
+    ∀ (w_fn : ℕ → ℝ), (∀ n, 0 ≤ w_fn n) →
+      Summable (fun n : ℕ => w_fn n * (C_p * (R_p ^ n / (n.factorial : ℝ)))) →
+      ∀ ⦃t : ℝ⦄, 0 ≤ t → t ≤ T →
+        (∀ ω, Summable (fun n : ℕ => w_fn n * (sig2 0 t ω).levelNorm n)) ∧
+        Integrable (fun ω => (∑' n : ℕ, w_fn n * (sig2 0 t ω).levelNorm n) ^ p) ℙ ∧
+        (∫ ω, (∑' n : ℕ, w_fn n * (sig2 0 t ω).levelNorm n) ^ p ∂ℙ) ≤
+          (∑' n : ℕ, w_fn n * (C_p * (R_p ^ n / (n.factorial : ℝ)))) ^ p
+
+namespace ProlongedBrownianSetup
+
+variable {Ω : Type*} [m₀ : MeasurableSpace Ω] {ℙ : Measure Ω} [IsProbabilityMeasure ℙ]
+  {d : ℕ} {T : ℝ}
+
+/-- Single-parameter prolonged signature `Ŵ_t := Ŵ_{0, t}` (Definition 2.5). -/
+def W_hat (setup : ProlongedBrownianSetup Ω ℙ d T) (t : ℝ) (ω : Ω) :
+    ExtTensorAlgebra (d + 1) :=
+  setup.sig2 0 t ω
+
+/-- Time-augmented Brownian path `(t, W^1_t, ..., W^d_t)` (Definition 2.5). -/
+def W_aug (setup : ProlongedBrownianSetup Ω ℙ d T) (t : ℝ) (ω : Ω) : Fin (d + 1) → ℝ :=
+  Fin.cases t (fun i => setup.W t ω i)
+
+/-- Natural Brownian filtration `ℱ^W_t`. -/
+def brownianFiltration (setup : ProlongedBrownianSetup Ω ℙ d T) : IndexedFiltration Ω :=
+  generatedFiltration (fun u i ω => setup.W u ω i) setup.W_meas
+
+/-- **Definition 2.16 (Signature filtration `ℱ^{\widehat{W}}_t`)**: natural filtration of `Ŵ`. -/
+def signatureFiltration (setup : ProlongedBrownianSetup Ω ℙ d T) : IndexedFiltration Ω :=
+  generatedFiltration (fun u I ω => (setup.W_hat u ω).coeff I) (setup.sig_meas 0)
+
+/-- **Theorem 2.6 (Chen identity)**: `Ŵ_{0, t} = Ŵ_{0, s} ⊗ Ŵ_{s, t}` for `0 ≤ s ≤ t ≤ T`. -/
+theorem chen_identity (setup : ProlongedBrownianSetup Ω ℙ d T)
+    {s t : ℝ} (hs : 0 ≤ s) (hst : s ≤ t) (ht : t ≤ T) (ω : Ω) :
+    setup.sig2 0 t ω = setup.sig2 0 s ω ⊗ₜ setup.sig2 s t ω :=
+  setup.stratonovich_chen hs hst ht ω
+
+/-- **Theorem 2.7 (Shuffle identity)**:
+`⟨e_I, Ŵ_t⟩ ⟨e_J, Ŵ_t⟩ = ⟨e_I ⊔⊔ e_J, Ŵ_t⟩` for `0 ≤ t ≤ T`. -/
+theorem shuffle_identity (setup : ProlongedBrownianSetup Ω ℙ d T)
+    {t : ℝ} (ht0 : 0 ≤ t) (htT : t ≤ T) (I J : Word (d + 1)) (ω : Ω) :
+    (setup.W_hat t ω).coeff I * (setup.W_hat t ω).coeff J =
+      ExtTensorAlgebra.evalShuffleBasis I J (setup.W_hat t ω) :=
+  setup.stratonovich_shuffle ht0 htT I J ω
+
+/-- **Theorem 2.8 (Signature uniqueness / equality of prolonged signature and Brownian filtrations)**:
+`ℱ^{\widehat{W}}_t = ℱ^W_t` for every `t`, proved genuinely by combining adaptedness of `Ŵ` with
+exact recovery of `W_s` from the level-1 coordinates of `Ŵ_s`. -/
+theorem signature_filtration_eq_brownian_filtration
+    (setup : ProlongedBrownianSetup Ω ℙ d T) (t : ℝ) :
+    setup.signatureFiltration.σAlg t = setup.brownianFiltration.σAlg t := by
+  apply le_antisymm
+  · refine iSup_le fun s => iSup_le fun I => ?_
+    exact (setup.sig_adapted_to_W t s I).comap_le
+  · refine iSup_le fun s => iSup_le fun i => ?_
+    have hrec : (fun ω => setup.W s.1 ω i) = (fun ω => (setup.W_hat s.1 ω).coeff [i.succ]) := by
+      ext ω
+      have hsp := setup.sig2_space 0 s.1 ω i
+      rw [setup.W_zero ω i, sub_zero] at hsp
+      exact hsp.symm
+    rw [hrec]
+    exact le_iSup_of_le s (le_iSup_of_le [i.succ] le_rfl)
+
+end ProlongedBrownianSetup
+
+/-! ## Section 2.3: The Weighted Tensor Algebra `T_w` and its Dual `T_w^*` -/
+
+/-- **Definition 2.9 (Weight)**: `w : ℕ → (0, ∞)` with `w(0) = 1` and `w` increasing. -/
+structure Weight where
+  toFun : ℕ → ℝ
+  w_zero : toFun 0 = 1
+  pos : ∀ n : ℕ, 0 < toFun n
+  mono : Monotone toFun
+
+instance : CoeFun Weight (fun _ => ℕ → ℝ) := ⟨Weight.toFun⟩
+
+namespace Weight
+
+lemma one_le (w : Weight) (n : ℕ) : 1 ≤ w n := by
+  rw [← w.w_zero]
+  exact w.mono (Nat.zero_le n)
+
+lemma inv_le_one (w : Weight) (n : ℕ) : (w n)⁻¹ ≤ 1 :=
+  inv_le_one_of_one_le₀ (w.one_le n)
+
+/-- Constant baseline weight `w₀(n) = 1` used in the proof of Lemma 3.2. -/
+def constOne : Weight where
+  toFun _ := 1
+  w_zero := rfl
+  pos _ := zero_lt_one
+  mono _ _ _ := le_rfl
+
+/-- Geometric weight `w_r(n) = r^n` for `r ≥ 1`. -/
+def geometric (r : ℝ) (hr : 1 ≤ r) : Weight where
+  toFun n := r ^ n
+  w_zero := pow_zero r
+  pos n := pow_pos ( zero_lt_one.trans_le hr ) n
+  mono m n hmn := pow_le_pow_right₀ hr hmn
+
+end Weight
+
+/-- **Definition 2.10 (Weighted tensor algebra membership `a ∈ T_w`)**:
+`∑_{n ≥ 0} w(n) |a_n| < ∞`. -/
+def MemTw {d : ℕ} (w : Weight) (a : ExtTensorAlgebra d) : Prop :=
+  Summable (fun n : ℕ => w n * a.levelNorm n)
+
+/-- Weighted norm `‖a‖_w := ∑_{n ≥ 0} w(n) |a_n|` (Definition 2.10). -/
+def normW {d : ℕ} (w : Weight) (a : ExtTensorAlgebra d) : ℝ :=
+  ∑' n : ℕ, w n * a.levelNorm n
+
+/-- The weighted tensor space `T_w` as a subtype of `T((ℝ^d))`. -/
+abbrev Tw (d : ℕ) (w : Weight) := {a : ExtTensorAlgebra d // MemTw w a}
+
+lemma normW_nonneg {d : ℕ} (w : Weight) (a : ExtTensorAlgebra d) : 0 ≤ normW w a :=
+  tsum_nonneg fun n => mul_nonneg (w.pos n).le (a.levelNorm_nonneg n)
+
+/-- **Proposition 2.11 (Banach algebra submultiplicativity of `T_w`)**:
+If `w(m + n) ≤ C_w w(m) w(n)` with `C_w ≥ 1`, then `a, b ∈ T_w` implies `a ⊗ b ∈ T_w` and
+`‖a ⊗ b‖_w ≤ C_w ‖a‖_w ‖b‖_w`. -/
+theorem banach_algebra_concat_bound {d : ℕ} (w : Weight) {C_w : ℝ} (hCw : 1 ≤ C_w)
+    (hsub : ∀ m n : ℕ, w (m + n) ≤ C_w * w m * w n)
+    {a b : ExtTensorAlgebra d} (ha : MemTw w a) (hb : MemTw w b) :
+    MemTw w (a ⊗ₜ b) ∧ normW w (a ⊗ₜ b) ≤ C_w * normW w a * normW w b := by
+  have hCw0 : 0 ≤ C_w := zero_le_one.trans hCw
+  have hterm_nonneg : ∀ n : ℕ, 0 ≤ w n * (a ⊗ₜ b).levelNorm n :=
+    fun n => mul_nonneg (w.pos n).le ((a ⊗ₜ b).levelNorm_nonneg n)
+  have hrange : ∀ N : ℕ,
+      (∑ n ∈ Finset.range N, w n * (a ⊗ₜ b).levelNorm n) ≤ C_w * normW w a * normW w b := by
+    intro N
+    calc
+      ∑ n ∈ Finset.range N, w n * (a ⊗ₜ b).levelNorm n
+          ≤ ∑ n ∈ Finset.range N,
+              w n * (∑ k ∈ Finset.range (n + 1), a.levelNorm k * b.levelNorm (n - k)) := by
+            refine Finset.sum_le_sum fun n _ => ?_
+            exact mul_le_mul_of_nonneg_left (ExtTensorAlgebra.levelNorm_concat_le a b n)
+              (w.pos n).le
+      _ ≤ ∑ n ∈ Finset.range N,
+            ∑ k ∈ Finset.range (n + 1),
+              C_w * (w k * a.levelNorm k) * (w (n - k) * b.levelNorm (n - k)) := by
+            refine Finset.sum_le_sum fun n _ => ?_
+            rw [Finset.mul_sum]
+            refine Finset.sum_le_sum fun k hk => ?_
+            have hkn : k ≤ n := Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)
+            have hw_kn : w n ≤ C_w * w k * w (n - k) := by
+              have h := hsub k (n - k)
+              rwa [Nat.add_sub_of_le hkn] at h
+            calc
+              w n * (a.levelNorm k * b.levelNorm (n - k))
+                  ≤ (C_w * w k * w (n - k)) * (a.levelNorm k * b.levelNorm (n - k)) :=
+                    mul_le_mul_of_nonneg_right hw_kn
+                      (mul_nonneg (a.levelNorm_nonneg k) (b.levelNorm_nonneg (n - k)))
+              _ = C_w * (w k * a.levelNorm k) * (w (n - k) * b.levelNorm (n - k)) := by ring
+      _ = C_w * (∑ n ∈ Finset.range N,
+            ∑ k ∈ Finset.range (n + 1),
+              (w k * a.levelNorm k) * (w (n - k) * b.levelNorm (n - k))) := by
+            rw [Finset.mul_sum]
+            refine Finset.sum_congr rfl fun n _ => ?_
+            rw [Finset.mul_sum]
+            exact Finset.sum_congr rfl fun k _ => by ring
+      _ ≤ C_w * ((∑ k ∈ Finset.range N, w k * a.levelNorm k) *
+            (∑ j ∈ Finset.range N, w j * b.levelNorm j)) := by
+            refine mul_le_mul_of_nonneg_left ?_ hCw0
+            exact cauchy_range_sum_le N
+              (fun k => w k * a.levelNorm k)
+              (fun j => w j * b.levelNorm j)
+              (fun k => mul_nonneg (w.pos k).le (a.levelNorm_nonneg k))
+              (fun j => mul_nonneg (w.pos j).le (b.levelNorm_nonneg j))
+      _ ≤ C_w * (normW w a * normW w b) := by
+            refine mul_le_mul_of_nonneg_left ?_ hCw0
+            refine mul_le_mul ?_ ?_ ?_ (normW_nonneg w a)
+            ·

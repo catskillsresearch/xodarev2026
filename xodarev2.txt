@@ -1,0 +1,217 @@
+              exact ha.sum_le_tsum (Finset.range N)
+                fun k _ => mul_nonneg (w.pos k).le (a.levelNorm_nonneg k)
+            · exact hb.sum_le_tsum (Finset.range N)
+                fun j _ => mul_nonneg (w.pos j).le (b.levelNorm_nonneg j)
+            · exact Finset.sum_nonneg
+                fun j _ => mul_nonneg (w.pos j).le (b.levelNorm_nonneg j)
+      _ = C_w * normW w a * normW w b := by ring
+  have hsum : Summable (fun n : ℕ => w n * (a ⊗ₜ b).levelNorm n) :=
+    summable_of_sum_range_le hterm_nonneg hrange
+  exact ⟨hsum, hsum.tsum_le_of_sum_range_le hrange⟩
+
+/-- **Definition 2.12 (Dual space `T_w^*`)**: formal series `ℓ ∈ T((ℝ^d))` such that
+`sup_{n ≥ 0} |ℓ_n| / w(n) < ∞`. -/
+def MemTwDual {d : ℕ} (w : Weight) (ℓ : ExtTensorAlgebra d) : Prop :=
+  BddAbove (Set.range fun n : ℕ => ℓ.levelNorm n / w n)
+
+/-- Dual norm `‖ℓ‖_{w^*} := sup_{n ≥ 0} |ℓ_n| / w(n)` (Definition 2.12). -/
+def normWDual {d : ℕ} (w : Weight) (ℓ : ExtTensorAlgebra d) : ℝ :=
+  ⨆ n : ℕ, ℓ.levelNorm n / w n
+
+lemma levelNorm_div_le_normWDual {d : ℕ} (w : Weight) {ℓ : ExtTensorAlgebra d}
+    (hℓ : MemTwDual w ℓ) (n : ℕ) :
+    ℓ.levelNorm n / w n ≤ normWDual w ℓ :=
+  le_ciSup hℓ n
+
+lemma normWDual_nonneg {d : ℕ} (w : Weight) {ℓ : ExtTensorAlgebra d} (hℓ : MemTwDual w ℓ) :
+    0 ≤ normWDual w ℓ :=
+  (div_nonneg (ℓ.levelNorm_nonneg 0) (w.pos 0).le).trans (levelNorm_div_le_normWDual w hℓ 0)
+
+/-- Weighted `L^2` dual condition: `∑_{n ≥ 0} |ℓ_n|^2 / w(n)^2 < ∞` (Hypothesis H1). -/
+def MemL2w {d : ℕ} (w : Weight) (ℓ : ExtTensorAlgebra d) : Prop :=
+  Summable (fun n : ℕ => ℓ.levelNormSq n / (w n) ^ 2)
+
+/-- Weighted Hilbert norm `‖ℓ‖_{2, w} := (∑_{n ≥ 0} |ℓ_n|^2 / w(n)^2)^{1/2}`. -/
+def norm2w {d : ℕ} (w : Weight) (ℓ : ExtTensorAlgebra d) : ℝ :=
+  Real.sqrt (∑' n : ℕ, ℓ.levelNormSq n / (w n) ^ 2)
+
+/-- Inverse-weighted Hilbert condition `∑_{n ≥ 0} w(n)^2 |a_n|^2 < ∞` (Lemma 2.22). -/
+def MemL2wInv {d : ℕ} (w : Weight) (a : ExtTensorAlgebra d) : Prop :=
+  Summable (fun n : ℕ => (w n) ^ 2 * a.levelNormSq n)
+
+/-- Inverse-weighted Hilbert norm `‖a‖_{2, w^{-1}} := (∑_{n ≥ 0} w(n)^2 |a_n|^2)^{1/2}`. -/
+def norm2wInv {d : ℕ} (w : Weight) (a : ExtTensorAlgebra d) : ℝ :=
+  Real.sqrt (∑' n : ℕ, (w n) ^ 2 * a.levelNormSq n)
+
+lemma norm2w_nonneg {d : ℕ} (w : Weight) (ℓ : ExtTensorAlgebra d) : 0 ≤ norm2w w ℓ :=
+  Real.sqrt_nonneg _
+
+lemma norm2wInv_nonneg {d : ℕ} (w : Weight) (a : ExtTensorAlgebra d) : 0 ≤ norm2wInv w a :=
+  Real.sqrt_nonneg _
+
+/-- Canonical duality pairing `⟨ℓ, a⟩ := ∑_{n ≥ 0} ⟨ℓ_n, a_n⟩` (Definition 2.12). -/
+def dualPairing {d : ℕ} (ℓ a : ExtTensorAlgebra d) : ℝ :=
+  ∑' n : ℕ, ℓ.levelInner a n
+
+/-- Continuous duality estimate `|⟨ℓ, a⟩| ≤ ‖ℓ‖_{w^*} ‖a‖_w` on `T_w^* × T_w` (Definition 2.12). -/
+theorem dualPairing_le_normWDual_mul_normW {d : ℕ} (w : Weight)
+    {ℓ a : ExtTensorAlgebra d} (hℓ : MemTwDual w ℓ) (ha : MemTw w a) :
+    Summable (fun n : ℕ => |ℓ.levelInner a n|) ∧
+      |dualPairing ℓ a| ≤ normWDual w ℓ * normW w a := by
+  have hpoint : ∀ n : ℕ, |ℓ.levelInner a n| ≤ normWDual w ℓ * (w n * a.levelNorm n) := by
+    intro n
+    have hw : 0 < w n := w.pos n
+    have hbound : ℓ.levelNorm n ≤ normWDual w ℓ * w n :=
+      (div_le_iff₀ hw).mp (levelNorm_div_le_normWDual w hℓ n)
+    calc
+      |ℓ.levelInner a n| ≤ ℓ.levelNorm n * a.levelNorm n := ℓ.abs_levelInner_le a n
+      _ ≤ (normWDual w ℓ * w n) * a.levelNorm n :=
+        mul_le_mul_of_nonneg_right hbound (a.levelNorm_nonneg n)
+      _ = normWDual w ℓ * (w n * a.levelNorm n) := by ring
+  have hdom : Summable (fun n : ℕ => normWDual w ℓ * (w n * a.levelNorm n)) :=
+    ha.mul_left (normWDual w ℓ)
+  have habs : Summable (fun n : ℕ => |ℓ.levelInner a n|) :=
+    Summable.of_nonneg_of_le (fun _ => abs_nonneg _) hpoint hdom
+  refine ⟨habs, ?_⟩
+  calc
+    |dualPairing ℓ a| ≤ ∑' n : ℕ, |ℓ.levelInner a n| := abs_tsum_le_of_summable_abs habs
+    _ ≤ ∑' n : ℕ, normWDual w ℓ * (w n * a.levelNorm n) := habs.tsum_le_tsum hpoint hdom
+    _ = normWDual w ℓ * normW w a := tsum_mul_left
+
+/-- Embedding `L^2_w ↪ T_w^*` with `‖ℓ‖_{w^*} ≤ ‖ℓ‖_{2, w}`. -/
+lemma memTwDual_of_memL2w {d : ℕ} (w : Weight) {ℓ : ExtTensorAlgebra d} (hℓ : MemL2w w ℓ) :
+    MemTwDual w ℓ ∧ normWDual w ℓ ≤ norm2w w ℓ := by
+  have hle : ∀ n : ℕ, ℓ.levelNorm n / w n ≤ norm2w w ℓ := by
+    intro n
+    have hsq : (ℓ.levelNorm n / w n) ^ 2 ≤ ∑' k : ℕ, ℓ.levelNormSq k / (w k) ^ 2 := by
+      have heq : (ℓ.levelNorm n / w n) ^ 2 = ℓ.levelNormSq n / (w n) ^ 2 := by
+        rw [div_pow, ℓ.sq_levelNorm]
+      rw [heq]
+      exact hℓ.le_tsum n fun k _ => div_nonneg (ℓ.levelNormSq_nonneg k) (sq_nonneg _)
+    have h0 : 0 ≤ ℓ.levelNorm n / w n := div_nonneg (ℓ.levelNorm_nonneg n) (w.pos n).le
+    calc
+      ℓ.levelNorm n / w n = Real.sqrt ((ℓ.levelNorm n / w n) ^ 2) := (Real.sqrt_sq h0).symm
+      _ ≤ norm2w w ℓ := Real.sqrt_le_sqrt hsq
+  exact ⟨⟨norm2w w ℓ, by rintro _ ⟨n, rfl⟩; exact hle n⟩, ciSup_le hle⟩
+
+/-- Embedding `T_w ↪ L^2_{w^{-1}}` with `‖a‖_{2, w^{-1}} ≤ ‖a‖_w`. -/
+lemma memL2wInv_of_memTw {d : ℕ} (w : Weight) {a : ExtTensorAlgebra d} (ha : MemTw w a) :
+    MemL2wInv w a ∧ norm2wInv w a ≤ normW w a := by
+  have hterm : ∀ n : ℕ, 0 ≤ (w n) ^ 2 * a.levelNormSq n :=
+    fun n => mul_nonneg (sq_nonneg _) (a.levelNormSq_nonneg n)
+  have hrange : ∀ N : ℕ,
+      (∑ n ∈ Finset.range N, (w n) ^ 2 * a.levelNormSq n) ≤ (normW w a) ^ 2 := by
+    intro N
+    have hrew : (∑ n ∈ Finset.range N, (w n) ^ 2 * a.levelNormSq n) =
+        ∑ n ∈ Finset.range N, (w n * a.levelNorm n) ^ 2 := by
+      refine Finset.sum_congr rfl fun n _ => ?_
+      rw [mul_pow, a.sq_levelNorm]
+    rw [hrew]
+    calc
+      ∑ n ∈ Finset.range N, (w n * a.levelNorm n) ^ 2
+          ≤ (∑ n ∈ Finset.range N, w n * a.levelNorm n) ^ 2 :=
+            sum_sq_le_sq_sum (Finset.range N) (fun n => w n * a.levelNorm n)
+              (fun n _ => mul_nonneg (w.pos n).le (a.levelNorm_nonneg n))
+      _ ≤ (normW w a) ^ 2 := by
+            have hle : ∑ n ∈ Finset.range N, w n * a.levelNorm n ≤ normW w a :=
+              ha.sum_le_tsum (Finset.range N)
+                fun n _ => mul_nonneg (w.pos n).le (a.levelNorm_nonneg n)
+            exact pow_le_pow_left₀
+              (Finset.sum_nonneg fun n _ => mul_nonneg (w.pos n).le (a.levelNorm_nonneg n)) hle 2
+  have hsum : MemL2wInv w a := summable_of_sum_range_le hterm hrange
+  refine ⟨hsum, ?_⟩
+  have htsum : (∑' n : ℕ, (w n) ^ 2 * a.levelNormSq n) ≤ (normW w a) ^ 2 :=
+    hsum.tsum_le_of_sum_range_le hrange
+  exact (Real.sqrt_le_sqrt htsum).trans_eq (Real.sqrt_sq (normW_nonneg w a))
+
+/-! ## Section 2.6: Truncation Operators `π_N`, `π_{> N}` and Lemma 2.22 -/
+
+/-- **Definition 2.21 (Truncation operator `π_N`)**: retains tensor levels `0, ..., N`. -/
+def projLe {d : ℕ} (N : ℕ) (a : ExtTensorAlgebra d) : ExtTensorAlgebra d :=
+  ⟨fun I => if I.length ≤ N then a.coeff I else 0⟩
+
+/-- **Definition 2.21 (Tail projection `π_{> N}`)**: retains tensor levels strictly above `N`. -/
+def projGt {d : ℕ} (N : ℕ) (a : ExtTensorAlgebra d) : ExtTensorAlgebra d :=
+  ⟨fun I => if N < I.length then a.coeff I else 0⟩
+
+lemma add_projLe_projGt {d : ℕ} (N : ℕ) (a : ExtTensorAlgebra d) :
+    projLe N a + projGt N a = a := by
+  ext I
+  change (if I.length ≤ N then a.coeff I else 0) + (if N < I.length then a.coeff I else 0) =
+    a.coeff I
+  by_cases h : I.length ≤ N
+  · have hnot : ¬ N < I.length := not_lt_of_ge h
+    simp [h, hnot]
+  · have hlt : N < I.length := lt_of_not_ge h
+    simp [h, hlt]
+
+lemma projGt_levelNormSq {d : ℕ} (N : ℕ) (a : ExtTensorAlgebra d) (n : ℕ) :
+    (projGt N a).levelNormSq n = if N < n then a.levelNormSq n else 0 := by
+  unfold ExtTensorAlgebra.levelNormSq projGt
+  split_ifs with h
+  · refine Finset.sum_congr rfl fun I hI => ?_
+    rw [mem_wordsOfLength.mp hI, if_pos h]
+  · refine Finset.sum_eq_zero fun I hI => ?_
+    rw [mem_wordsOfLength.mp hI, if_neg h]
+    ring
+
+lemma projGt_levelNorm {d : ℕ} (N : ℕ) (a : ExtTensorAlgebra d) (n : ℕ) :
+    (projGt N a).levelNorm n = if N < n then a.levelNorm n else 0 := by
+  unfold ExtTensorAlgebra.levelNorm
+  rw [projGt_levelNormSq]
+  split_ifs <;> simp
+
+/-- **Lemma 2.22 (Weighted truncation and tail estimates)**:
+1. Hilbert Cauchy–Schwarz: `|⟨ℓ, a⟩| ≤ ‖ℓ‖_{2, w} ‖a‖_{2, w^{-1}}`;
+2. Dual tail estimate: `|⟨π_{> N} ℓ, a⟩| ≤ ‖π_{> N} ℓ‖_{2, w} ‖a‖_{2, w^{-1}}`. -/
+theorem weighted_truncation_estimates {d : ℕ} (w : Weight)
+    {ℓ a : ExtTensorAlgebra d} (hℓ : MemL2w w ℓ) (ha : MemL2wInv w a) :
+    (|dualPairing ℓ a| ≤ norm2w w ℓ * norm2wInv w a) ∧
+    (∀ N : ℕ, MemL2w w (projGt N ℓ) ∧
+      |dualPairing (projGt N ℓ) a| ≤ norm2w w (projGt N ℓ) * norm2wInv w a) := by
+  have hcauchy : ∀ (L : ExtTensorAlgebra d), MemL2w w L →
+      |dualPairing L a| ≤ norm2w w L * norm2wInv w a := by
+    intro L hL
+    have hpoint : ∀ n : ℕ,
+        |L.levelInner a n| ≤ (L.levelNorm n / w n) * (w n * a.levelNorm n) := by
+      intro n
+      have hw : w n ≠ 0 := (w.pos n).ne'
+      calc
+        |L.levelInner a n| ≤ L.levelNorm n * a.levelNorm n := L.abs_levelInner_le a n
+        _ = (L.levelNorm n / w n) * (w n * a.levelNorm n) := by field_simp [hw]
+    have hrange : ∀ M : ℕ,
+        (∑ n ∈ Finset.range M, |L.levelInner a n|) ≤ norm2w w L * norm2wInv w a := by
+      intro M
+      calc
+        ∑ n ∈ Finset.range M, |L.levelInner a n|
+            ≤ ∑ n ∈ Finset.range M, (L.levelNorm n / w n) * (w n * a.levelNorm n) :=
+              Finset.sum_le_sum fun n _ => hpoint n
+        _ ≤ Real.sqrt (∑ n ∈ Finset.range M, (L.levelNorm n / w n) ^ 2) *
+              Real.sqrt (∑ n ∈ Finset.range M, (w n * a.levelNorm n) ^ 2) := by
+              have h := abs_finset_sum_mul_le_sqrt (Finset.range M)
+                (fun n => L.levelNorm n / w n) (fun n => w n * a.levelNorm n)
+              exact (le_abs_self _).trans h
+        _ ≤ norm2w w L * norm2wInv w a := by
+              refine mul_le_mul ?_ ?_ (Real.sqrt_nonneg _) (norm2w_nonneg w L)
+              · apply Real.sqrt_le_sqrt
+                have hrew : (∑ n ∈ Finset.range M, (L.levelNorm n / w n) ^ 2) =
+                    ∑ n ∈ Finset.range M, L.levelNormSq n / (w n) ^ 2 := by
+                  refine Finset.sum_congr rfl fun n _ => ?_
+                  rw [div_pow, L.sq_levelNorm]
+                rw [hrew]
+                exact hL.sum_le_tsum (Finset.range M)
+                  fun n _ => div_nonneg (L.levelNormSq_nonneg n) (sq_nonneg _)
+              · apply Real.sqrt_le_sqrt
+                have hrew : (∑ n ∈ Finset.range M, (w n * a.levelNorm n) ^ 2) =
+                    ∑ n ∈ Finset.range M, (w n) ^ 2 * a.levelNormSq n := by
+                  refine Finset.sum_congr rfl fun n _ => ?_
+                  rw [mul_pow, a.sq_levelNorm]
+                rw [hrew]
+                exact ha.sum_le_tsum (Finset.range M)
+                  fun n _ => mul_nonneg (sq_nonneg _) (a.levelNormSq_nonneg n)
+    have habs : Summable (fun n : ℕ => |L.levelInner a n|) :=
+      summable_of_sum_range_le (fun _ => abs_nonneg _) hrange
+    calc
+      |dualPairing L a| ≤ ∑' n : ℕ, |L.levelInner a n| := abs_tsum_le_of_summable_abs habs
+      _ ≤ norm2w w L * norm2wInv w a := habs.tsum_le_of_sum_range_le hrange
+  refine ⟨

@@ -1,0 +1,314 @@
+\begin{thebibliography}{48}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Abi~Jaber and G\'erard(2025)]{AbiJaberGerard2025}
+Eduardo Abi~Jaber and Louis-Amand G\'erard.
+\newblock Signature volatility models: pricing and hedging with {F}ourier.
+\newblock \emph{SIAM Journal on Financial Mathematics}, 16\penalty0
+  (2):\penalty0 606--642, 2025.
+\newblock \doi{10.1137/24M1636952}.
+
+\bibitem[Abi~Jaber et~al.(2019)Abi~Jaber, Larsson, and
+  Pulido]{AbiJaberLarssonPulido2019}
+Eduardo Abi~Jaber, Martin Larsson, and Sergio Pulido.
+\newblock Affine {V}olterra processes.
+\newblock \emph{Annals of Applied Probability}, 29\penalty0 (5):\penalty0
+  3155--3200, 2019.
+
+\bibitem[Abi~Jaber et~al.(2023)Abi~Jaber, Illand, and Li]{AbiJaberIllandLi2023}
+Eduardo Abi~Jaber, Camille Illand, and Shaun~(Xiaoyuan) Li.
+\newblock The quintic {O}rnstein--{U}hlenbeck volatility model that jointly
+  calibrates {SPX} and {VIX} smiles.
+\newblock \emph{arXiv preprint arXiv:2212.10917}, 2023.
+
+\bibitem[Abi~Jaber et~al.(2024)Abi~Jaber, G\'erard, and
+  Huang]{AbiJaberGerardHuang2024}
+Eduardo Abi~Jaber, Louis-Amand G\'erard, and Yuxing Huang.
+\newblock Path-dependent processes from signatures.
+\newblock \emph{arXiv preprint arXiv:2407.04956}, 2024.
+
+\bibitem[Abi~Jaber et~al.(2025)Abi~Jaber, Gassiat, and
+  Sotnikov]{AbiJaberGassiatSotnikov2025}
+Eduardo Abi~Jaber, Paul Gassiat, and Dimitri Sotnikov.
+\newblock Martingale property and moment explosions in signature volatility
+  models.
+\newblock \emph{Finance and Stochastics}, 2025.
+\newblock to appear; arXiv preprint arXiv:2503.17103.
+
+\bibitem[Bayer et~al.(2019)Bayer, Friz, Gulisashvili, Horvath, and
+  Stemper]{BayerFrizGulisashviliHorvathStemper2019}
+Christian Bayer, Peter Friz, Archil Gulisashvili, Blanka Horvath, and Benjamin
+  Stemper.
+\newblock Short-time near-the-money skew in rough fractional volatility models.
+\newblock \emph{Quantitative Finance}, 19\penalty0 (5):\penalty0 779--798,
+  2019.
+
+\bibitem[Boedihardjo et~al.(2016)Boedihardjo, Geng, Lyons, and
+  Yang]{BoedihardjoGengLyonsYang2016}
+Horatio Boedihardjo, Xi~Geng, Terry Lyons, and Danyu Yang.
+\newblock The signature of a rough path: uniqueness.
+\newblock \emph{Advances in Mathematics}, 293:\penalty0 720--737, 2016.
+
+\bibitem[Bondi et~al.(2024)Bondi, Livieri, and Pulido]{BondiLivieriPulido2024}
+Alessandro Bondi, Giulia Livieri, and Sergio Pulido.
+\newblock Affine {V}olterra processes with jumps.
+\newblock \emph{Stochastic Processes and their Applications}, 168:\penalty0
+  104264, 2024.
+\newblock \doi{10.1016/j.spa.2023.104264}.
+
+\bibitem[Bonnier et~al.(2019)Bonnier, Kidger, Perez~Arribas, Salvi, and
+  Lyons]{BonnierKidgerPerezSalviLyons2019}
+Patric Bonnier, Patrick Kidger, Imanol Perez~Arribas, Cristopher Salvi, and
+  Terry Lyons.
+\newblock Deep signature transforms.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 2019.
+
+\bibitem[Chen(1977)]{Chen1977}
+Kuo-Tsai Chen.
+\newblock Iterated path integrals.
+\newblock \emph{Bulletin of the American Mathematical Society}, 83\penalty0
+  (5):\penalty0 831--879, 1977.
+
+\bibitem[Chong et~al.(2024)Chong, Hoffmann, Liu, Rosenbaum, and
+  Szymansky]{ChongHoffmannLiuRosenbaumSzymanski2024}
+Carsten~H. Chong, Marc Hoffmann, Yanghui Liu, Mathieu Rosenbaum, and Gr\'egoire
+  Szymansky.
+\newblock Statistical inference for rough volatility: minimax theory.
+\newblock \emph{Annals of Statistics}, 52\penalty0 (4):\penalty0 1277--1306,
+  2024.
+\newblock \doi{10.1214/23-AOS2343}.
+
+\bibitem[Coutin and Qian(2002)]{CoutinQian2002}
+Laure Coutin and Zhongmin Qian.
+\newblock Stochastic analysis, rough path analysis and fractional {B}rownian
+  motions.
+\newblock \emph{Probability Theory and Related Fields}, 122:\penalty0 108--140,
+  2002.
+
+\bibitem[Cuchiero and M\"oller(2025)]{CuchieroMoeller2023}
+Christa Cuchiero and Janka M\"oller.
+\newblock Signature methods in stochastic portfolio theory.
+\newblock \emph{SIAM Journal on Financial Mathematics}, 16\penalty0
+  (4):\penalty0 1239--1303, 2025.
+\newblock \doi{10.1137/24M1700223}.
+
+\bibitem[Cuchiero et~al.(2012)Cuchiero, Keller-Ressel, and
+  Teichmann]{CuchieroKellerResselTeichmann2012}
+Christa Cuchiero, Martin Keller-Ressel, and Josef Teichmann.
+\newblock Polynomial processes and their applications to mathematical finance.
+\newblock \emph{Finance and Stochastics}, 16\penalty0 (4):\penalty0 711--740,
+  2012.
+\newblock \doi{10.1007/s00780-012-0188-x}.
+
+\bibitem[Cuchiero et~al.(2021)Cuchiero, Larsson, and
+  Svaluto-Ferro]{CuchieroLarssonSvalutoFerro2021}
+Christa Cuchiero, Martin Larsson, and Sara Svaluto-Ferro.
+\newblock Polynomial jump-diffusions on the unit simplex.
+\newblock \emph{Annals of Applied Probability}, 31\penalty0 (5):\penalty0
+  2451--2500, 2021.
+
+\bibitem[Cuchiero et~al.(2023)Cuchiero, Svaluto-Ferro, and
+  Teichmann]{CuchieroSvalutoFerroTeichmann2023}
+Christa Cuchiero, Sara Svaluto-Ferro, and Josef Teichmann.
+\newblock Signature {SDE}s from an affine and polynomial perspective.
+\newblock \emph{arXiv preprint arXiv:2302.01362}, 2023.
+
+\bibitem[Cuchiero et~al.(2025{\natexlab{a}})Cuchiero, Gazzani, M\"oller, and
+  Svaluto-Ferro]{CuchieroGazzaniMoellerSvalutoFerro2025}
+Christa Cuchiero, Guido Gazzani, Janka M\"oller, and Sara Svaluto-Ferro.
+\newblock Joint calibration to {SPX} and {VIX} options with signature-based
+  models.
+\newblock \emph{Mathematical Finance}, 35\penalty0 (1):\penalty0 161--213,
+  2025{\natexlab{a}}.
+\newblock \doi{10.1111/mafi.12442}.
+
+\bibitem[Cuchiero et~al.(2025{\natexlab{b}})Cuchiero, Primavera, and
+  Svaluto-Ferro]{CuchieroPrimaveraSvalutoFerro2025}
+Christa Cuchiero, Francesca Primavera, and Sara Svaluto-Ferro.
+\newblock Universal approximation theorems for continuous functions of
+  c\`adl\`ag paths and {L}\'evy-type signature models.
+\newblock \emph{Finance and Stochastics}, 29\penalty0 (2):\penalty0 289--342,
+  2025{\natexlab{b}}.
+\newblock \doi{10.1007/s00780-025-00557-5}.
+
+\bibitem[Davis and Ob{\l}\'oj(2008)]{DavisObloj2008}
+Mark H.~A. Davis and Jan Ob{\l}\'oj.
+\newblock Market completion using options.
+\newblock \emph{Banach Center Publications}, 83\penalty0 (1):\penalty0 49--60,
+  2008.
+\newblock \doi{10.4064/bc83-0-4}.
+\newblock arXiv:0710.2792.
+
+\bibitem[Delbaen and Schachermayer(1994)]{DelbaenSchachermayer1994}
+Freddy Delbaen and Walter Schachermayer.
+\newblock A general version of the fundamental theorem of asset pricing.
+\newblock \emph{Mathematische Annalen}, 300:\penalty0 463--520, 1994.
+
+\bibitem[Emery(1979)]{Emery1979}
+Michel Emery.
+\newblock Une topologie sur l'espace des semimartingales.
+\newblock \emph{S\'eminaire de Probabilit\'es XIII}, pages 260--280, 1979.
+
+\bibitem[Filipovi\'c and Larsson(2016)]{FilipovicLarsson2016}
+Damir Filipovi\'c and Martin Larsson.
+\newblock Polynomial diffusions and applications in finance.
+\newblock \emph{Finance and Stochastics}, 20:\penalty0 931--972, 2016.
+
+\bibitem[Filipovi\'c et~al.(2017)Filipovi\'c, Larsson, and
+  Trolle]{FilipovicLarssonTrolle2017}
+Damir Filipovi\'c, Martin Larsson, and Anders~B. Trolle.
+\newblock Linear-rational term structure models.
+\newblock \emph{Journal of Finance}, 72\penalty0 (2):\penalty0 655--704, 2017.
+
+\bibitem[F\"ollmer and Schweizer(1991)]{FoellmerSchweizer1991}
+Hans F\"ollmer and Martin Schweizer.
+\newblock Hedging of contingent claims under incomplete information.
+\newblock In Mark H.~A. Davis and Robert~J. Elliott, editors, \emph{Applied
+  Stochastic Analysis}, pages 389--414. Gordon and Breach, London and New York,
+  1991.
+
+\bibitem[F\"ollmer and Sondermann(1986)]{FoellmerSondermann1986}
+Hans F\"ollmer and Dieter Sondermann.
+\newblock Hedging of non-redundant contingent claims.
+\newblock In \emph{Contributions to Mathematical Economics}, pages 205--223.
+  North-Holland, 1986.
+
+\bibitem[Forde and Zhang(2017)]{FordeZhang2017}
+Martin Forde and Hongzhong Zhang.
+\newblock Asymptotics for rough stochastic volatility models.
+\newblock \emph{SIAM Journal on Financial Mathematics}, 8\penalty0
+  (1):\penalty0 114--145, 2017.
+
+\bibitem[Friz and Hairer(2014)]{HairerFriz2014}
+Peter~K. Friz and Martin Hairer.
+\newblock \emph{A Course on Rough Paths}.
+\newblock Springer, 2014.
+
+\bibitem[Friz and Hairer(2020)]{FrizHairer2020}
+Peter~K. Friz and Martin Hairer.
+\newblock \emph{A Course on Rough Paths}.
+\newblock Universitext. Springer, 2 edition, 2020.
+
+\bibitem[Friz and Victoir(2010)]{FrizVictoir2010}
+Peter~K. Friz and Nicolas~B. Victoir.
+\newblock \emph{Multidimensional Stochastic Processes as Rough Paths}, volume
+  120 of \emph{Cambridge Studies in Advanced Mathematics}.
+\newblock Cambridge University Press, 2010.
+
+\bibitem[Guyon and Lekeufack(2023)]{GuyonLekeufack2023}
+Julien Guyon and Jordan Lekeufack.
+\newblock Volatility is (mostly) path-dependent.
+\newblock \emph{Quantitative Finance}, 23\penalty0 (9):\penalty0 1221--1258,
+  2023.
+
+\bibitem[Heath and Schweizer(2000)]{HeathSchweizer2000}
+David Heath and Martin Schweizer.
+\newblock Martingales versus {PDE}s in finance.
+\newblock \emph{Journal of Applied Probability}, 37:\penalty0 947--957, 2000.
+
+\bibitem[Heston(1993)]{Heston1993}
+Steven~L. Heston.
+\newblock A closed-form solution for options with stochastic volatility with
+  applications to bond and currency options.
+\newblock \emph{Review of Financial Studies}, 6\penalty0 (2):\penalty0
+  327--343, 1993.
+
+\bibitem[Jacod and Shiryaev(2003)]{JacodShiryaev2003}
+Jean Jacod and Albert~N. Shiryaev.
+\newblock \emph{Limit Theorems for Stochastic Processes}.
+\newblock Springer, 2 edition, 2003.
+
+\bibitem[Jacquier and Pannier(2022)]{JacquierPannier2022}
+Antoine Jacquier and Antoine Pannier.
+\newblock Large and moderate deviations for the rough {B}ergomi model.
+\newblock \emph{Stochastic Processes and their Applications}, 149:\penalty0
+  134--174, 2022.
+
+\bibitem[Kalsi et~al.(2020)Kalsi, Lyons, and
+  Perez~Arribas]{KalsiLyonsPerezArribas2020}
+Jasdeep Kalsi, Terry Lyons, and Imanol Perez~Arribas.
+\newblock Optimal execution with rough path signatures.
+\newblock \emph{SIAM Journal on Financial Mathematics}, 11\penalty0
+  (2):\penalty0 470--493, 2020.
+
+\bibitem[Karatzas and Shreve(1998)]{KaratzasShreve1998}
+Ioannis Karatzas and Steven~E. Shreve.
+\newblock \emph{Methods of Mathematical Finance}.
+\newblock Springer, 1998.
+
+\bibitem[Kreps(1981)]{Kreps1981}
+David~M. Kreps.
+\newblock Arbitrage and equilibrium in economies with infinitely many
+  commodities.
+\newblock \emph{Journal of Mathematical Economics}, 8\penalty0 (1):\penalty0
+  15--35, 1981.
+
+\bibitem[Kunita and Watanabe(1967)]{KunitaWatanabe1967}
+Hiroshi Kunita and Shinzo Watanabe.
+\newblock On square integrable martingales.
+\newblock \emph{Nagoya Mathematical Journal}, 30:\penalty0 209--245, 1967.
+
+\bibitem[Lyons and Qian(2002)]{LyonsQian2002}
+Terry Lyons and Zhongmin Qian.
+\newblock \emph{System Control and Rough Paths}.
+\newblock Oxford University Press, 2002.
+
+\bibitem[M\'emin(1980)]{Memin1980}
+Jean M\'emin.
+\newblock Espaces de semimartingales et changement de probabilit\'e.
+\newblock \emph{Zeitschrift f\"ur Wahrscheinlichkeitstheorie und Verwandte
+  Gebiete}, 52:\penalty0 9--39, 1980.
+
+\bibitem[Perez~Arribas et~al.(2020)Perez~Arribas, Salvi, and
+  Szpruch]{PerezArribasSalviSzpruch2020}
+Imanol Perez~Arribas, Cristopher Salvi, and Lukasz Szpruch.
+\newblock Sig-{SDE}s model for quantitative finance.
+\newblock In \emph{Proceedings of the First ACM International Conference on AI
+  in Finance}, 2020.
+
+\bibitem[Protter(2005)]{Protter2005}
+Philip~E. Protter.
+\newblock \emph{Stochastic Integration and Differential Equations}.
+\newblock Springer, 2 edition, 2005.
+
+\bibitem[Reutenauer(1993)]{Reutenauer1993}
+Christophe Reutenauer.
+\newblock \emph{Free Lie Algebras}.
+\newblock Oxford University Press, 1993.
+
+\bibitem[Revuz and Yor(1999)]{RevuzYor1999}
+Daniel Revuz and Marc Yor.
+\newblock \emph{Continuous Martingales and Brownian Motion}.
+\newblock Springer, 3 edition, 1999.
+
+\bibitem[Salvi et~al.(2021)Salvi, Cass, Foster, Lyons, and
+  Yang]{SalviCassFosterLyonsYang2021}
+Cristopher Salvi, Thomas Cass, James Foster, Terry Lyons, and Weixin Yang.
+\newblock The signature kernel is the solution of a {G}oursat {PDE}.
+\newblock \emph{SIAM Journal on Mathematics of Data Science}, 3\penalty0
+  (3):\penalty0 873--899, 2021.
+
+\bibitem[Schweizer(2001)]{Schweizer2001}
+Martin Schweizer.
+\newblock A guided tour through quadratic hedging approaches.
+\newblock In \emph{Option Pricing, Interest Rates and Risk Management}, pages
+  538--574. Cambridge University Press, 2001.
+
+\bibitem[Stricker(1990)]{Stricker1990}
+Christophe Stricker.
+\newblock Arbitrage et lois de martingale.
+\newblock \emph{Annales de l'Institut Henri Poincar\'e}, 26\penalty0
+  (3):\penalty0 451--460, 1990.
+
+\bibitem[Yan(1980)]{Yan1980}
+Jia-An Yan.
+\newblock Caract\'erisation d'une classe d'ensembles convexes de $l^1$ ou
+  $h^1$.
+\newblock In \emph{S\'eminaire de Probabilit\'es XIV}, pages 220--222.
+  Springer, 1980.
+
+\end{thebibliography}

@@ -1,0 +1,20 @@
+/.lake
+/lake-packages
+/build
+*.olean
+*.ilean
+*.c
+*.trace
+.vscode/
+*~
+*.swp
+*.gist.bak
+
+# Local OCR / agent noise
+.cursor/
+.venv-ocr/
+scripts/__pycache__/
+sources/pages/
+sources/ocr_*.log
+.venv-ocr
+.cache
