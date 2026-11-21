@@ -1,0 +1,2514 @@
+{
+  "nodes": [
+    {
+      "id": "SignatureVolatility",
+      "label": "(root)",
+      "file": "SignatureVolatility.lean"
+    },
+    {
+      "id": "SignatureVolatility.AdmissibleGainsUnderP",
+      "label": "AdmissibleGainsUnderP",
+      "file": "SignatureVolatility/AdmissibleGainsUnderP.lean"
+    },
+    {
+      "id": "SignatureVolatility.BanachAlgebraConcatBound",
+      "label": "BanachAlgebraConcatBound",
+      "file": "SignatureVolatility/BanachAlgebraConcatBound.lean"
+    },
+    {
+      "id": "SignatureVolatility.Basic",
+      "label": "Basic",
+      "file": "SignatureVolatility/Basic.lean"
+    },
+    {
+      "id": "SignatureVolatility.BlackScholesModel",
+      "label": "BlackScholesModel",
+      "file": "SignatureVolatility/BlackScholesModel.lean"
+    },
+    {
+      "id": "SignatureVolatility.ChenIdentity",
+      "label": "ChenIdentity",
+      "file": "SignatureVolatility/ChenIdentity.lean"
+    },
+    {
+      "id": "SignatureVolatility.ClassicalRiccatiSolution",
+      "label": "ClassicalRiccatiSolution",
+      "file": "SignatureVolatility/ClassicalRiccatiSolution.lean"
+    },
+    {
+      "id": "SignatureVolatility.Corollary36SigmaWellDefined",
+      "label": "Corollary36SigmaWellDefined",
+      "file": "SignatureVolatility/Corollary36SigmaWellDefined.lean"
+    },
+    {
+      "id": "SignatureVolatility.DualPairing",
+      "label": "DualPairing",
+      "file": "SignatureVolatility/DualPairing.lean"
+    },
+    {
+      "id": "SignatureVolatility.DualPairingLeNormWDualMulNormW",
+      "label": "DualPairingLeNormWDualMulNormW",
+      "file": "SignatureVolatility/DualPairingLeNormWDualMulNormW.lean"
+    },
+    {
+      "id": "SignatureVolatility.ExtTensorAlgebra.Antipode",
+      "label": "ExtTensorAlgebra.Antipode",
+      "file": "SignatureVolatility/ExtTensorAlgebra/Antipode.lean"
+    },
+    {
+      "id": "SignatureVolatility.ExtTensorAlgebra.BasisWord",
+      "label": "ExtTensorAlgebra.BasisWord",
+      "file": "SignatureVolatility/ExtTensorAlgebra/BasisWord.lean"
+    },
+    {
+      "id": "SignatureVolatility.ExtTensorAlgebra.Concat",
+      "label": "ExtTensorAlgebra.Concat",
+      "file": "SignatureVolatility/ExtTensorAlgebra/Concat.lean"
+    },
+    {
+      "id": "SignatureVolatility.ExtTensorAlgebra.Coord",
+      "label": "ExtTensorAlgebra.Coord",
+      "file": "SignatureVolatility/ExtTensorAlgebra/Coord.lean"
+    },
+    {
+      "id": "SignatureVolatility.ExtTensorAlgebra.EvalShuffleBasis",
+      "label": "ExtTensorAlgebra.EvalShuffleBasis",
+      "file": "SignatureVolatility/ExtTensorAlgebra/EvalShuffleBasis.lean"
+    },
+    {
+      "id": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra",
+      "label": "ExtTensorAlgebra.ExtTensorAlgebra",
+      "file": "SignatureVolatility/ExtTensorAlgebra/ExtTensorAlgebra.lean"
+    },
+    {
+      "id": "SignatureVolatility.ExtTensorAlgebra.FreeTensorAlgebra",
+      "label": "ExtTensorAlgebra.FreeTensorAlgebra",
+      "file": "SignatureVolatility/ExtTensorAlgebra/FreeTensorAlgebra.lean"
+    },
+    {
+      "id": "SignatureVolatility.ExtTensorAlgebra.IsFinitelySupported",
+      "label": "ExtTensorAlgebra.IsFinitelySupported",
+      "file": "SignatureVolatility/ExtTensorAlgebra/IsFinitelySupported.lean"
+    },
+    {
+      "id": "SignatureVolatility.ExtTensorAlgebra.LevelInner",
+      "label": "ExtTensorAlgebra.LevelInner",
+      "file": "SignatureVolatility/ExtTensorAlgebra/LevelInner.lean"
+    },
+    {
+      "id": "SignatureVolatility.ExtTensorAlgebra.LevelNorm",
+      "label": "ExtTensorAlgebra.LevelNorm",
+      "file": "SignatureVolatility/ExtTensorAlgebra/LevelNorm.lean"
+    },
+    {
+      "id": "SignatureVolatility.ExtTensorAlgebra.LevelNormSq",
+      "label": "ExtTensorAlgebra.LevelNormSq",
+      "file": "SignatureVolatility/ExtTensorAlgebra/LevelNormSq.lean"
+    },
+    {
+      "id": "SignatureVolatility.ExtTensorAlgebra.ShuffleBasis",
+      "label": "ExtTensorAlgebra.ShuffleBasis",
+      "file": "SignatureVolatility/ExtTensorAlgebra/ShuffleBasis.lean"
+    },
+    {
+      "id": "SignatureVolatility.ExtTensorAlgebra.ShuffleWords",
+      "label": "ExtTensorAlgebra.ShuffleWords",
+      "file": "SignatureVolatility/ExtTensorAlgebra/ShuffleWords.lean"
+    },
+    {
+      "id": "SignatureVolatility.FirstOrderBrownianVolModel",
+      "label": "FirstOrderBrownianVolModel",
+      "file": "SignatureVolatility/FirstOrderBrownianVolModel.lean"
+    },
+    {
+      "id": "SignatureVolatility.GKWDecompositionSetup",
+      "label": "GKWDecompositionSetup",
+      "file": "SignatureVolatility/GKWDecompositionSetup.lean"
+    },
+    {
+      "id": "SignatureVolatility.GeneratedFiltration",
+      "label": "GeneratedFiltration",
+      "file": "SignatureVolatility/GeneratedFiltration.lean"
+    },
+    {
+      "id": "SignatureVolatility.HypH1",
+      "label": "HypH1",
+      "file": "SignatureVolatility/HypH1.lean"
+    },
+    {
+      "id": "SignatureVolatility.HypH1OfIsFinitelySupported",
+      "label": "HypH1OfIsFinitelySupported",
+      "file": "SignatureVolatility/HypH1OfIsFinitelySupported.lean"
+    },
+    {
+      "id": "SignatureVolatility.HypH2",
+      "label": "HypH2",
+      "file": "SignatureVolatility/HypH2.lean"
+    },
+    {
+      "id": "SignatureVolatility.HypH3",
+      "label": "HypH3",
+      "file": "SignatureVolatility/HypH3.lean"
+    },
+    {
+      "id": "SignatureVolatility.IndexedFiltration",
+      "label": "IndexedFiltration",
+      "file": "SignatureVolatility/IndexedFiltration.lean"
+    },
+    {
+      "id": "SignatureVolatility.InfiniteGeometricSignatureModel",
+      "label": "InfiniteGeometricSignatureModel",
+      "file": "SignatureVolatility/InfiniteGeometricSignatureModel.lean"
+    },
+    {
+      "id": "SignatureVolatility.IsSpecialSemimartingale",
+      "label": "IsSpecialSemimartingale",
+      "file": "SignatureVolatility/IsSpecialSemimartingale.lean"
+    },
+    {
+      "id": "SignatureVolatility.ItoCalculusKit",
+      "label": "ItoCalculusKit",
+      "file": "SignatureVolatility/ItoCalculusKit.lean"
+    },
+    {
+      "id": "SignatureVolatility.Lemma32SignatureInTw",
+      "label": "Lemma32SignatureInTw",
+      "file": "SignatureVolatility/Lemma32SignatureInTw.lean"
+    },
+    {
+      "id": "SignatureVolatility.Lemma61GramPosDef",
+      "label": "Lemma61GramPosDef",
+      "file": "SignatureVolatility/Lemma61GramPosDef.lean"
+    },
+    {
+      "id": "SignatureVolatility.Letter",
+      "label": "Letter",
+      "file": "SignatureVolatility/Letter.lean"
+    },
+    {
+      "id": "SignatureVolatility.MemL2w",
+      "label": "MemL2w",
+      "file": "SignatureVolatility/MemL2w.lean"
+    },
+    {
+      "id": "SignatureVolatility.MemL2wInv",
+      "label": "MemL2wInv",
+      "file": "SignatureVolatility/MemL2wInv.lean"
+    },
+    {
+      "id": "SignatureVolatility.MemL2wInvOfMemTw",
+      "label": "MemL2wInvOfMemTw",
+      "file": "SignatureVolatility/MemL2wInvOfMemTw.lean"
+    },
+    {
+      "id": "SignatureVolatility.MemTw",
+      "label": "MemTw",
+      "file": "SignatureVolatility/MemTw.lean"
+    },
+    {
+      "id": "SignatureVolatility.MemTwDual",
+      "label": "MemTwDual",
+      "file": "SignatureVolatility/MemTwDual.lean"
+    },
+    {
+      "id": "SignatureVolatility.MemTwDualOfMemL2w",
+      "label": "MemTwDualOfMemL2w",
+      "file": "SignatureVolatility/MemTwDualOfMemL2w.lean"
+    },
+    {
+      "id": "SignatureVolatility.NflvrOfMartingaleMeasure",
+      "label": "NflvrOfMartingaleMeasure",
+      "file": "SignatureVolatility/NflvrOfMartingaleMeasure.lean"
+    },
+    {
+      "id": "SignatureVolatility.Norm2w",
+      "label": "Norm2w",
+      "file": "SignatureVolatility/Norm2w.lean"
+    },
+    {
+      "id": "SignatureVolatility.Norm2wInv",
+      "label": "Norm2wInv",
+      "file": "SignatureVolatility/Norm2wInv.lean"
+    },
+    {
+      "id": "SignatureVolatility.NormW",
+      "label": "NormW",
+      "file": "SignatureVolatility/NormW.lean"
+    },
+    {
+      "id": "SignatureVolatility.NormWDual",
+      "label": "NormWDual",
+      "file": "SignatureVolatility/NormWDual.lean"
+    },
+    {
+      "id": "SignatureVolatility.Preliminaries",
+      "label": "Preliminaries",
+      "file": "SignatureVolatility/Preliminaries.lean"
+    },
+    {
+      "id": "SignatureVolatility.PriceFiltration",
+      "label": "PriceFiltration",
+      "file": "SignatureVolatility/PriceFiltration.lean"
+    },
+    {
+      "id": "SignatureVolatility.PriceFiltrationSignatureSpace",
+      "label": "PriceFiltrationSignatureSpace",
+      "file": "SignatureVolatility/PriceFiltrationSignatureSpace.lean"
+    },
+    {
+      "id": "SignatureVolatility.PriceFiltrationSignatureSpace.AugmentedMarketSpan",
+      "label": "PriceFiltrationSignatureSpace.AugmentedMarketSpan",
+      "file": "SignatureVolatility/PriceFiltrationSignatureSpace/AugmentedMarketSpan.lean"
+    },
+    {
+      "id": "SignatureVolatility.PriceFiltrationSignatureSpace.CompletenessDepth",
+      "label": "PriceFiltrationSignatureSpace.CompletenessDepth",
+      "file": "SignatureVolatility/PriceFiltrationSignatureSpace/CompletenessDepth.lean"
+    },
+    {
+      "id": "SignatureVolatility.PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration",
+      "label": "PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration",
+      "file": "SignatureVolatility/PriceFiltrationSignatureSpace/IsCompleteOnPriceFiltration.lean"
+    },
+    {
+      "id": "SignatureVolatility.PriceFiltrationSignatureSpace.VInfty",
+      "label": "PriceFiltrationSignatureSpace.VInfty",
+      "file": "SignatureVolatility/PriceFiltrationSignatureSpace/VInfty.lean"
+    },
+    {
+      "id": "SignatureVolatility.PriceFiltrationSignatureSpace.VSubspace",
+      "label": "PriceFiltrationSignatureSpace.VSubspace",
+      "file": "SignatureVolatility/PriceFiltrationSignatureSpace/VSubspace.lean"
+    },
+    {
+      "id": "SignatureVolatility.ProjGt",
+      "label": "ProjGt",
+      "file": "SignatureVolatility/ProjGt.lean"
+    },
+    {
+      "id": "SignatureVolatility.ProjLe",
+      "label": "ProjLe",
+      "file": "SignatureVolatility/ProjLe.lean"
+    },
+    {
+      "id": "SignatureVolatility.ProlongedBrownianSetup",
+      "label": "ProlongedBrownianSetup",
+      "file": "SignatureVolatility/ProlongedBrownianSetup.lean"
+    },
+    {
+      "id": "SignatureVolatility.ProlongedBrownianSetup.BrownianFiltration",
+      "label": "ProlongedBrownianSetup.BrownianFiltration",
+      "file": "SignatureVolatility/ProlongedBrownianSetup/BrownianFiltration.lean"
+    },
+    {
+      "id": "SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration",
+      "label": "ProlongedBrownianSetup.SignatureFiltration",
+      "file": "SignatureVolatility/ProlongedBrownianSetup/SignatureFiltration.lean"
+    },
+    {
+      "id": "SignatureVolatility.ProlongedBrownianSetup.WAug",
+      "label": "ProlongedBrownianSetup.WAug",
+      "file": "SignatureVolatility/ProlongedBrownianSetup/WAug.lean"
+    },
+    {
+      "id": "SignatureVolatility.ProlongedBrownianSetup.WHat",
+      "label": "ProlongedBrownianSetup.WHat",
+      "file": "SignatureVolatility/ProlongedBrownianSetup/WHat.lean"
+    },
+    {
+      "id": "SignatureVolatility.Proposition311SharpnessOfH1",
+      "label": "Proposition311SharpnessOfH1",
+      "file": "SignatureVolatility/Proposition311SharpnessOfH1.lean"
+    },
+    {
+      "id": "SignatureVolatility.Proposition65NormalEquations",
+      "label": "Proposition65NormalEquations",
+      "file": "SignatureVolatility/Proposition65NormalEquations.lean"
+    },
+    {
+      "id": "SignatureVolatility.PureBrownianWord",
+      "label": "PureBrownianWord",
+      "file": "SignatureVolatility/PureBrownianWord.lean"
+    },
+    {
+      "id": "SignatureVolatility.QuinticOUSignatureModel",
+      "label": "QuinticOUSignatureModel",
+      "file": "SignatureVolatility/QuinticOUSignatureModel.lean"
+    },
+    {
+      "id": "SignatureVolatility.Remark219BlackScholesRiccati",
+      "label": "Remark219BlackScholesRiccati",
+      "file": "SignatureVolatility/Remark219BlackScholesRiccati.lean"
+    },
+    {
+      "id": "SignatureVolatility.RiccatiOpBounded",
+      "label": "RiccatiOpBounded",
+      "file": "SignatureVolatility/RiccatiOpBounded.lean"
+    },
+    {
+      "id": "SignatureVolatility.RightShift",
+      "label": "RightShift",
+      "file": "SignatureVolatility/RightShift.lean"
+    },
+    {
+      "id": "SignatureVolatility.SatisfiesNFLVR",
+      "label": "SatisfiesNFLVR",
+      "file": "SignatureVolatility/SatisfiesNFLVR.lean"
+    },
+    {
+      "id": "SignatureVolatility.Section71BlackScholesCompleteness",
+      "label": "Section71BlackScholesCompleteness",
+      "file": "SignatureVolatility/Section71BlackScholesCompleteness.lean"
+    },
+    {
+      "id": "SignatureVolatility.ShuffleFinite",
+      "label": "ShuffleFinite",
+      "file": "SignatureVolatility/ShuffleFinite.lean"
+    },
+    {
+      "id": "SignatureVolatility.ShuffleIdentity",
+      "label": "ShuffleIdentity",
+      "file": "SignatureVolatility/ShuffleIdentity.lean"
+    },
+    {
+      "id": "SignatureVolatility.SignatureFiltrationEqBrownianFiltration",
+      "label": "SignatureFiltrationEqBrownianFiltration",
+      "file": "SignatureVolatility/SignatureFiltrationEqBrownianFiltration.lean"
+    },
+    {
+      "id": "SignatureVolatility.SignatureHestonLevel2Model",
+      "label": "SignatureHestonLevel2Model",
+      "file": "SignatureVolatility/SignatureHestonLevel2Model.lean"
+    },
+    {
+      "id": "SignatureVolatility.SignaturePriceSolution",
+      "label": "SignaturePriceSolution",
+      "file": "SignatureVolatility/SignaturePriceSolution.lean"
+    },
+    {
+      "id": "SignatureVolatility.SignatureRiccatiKit",
+      "label": "SignatureRiccatiKit",
+      "file": "SignatureVolatility/SignatureRiccatiKit.lean"
+    },
+    {
+      "id": "SignatureVolatility.SignatureVolatilityModel",
+      "label": "SignatureVolatilityModel",
+      "file": "SignatureVolatility/SignatureVolatilityModel.lean"
+    },
+    {
+      "id": "SignatureVolatility.SignatureVolatilityModel.Sigma",
+      "label": "SignatureVolatilityModel.Sigma",
+      "file": "SignatureVolatility/SignatureVolatilityModel/Sigma.lean"
+    },
+    {
+      "id": "SignatureVolatility.SmoothIteratedIntegral",
+      "label": "SmoothIteratedIntegral",
+      "file": "SignatureVolatility/SmoothIteratedIntegral.lean"
+    },
+    {
+      "id": "SignatureVolatility.SmoothSignature",
+      "label": "SmoothSignature",
+      "file": "SignatureVolatility/SmoothSignature.lean"
+    },
+    {
+      "id": "SignatureVolatility.StratonovichHalfLaplacian",
+      "label": "StratonovichHalfLaplacian",
+      "file": "SignatureVolatility/StratonovichHalfLaplacian.lean"
+    },
+    {
+      "id": "SignatureVolatility.SuperfactorialFunctional",
+      "label": "SuperfactorialFunctional",
+      "file": "SignatureVolatility/SuperfactorialFunctional.lean"
+    },
+    {
+      "id": "SignatureVolatility.TailNorm2wInvLeRatioMulNormW",
+      "label": "TailNorm2wInvLeRatioMulNormW",
+      "file": "SignatureVolatility/TailNorm2wInvLeRatioMulNormW.lean"
+    },
+    {
+      "id": "SignatureVolatility.TheoremA",
+      "label": "TheoremA",
+      "file": "SignatureVolatility/TheoremA.lean"
+    },
+    {
+      "id": "SignatureVolatility.TheoremB",
+      "label": "TheoremB",
+      "file": "SignatureVolatility/TheoremB.lean"
+    },
+    {
+      "id": "SignatureVolatility.TheoremC",
+      "label": "TheoremC",
+      "file": "SignatureVolatility/TheoremC.lean"
+    },
+    {
+      "id": "SignatureVolatility.TheoremD",
+      "label": "TheoremD",
+      "file": "SignatureVolatility/TheoremD.lean"
+    },
+    {
+      "id": "SignatureVolatility.Tw",
+      "label": "Tw",
+      "file": "SignatureVolatility/Tw.lean"
+    },
+    {
+      "id": "SignatureVolatility.Weight",
+      "label": "Weight",
+      "file": "SignatureVolatility/Weight.lean"
+    },
+    {
+      "id": "SignatureVolatility.Weight.ConstOne",
+      "label": "Weight.ConstOne",
+      "file": "SignatureVolatility/Weight/ConstOne.lean"
+    },
+    {
+      "id": "SignatureVolatility.Weight.Geometric",
+      "label": "Weight.Geometric",
+      "file": "SignatureVolatility/Weight/Geometric.lean"
+    },
+    {
+      "id": "SignatureVolatility.WeightedTruncationEstimates",
+      "label": "WeightedTruncationEstimates",
+      "file": "SignatureVolatility/WeightedTruncationEstimates.lean"
+    },
+    {
+      "id": "SignatureVolatility.Word",
+      "label": "Word",
+      "file": "SignatureVolatility/Word.lean"
+    },
+    {
+      "id": "SignatureVolatility.WordsOfLength",
+      "label": "WordsOfLength",
+      "file": "SignatureVolatility/WordsOfLength.lean"
+    }
+  ],
+  "edges": [
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.AdmissibleGainsUnderP"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.BanachAlgebraConcatBound"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.BlackScholesModel"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ChenIdentity"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ClassicalRiccatiSolution"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.Corollary36SigmaWellDefined"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.DualPairing"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.DualPairingLeNormWDualMulNormW"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ExtTensorAlgebra.Antipode"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ExtTensorAlgebra.BasisWord"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ExtTensorAlgebra.Concat"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ExtTensorAlgebra.Coord"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ExtTensorAlgebra.EvalShuffleBasis"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ExtTensorAlgebra.FreeTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ExtTensorAlgebra.IsFinitelySupported"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelInner"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNorm"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNormSq"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ShuffleBasis"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ShuffleWords"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.FirstOrderBrownianVolModel"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.GKWDecompositionSetup"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.GeneratedFiltration"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.HypH1"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.HypH1OfIsFinitelySupported"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.HypH2"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.HypH3"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.IndexedFiltration"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.InfiniteGeometricSignatureModel"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.IsSpecialSemimartingale"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ItoCalculusKit"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.Lemma32SignatureInTw"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.Lemma61GramPosDef"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.Letter"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.MemL2w"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.MemL2wInv"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.MemL2wInvOfMemTw"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.MemTw"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.MemTwDual"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.MemTwDualOfMemL2w"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.NflvrOfMartingaleMeasure"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.Norm2w"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.Norm2wInv"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.NormW"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.NormWDual"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.Preliminaries"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.PriceFiltration"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace.AugmentedMarketSpan"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace.CompletenessDepth"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace.VInfty"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace.VSubspace"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ProjGt"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ProjLe"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ProlongedBrownianSetup"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ProlongedBrownianSetup.BrownianFiltration"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ProlongedBrownianSetup.WAug"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ProlongedBrownianSetup.WHat"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.Proposition311SharpnessOfH1"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.Proposition65NormalEquations"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.PureBrownianWord"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.QuinticOUSignatureModel"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.Remark219BlackScholesRiccati"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.RiccatiOpBounded"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.RightShift"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.SatisfiesNFLVR"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.Section71BlackScholesCompleteness"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ShuffleFinite"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.ShuffleIdentity"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.SignatureFiltrationEqBrownianFiltration"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.SignatureHestonLevel2Model"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.SignaturePriceSolution"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.SignatureRiccatiKit"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.SignatureVolatilityModel"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.SignatureVolatilityModel.Sigma"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.SmoothIteratedIntegral"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.SmoothSignature"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.StratonovichHalfLaplacian"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.SuperfactorialFunctional"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.TailNorm2wInvLeRatioMulNormW"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.TheoremA"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.TheoremB"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.TheoremC"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.TheoremD"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.Tw"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.Weight.ConstOne"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.Weight.Geometric"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.WeightedTruncationEstimates"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.Word"
+    },
+    {
+      "from": "SignatureVolatility",
+      "to": "SignatureVolatility.WordsOfLength"
+    },
+    {
+      "from": "SignatureVolatility.AdmissibleGainsUnderP",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.BanachAlgebraConcatBound",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.BanachAlgebraConcatBound",
+      "to": "SignatureVolatility.ExtTensorAlgebra.Concat"
+    },
+    {
+      "from": "SignatureVolatility.BanachAlgebraConcatBound",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNorm"
+    },
+    {
+      "from": "SignatureVolatility.BanachAlgebraConcatBound",
+      "to": "SignatureVolatility.MemTw"
+    },
+    {
+      "from": "SignatureVolatility.BanachAlgebraConcatBound",
+      "to": "SignatureVolatility.NormW"
+    },
+    {
+      "from": "SignatureVolatility.BanachAlgebraConcatBound",
+      "to": "SignatureVolatility.Preliminaries"
+    },
+    {
+      "from": "SignatureVolatility.BanachAlgebraConcatBound",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.BlackScholesModel",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.BlackScholesModel",
+      "to": "SignatureVolatility.ExtTensorAlgebra.BasisWord"
+    },
+    {
+      "from": "SignatureVolatility.BlackScholesModel",
+      "to": "SignatureVolatility.HypH1OfIsFinitelySupported"
+    },
+    {
+      "from": "SignatureVolatility.BlackScholesModel",
+      "to": "SignatureVolatility.HypH2"
+    },
+    {
+      "from": "SignatureVolatility.BlackScholesModel",
+      "to": "SignatureVolatility.SignatureVolatilityModel"
+    },
+    {
+      "from": "SignatureVolatility.BlackScholesModel",
+      "to": "SignatureVolatility.Weight.ConstOne"
+    },
+    {
+      "from": "SignatureVolatility.ChenIdentity",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ChenIdentity",
+      "to": "SignatureVolatility.ExtTensorAlgebra.Concat"
+    },
+    {
+      "from": "SignatureVolatility.ChenIdentity",
+      "to": "SignatureVolatility.ProlongedBrownianSetup"
+    },
+    {
+      "from": "SignatureVolatility.ClassicalRiccatiSolution",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ClassicalRiccatiSolution",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.ClassicalRiccatiSolution",
+      "to": "SignatureVolatility.MemTw"
+    },
+    {
+      "from": "SignatureVolatility.ClassicalRiccatiSolution",
+      "to": "SignatureVolatility.NormW"
+    },
+    {
+      "from": "SignatureVolatility.ClassicalRiccatiSolution",
+      "to": "SignatureVolatility.RiccatiOpBounded"
+    },
+    {
+      "from": "SignatureVolatility.ClassicalRiccatiSolution",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.Corollary36SigmaWellDefined",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.Corollary36SigmaWellDefined",
+      "to": "SignatureVolatility.Lemma32SignatureInTw"
+    },
+    {
+      "from": "SignatureVolatility.Corollary36SigmaWellDefined",
+      "to": "SignatureVolatility.MemTwDualOfMemL2w"
+    },
+    {
+      "from": "SignatureVolatility.Corollary36SigmaWellDefined",
+      "to": "SignatureVolatility.Norm2w"
+    },
+    {
+      "from": "SignatureVolatility.Corollary36SigmaWellDefined",
+      "to": "SignatureVolatility.NormW"
+    },
+    {
+      "from": "SignatureVolatility.Corollary36SigmaWellDefined",
+      "to": "SignatureVolatility.ProlongedBrownianSetup"
+    },
+    {
+      "from": "SignatureVolatility.Corollary36SigmaWellDefined",
+      "to": "SignatureVolatility.SignatureVolatilityModel"
+    },
+    {
+      "from": "SignatureVolatility.Corollary36SigmaWellDefined",
+      "to": "SignatureVolatility.SignatureVolatilityModel.Sigma"
+    },
+    {
+      "from": "SignatureVolatility.DualPairing",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.DualPairing",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.DualPairing",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelInner"
+    },
+    {
+      "from": "SignatureVolatility.DualPairingLeNormWDualMulNormW",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.DualPairingLeNormWDualMulNormW",
+      "to": "SignatureVolatility.DualPairing"
+    },
+    {
+      "from": "SignatureVolatility.DualPairingLeNormWDualMulNormW",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelInner"
+    },
+    {
+      "from": "SignatureVolatility.DualPairingLeNormWDualMulNormW",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNorm"
+    },
+    {
+      "from": "SignatureVolatility.DualPairingLeNormWDualMulNormW",
+      "to": "SignatureVolatility.MemTw"
+    },
+    {
+      "from": "SignatureVolatility.DualPairingLeNormWDualMulNormW",
+      "to": "SignatureVolatility.MemTwDual"
+    },
+    {
+      "from": "SignatureVolatility.DualPairingLeNormWDualMulNormW",
+      "to": "SignatureVolatility.NormW"
+    },
+    {
+      "from": "SignatureVolatility.DualPairingLeNormWDualMulNormW",
+      "to": "SignatureVolatility.NormWDual"
+    },
+    {
+      "from": "SignatureVolatility.DualPairingLeNormWDualMulNormW",
+      "to": "SignatureVolatility.Preliminaries"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.Antipode",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.Antipode",
+      "to": "SignatureVolatility.ExtTensorAlgebra.BasisWord"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.Antipode",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.Antipode",
+      "to": "SignatureVolatility.Letter"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.Antipode",
+      "to": "SignatureVolatility.Word"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.BasisWord",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.BasisWord",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.BasisWord",
+      "to": "SignatureVolatility.ExtTensorAlgebra.IsFinitelySupported"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.BasisWord",
+      "to": "SignatureVolatility.Letter"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.BasisWord",
+      "to": "SignatureVolatility.Word"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.Concat",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.Concat",
+      "to": "SignatureVolatility.ExtTensorAlgebra.BasisWord"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.Concat",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.Concat",
+      "to": "SignatureVolatility.Letter"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.Concat",
+      "to": "SignatureVolatility.Word"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.Coord",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.Coord",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.Coord",
+      "to": "SignatureVolatility.Letter"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.Coord",
+      "to": "SignatureVolatility.Word"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.EvalShuffleBasis",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.EvalShuffleBasis",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.EvalShuffleBasis",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ShuffleWords"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra",
+      "to": "SignatureVolatility.Letter"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra",
+      "to": "SignatureVolatility.Word"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.FreeTensorAlgebra",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.FreeTensorAlgebra",
+      "to": "SignatureVolatility.ExtTensorAlgebra.IsFinitelySupported"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.IsFinitelySupported",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.IsFinitelySupported",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.IsFinitelySupported",
+      "to": "SignatureVolatility.Letter"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.IsFinitelySupported",
+      "to": "SignatureVolatility.Word"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.LevelInner",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.LevelInner",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNorm"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.LevelInner",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNormSq"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.LevelInner",
+      "to": "SignatureVolatility.Preliminaries"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.LevelInner",
+      "to": "SignatureVolatility.WordsOfLength"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.LevelNorm",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.LevelNorm",
+      "to": "SignatureVolatility.ExtTensorAlgebra.Concat"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.LevelNorm",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNormSq"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.LevelNorm",
+      "to": "SignatureVolatility.Letter"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.LevelNorm",
+      "to": "SignatureVolatility.Preliminaries"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.LevelNorm",
+      "to": "SignatureVolatility.Word"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.LevelNorm",
+      "to": "SignatureVolatility.WordsOfLength"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.LevelNormSq",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.LevelNormSq",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.LevelNormSq",
+      "to": "SignatureVolatility.Letter"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.LevelNormSq",
+      "to": "SignatureVolatility.Word"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.LevelNormSq",
+      "to": "SignatureVolatility.WordsOfLength"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.ShuffleBasis",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.ShuffleBasis",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.ShuffleBasis",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ShuffleWords"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.ShuffleWords",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.ShuffleWords",
+      "to": "SignatureVolatility.Letter"
+    },
+    {
+      "from": "SignatureVolatility.ExtTensorAlgebra.ShuffleWords",
+      "to": "SignatureVolatility.Word"
+    },
+    {
+      "from": "SignatureVolatility.FirstOrderBrownianVolModel",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.FirstOrderBrownianVolModel",
+      "to": "SignatureVolatility.ExtTensorAlgebra.BasisWord"
+    },
+    {
+      "from": "SignatureVolatility.FirstOrderBrownianVolModel",
+      "to": "SignatureVolatility.HypH1OfIsFinitelySupported"
+    },
+    {
+      "from": "SignatureVolatility.FirstOrderBrownianVolModel",
+      "to": "SignatureVolatility.HypH2"
+    },
+    {
+      "from": "SignatureVolatility.FirstOrderBrownianVolModel",
+      "to": "SignatureVolatility.SignatureVolatilityModel"
+    },
+    {
+      "from": "SignatureVolatility.FirstOrderBrownianVolModel",
+      "to": "SignatureVolatility.Weight.ConstOne"
+    },
+    {
+      "from": "SignatureVolatility.GKWDecompositionSetup",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.GKWDecompositionSetup",
+      "to": "SignatureVolatility.MemL2wInv"
+    },
+    {
+      "from": "SignatureVolatility.GKWDecompositionSetup",
+      "to": "SignatureVolatility.Norm2wInv"
+    },
+    {
+      "from": "SignatureVolatility.GKWDecompositionSetup",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace"
+    },
+    {
+      "from": "SignatureVolatility.GKWDecompositionSetup",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace.VSubspace"
+    },
+    {
+      "from": "SignatureVolatility.GKWDecompositionSetup",
+      "to": "SignatureVolatility.ProjLe"
+    },
+    {
+      "from": "SignatureVolatility.GKWDecompositionSetup",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.GeneratedFiltration",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.GeneratedFiltration",
+      "to": "SignatureVolatility.IndexedFiltration"
+    },
+    {
+      "from": "SignatureVolatility.HypH1",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.HypH1",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.HypH1",
+      "to": "SignatureVolatility.MemL2w"
+    },
+    {
+      "from": "SignatureVolatility.HypH1",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.HypH1OfIsFinitelySupported",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.HypH1OfIsFinitelySupported",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.HypH1OfIsFinitelySupported",
+      "to": "SignatureVolatility.ExtTensorAlgebra.IsFinitelySupported"
+    },
+    {
+      "from": "SignatureVolatility.HypH1OfIsFinitelySupported",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNormSq"
+    },
+    {
+      "from": "SignatureVolatility.HypH1OfIsFinitelySupported",
+      "to": "SignatureVolatility.HypH1"
+    },
+    {
+      "from": "SignatureVolatility.HypH1OfIsFinitelySupported",
+      "to": "SignatureVolatility.MemL2w"
+    },
+    {
+      "from": "SignatureVolatility.HypH1OfIsFinitelySupported",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.HypH2",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.HypH2",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.HypH2",
+      "to": "SignatureVolatility.Weight.ConstOne"
+    },
+    {
+      "from": "SignatureVolatility.HypH2",
+      "to": "SignatureVolatility.Weight.Geometric"
+    },
+    {
+      "from": "SignatureVolatility.HypH3",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.HypH3",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.IndexedFiltration",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.InfiniteGeometricSignatureModel",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.InfiniteGeometricSignatureModel",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNorm"
+    },
+    {
+      "from": "SignatureVolatility.InfiniteGeometricSignatureModel",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNormSq"
+    },
+    {
+      "from": "SignatureVolatility.InfiniteGeometricSignatureModel",
+      "to": "SignatureVolatility.HypH2"
+    },
+    {
+      "from": "SignatureVolatility.InfiniteGeometricSignatureModel",
+      "to": "SignatureVolatility.MemL2w"
+    },
+    {
+      "from": "SignatureVolatility.InfiniteGeometricSignatureModel",
+      "to": "SignatureVolatility.SignatureVolatilityModel"
+    },
+    {
+      "from": "SignatureVolatility.InfiniteGeometricSignatureModel",
+      "to": "SignatureVolatility.Weight.Geometric"
+    },
+    {
+      "from": "SignatureVolatility.IsSpecialSemimartingale",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.IsSpecialSemimartingale",
+      "to": "SignatureVolatility.IndexedFiltration"
+    },
+    {
+      "from": "SignatureVolatility.ItoCalculusKit",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ItoCalculusKit",
+      "to": "SignatureVolatility.DualPairing"
+    },
+    {
+      "from": "SignatureVolatility.ItoCalculusKit",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.ItoCalculusKit",
+      "to": "SignatureVolatility.HypH1"
+    },
+    {
+      "from": "SignatureVolatility.ItoCalculusKit",
+      "to": "SignatureVolatility.HypH2"
+    },
+    {
+      "from": "SignatureVolatility.ItoCalculusKit",
+      "to": "SignatureVolatility.Norm2w"
+    },
+    {
+      "from": "SignatureVolatility.ItoCalculusKit",
+      "to": "SignatureVolatility.ProlongedBrownianSetup"
+    },
+    {
+      "from": "SignatureVolatility.ItoCalculusKit",
+      "to": "SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration"
+    },
+    {
+      "from": "SignatureVolatility.ItoCalculusKit",
+      "to": "SignatureVolatility.ProlongedBrownianSetup.WHat"
+    },
+    {
+      "from": "SignatureVolatility.ItoCalculusKit",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.Lemma32SignatureInTw",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.Lemma32SignatureInTw",
+      "to": "SignatureVolatility.HypH2"
+    },
+    {
+      "from": "SignatureVolatility.Lemma32SignatureInTw",
+      "to": "SignatureVolatility.MemTw"
+    },
+    {
+      "from": "SignatureVolatility.Lemma32SignatureInTw",
+      "to": "SignatureVolatility.NormW"
+    },
+    {
+      "from": "SignatureVolatility.Lemma32SignatureInTw",
+      "to": "SignatureVolatility.ProlongedBrownianSetup"
+    },
+    {
+      "from": "SignatureVolatility.Lemma32SignatureInTw",
+      "to": "SignatureVolatility.ProlongedBrownianSetup.WHat"
+    },
+    {
+      "from": "SignatureVolatility.Lemma32SignatureInTw",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.Lemma61GramPosDef",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.Lemma61GramPosDef",
+      "to": "SignatureVolatility.GKWDecompositionSetup"
+    },
+    {
+      "from": "SignatureVolatility.Letter",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.MemL2w",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.MemL2w",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.MemL2w",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNormSq"
+    },
+    {
+      "from": "SignatureVolatility.MemL2w",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.MemL2wInv",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.MemL2wInv",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.MemL2wInv",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNormSq"
+    },
+    {
+      "from": "SignatureVolatility.MemL2wInv",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.MemL2wInvOfMemTw",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.MemL2wInvOfMemTw",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNorm"
+    },
+    {
+      "from": "SignatureVolatility.MemL2wInvOfMemTw",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNormSq"
+    },
+    {
+      "from": "SignatureVolatility.MemL2wInvOfMemTw",
+      "to": "SignatureVolatility.MemL2wInv"
+    },
+    {
+      "from": "SignatureVolatility.MemL2wInvOfMemTw",
+      "to": "SignatureVolatility.MemTw"
+    },
+    {
+      "from": "SignatureVolatility.MemL2wInvOfMemTw",
+      "to": "SignatureVolatility.Norm2wInv"
+    },
+    {
+      "from": "SignatureVolatility.MemL2wInvOfMemTw",
+      "to": "SignatureVolatility.NormW"
+    },
+    {
+      "from": "SignatureVolatility.MemL2wInvOfMemTw",
+      "to": "SignatureVolatility.Preliminaries"
+    },
+    {
+      "from": "SignatureVolatility.MemL2wInvOfMemTw",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.MemTw",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.MemTw",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.MemTw",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNorm"
+    },
+    {
+      "from": "SignatureVolatility.MemTw",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.MemTwDual",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.MemTwDual",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.MemTwDual",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNorm"
+    },
+    {
+      "from": "SignatureVolatility.MemTwDual",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.MemTwDualOfMemL2w",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.MemTwDualOfMemL2w",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNorm"
+    },
+    {
+      "from": "SignatureVolatility.MemTwDualOfMemL2w",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNormSq"
+    },
+    {
+      "from": "SignatureVolatility.MemTwDualOfMemL2w",
+      "to": "SignatureVolatility.MemL2w"
+    },
+    {
+      "from": "SignatureVolatility.MemTwDualOfMemL2w",
+      "to": "SignatureVolatility.MemTwDual"
+    },
+    {
+      "from": "SignatureVolatility.MemTwDualOfMemL2w",
+      "to": "SignatureVolatility.Norm2w"
+    },
+    {
+      "from": "SignatureVolatility.MemTwDualOfMemL2w",
+      "to": "SignatureVolatility.NormWDual"
+    },
+    {
+      "from": "SignatureVolatility.MemTwDualOfMemL2w",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.NflvrOfMartingaleMeasure",
+      "to": "SignatureVolatility.AdmissibleGainsUnderP"
+    },
+    {
+      "from": "SignatureVolatility.NflvrOfMartingaleMeasure",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.NflvrOfMartingaleMeasure",
+      "to": "SignatureVolatility.SatisfiesNFLVR"
+    },
+    {
+      "from": "SignatureVolatility.Norm2w",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.Norm2w",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.Norm2w",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNormSq"
+    },
+    {
+      "from": "SignatureVolatility.Norm2w",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.Norm2wInv",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.Norm2wInv",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.Norm2wInv",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNormSq"
+    },
+    {
+      "from": "SignatureVolatility.Norm2wInv",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.NormW",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.NormW",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.NormW",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNorm"
+    },
+    {
+      "from": "SignatureVolatility.NormW",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.NormWDual",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.NormWDual",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.NormWDual",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNorm"
+    },
+    {
+      "from": "SignatureVolatility.NormWDual",
+      "to": "SignatureVolatility.MemTwDual"
+    },
+    {
+      "from": "SignatureVolatility.NormWDual",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.Preliminaries",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.PriceFiltration",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.PriceFiltration",
+      "to": "SignatureVolatility.IndexedFiltration"
+    },
+    {
+      "from": "SignatureVolatility.PriceFiltration",
+      "to": "SignatureVolatility.ProlongedBrownianSetup"
+    },
+    {
+      "from": "SignatureVolatility.PriceFiltrationSignatureSpace",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.PriceFiltrationSignatureSpace",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.PriceFiltrationSignatureSpace",
+      "to": "SignatureVolatility.Word"
+    },
+    {
+      "from": "SignatureVolatility.PriceFiltrationSignatureSpace.AugmentedMarketSpan",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.PriceFiltrationSignatureSpace.AugmentedMarketSpan",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace"
+    },
+    {
+      "from": "SignatureVolatility.PriceFiltrationSignatureSpace.CompletenessDepth",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.PriceFiltrationSignatureSpace.CompletenessDepth",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace"
+    },
+    {
+      "from": "SignatureVolatility.PriceFiltrationSignatureSpace.CompletenessDepth",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace.VInfty"
+    },
+    {
+      "from": "SignatureVolatility.PriceFiltrationSignatureSpace.CompletenessDepth",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace.VSubspace"
+    },
+    {
+      "from": "SignatureVolatility.PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace"
+    },
+    {
+      "from": "SignatureVolatility.PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace.AugmentedMarketSpan"
+    },
+    {
+      "from": "SignatureVolatility.PriceFiltrationSignatureSpace.VInfty",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.PriceFiltrationSignatureSpace.VInfty",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace"
+    },
+    {
+      "from": "SignatureVolatility.PriceFiltrationSignatureSpace.VSubspace",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.PriceFiltrationSignatureSpace.VSubspace",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace"
+    },
+    {
+      "from": "SignatureVolatility.PriceFiltrationSignatureSpace.VSubspace",
+      "to": "SignatureVolatility.Word"
+    },
+    {
+      "from": "SignatureVolatility.PriceFiltrationSignatureSpace.VSubspace",
+      "to": "SignatureVolatility.WordsOfLength"
+    },
+    {
+      "from": "SignatureVolatility.ProjGt",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ProjGt",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.ProjGt",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNorm"
+    },
+    {
+      "from": "SignatureVolatility.ProjGt",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNormSq"
+    },
+    {
+      "from": "SignatureVolatility.ProjGt",
+      "to": "SignatureVolatility.Letter"
+    },
+    {
+      "from": "SignatureVolatility.ProjGt",
+      "to": "SignatureVolatility.ProjLe"
+    },
+    {
+      "from": "SignatureVolatility.ProjGt",
+      "to": "SignatureVolatility.Word"
+    },
+    {
+      "from": "SignatureVolatility.ProjLe",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ProjLe",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.ProjLe",
+      "to": "SignatureVolatility.Letter"
+    },
+    {
+      "from": "SignatureVolatility.ProjLe",
+      "to": "SignatureVolatility.Word"
+    },
+    {
+      "from": "SignatureVolatility.ProlongedBrownianSetup",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ProlongedBrownianSetup",
+      "to": "SignatureVolatility.ExtTensorAlgebra.Concat"
+    },
+    {
+      "from": "SignatureVolatility.ProlongedBrownianSetup",
+      "to": "SignatureVolatility.ExtTensorAlgebra.EvalShuffleBasis"
+    },
+    {
+      "from": "SignatureVolatility.ProlongedBrownianSetup",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.ProlongedBrownianSetup",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNorm"
+    },
+    {
+      "from": "SignatureVolatility.ProlongedBrownianSetup",
+      "to": "SignatureVolatility.GeneratedFiltration"
+    },
+    {
+      "from": "SignatureVolatility.ProlongedBrownianSetup",
+      "to": "SignatureVolatility.IndexedFiltration"
+    },
+    {
+      "from": "SignatureVolatility.ProlongedBrownianSetup",
+      "to": "SignatureVolatility.Letter"
+    },
+    {
+      "from": "SignatureVolatility.ProlongedBrownianSetup",
+      "to": "SignatureVolatility.Word"
+    },
+    {
+      "from": "SignatureVolatility.ProlongedBrownianSetup.BrownianFiltration",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ProlongedBrownianSetup.BrownianFiltration",
+      "to": "SignatureVolatility.GeneratedFiltration"
+    },
+    {
+      "from": "SignatureVolatility.ProlongedBrownianSetup.BrownianFiltration",
+      "to": "SignatureVolatility.IndexedFiltration"
+    },
+    {
+      "from": "SignatureVolatility.ProlongedBrownianSetup.BrownianFiltration",
+      "to": "SignatureVolatility.ProlongedBrownianSetup"
+    },
+    {
+      "from": "SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration",
+      "to": "SignatureVolatility.GeneratedFiltration"
+    },
+    {
+      "from": "SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration",
+      "to": "SignatureVolatility.IndexedFiltration"
+    },
+    {
+      "from": "SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration",
+      "to": "SignatureVolatility.PriceFiltration"
+    },
+    {
+      "from": "SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration",
+      "to": "SignatureVolatility.ProlongedBrownianSetup"
+    },
+    {
+      "from": "SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration",
+      "to": "SignatureVolatility.ProlongedBrownianSetup.WHat"
+    },
+    {
+      "from": "SignatureVolatility.ProlongedBrownianSetup.WAug",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ProlongedBrownianSetup.WAug",
+      "to": "SignatureVolatility.ProlongedBrownianSetup"
+    },
+    {
+      "from": "SignatureVolatility.ProlongedBrownianSetup.WHat",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ProlongedBrownianSetup.WHat",
+      "to": "SignatureVolatility.ProlongedBrownianSetup"
+    },
+    {
+      "from": "SignatureVolatility.Proposition311SharpnessOfH1",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.Proposition311SharpnessOfH1",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.Proposition311SharpnessOfH1",
+      "to": "SignatureVolatility.HypH1"
+    },
+    {
+      "from": "SignatureVolatility.Proposition311SharpnessOfH1",
+      "to": "SignatureVolatility.SuperfactorialFunctional"
+    },
+    {
+      "from": "SignatureVolatility.Proposition311SharpnessOfH1",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.Proposition65NormalEquations",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.Proposition65NormalEquations",
+      "to": "SignatureVolatility.GKWDecompositionSetup"
+    },
+    {
+      "from": "SignatureVolatility.PureBrownianWord",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.PureBrownianWord",
+      "to": "SignatureVolatility.Letter"
+    },
+    {
+      "from": "SignatureVolatility.PureBrownianWord",
+      "to": "SignatureVolatility.Word"
+    },
+    {
+      "from": "SignatureVolatility.QuinticOUSignatureModel",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.QuinticOUSignatureModel",
+      "to": "SignatureVolatility.HypH1OfIsFinitelySupported"
+    },
+    {
+      "from": "SignatureVolatility.QuinticOUSignatureModel",
+      "to": "SignatureVolatility.HypH2"
+    },
+    {
+      "from": "SignatureVolatility.QuinticOUSignatureModel",
+      "to": "SignatureVolatility.SignatureVolatilityModel"
+    },
+    {
+      "from": "SignatureVolatility.QuinticOUSignatureModel",
+      "to": "SignatureVolatility.Weight.ConstOne"
+    },
+    {
+      "from": "SignatureVolatility.Remark219BlackScholesRiccati",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.Remark219BlackScholesRiccati",
+      "to": "SignatureVolatility.ClassicalRiccatiSolution"
+    },
+    {
+      "from": "SignatureVolatility.Remark219BlackScholesRiccati",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.RiccatiOpBounded",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.RiccatiOpBounded",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.RiccatiOpBounded",
+      "to": "SignatureVolatility.RightShift"
+    },
+    {
+      "from": "SignatureVolatility.RiccatiOpBounded",
+      "to": "SignatureVolatility.ShuffleFinite"
+    },
+    {
+      "from": "SignatureVolatility.RiccatiOpBounded",
+      "to": "SignatureVolatility.StratonovichHalfLaplacian"
+    },
+    {
+      "from": "SignatureVolatility.RiccatiOpBounded",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.RightShift",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.RightShift",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.RightShift",
+      "to": "SignatureVolatility.Letter"
+    },
+    {
+      "from": "SignatureVolatility.RightShift",
+      "to": "SignatureVolatility.Word"
+    },
+    {
+      "from": "SignatureVolatility.SatisfiesNFLVR",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.Section71BlackScholesCompleteness",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.Section71BlackScholesCompleteness",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace"
+    },
+    {
+      "from": "SignatureVolatility.Section71BlackScholesCompleteness",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace.CompletenessDepth"
+    },
+    {
+      "from": "SignatureVolatility.Section71BlackScholesCompleteness",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace.VInfty"
+    },
+    {
+      "from": "SignatureVolatility.Section71BlackScholesCompleteness",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace.VSubspace"
+    },
+    {
+      "from": "SignatureVolatility.ShuffleFinite",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ShuffleFinite",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.ShuffleFinite",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ShuffleBasis"
+    },
+    {
+      "from": "SignatureVolatility.ShuffleFinite",
+      "to": "SignatureVolatility.Letter"
+    },
+    {
+      "from": "SignatureVolatility.ShuffleFinite",
+      "to": "SignatureVolatility.Word"
+    },
+    {
+      "from": "SignatureVolatility.ShuffleFinite",
+      "to": "SignatureVolatility.WordsOfLength"
+    },
+    {
+      "from": "SignatureVolatility.ShuffleIdentity",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.ShuffleIdentity",
+      "to": "SignatureVolatility.ExtTensorAlgebra.EvalShuffleBasis"
+    },
+    {
+      "from": "SignatureVolatility.ShuffleIdentity",
+      "to": "SignatureVolatility.Letter"
+    },
+    {
+      "from": "SignatureVolatility.ShuffleIdentity",
+      "to": "SignatureVolatility.ProlongedBrownianSetup"
+    },
+    {
+      "from": "SignatureVolatility.ShuffleIdentity",
+      "to": "SignatureVolatility.ProlongedBrownianSetup.WHat"
+    },
+    {
+      "from": "SignatureVolatility.ShuffleIdentity",
+      "to": "SignatureVolatility.Word"
+    },
+    {
+      "from": "SignatureVolatility.SignatureFiltrationEqBrownianFiltration",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.SignatureFiltrationEqBrownianFiltration",
+      "to": "SignatureVolatility.ProlongedBrownianSetup"
+    },
+    {
+      "from": "SignatureVolatility.SignatureFiltrationEqBrownianFiltration",
+      "to": "SignatureVolatility.ProlongedBrownianSetup.BrownianFiltration"
+    },
+    {
+      "from": "SignatureVolatility.SignatureFiltrationEqBrownianFiltration",
+      "to": "SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration"
+    },
+    {
+      "from": "SignatureVolatility.SignatureFiltrationEqBrownianFiltration",
+      "to": "SignatureVolatility.ProlongedBrownianSetup.WHat"
+    },
+    {
+      "from": "SignatureVolatility.SignatureHestonLevel2Model",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.SignatureHestonLevel2Model",
+      "to": "SignatureVolatility.ExtTensorAlgebra.BasisWord"
+    },
+    {
+      "from": "SignatureVolatility.SignatureHestonLevel2Model",
+      "to": "SignatureVolatility.HypH1OfIsFinitelySupported"
+    },
+    {
+      "from": "SignatureVolatility.SignatureHestonLevel2Model",
+      "to": "SignatureVolatility.HypH2"
+    },
+    {
+      "from": "SignatureVolatility.SignatureHestonLevel2Model",
+      "to": "SignatureVolatility.SignatureVolatilityModel"
+    },
+    {
+      "from": "SignatureVolatility.SignatureHestonLevel2Model",
+      "to": "SignatureVolatility.Weight.ConstOne"
+    },
+    {
+      "from": "SignatureVolatility.SignaturePriceSolution",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.SignaturePriceSolution",
+      "to": "SignatureVolatility.ItoCalculusKit"
+    },
+    {
+      "from": "SignatureVolatility.SignaturePriceSolution",
+      "to": "SignatureVolatility.ProlongedBrownianSetup"
+    },
+    {
+      "from": "SignatureVolatility.SignaturePriceSolution",
+      "to": "SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration"
+    },
+    {
+      "from": "SignatureVolatility.SignaturePriceSolution",
+      "to": "SignatureVolatility.SignatureVolatilityModel"
+    },
+    {
+      "from": "SignatureVolatility.SignatureRiccatiKit",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.SignatureRiccatiKit",
+      "to": "SignatureVolatility.ClassicalRiccatiSolution"
+    },
+    {
+      "from": "SignatureVolatility.SignatureRiccatiKit",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.SignatureVolatilityModel",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.SignatureVolatilityModel",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.SignatureVolatilityModel",
+      "to": "SignatureVolatility.HypH1"
+    },
+    {
+      "from": "SignatureVolatility.SignatureVolatilityModel",
+      "to": "SignatureVolatility.HypH2"
+    },
+    {
+      "from": "SignatureVolatility.SignatureVolatilityModel",
+      "to": "SignatureVolatility.HypH3"
+    },
+    {
+      "from": "SignatureVolatility.SignatureVolatilityModel",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.SignatureVolatilityModel.Sigma",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.SignatureVolatilityModel.Sigma",
+      "to": "SignatureVolatility.DualPairing"
+    },
+    {
+      "from": "SignatureVolatility.SignatureVolatilityModel.Sigma",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelInner"
+    },
+    {
+      "from": "SignatureVolatility.SignatureVolatilityModel.Sigma",
+      "to": "SignatureVolatility.ProlongedBrownianSetup"
+    },
+    {
+      "from": "SignatureVolatility.SignatureVolatilityModel.Sigma",
+      "to": "SignatureVolatility.ProlongedBrownianSetup.WHat"
+    },
+    {
+      "from": "SignatureVolatility.SignatureVolatilityModel.Sigma",
+      "to": "SignatureVolatility.SignatureVolatilityModel"
+    },
+    {
+      "from": "SignatureVolatility.SmoothIteratedIntegral",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.SmoothIteratedIntegral",
+      "to": "SignatureVolatility.Letter"
+    },
+    {
+      "from": "SignatureVolatility.SmoothIteratedIntegral",
+      "to": "SignatureVolatility.Word"
+    },
+    {
+      "from": "SignatureVolatility.SmoothSignature",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.SmoothSignature",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.SmoothSignature",
+      "to": "SignatureVolatility.SmoothIteratedIntegral"
+    },
+    {
+      "from": "SignatureVolatility.StratonovichHalfLaplacian",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.StratonovichHalfLaplacian",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.SuperfactorialFunctional",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.SuperfactorialFunctional",
+      "to": "SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra"
+    },
+    {
+      "from": "SignatureVolatility.SuperfactorialFunctional",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNormSq"
+    },
+    {
+      "from": "SignatureVolatility.SuperfactorialFunctional",
+      "to": "SignatureVolatility.PureBrownianWord"
+    },
+    {
+      "from": "SignatureVolatility.TailNorm2wInvLeRatioMulNormW",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.TailNorm2wInvLeRatioMulNormW",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNorm"
+    },
+    {
+      "from": "SignatureVolatility.TailNorm2wInvLeRatioMulNormW",
+      "to": "SignatureVolatility.MemL2wInv"
+    },
+    {
+      "from": "SignatureVolatility.TailNorm2wInvLeRatioMulNormW",
+      "to": "SignatureVolatility.MemL2wInvOfMemTw"
+    },
+    {
+      "from": "SignatureVolatility.TailNorm2wInvLeRatioMulNormW",
+      "to": "SignatureVolatility.MemTw"
+    },
+    {
+      "from": "SignatureVolatility.TailNorm2wInvLeRatioMulNormW",
+      "to": "SignatureVolatility.Norm2wInv"
+    },
+    {
+      "from": "SignatureVolatility.TailNorm2wInvLeRatioMulNormW",
+      "to": "SignatureVolatility.NormW"
+    },
+    {
+      "from": "SignatureVolatility.TailNorm2wInvLeRatioMulNormW",
+      "to": "SignatureVolatility.ProjGt"
+    },
+    {
+      "from": "SignatureVolatility.TailNorm2wInvLeRatioMulNormW",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.TheoremA",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.TheoremA",
+      "to": "SignatureVolatility.ItoCalculusKit"
+    },
+    {
+      "from": "SignatureVolatility.TheoremA",
+      "to": "SignatureVolatility.ProlongedBrownianSetup"
+    },
+    {
+      "from": "SignatureVolatility.TheoremA",
+      "to": "SignatureVolatility.SignaturePriceSolution"
+    },
+    {
+      "from": "SignatureVolatility.TheoremA",
+      "to": "SignatureVolatility.SignatureVolatilityModel"
+    },
+    {
+      "from": "SignatureVolatility.TheoremB",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.TheoremB",
+      "to": "SignatureVolatility.IsSpecialSemimartingale"
+    },
+    {
+      "from": "SignatureVolatility.TheoremB",
+      "to": "SignatureVolatility.ProlongedBrownianSetup"
+    },
+    {
+      "from": "SignatureVolatility.TheoremB",
+      "to": "SignatureVolatility.SatisfiesNFLVR"
+    },
+    {
+      "from": "SignatureVolatility.TheoremB",
+      "to": "SignatureVolatility.SignatureRiccatiKit"
+    },
+    {
+      "from": "SignatureVolatility.TheoremB",
+      "to": "SignatureVolatility.SignatureVolatilityModel"
+    },
+    {
+      "from": "SignatureVolatility.TheoremC",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.TheoremC",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace"
+    },
+    {
+      "from": "SignatureVolatility.TheoremC",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace.CompletenessDepth"
+    },
+    {
+      "from": "SignatureVolatility.TheoremC",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration"
+    },
+    {
+      "from": "SignatureVolatility.TheoremC",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace.VInfty"
+    },
+    {
+      "from": "SignatureVolatility.TheoremC",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace.VSubspace"
+    },
+    {
+      "from": "SignatureVolatility.TheoremD",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.TheoremD",
+      "to": "SignatureVolatility.GKWDecompositionSetup"
+    },
+    {
+      "from": "SignatureVolatility.TheoremD",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace"
+    },
+    {
+      "from": "SignatureVolatility.TheoremD",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace.CompletenessDepth"
+    },
+    {
+      "from": "SignatureVolatility.TheoremD",
+      "to": "SignatureVolatility.PriceFiltrationSignatureSpace.VSubspace"
+    },
+    {
+      "from": "SignatureVolatility.Tw",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.Tw",
+      "to": "SignatureVolatility.MemTw"
+    },
+    {
+      "from": "SignatureVolatility.Weight",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.Weight.ConstOne",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.Weight.ConstOne",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.Weight.Geometric",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.Weight.Geometric",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.WeightedTruncationEstimates",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.WeightedTruncationEstimates",
+      "to": "SignatureVolatility.DualPairing"
+    },
+    {
+      "from": "SignatureVolatility.WeightedTruncationEstimates",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelInner"
+    },
+    {
+      "from": "SignatureVolatility.WeightedTruncationEstimates",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNorm"
+    },
+    {
+      "from": "SignatureVolatility.WeightedTruncationEstimates",
+      "to": "SignatureVolatility.ExtTensorAlgebra.LevelNormSq"
+    },
+    {
+      "from": "SignatureVolatility.WeightedTruncationEstimates",
+      "to": "SignatureVolatility.MemL2w"
+    },
+    {
+      "from": "SignatureVolatility.WeightedTruncationEstimates",
+      "to": "SignatureVolatility.MemL2wInv"
+    },
+    {
+      "from": "SignatureVolatility.WeightedTruncationEstimates",
+      "to": "SignatureVolatility.Norm2w"
+    },
+    {
+      "from": "SignatureVolatility.WeightedTruncationEstimates",
+      "to": "SignatureVolatility.Norm2wInv"
+    },
+    {
+      "from": "SignatureVolatility.WeightedTruncationEstimates",
+      "to": "SignatureVolatility.Preliminaries"
+    },
+    {
+      "from": "SignatureVolatility.WeightedTruncationEstimates",
+      "to": "SignatureVolatility.ProjGt"
+    },
+    {
+      "from": "SignatureVolatility.WeightedTruncationEstimates",
+      "to": "SignatureVolatility.Weight"
+    },
+    {
+      "from": "SignatureVolatility.Word",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.Word",
+      "to": "SignatureVolatility.Letter"
+    },
+    {
+      "from": "SignatureVolatility.WordsOfLength",
+      "to": "SignatureVolatility.Basic"
+    },
+    {
+      "from": "SignatureVolatility.WordsOfLength",
+      "to": "SignatureVolatility.Letter"
+    },
+    {
+      "from": "SignatureVolatility.WordsOfLength",
+      "to": "SignatureVolatility.Preliminaries"
+    },
+    {
+      "from": "SignatureVolatility.WordsOfLength",
+      "to": "SignatureVolatility.Word"
+    }
+  ]
+}

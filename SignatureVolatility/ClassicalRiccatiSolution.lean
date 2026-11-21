@@ -1,0 +1,26 @@
+import SignatureVolatility.Weight
+import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
+import SignatureVolatility.RiccatiOpBounded
+import SignatureVolatility.MemTw
+import SignatureVolatility.NormW
+
+
+open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
+open MeasureTheory Filter Topology Set
+
+noncomputable section
+
+namespace SignatureVolatility
+
+structure ClassicalRiccatiSolution {d : ℕ} (w : Weight) (T : ℝ)
+    (R_op : ExtTensorAlgebra (d + 1) → ExtTensorAlgebra (d + 1))
+    (u₀ : ExtTensorAlgebra (d + 1)) where
+  ψ : ℝ → ExtTensorAlgebra (d + 1)
+  mem_Tw : ∀ t ∈ Icc 0 T, MemTw w (ψ t)
+  uniform_bdd : ∃ M : ℝ, 0 ≤ M ∧ ∀ t ∈ Icc 0 T, normW w (ψ t) ≤ M
+  init : ψ 0 = u₀
+  integral_eq : ∀ t ∈ Icc 0 T, ∀ I : Word (d + 1),
+    ContinuousOn (fun s => (R_op (ψ s)).coeff I) (Icc 0 T) ∧
+      (ψ t).coeff I = u₀.coeff I + ∫ s in (0 : ℝ)..t, (R_op (ψ s)).coeff I
+
+end SignatureVolatility

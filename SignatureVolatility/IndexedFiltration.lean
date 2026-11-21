@@ -1,0 +1,14 @@
+import Mathlib
+open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
+open MeasureTheory Filter Topology Set
+
+noncomputable section
+
+namespace SignatureVolatility
+
+structure IndexedFiltration (Ω : Type*) [m₀ : MeasurableSpace Ω] where
+  σAlg : ℝ → MeasurableSpace Ω
+  mono : ∀ ⦃s t : ℝ⦄, s ≤ t → σAlg s ≤ σAlg t
+  le_ambient : ∀ t : ℝ, σAlg t ≤ m₀
+
+end SignatureVolatility

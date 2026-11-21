@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Xodarev 2026 proof holes — dependency board</title>
+  <style>
+    :root {
+      --ink: #1a1f1c;
+      --muted: #5a645c;
+      --paper: #f3efe6;
+      --panel: #ebe6da;
+      --line: #b7b0a2;
+      --open: #1f6b4a;
+      --open-bg: #c8ecd9;
+      --blocked: #9aa19a;
+      --blocked-bg: #ecece8;
+      --err: #8a3b12;
+      --err-bg: #f3ddd0;
+      --done: #1d4f91;
+      --done-bg: #d5e4f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans", "Source Sans 3", "Segoe UI", sans-serif;
+      background: #f7f3ea;
+      color: var(--ink);
+      min-height: 100vh;
+    }
+    header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem 1.25rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+    h1 {
+      font-family: "IBM Plex Serif", Georgia, serif;
+      font-weight: 600;
+      font-size: 1.3rem;
+      margin: 0;
+    }
+    .sub { color: var(--muted); font-size: 0.88rem; }
+    .stats { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .chip {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      padding: 0.3rem 0.55rem;
+      font-size: 0.78rem;
+      font-variant-numeric: tabular-nums;
+    }
+    .chip.open { background: var(--open-bg); border-color: var(--open); color: var(--open); }
+    .controls { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; font-size: 0.82rem; }
+    .controls label { display: inline-flex; gap: 0.35rem; align-items: center; color: var(--muted); cursor: pointer; }
+    #open-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      border-bottom: 1px solid var(--line);
+      background: color-mix(in srgb, var(--open-bg) 45%, white);
+      align-items: center;
+    }
+    #open-bar .label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--open);
+      font-weight: 700;
+      margin-right: 0.25rem;
+    }
+    #open-bar button {
+      font: inherit;
+      border: 1.5px solid var(--open);
+      background: var(--open-bg);
+      color: var(--ink);
+      padding: 0.4rem 0.7rem;
+      cursor: pointer;
+      font-family: ui-monospace, "IBM Plex Mono", monospace;
+      font-size: 0.82rem;
+    }
+    #open-bar button:hover, #open-bar button.active {
+      background: var(--open);
+      color: white;
+    }
+    #open-bar .empty { color: var(--muted); font-size: 0.88rem; }
+    main { padding: 0.75rem 1rem 1.5rem; }
+    .panel {
+      background: #faf7f0;
+      border: 1px solid var(--line);
+      padding: 0.65rem;
+    }
+    .panel h2 {
+      margin: 0 0 0.5rem;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .legend i {
+      width: 0.65rem; height: 0.65rem;
+      border: 1px solid currentColor;
+      display: inline-block;
+      margin-right: 0.25rem;
+      vertical-align: -1px;
+    }
+    .legend .open i { background: var(--open-bg); color: var(--open); }
+    .legend .blocked i { background: var(--blocked-bg); color: var(--blocked); }
+    .legend .done i { background: var(--done-bg); color: var(--done); }
+    #graph {
+      width: 100%;
+      height: calc(100vh - 11rem);
+      min-height: 28rem;
+      overflow: auto;
+      background:
+        repeating-linear-gradient(0deg, transparent 0 31px, #efeae0 32px),
+        #faf7f0;
+    }
+    svg { display: block; min-width: 100%; }
+    .rank-label {
+      fill: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+    .node { pointer-events: auto; cursor: copy; }
+    .node rect { stroke-width: 1.4; cursor: copy; }
+    .node text { font-size: 12px; pointer-events: none; fill: var(--ink); }
+    .node .badge {
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      fill: var(--open);
+    }
+    .status-open rect { fill: var(--open-bg); stroke: var(--open); stroke-width: 2.25; }
+    .status-done rect { fill: var(--done-bg); stroke: var(--done); }
+    .status-blocked rect { fill: var(--blocked-bg); stroke: var(--blocked); }
+    .chip.done { background: var(--done-bg); border-color: var(--done); color: var(--done); }
+    .node.dim { opacity: 0.22; }
+    .edge {
+      fill: none;
+      stroke: #5a635c;
+      stroke-width: 1.35;
+      opacity: 0.55;
+      pointer-events: none;
+    }
+    .edge.soft {
+      stroke-dasharray: 5 4;
+      opacity: 0.32;
+    }
+    .edge.dim { opacity: 0.08; }
+    .edge.hot {
+      stroke: #1a1f1c;
+      stroke-width: 2.15;
+      opacity: 1;
+      stroke-dasharray: none;
+    }
+    .node.selected rect { filter: drop-shadow(0 0 0.3rem color-mix(in srgb, var(--open) 40%, transparent)); }
+    #detail {
+      margin-top: 0.65rem;
+      padding-top: 0.55rem;
+      border-top: 1px solid var(--line);
+      font-size: 0.88rem;
+      min-height: 3.5rem;
+    }
+    #detail .title { font-family: Georgia, serif; font-size: 1.05rem; margin-bottom: 0.25rem; }
+    #detail .id { font-family: ui-monospace, monospace; font-size: 0.82rem; color: var(--muted); }
+    #detail .copy-tip {
+      margin-left: 0.55rem;
+      font-family: ui-monospace, monospace;
+      font-size: 0.75rem;
+      color: var(--open);
+      font-weight: 600;
+    }
+    .err {
+      margin: 0.75rem 1.25rem;
+      padding: 0.75rem;
+      border: 1px solid var(--err);
+      background: var(--err-bg);
+      color: var(--err);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Xodarev / SignatureVolatility proof holes</h1>
+      <div class="sub">Modules are file-level holes · all TBD/unverified · hard edge B→A: A imports B · prove deps first</div>
+    </div>
+    <div class="stats" id="stats"></div>
+    <div class="controls">
+      <label><input type="checkbox" id="tog-focus" checked> focus open (hide done)</label>
+    </div>
+  </header>
+  <div id="load-error" class="err" hidden></div>
+  <div id="open-bar"></div>
+  <main>
+    <section class="panel">
+      <h2>Graph</h2>
+      <div class="legend">
+        <span class="open"><i></i>open</span>
+        <span class="done"><i></i>done</span>
+        <span class="blocked"><i></i>blocked</span>
+        <span>solid = hard dep · dashed = soft (paper-order only)</span>
+      </div>
+      <div id="graph"></div>
+      <div id="detail"><div class="title">Select a node</div></div>
+    </section>
+  </main>
+  <script>
+    const STATUS_RANK = { open: 0, done: 1, blocked: 2 };
+    const NW = 168, NH = 34, RANK_GAP = 96, NODE_GAP = 28, PAD_X = 110, PAD_Y = 28;
+    const FOCUS_KEY = "xodarev-holes-focus-open";
+    let SELECTED = null;
+
+    function normStatus(s) {
+      // Legacy "failed"/"kill" are treated as open unless a program-refuting counterexample appears.
+      return (s === "kill" || s === "failed") ? "open" : s;
+    }
+
+    function countBy(nodes) {
+      const c = { open: 0, blocked: 0, done: 0 };
+      for (const n of nodes) {
+        const s = normStatus(n.status);
+        c[s] = (c[s] || 0) + 1;
+      }
+      return c;
+    }
+
+    /** Walk hard edges backward (including through done) so unfinished deps stay wired. */
+    function addHardAncestors(data, keep) {
+      const preds = new Map(data.nodes.map(n => [n.id, []]));
+      for (const e of data.edges) {
+        if (e.kind && e.kind !== "hard") continue;
+        if (!preds.has(e.to)) continue;
+        preds.get(e.to).push(e.from);
+      }
+      const stack = [...keep];
+      while (stack.length) {
+        const id = stack.pop();
+        for (const p of preds.get(id) || []) {
+          if (!keep.has(p)) {
+            keep.add(p);
+            stack.push(p);
+          }
+        }
+      }
+      return keep;
+    }
+
+    function stripDone(data, keep) {
+      const byId = Object.fromEntries(data.nodes.map(n => [n.id, n]));
+      for (const id of [...keep]) {
+        if (byId[id] && nodeStatus(byId[id]) === "done") keep.delete(id);
+      }
+      return keep;
+    }
+
+    function isHard(e) {
+      return !e.kind || e.kind === "hard";
+    }
+
+    function hardPreds(data, id) {
+      return data.edges.filter(e => e.to === id && isHard(e)).map(e => e.from);
+    }
+
+    function nodeStatus(n) {
+      return normStatus(n.status);
+    }
+
+    function ranks(data) {
+      // Hard edges always set layout depth. Soft edges also do when the source is
+      // already done, so paper-order follow-ons (e.g. g contour under Thm 4.5) sit
+      // below their foundations — without letting unfinished tips pull done nodes down.
+      const byId = Object.fromEntries(data.nodes.map(n => [n.id, n]));
+      const ids = data.nodes.map(n => n.id);
+      const preds = new Map(ids.map(id => [id, []]));
+      for (const e of data.edges) {
+        if (!preds.has(e.to)) continue;
+        if (isHard(e)) {
+          preds.get(e.to).push(e.from);
+        } else if (e.kind === "soft" && byId[e.from] && nodeStatus(byId[e.from]) === "done") {
+          preds.get(e.to).push(e.from);
+        }
+      }
+      const depth = new Map();
+      const visiting = new Set();
+      function dfs(id) {
+        if (depth.has(id)) return depth.get(id);
+        if (visiting.has(id)) return 0;
+        visiting.add(id);
+        let d = 0;
+        for (const p of preds.get(id) || []) d = Math.max(d, dfs(p) + 1);
+        visiting.delete(id);
+        depth.set(id, d);
+        return d;
+      }
+      for (const id of ids) dfs(id);
+      return depth;
+    }
+
+    function neighborhood(data, seeds) {
+      // Seed cone only: unfinished hard ancestors of the seeds, plus a bounded
+      // forward fan of their dependents. Soft edges are ignored for focus.
+      const keep = new Set(seeds);
+      addHardAncestors(data, keep);
+      const hard = data.edges.filter(isHard);
+      const queue = [...seeds];
+      const dist = new Map(seeds.map(s => [s, 0]));
+      while (queue.length) {
+        const id = queue.shift();
+        const d = dist.get(id);
+        if (d >= 2) continue;
+        for (const e of hard) {
+          if (e.from !== id) continue;
+          if (!dist.has(e.to)) {
+            dist.set(e.to, d + 1);
+            keep.add(e.to);
+            queue.push(e.to);
+          }
+        }
+      }
+      return stripDone(data, keep);
+    }
+
+    /** Fan ports so parallel edges do not share the same attachment point. */
+    function portOffset(index, count, span) {
+      if (count <= 1) return 0;
+      return ((index / (count - 1)) - 0.5) * span;
+    }
+
+    function layout(data, visible) {
+      const depth = ranks(data);
+      const nodes = data.nodes.filter(n => visible.has(n.id));
+      const byRank = new Map();
+      for (const n of nodes) {
+        const r = depth.get(n.id) || 0;
+        if (!byRank.has(r)) byRank.set(r, []);
+        byRank.get(r).push(n);
+      }
+      const rankList = [...byRank.keys()].sort((a, b) => a - b);
+      // Compact ranks to 0..k for display spacing
+      const rankIndex = new Map(rankList.map((r, i) => [r, i]));
+      for (const r of rankList) {
+        byRank.get(r).sort((a, b) =>
+          (STATUS_RANK[nodeStatus(a)] - STATUS_RANK[nodeStatus(b)]) ||
+          (a.section - b.section) || a.id.localeCompare(b.id));
+      }
+      const pos = new Map();
+      let maxW = 0;
+      for (const r of rankList) {
+        const list = byRank.get(r);
+        const rowW = list.length * NW + Math.max(0, list.length - 1) * NODE_GAP;
+        maxW = Math.max(maxW, rowW);
+      }
+      const width = Math.max(PAD_X * 2 + maxW, 960);
+      for (const r of rankList) {
+        const list = byRank.get(r);
+        const ri = rankIndex.get(r);
+        const rowW = list.length * NW + Math.max(0, list.length - 1) * NODE_GAP;
+        const x0 = (width - rowW) / 2;
+        const y = PAD_Y + 16 + ri * (NH + RANK_GAP);
+        list.forEach((n, i) => {
+          pos.set(n.id, { x: x0 + i * (NW + NODE_GAP), y, w: NW, h: NH, rank: ri, rawRank: r });
+        });
+      }
+      const height = PAD_Y + 16 + Math.max(1, rankList.length) * (NH + RANK_GAP) + 24;
+      return { pos, width, height, rankList: rankList.map(r => rankIndex.get(r)), depth };
+    }
+
+    function render(data) {
+      const focusEl = document.getElementById("tog-focus");
+      const focus = focusEl.checked;
+      const counts = countBy(data.nodes);
+      document.getElementById("stats").innerHTML = [
+        ["open", counts.open, "open"],
+        ["done", counts.done, "done"],
+        ["blocked", counts.blocked, ""],
+        ["sorry", data.sorryCount, ""],
+      ].map(([k, v, cls]) => `<span class="chip ${cls}"><b>${v}</b> ${k}</span>`).join("");
+
+      const open = data.nodes.filter(n => normStatus(n.status) === "open");
+      const bar = document.getElementById("open-bar");
+      bar.innerHTML = open.length
+        ? `<span class="label">Open now</span>` +
+          open.map(n => `<button type="button" data-id="${n.id}">${n.id}</button>`).join("")
+        : `<span class="label">Open now</span><span class="empty">None — every hole is blocked or done.</span>`;
+
+      // Focus view: one open hole’s dependency cone (selected open-bar chip, else a default).
+      const openIds = open.map(n => n.id);
+      if (SELECTED && !data.nodes.some(n => n.id === SELECTED)) SELECTED = null;
+      const seedOpen = (SELECTED && openIds.includes(SELECTED))
+        ? SELECTED
+        : (open[0]?.id || null);
+      const seeds = focus ? (seedOpen ? [seedOpen] : []) : openIds;
+      const visible = focus && seeds.length
+        ? neighborhood(data, seeds)
+        : new Set(data.nodes.map(n => n.id));
+
+      const { pos, width, height, rankList } = layout(data, visible);
+      const byId = Object.fromEntries(data.nodes.map(n => [n.id, n]));
+
+      // Soft edges into done nodes read as "unproven proves proven" — omit them.
+      // Soft edges never drive status; they are paper-order only.
+      const edges = data.edges.filter(e => {
+        if (!visible.has(e.from) || !visible.has(e.to)) return false;
+        if (e.kind === "soft" && nodeStatus(byId[e.to]) === "done") return false;
+        return true;
+      });
+      const outIdx = new Map(), inIdx = new Map(), outN = new Map(), inN = new Map();
+      for (const e of edges) {
+        outN.set(e.from, (outN.get(e.from) || 0) + 1);
+        inN.set(e.to, (inN.get(e.to) || 0) + 1);
+      }
+      const outSeen = new Map(), inSeen = new Map();
+      for (const e of edges) {
+        const oi = outSeen.get(e.from) || 0;
+        outSeen.set(e.from, oi + 1);
+        outIdx.set(e, oi);
+        const ii = inSeen.get(e.to) || 0;
+        inSeen.set(e.to, ii + 1);
+        inIdx.set(e, ii);
+      }
+
+      const edgePaths = edges.map(e => {
+        const a = pos.get(e.from), b = pos.get(e.to);
+        if (!a || !b) return "";
+        const oi = outIdx.get(e), oc = outN.get(e.from) || 1;
+        const ii = inIdx.get(e), ic = inN.get(e.to) || 1;
+        let x1, y1, x2, y2, cx1, cy1, cx2, cy2;
+        if (a.rank === b.rank) {
+          const leftToRight = a.x <= b.x;
+          x1 = leftToRight ? a.x + a.w : a.x;
+          y1 = a.y + a.h / 2 + portOffset(oi, oc, a.h * 0.55);
+          x2 = leftToRight ? b.x : b.x + b.w;
+          y2 = b.y + b.h / 2 + portOffset(ii, ic, b.h * 0.55);
+          const bow = Math.min(56, 22 + Math.abs(x2 - x1) * 0.14) + oi * 10;
+          cx1 = x1 + (leftToRight ? bow * 0.4 : -bow * 0.4);
+          cy1 = y1 + bow;
+          cx2 = x2 + (leftToRight ? -bow * 0.4 : bow * 0.4);
+          cy2 = y2 + bow;
+        } else {
+          const down = b.rank >= a.rank;
+          x1 = a.x + a.w / 2 + portOffset(oi, oc, a.w * 0.7);
+          y1 = down ? a.y + a.h : a.y;
+          x2 = b.x + b.w / 2 + portOffset(ii, ic, b.w * 0.7);
+          y2 = down ? b.y : b.y + b.h;
+          const dy = Math.max(28, Math.abs(y2 - y1) * 0.42);
+          const sway = (oi - (oc - 1) / 2) * 14 + (ii - (ic - 1) / 2) * 8;
+          cx1 = x1 + sway;
+          cy1 = down ? y1 + dy : y1 - dy;
+          cx2 = x2 - sway * 0.35;
+          cy2 = down ? y2 - dy : y2 + dy;
+        }
+        const d = `M${x1},${y1} C${cx1},${cy1} ${cx2},${cy2} ${x2},${y2}`;
+        const soft = e.kind === "soft" ? " soft" : "";
+        return `<path class="edge${soft}" data-from="${e.from}" data-to="${e.to}" marker-end="url(#arrow)" d="${d}" />`;
+      }).join("");
+
+      const rankLabels = rankList.map((ri, i) => {
+        const y = PAD_Y + 8 + ri * (NH + RANK_GAP);
+        return `<text class="rank-label" x="12" y="${y}">L${i}</text>`;
+      }).join("");
+
+      const nodes = data.nodes.filter(n => visible.has(n.id)).map(n => {
+        const p = pos.get(n.id);
+        const st = nodeStatus(n);
+        const badge = st === "open"
+          ? `<text class="badge" x="8" y="11">OPEN</text>`
+          : "";
+        const ty = st === "open" ? 24 : 20;
+        return `<g class="node status-${st}" data-id="${n.id}" transform="translate(${p.x},${p.y})">
+          <rect width="${p.w}" height="${p.h}" rx="2" />
+          ${badge}
+          <text x="8" y="${ty}">${n.label}</text>
+        </g>`;
+      }).join("");
+
+      const defs = `<defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0,1 L9,5 L0,9 z" fill="#1a1f1c" />
+        </marker>
+      </defs>`;
+
+      // Edges under nodes so labels stay readable.
+      const graphEl = document.getElementById("graph");
+      graphEl.innerHTML = `<svg viewBox="0 0 ${width} ${height}" width="${width}" height="${height}">
+        ${defs}${rankLabels}${edgePaths}${nodes}
+      </svg>`;
+
+      function copyId(id) {
+        const done = () => {
+          const tip = document.getElementById("copy-tip");
+          if (tip) {
+            tip.textContent = `copied ${id}`;
+            tip.hidden = false;
+            clearTimeout(copyId._t);
+            copyId._t = setTimeout(() => { tip.hidden = true; }, 1200);
+          }
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(id).then(done).catch(() => {});
+        } else {
+          const ta = document.createElement("textarea");
+          ta.value = id;
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand("copy"); } catch (_) {}
+          ta.remove();
+          done();
+        }
+      }
+
+      function select(id, { reseed = false, copy = false } = {}) {
+        SELECTED = id;
+        if (reseed && focusEl.checked) {
+          redraw();
+          if (copy) copyId(id);
+          return;
+        }
+        if (copy) copyId(id);
+        const focusMode = focusEl.checked;
+        // Focus view is already the open cone (done stripped). Keep hard
+        // ancestors + direct successors bright so prerequisites stay readable;
+        // only highlight incident edges as hot.
+        const keepBright = new Set([id]);
+        addHardAncestors(data, keepBright);
+        for (const e of data.edges) {
+          if (isHard(e) && e.from === id) keepBright.add(e.to);
+        }
+        document.querySelectorAll(".edge").forEach(path => {
+          const incident = path.dataset.from === id || path.dataset.to === id;
+          const soft = path.classList.contains("soft");
+          // Only hard edges get the thick "hot" treatment — soft stays dashed.
+          path.classList.toggle("hot", incident && !soft);
+          const bothKept = keepBright.has(path.dataset.from) && keepBright.has(path.dataset.to);
+          path.classList.toggle("dim", focusMode && !bothKept);
+        });
+        document.querySelectorAll(".node").forEach(g => {
+          g.classList.toggle("selected", g.dataset.id === id);
+          g.classList.toggle("dim", focusMode && !keepBright.has(g.dataset.id));
+        });
+        document.querySelectorAll("#open-bar button").forEach(b => b.classList.toggle("active", b.dataset.id === id));
+        const n = byId[id];
+        if (!n) return;
+        const preds = hardPreds(data, id).map(p => byId[p]?.label || p).join(", ") || "—";
+        const softOut = data.edges
+          .filter(e => e.kind === "soft" && e.from === id && nodeStatus(byId[e.to]) !== "done")
+          .map(e => byId[e.to]?.label || e.to);
+        const softNote = softOut.length
+          ? `<div style="margin-top:0.25rem;color:var(--muted)"><b>soft (paper-order):</b> ${softOut.join(", ")}</div>`
+          : "";
+        document.getElementById("detail").innerHTML = `
+          <div class="title">${n.label} <span class="id">(${n.id})</span>
+            <span id="copy-tip" class="copy-tip" hidden></span></div>
+          <div><b>status:</b> ${nodeStatus(n)} · <b>file:</b> ${n.file}</div>
+          <div><b>proof requires (hard):</b> ${preds}</div>
+          ${softNote}
+          ${n.blocker ? `<div style="margin-top:0.3rem;color:var(--blocked)"><b>blocker:</b> ${n.blocker}</div>` : ""}
+          ${n.detail ? `<div style="margin-top:0.3rem"><b>detail:</b> ${n.detail}</div>` : ""}
+        `;
+        const g = document.querySelector(`.node[data-id="${id}"]`);
+        if (g) g.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+      }
+
+      document.querySelectorAll(".node").forEach(el => {
+        el.addEventListener("click", () => select(el.dataset.id, { copy: true }));
+      });
+      document.querySelectorAll("#open-bar button[data-id]").forEach(el => {
+        el.addEventListener("click", () => select(el.dataset.id, { reseed: true, copy: true }));
+      });
+
+      const focusId = (SELECTED && visible.has(SELECTED)) ? SELECTED : seedOpen;
+      if (focusId) select(focusId);
+      else document.getElementById("detail").innerHTML =
+        `<div class="title">No open holes</div><div>All remaining work is blocked or done.</div>`;
+    }
+
+    let DATA = null;
+    function redraw() { if (DATA) render(DATA); }
+
+    (function initFocusToggle() {
+      const el = document.getElementById("tog-focus");
+      const saved = localStorage.getItem(FOCUS_KEY);
+      el.checked = saved === null ? true : saved === "1";
+      el.addEventListener("change", () => {
+        localStorage.setItem(FOCUS_KEY, el.checked ? "1" : "0");
+        SELECTED = null;
+        redraw();
+      });
+    })();
+
+    /* Embedded by `python3 scripts/build_holes.py` so file:// open works without a server. */
+    const EMBEDDED_HOLES_GRAPH = {"updated":"2026-11-21T01:50:36Z","sorryCount":93,"legend":{"open":"No unfinished import-deps \u2014 verify / prove next (TBD)","blocked":"Waiting on unfinished imported modules","done":"Verified (listed in VERIFIED and deps done)"},"notes":["File-level board: one node per SignatureVolatility .lean module.","All modules start as unverified TBD (Gemini dump not yet checked).","Hard edge B\u2192A: A imports B \u2014 A cannot be done while B is unfinished.","Mark a module verified by adding its id to VERIFIED in scripts/build_holes.py.","Blue = done. Green = open. Grey = blocked.","Regenerate with: python3 scripts/build_holes.py","Open tips: IndexedFiltration, Letter, NflvrOfMartingaleMeasure, Preliminaries, Weight."],"nodes":[{"id":"(root)","label":"(root)","section":99,"file":"SignatureVolatility.lean","status":"blocked","blocker":"needs BanachAlgebraConcatBound, BlackScholesModel, ChenIdentity, ClassicalRiccatiSolution, Corollary36SigmaWellDefined, DualPairing, DualPairingLeNormWDualMulNormW, ExtTensorAlgebra.Antipode (+84 more)","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"AdmissibleGainsUnderP","label":"AdmissibleGainsUnderP","section":1,"file":"SignatureVolatility/AdmissibleGainsUnderP.lean","status":"done","blocker":null,"detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"BanachAlgebraConcatBound","label":"BanachAlgebraConcatBound","section":1,"file":"SignatureVolatility/BanachAlgebraConcatBound.lean","status":"blocked","blocker":"needs MemTw, NormW, Weight, ExtTensorAlgebra.Concat, ExtTensorAlgebra.LevelNorm, Preliminaries","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"BlackScholesModel","label":"BlackScholesModel","section":1,"file":"SignatureVolatility/BlackScholesModel.lean","status":"blocked","blocker":"needs SignatureVolatilityModel, HypH2, Weight.ConstOne, ExtTensorAlgebra.BasisWord, HypH1OfIsFinitelySupported","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ChenIdentity","label":"ChenIdentity","section":1,"file":"SignatureVolatility/ChenIdentity.lean","status":"blocked","blocker":"needs ProlongedBrownianSetup, ExtTensorAlgebra.Concat","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ClassicalRiccatiSolution","label":"ClassicalRiccatiSolution","section":1,"file":"SignatureVolatility/ClassicalRiccatiSolution.lean","status":"blocked","blocker":"needs Weight, ExtTensorAlgebra.ExtTensorAlgebra, RiccatiOpBounded, MemTw, NormW","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"Corollary36SigmaWellDefined","label":"Corollary36SigmaWellDefined","section":1,"file":"SignatureVolatility/Corollary36SigmaWellDefined.lean","status":"blocked","blocker":"needs SignatureVolatilityModel, SignatureVolatilityModel.Sigma, ProlongedBrownianSetup, Norm2w, NormW, Lemma32SignatureInTw, MemTwDualOfMemL2w","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"DualPairing","label":"DualPairing","section":1,"file":"SignatureVolatility/DualPairing.lean","status":"blocked","blocker":"needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelInner","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"DualPairingLeNormWDualMulNormW","label":"DualPairingLeNormWDualMulNormW","section":1,"file":"SignatureVolatility/DualPairingLeNormWDualMulNormW.lean","status":"blocked","blocker":"needs DualPairing, NormWDual, NormW, MemTwDual, MemTw, ExtTensorAlgebra.LevelInner, ExtTensorAlgebra.LevelNorm, Preliminaries","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ExtTensorAlgebra.Antipode","label":"ExtTensorAlgebra.Antipode","section":2,"file":"SignatureVolatility/ExtTensorAlgebra/Antipode.lean","status":"blocked","blocker":"needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.BasisWord, Letter, Word","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ExtTensorAlgebra.BasisWord","label":"ExtTensorAlgebra.BasisWord","section":2,"file":"SignatureVolatility/ExtTensorAlgebra/BasisWord.lean","status":"blocked","blocker":"needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.IsFinitelySupported, Letter, Word","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ExtTensorAlgebra.Concat","label":"ExtTensorAlgebra.Concat","section":2,"file":"SignatureVolatility/ExtTensorAlgebra/Concat.lean","status":"blocked","blocker":"needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.BasisWord, Letter, Word","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ExtTensorAlgebra.Coord","label":"ExtTensorAlgebra.Coord","section":2,"file":"SignatureVolatility/ExtTensorAlgebra/Coord.lean","status":"blocked","blocker":"needs ExtTensorAlgebra.ExtTensorAlgebra, Letter, Word","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ExtTensorAlgebra.EvalShuffleBasis","label":"ExtTensorAlgebra.EvalShuffleBasis","section":2,"file":"SignatureVolatility/ExtTensorAlgebra/EvalShuffleBasis.lean","status":"blocked","blocker":"needs ExtTensorAlgebra.ShuffleWords, ExtTensorAlgebra.ExtTensorAlgebra","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ExtTensorAlgebra.ExtTensorAlgebra","label":"ExtTensorAlgebra.ExtTensorAlgebra","section":2,"file":"SignatureVolatility/ExtTensorAlgebra/ExtTensorAlgebra.lean","status":"blocked","blocker":"needs Letter, Word","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ExtTensorAlgebra.FreeTensorAlgebra","label":"ExtTensorAlgebra.FreeTensorAlgebra","section":2,"file":"SignatureVolatility/ExtTensorAlgebra/FreeTensorAlgebra.lean","status":"blocked","blocker":"needs ExtTensorAlgebra.IsFinitelySupported","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ExtTensorAlgebra.IsFinitelySupported","label":"ExtTensorAlgebra.IsFinitelySupported","section":2,"file":"SignatureVolatility/ExtTensorAlgebra/IsFinitelySupported.lean","status":"blocked","blocker":"needs ExtTensorAlgebra.ExtTensorAlgebra, Letter, Word","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ExtTensorAlgebra.LevelInner","label":"ExtTensorAlgebra.LevelInner","section":2,"file":"SignatureVolatility/ExtTensorAlgebra/LevelInner.lean","status":"blocked","blocker":"needs ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq, WordsOfLength, Preliminaries","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ExtTensorAlgebra.LevelNorm","label":"ExtTensorAlgebra.LevelNorm","section":2,"file":"SignatureVolatility/ExtTensorAlgebra/LevelNorm.lean","status":"blocked","blocker":"needs ExtTensorAlgebra.LevelNormSq, ExtTensorAlgebra.Concat, WordsOfLength, Preliminaries, Letter, Word","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ExtTensorAlgebra.LevelNormSq","label":"ExtTensorAlgebra.LevelNormSq","section":2,"file":"SignatureVolatility/ExtTensorAlgebra/LevelNormSq.lean","status":"blocked","blocker":"needs ExtTensorAlgebra.ExtTensorAlgebra, WordsOfLength, Letter, Word","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ExtTensorAlgebra.ShuffleBasis","label":"ExtTensorAlgebra.ShuffleBasis","section":2,"file":"SignatureVolatility/ExtTensorAlgebra/ShuffleBasis.lean","status":"blocked","blocker":"needs ExtTensorAlgebra.ShuffleWords, ExtTensorAlgebra.ExtTensorAlgebra","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ExtTensorAlgebra.ShuffleWords","label":"ExtTensorAlgebra.ShuffleWords","section":2,"file":"SignatureVolatility/ExtTensorAlgebra/ShuffleWords.lean","status":"blocked","blocker":"needs Letter, Word","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"FirstOrderBrownianVolModel","label":"FirstOrderBrownianVolModel","section":1,"file":"SignatureVolatility/FirstOrderBrownianVolModel.lean","status":"blocked","blocker":"needs SignatureVolatilityModel, HypH2, Weight.ConstOne, ExtTensorAlgebra.BasisWord, HypH1OfIsFinitelySupported","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"GKWDecompositionSetup","label":"GKWDecompositionSetup","section":1,"file":"SignatureVolatility/GKWDecompositionSetup.lean","status":"blocked","blocker":"needs PriceFiltrationSignatureSpace, Weight, PriceFiltrationSignatureSpace.VSubspace, ProjLe, MemL2wInv, Norm2wInv","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"GeneratedFiltration","label":"GeneratedFiltration","section":1,"file":"SignatureVolatility/GeneratedFiltration.lean","status":"blocked","blocker":"needs IndexedFiltration","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"HypH1","label":"HypH1","section":1,"file":"SignatureVolatility/HypH1.lean","status":"blocked","blocker":"needs MemL2w, Weight, ExtTensorAlgebra.ExtTensorAlgebra","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"HypH1OfIsFinitelySupported","label":"HypH1OfIsFinitelySupported","section":1,"file":"SignatureVolatility/HypH1OfIsFinitelySupported.lean","status":"blocked","blocker":"needs HypH1, ExtTensorAlgebra.IsFinitelySupported, Weight, MemL2w, ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"HypH2","label":"HypH2","section":1,"file":"SignatureVolatility/HypH2.lean","status":"blocked","blocker":"needs Weight, Weight.ConstOne, Weight.Geometric","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"HypH3","label":"HypH3","section":1,"file":"SignatureVolatility/HypH3.lean","status":"blocked","blocker":"needs ExtTensorAlgebra.ExtTensorAlgebra","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"IndexedFiltration","label":"IndexedFiltration","section":1,"file":"SignatureVolatility/IndexedFiltration.lean","status":"open","blocker":null,"detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"InfiniteGeometricSignatureModel","label":"InfiniteGeometricSignatureModel","section":1,"file":"SignatureVolatility/InfiniteGeometricSignatureModel.lean","status":"blocked","blocker":"needs SignatureVolatilityModel, HypH2, Weight.Geometric, MemL2w, ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"IsSpecialSemimartingale","label":"IsSpecialSemimartingale","section":1,"file":"SignatureVolatility/IsSpecialSemimartingale.lean","status":"blocked","blocker":"needs IndexedFiltration","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ItoCalculusKit","label":"ItoCalculusKit","section":1,"file":"SignatureVolatility/ItoCalculusKit.lean","status":"blocked","blocker":"needs ProlongedBrownianSetup, Weight, ExtTensorAlgebra.ExtTensorAlgebra, DualPairing, Norm2w, HypH1, HypH2, ProlongedBrownianSetup.WHat (+1 more)","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"Lemma32SignatureInTw","label":"Lemma32SignatureInTw","section":1,"file":"SignatureVolatility/Lemma32SignatureInTw.lean","status":"blocked","blocker":"needs ProlongedBrownianSetup, MemTw, NormW, Weight, HypH2, ProlongedBrownianSetup.WHat","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"Lemma61GramPosDef","label":"Lemma61GramPosDef","section":1,"file":"SignatureVolatility/Lemma61GramPosDef.lean","status":"blocked","blocker":"needs GKWDecompositionSetup","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"Letter","label":"Letter","section":1,"file":"SignatureVolatility/Letter.lean","status":"open","blocker":null,"detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"MemL2w","label":"MemL2w","section":1,"file":"SignatureVolatility/MemL2w.lean","status":"blocked","blocker":"needs Weight, ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"MemL2wInv","label":"MemL2wInv","section":1,"file":"SignatureVolatility/MemL2wInv.lean","status":"blocked","blocker":"needs Weight, ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"MemL2wInvOfMemTw","label":"MemL2wInvOfMemTw","section":1,"file":"SignatureVolatility/MemL2wInvOfMemTw.lean","status":"blocked","blocker":"needs MemL2wInv, MemTw, Norm2wInv, NormW, Weight, ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq, Preliminaries","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"MemTw","label":"MemTw","section":1,"file":"SignatureVolatility/MemTw.lean","status":"blocked","blocker":"needs Weight, ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNorm","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"MemTwDual","label":"MemTwDual","section":1,"file":"SignatureVolatility/MemTwDual.lean","status":"blocked","blocker":"needs Weight, ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNorm","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"MemTwDualOfMemL2w","label":"MemTwDualOfMemL2w","section":1,"file":"SignatureVolatility/MemTwDualOfMemL2w.lean","status":"blocked","blocker":"needs MemTwDual, MemL2w, NormWDual, Weight, ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq, Norm2w","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"NflvrOfMartingaleMeasure","label":"NflvrOfMartingaleMeasure","section":1,"file":"SignatureVolatility/NflvrOfMartingaleMeasure.lean","status":"open","blocker":null,"detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"Norm2w","label":"Norm2w","section":1,"file":"SignatureVolatility/Norm2w.lean","status":"blocked","blocker":"needs Weight, ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"Norm2wInv","label":"Norm2wInv","section":1,"file":"SignatureVolatility/Norm2wInv.lean","status":"blocked","blocker":"needs Weight, ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"NormW","label":"NormW","section":1,"file":"SignatureVolatility/NormW.lean","status":"blocked","blocker":"needs Weight, ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNorm","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"NormWDual","label":"NormWDual","section":1,"file":"SignatureVolatility/NormWDual.lean","status":"blocked","blocker":"needs Weight, ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNorm, MemTwDual","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"Preliminaries","label":"Preliminaries","section":1,"file":"SignatureVolatility/Preliminaries.lean","status":"open","blocker":null,"detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"PriceFiltration","label":"PriceFiltration","section":1,"file":"SignatureVolatility/PriceFiltration.lean","status":"blocked","blocker":"needs ProlongedBrownianSetup, IndexedFiltration","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"PriceFiltrationSignatureSpace","label":"PriceFiltrationSignatureSpace","section":1,"file":"SignatureVolatility/PriceFiltrationSignatureSpace.lean","status":"blocked","blocker":"needs Word, ExtTensorAlgebra.ExtTensorAlgebra","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"PriceFiltrationSignatureSpace.AugmentedMarketSpan","label":"PriceFiltrationSignatureSpace.AugmentedMarketSpan","section":5,"file":"SignatureVolatility/PriceFiltrationSignatureSpace/AugmentedMarketSpan.lean","status":"blocked","blocker":"needs PriceFiltrationSignatureSpace","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"PriceFiltrationSignatureSpace.CompletenessDepth","label":"PriceFiltrationSignatureSpace.CompletenessDepth","section":5,"file":"SignatureVolatility/PriceFiltrationSignatureSpace/CompletenessDepth.lean","status":"blocked","blocker":"needs PriceFiltrationSignatureSpace, PriceFiltrationSignatureSpace.VInfty, PriceFiltrationSignatureSpace.VSubspace","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration","label":"PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration","section":5,"file":"SignatureVolatility/PriceFiltrationSignatureSpace/IsCompleteOnPriceFiltration.lean","status":"blocked","blocker":"needs PriceFiltrationSignatureSpace, PriceFiltrationSignatureSpace.AugmentedMarketSpan","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"PriceFiltrationSignatureSpace.VInfty","label":"PriceFiltrationSignatureSpace.VInfty","section":5,"file":"SignatureVolatility/PriceFiltrationSignatureSpace/VInfty.lean","status":"blocked","blocker":"needs PriceFiltrationSignatureSpace","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"PriceFiltrationSignatureSpace.VSubspace","label":"PriceFiltrationSignatureSpace.VSubspace","section":5,"file":"SignatureVolatility/PriceFiltrationSignatureSpace/VSubspace.lean","status":"blocked","blocker":"needs PriceFiltrationSignatureSpace, WordsOfLength, Word","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ProjGt","label":"ProjGt","section":1,"file":"SignatureVolatility/ProjGt.lean","status":"blocked","blocker":"needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq, ProjLe, Letter, Word","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ProjLe","label":"ProjLe","section":1,"file":"SignatureVolatility/ProjLe.lean","status":"blocked","blocker":"needs ExtTensorAlgebra.ExtTensorAlgebra, Letter, Word","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ProlongedBrownianSetup","label":"ProlongedBrownianSetup","section":1,"file":"SignatureVolatility/ProlongedBrownianSetup.lean","status":"blocked","blocker":"needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.Concat, ExtTensorAlgebra.EvalShuffleBasis, ExtTensorAlgebra.LevelNorm, GeneratedFiltration, IndexedFiltration, Letter, Word","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ProlongedBrownianSetup.BrownianFiltration","label":"ProlongedBrownianSetup.BrownianFiltration","section":4,"file":"SignatureVolatility/ProlongedBrownianSetup/BrownianFiltration.lean","status":"blocked","blocker":"needs ProlongedBrownianSetup, GeneratedFiltration, IndexedFiltration","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ProlongedBrownianSetup.SignatureFiltration","label":"ProlongedBrownianSetup.SignatureFiltration","section":4,"file":"SignatureVolatility/ProlongedBrownianSetup/SignatureFiltration.lean","status":"blocked","blocker":"needs ProlongedBrownianSetup, ProlongedBrownianSetup.WHat, GeneratedFiltration, IndexedFiltration, PriceFiltration","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ProlongedBrownianSetup.WAug","label":"ProlongedBrownianSetup.WAug","section":4,"file":"SignatureVolatility/ProlongedBrownianSetup/WAug.lean","status":"blocked","blocker":"needs ProlongedBrownianSetup","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ProlongedBrownianSetup.WHat","label":"ProlongedBrownianSetup.WHat","section":4,"file":"SignatureVolatility/ProlongedBrownianSetup/WHat.lean","status":"blocked","blocker":"needs ProlongedBrownianSetup","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"Proposition311SharpnessOfH1","label":"Proposition311SharpnessOfH1","section":1,"file":"SignatureVolatility/Proposition311SharpnessOfH1.lean","status":"blocked","blocker":"needs HypH1, Weight, SuperfactorialFunctional, ExtTensorAlgebra.ExtTensorAlgebra","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"Proposition65NormalEquations","label":"Proposition65NormalEquations","section":1,"file":"SignatureVolatility/Proposition65NormalEquations.lean","status":"blocked","blocker":"needs GKWDecompositionSetup","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"PureBrownianWord","label":"PureBrownianWord","section":1,"file":"SignatureVolatility/PureBrownianWord.lean","status":"blocked","blocker":"needs Letter, Word","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"QuinticOUSignatureModel","label":"QuinticOUSignatureModel","section":1,"file":"SignatureVolatility/QuinticOUSignatureModel.lean","status":"blocked","blocker":"needs SignatureVolatilityModel, HypH2, Weight.ConstOne, HypH1OfIsFinitelySupported","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"Remark219BlackScholesRiccati","label":"Remark219BlackScholesRiccati","section":1,"file":"SignatureVolatility/Remark219BlackScholesRiccati.lean","status":"blocked","blocker":"needs ClassicalRiccatiSolution, Weight","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"RiccatiOpBounded","label":"RiccatiOpBounded","section":1,"file":"SignatureVolatility/RiccatiOpBounded.lean","status":"blocked","blocker":"needs Weight, ExtTensorAlgebra.ExtTensorAlgebra, RightShift, StratonovichHalfLaplacian, ShuffleFinite","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"RightShift","label":"RightShift","section":1,"file":"SignatureVolatility/RightShift.lean","status":"blocked","blocker":"needs ExtTensorAlgebra.ExtTensorAlgebra, Letter, Word","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"SatisfiesNFLVR","label":"SatisfiesNFLVR","section":1,"file":"SignatureVolatility/SatisfiesNFLVR.lean","status":"done","blocker":null,"detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"Section71BlackScholesCompleteness","label":"Section71BlackScholesCompleteness","section":1,"file":"SignatureVolatility/Section71BlackScholesCompleteness.lean","status":"blocked","blocker":"needs PriceFiltrationSignatureSpace, PriceFiltrationSignatureSpace.CompletenessDepth, PriceFiltrationSignatureSpace.VInfty, PriceFiltrationSignatureSpace.VSubspace","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ShuffleFinite","label":"ShuffleFinite","section":1,"file":"SignatureVolatility/ShuffleFinite.lean","status":"blocked","blocker":"needs ExtTensorAlgebra.ExtTensorAlgebra, Letter, Word, WordsOfLength, ExtTensorAlgebra.ShuffleBasis","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"ShuffleIdentity","label":"ShuffleIdentity","section":1,"file":"SignatureVolatility/ShuffleIdentity.lean","status":"blocked","blocker":"needs ProlongedBrownianSetup, ProlongedBrownianSetup.WHat, ExtTensorAlgebra.EvalShuffleBasis, Letter, Word","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"SignatureFiltrationEqBrownianFiltration","label":"SignatureFiltrationEqBrownianFiltration","section":1,"file":"SignatureVolatility/SignatureFiltrationEqBrownianFiltration.lean","status":"blocked","blocker":"needs ProlongedBrownianSetup, ProlongedBrownianSetup.WHat, ProlongedBrownianSetup.BrownianFiltration, ProlongedBrownianSetup.SignatureFiltration","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"SignatureHestonLevel2Model","label":"SignatureHestonLevel2Model","section":1,"file":"SignatureVolatility/SignatureHestonLevel2Model.lean","status":"blocked","blocker":"needs SignatureVolatilityModel, HypH2, Weight.ConstOne, ExtTensorAlgebra.BasisWord, HypH1OfIsFinitelySupported","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"SignaturePriceSolution","label":"SignaturePriceSolution","section":1,"file":"SignatureVolatility/SignaturePriceSolution.lean","status":"blocked","blocker":"needs SignatureVolatilityModel, ProlongedBrownianSetup, ItoCalculusKit, ProlongedBrownianSetup.SignatureFiltration","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"SignatureRiccatiKit","label":"SignatureRiccatiKit","section":1,"file":"SignatureVolatility/SignatureRiccatiKit.lean","status":"blocked","blocker":"needs ClassicalRiccatiSolution, Weight","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"SignatureVolatilityModel","label":"SignatureVolatilityModel","section":1,"file":"SignatureVolatility/SignatureVolatilityModel.lean","status":"blocked","blocker":"needs Weight, ExtTensorAlgebra.ExtTensorAlgebra, HypH1, HypH2, HypH3","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"SignatureVolatilityModel.Sigma","label":"SignatureVolatilityModel.Sigma","section":6,"file":"SignatureVolatility/SignatureVolatilityModel/Sigma.lean","status":"blocked","blocker":"needs SignatureVolatilityModel, ProlongedBrownianSetup, ProlongedBrownianSetup.WHat, DualPairing, ExtTensorAlgebra.LevelInner","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"SmoothIteratedIntegral","label":"SmoothIteratedIntegral","section":1,"file":"SignatureVolatility/SmoothIteratedIntegral.lean","status":"blocked","blocker":"needs Letter, Word","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"SmoothSignature","label":"SmoothSignature","section":1,"file":"SignatureVolatility/SmoothSignature.lean","status":"blocked","blocker":"needs SmoothIteratedIntegral, ExtTensorAlgebra.ExtTensorAlgebra","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"StratonovichHalfLaplacian","label":"StratonovichHalfLaplacian","section":1,"file":"SignatureVolatility/StratonovichHalfLaplacian.lean","status":"blocked","blocker":"needs ExtTensorAlgebra.ExtTensorAlgebra","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"SuperfactorialFunctional","label":"SuperfactorialFunctional","section":1,"file":"SignatureVolatility/SuperfactorialFunctional.lean","status":"blocked","blocker":"needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq, PureBrownianWord","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"TailNorm2wInvLeRatioMulNormW","label":"TailNorm2wInvLeRatioMulNormW","section":1,"file":"SignatureVolatility/TailNorm2wInvLeRatioMulNormW.lean","status":"blocked","blocker":"needs MemTw, NormW, Norm2wInv, MemL2wInv, MemL2wInvOfMemTw, ProjGt, Weight, ExtTensorAlgebra.LevelNorm","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"TheoremA","label":"TheoremA","section":1,"file":"SignatureVolatility/TheoremA.lean","status":"blocked","blocker":"needs SignatureVolatilityModel, SignaturePriceSolution, ProlongedBrownianSetup, ItoCalculusKit","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"TheoremB","label":"TheoremB","section":1,"file":"SignatureVolatility/TheoremB.lean","status":"blocked","blocker":"needs SignatureVolatilityModel, SignatureRiccatiKit, IsSpecialSemimartingale, ProlongedBrownianSetup","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"TheoremC","label":"TheoremC","section":1,"file":"SignatureVolatility/TheoremC.lean","status":"blocked","blocker":"needs PriceFiltrationSignatureSpace, PriceFiltrationSignatureSpace.VSubspace, PriceFiltrationSignatureSpace.VInfty, PriceFiltrationSignatureSpace.CompletenessDepth, PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"TheoremD","label":"TheoremD","section":1,"file":"SignatureVolatility/TheoremD.lean","status":"blocked","blocker":"needs GKWDecompositionSetup, PriceFiltrationSignatureSpace, PriceFiltrationSignatureSpace.VSubspace, PriceFiltrationSignatureSpace.CompletenessDepth","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"Tw","label":"Tw","section":1,"file":"SignatureVolatility/Tw.lean","status":"blocked","blocker":"needs MemTw","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"Weight","label":"Weight","section":1,"file":"SignatureVolatility/Weight.lean","status":"open","blocker":null,"detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"Weight.ConstOne","label":"Weight.ConstOne","section":3,"file":"SignatureVolatility/Weight/ConstOne.lean","status":"blocked","blocker":"needs Weight","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"Weight.Geometric","label":"Weight.Geometric","section":3,"file":"SignatureVolatility/Weight/Geometric.lean","status":"blocked","blocker":"needs Weight","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"WeightedTruncationEstimates","label":"WeightedTruncationEstimates","section":1,"file":"SignatureVolatility/WeightedTruncationEstimates.lean","status":"blocked","blocker":"needs DualPairing, Norm2w, Norm2wInv, MemL2w, MemL2wInv, ProjGt, ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq (+3 more)","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"Word","label":"Word","section":1,"file":"SignatureVolatility/Word.lean","status":"blocked","blocker":"needs Letter","detail":"Unverified TBD \u2014 treat as a hole until reviewed."},{"id":"WordsOfLength","label":"WordsOfLength","section":1,"file":"SignatureVolatility/WordsOfLength.lean","status":"blocked","blocker":"needs Letter, Word, Preliminaries","detail":"Unverified TBD \u2014 treat as a hole until reviewed."}],"edges":[{"from":"AdmissibleGainsUnderP","to":"(root)","kind":"hard"},{"from":"BanachAlgebraConcatBound","to":"(root)","kind":"hard"},{"from":"BlackScholesModel","to":"(root)","kind":"hard"},{"from":"ChenIdentity","to":"(root)","kind":"hard"},{"from":"ClassicalRiccatiSolution","to":"(root)","kind":"hard"},{"from":"Corollary36SigmaWellDefined","to":"(root)","kind":"hard"},{"from":"DualPairing","to":"(root)","kind":"hard"},{"from":"DualPairingLeNormWDualMulNormW","to":"(root)","kind":"hard"},{"from":"ExtTensorAlgebra.Antipode","to":"(root)","kind":"hard"},{"from":"ExtTensorAlgebra.BasisWord","to":"(root)","kind":"hard"},{"from":"ExtTensorAlgebra.Concat","to":"(root)","kind":"hard"},{"from":"ExtTensorAlgebra.Coord","to":"(root)","kind":"hard"},{"from":"ExtTensorAlgebra.EvalShuffleBasis","to":"(root)","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"(root)","kind":"hard"},{"from":"ExtTensorAlgebra.FreeTensorAlgebra","to":"(root)","kind":"hard"},{"from":"ExtTensorAlgebra.IsFinitelySupported","to":"(root)","kind":"hard"},{"from":"ExtTensorAlgebra.LevelInner","to":"(root)","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNorm","to":"(root)","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNormSq","to":"(root)","kind":"hard"},{"from":"ExtTensorAlgebra.ShuffleBasis","to":"(root)","kind":"hard"},{"from":"ExtTensorAlgebra.ShuffleWords","to":"(root)","kind":"hard"},{"from":"FirstOrderBrownianVolModel","to":"(root)","kind":"hard"},{"from":"GKWDecompositionSetup","to":"(root)","kind":"hard"},{"from":"GeneratedFiltration","to":"(root)","kind":"hard"},{"from":"HypH1","to":"(root)","kind":"hard"},{"from":"HypH1OfIsFinitelySupported","to":"(root)","kind":"hard"},{"from":"HypH2","to":"(root)","kind":"hard"},{"from":"HypH3","to":"(root)","kind":"hard"},{"from":"IndexedFiltration","to":"(root)","kind":"hard"},{"from":"InfiniteGeometricSignatureModel","to":"(root)","kind":"hard"},{"from":"IsSpecialSemimartingale","to":"(root)","kind":"hard"},{"from":"ItoCalculusKit","to":"(root)","kind":"hard"},{"from":"Lemma32SignatureInTw","to":"(root)","kind":"hard"},{"from":"Lemma61GramPosDef","to":"(root)","kind":"hard"},{"from":"Letter","to":"(root)","kind":"hard"},{"from":"MemL2w","to":"(root)","kind":"hard"},{"from":"MemL2wInv","to":"(root)","kind":"hard"},{"from":"MemL2wInvOfMemTw","to":"(root)","kind":"hard"},{"from":"MemTw","to":"(root)","kind":"hard"},{"from":"MemTwDual","to":"(root)","kind":"hard"},{"from":"MemTwDualOfMemL2w","to":"(root)","kind":"hard"},{"from":"NflvrOfMartingaleMeasure","to":"(root)","kind":"hard"},{"from":"Norm2w","to":"(root)","kind":"hard"},{"from":"Norm2wInv","to":"(root)","kind":"hard"},{"from":"NormW","to":"(root)","kind":"hard"},{"from":"NormWDual","to":"(root)","kind":"hard"},{"from":"Preliminaries","to":"(root)","kind":"hard"},{"from":"PriceFiltration","to":"(root)","kind":"hard"},{"from":"PriceFiltrationSignatureSpace.AugmentedMarketSpan","to":"(root)","kind":"hard"},{"from":"PriceFiltrationSignatureSpace.CompletenessDepth","to":"(root)","kind":"hard"},{"from":"PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration","to":"(root)","kind":"hard"},{"from":"PriceFiltrationSignatureSpace.VInfty","to":"(root)","kind":"hard"},{"from":"PriceFiltrationSignatureSpace.VSubspace","to":"(root)","kind":"hard"},{"from":"PriceFiltrationSignatureSpace","to":"(root)","kind":"hard"},{"from":"ProjGt","to":"(root)","kind":"hard"},{"from":"ProjLe","to":"(root)","kind":"hard"},{"from":"ProlongedBrownianSetup.BrownianFiltration","to":"(root)","kind":"hard"},{"from":"ProlongedBrownianSetup.SignatureFiltration","to":"(root)","kind":"hard"},{"from":"ProlongedBrownianSetup.WAug","to":"(root)","kind":"hard"},{"from":"ProlongedBrownianSetup.WHat","to":"(root)","kind":"hard"},{"from":"ProlongedBrownianSetup","to":"(root)","kind":"hard"},{"from":"Proposition311SharpnessOfH1","to":"(root)","kind":"hard"},{"from":"Proposition65NormalEquations","to":"(root)","kind":"hard"},{"from":"PureBrownianWord","to":"(root)","kind":"hard"},{"from":"QuinticOUSignatureModel","to":"(root)","kind":"hard"},{"from":"Remark219BlackScholesRiccati","to":"(root)","kind":"hard"},{"from":"RiccatiOpBounded","to":"(root)","kind":"hard"},{"from":"RightShift","to":"(root)","kind":"hard"},{"from":"SatisfiesNFLVR","to":"(root)","kind":"hard"},{"from":"Section71BlackScholesCompleteness","to":"(root)","kind":"hard"},{"from":"ShuffleFinite","to":"(root)","kind":"hard"},{"from":"ShuffleIdentity","to":"(root)","kind":"hard"},{"from":"SignatureFiltrationEqBrownianFiltration","to":"(root)","kind":"hard"},{"from":"SignatureHestonLevel2Model","to":"(root)","kind":"hard"},{"from":"SignaturePriceSolution","to":"(root)","kind":"hard"},{"from":"SignatureRiccatiKit","to":"(root)","kind":"hard"},{"from":"SignatureVolatilityModel.Sigma","to":"(root)","kind":"hard"},{"from":"SignatureVolatilityModel","to":"(root)","kind":"hard"},{"from":"SmoothIteratedIntegral","to":"(root)","kind":"hard"},{"from":"SmoothSignature","to":"(root)","kind":"hard"},{"from":"StratonovichHalfLaplacian","to":"(root)","kind":"hard"},{"from":"SuperfactorialFunctional","to":"(root)","kind":"hard"},{"from":"TailNorm2wInvLeRatioMulNormW","to":"(root)","kind":"hard"},{"from":"TheoremA","to":"(root)","kind":"hard"},{"from":"TheoremB","to":"(root)","kind":"hard"},{"from":"TheoremC","to":"(root)","kind":"hard"},{"from":"TheoremD","to":"(root)","kind":"hard"},{"from":"Tw","to":"(root)","kind":"hard"},{"from":"Weight.ConstOne","to":"(root)","kind":"hard"},{"from":"Weight.Geometric","to":"(root)","kind":"hard"},{"from":"Weight","to":"(root)","kind":"hard"},{"from":"WeightedTruncationEstimates","to":"(root)","kind":"hard"},{"from":"Word","to":"(root)","kind":"hard"},{"from":"WordsOfLength","to":"(root)","kind":"hard"},{"from":"MemTw","to":"BanachAlgebraConcatBound","kind":"hard"},{"from":"NormW","to":"BanachAlgebraConcatBound","kind":"hard"},{"from":"Weight","to":"BanachAlgebraConcatBound","kind":"hard"},{"from":"ExtTensorAlgebra.Concat","to":"BanachAlgebraConcatBound","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNorm","to":"BanachAlgebraConcatBound","kind":"hard"},{"from":"Preliminaries","to":"BanachAlgebraConcatBound","kind":"hard"},{"from":"SignatureVolatilityModel","to":"BlackScholesModel","kind":"hard"},{"from":"HypH2","to":"BlackScholesModel","kind":"hard"},{"from":"Weight.ConstOne","to":"BlackScholesModel","kind":"hard"},{"from":"ExtTensorAlgebra.BasisWord","to":"BlackScholesModel","kind":"hard"},{"from":"HypH1OfIsFinitelySupported","to":"BlackScholesModel","kind":"hard"},{"from":"ProlongedBrownianSetup","to":"ChenIdentity","kind":"hard"},{"from":"ExtTensorAlgebra.Concat","to":"ChenIdentity","kind":"hard"},{"from":"Weight","to":"ClassicalRiccatiSolution","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"ClassicalRiccatiSolution","kind":"hard"},{"from":"RiccatiOpBounded","to":"ClassicalRiccatiSolution","kind":"hard"},{"from":"MemTw","to":"ClassicalRiccatiSolution","kind":"hard"},{"from":"NormW","to":"ClassicalRiccatiSolution","kind":"hard"},{"from":"SignatureVolatilityModel","to":"Corollary36SigmaWellDefined","kind":"hard"},{"from":"SignatureVolatilityModel.Sigma","to":"Corollary36SigmaWellDefined","kind":"hard"},{"from":"ProlongedBrownianSetup","to":"Corollary36SigmaWellDefined","kind":"hard"},{"from":"Norm2w","to":"Corollary36SigmaWellDefined","kind":"hard"},{"from":"NormW","to":"Corollary36SigmaWellDefined","kind":"hard"},{"from":"Lemma32SignatureInTw","to":"Corollary36SigmaWellDefined","kind":"hard"},{"from":"MemTwDualOfMemL2w","to":"Corollary36SigmaWellDefined","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"DualPairing","kind":"hard"},{"from":"ExtTensorAlgebra.LevelInner","to":"DualPairing","kind":"hard"},{"from":"DualPairing","to":"DualPairingLeNormWDualMulNormW","kind":"hard"},{"from":"NormWDual","to":"DualPairingLeNormWDualMulNormW","kind":"hard"},{"from":"NormW","to":"DualPairingLeNormWDualMulNormW","kind":"hard"},{"from":"MemTwDual","to":"DualPairingLeNormWDualMulNormW","kind":"hard"},{"from":"MemTw","to":"DualPairingLeNormWDualMulNormW","kind":"hard"},{"from":"ExtTensorAlgebra.LevelInner","to":"DualPairingLeNormWDualMulNormW","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNorm","to":"DualPairingLeNormWDualMulNormW","kind":"hard"},{"from":"Preliminaries","to":"DualPairingLeNormWDualMulNormW","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"ExtTensorAlgebra.Antipode","kind":"hard"},{"from":"ExtTensorAlgebra.BasisWord","to":"ExtTensorAlgebra.Antipode","kind":"hard"},{"from":"Letter","to":"ExtTensorAlgebra.Antipode","kind":"hard"},{"from":"Word","to":"ExtTensorAlgebra.Antipode","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"ExtTensorAlgebra.BasisWord","kind":"hard"},{"from":"ExtTensorAlgebra.IsFinitelySupported","to":"ExtTensorAlgebra.BasisWord","kind":"hard"},{"from":"Letter","to":"ExtTensorAlgebra.BasisWord","kind":"hard"},{"from":"Word","to":"ExtTensorAlgebra.BasisWord","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"ExtTensorAlgebra.Concat","kind":"hard"},{"from":"ExtTensorAlgebra.BasisWord","to":"ExtTensorAlgebra.Concat","kind":"hard"},{"from":"Letter","to":"ExtTensorAlgebra.Concat","kind":"hard"},{"from":"Word","to":"ExtTensorAlgebra.Concat","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"ExtTensorAlgebra.Coord","kind":"hard"},{"from":"Letter","to":"ExtTensorAlgebra.Coord","kind":"hard"},{"from":"Word","to":"ExtTensorAlgebra.Coord","kind":"hard"},{"from":"ExtTensorAlgebra.ShuffleWords","to":"ExtTensorAlgebra.EvalShuffleBasis","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"ExtTensorAlgebra.EvalShuffleBasis","kind":"hard"},{"from":"Letter","to":"ExtTensorAlgebra.ExtTensorAlgebra","kind":"hard"},{"from":"Word","to":"ExtTensorAlgebra.ExtTensorAlgebra","kind":"hard"},{"from":"ExtTensorAlgebra.IsFinitelySupported","to":"ExtTensorAlgebra.FreeTensorAlgebra","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"ExtTensorAlgebra.IsFinitelySupported","kind":"hard"},{"from":"Letter","to":"ExtTensorAlgebra.IsFinitelySupported","kind":"hard"},{"from":"Word","to":"ExtTensorAlgebra.IsFinitelySupported","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNorm","to":"ExtTensorAlgebra.LevelInner","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNormSq","to":"ExtTensorAlgebra.LevelInner","kind":"hard"},{"from":"WordsOfLength","to":"ExtTensorAlgebra.LevelInner","kind":"hard"},{"from":"Preliminaries","to":"ExtTensorAlgebra.LevelInner","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNormSq","to":"ExtTensorAlgebra.LevelNorm","kind":"hard"},{"from":"ExtTensorAlgebra.Concat","to":"ExtTensorAlgebra.LevelNorm","kind":"hard"},{"from":"WordsOfLength","to":"ExtTensorAlgebra.LevelNorm","kind":"hard"},{"from":"Preliminaries","to":"ExtTensorAlgebra.LevelNorm","kind":"hard"},{"from":"Letter","to":"ExtTensorAlgebra.LevelNorm","kind":"hard"},{"from":"Word","to":"ExtTensorAlgebra.LevelNorm","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"ExtTensorAlgebra.LevelNormSq","kind":"hard"},{"from":"WordsOfLength","to":"ExtTensorAlgebra.LevelNormSq","kind":"hard"},{"from":"Letter","to":"ExtTensorAlgebra.LevelNormSq","kind":"hard"},{"from":"Word","to":"ExtTensorAlgebra.LevelNormSq","kind":"hard"},{"from":"ExtTensorAlgebra.ShuffleWords","to":"ExtTensorAlgebra.ShuffleBasis","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"ExtTensorAlgebra.ShuffleBasis","kind":"hard"},{"from":"Letter","to":"ExtTensorAlgebra.ShuffleWords","kind":"hard"},{"from":"Word","to":"ExtTensorAlgebra.ShuffleWords","kind":"hard"},{"from":"SignatureVolatilityModel","to":"FirstOrderBrownianVolModel","kind":"hard"},{"from":"HypH2","to":"FirstOrderBrownianVolModel","kind":"hard"},{"from":"Weight.ConstOne","to":"FirstOrderBrownianVolModel","kind":"hard"},{"from":"ExtTensorAlgebra.BasisWord","to":"FirstOrderBrownianVolModel","kind":"hard"},{"from":"HypH1OfIsFinitelySupported","to":"FirstOrderBrownianVolModel","kind":"hard"},{"from":"PriceFiltrationSignatureSpace","to":"GKWDecompositionSetup","kind":"hard"},{"from":"Weight","to":"GKWDecompositionSetup","kind":"hard"},{"from":"PriceFiltrationSignatureSpace.VSubspace","to":"GKWDecompositionSetup","kind":"hard"},{"from":"ProjLe","to":"GKWDecompositionSetup","kind":"hard"},{"from":"MemL2wInv","to":"GKWDecompositionSetup","kind":"hard"},{"from":"Norm2wInv","to":"GKWDecompositionSetup","kind":"hard"},{"from":"IndexedFiltration","to":"GeneratedFiltration","kind":"hard"},{"from":"MemL2w","to":"HypH1","kind":"hard"},{"from":"Weight","to":"HypH1","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"HypH1","kind":"hard"},{"from":"HypH1","to":"HypH1OfIsFinitelySupported","kind":"hard"},{"from":"ExtTensorAlgebra.IsFinitelySupported","to":"HypH1OfIsFinitelySupported","kind":"hard"},{"from":"Weight","to":"HypH1OfIsFinitelySupported","kind":"hard"},{"from":"MemL2w","to":"HypH1OfIsFinitelySupported","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"HypH1OfIsFinitelySupported","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNormSq","to":"HypH1OfIsFinitelySupported","kind":"hard"},{"from":"Weight","to":"HypH2","kind":"hard"},{"from":"Weight.ConstOne","to":"HypH2","kind":"hard"},{"from":"Weight.Geometric","to":"HypH2","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"HypH3","kind":"hard"},{"from":"SignatureVolatilityModel","to":"InfiniteGeometricSignatureModel","kind":"hard"},{"from":"HypH2","to":"InfiniteGeometricSignatureModel","kind":"hard"},{"from":"Weight.Geometric","to":"InfiniteGeometricSignatureModel","kind":"hard"},{"from":"MemL2w","to":"InfiniteGeometricSignatureModel","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNorm","to":"InfiniteGeometricSignatureModel","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNormSq","to":"InfiniteGeometricSignatureModel","kind":"hard"},{"from":"IndexedFiltration","to":"IsSpecialSemimartingale","kind":"hard"},{"from":"ProlongedBrownianSetup","to":"ItoCalculusKit","kind":"hard"},{"from":"Weight","to":"ItoCalculusKit","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"ItoCalculusKit","kind":"hard"},{"from":"DualPairing","to":"ItoCalculusKit","kind":"hard"},{"from":"Norm2w","to":"ItoCalculusKit","kind":"hard"},{"from":"HypH1","to":"ItoCalculusKit","kind":"hard"},{"from":"HypH2","to":"ItoCalculusKit","kind":"hard"},{"from":"ProlongedBrownianSetup.WHat","to":"ItoCalculusKit","kind":"hard"},{"from":"ProlongedBrownianSetup.SignatureFiltration","to":"ItoCalculusKit","kind":"hard"},{"from":"ProlongedBrownianSetup","to":"Lemma32SignatureInTw","kind":"hard"},{"from":"MemTw","to":"Lemma32SignatureInTw","kind":"hard"},{"from":"NormW","to":"Lemma32SignatureInTw","kind":"hard"},{"from":"Weight","to":"Lemma32SignatureInTw","kind":"hard"},{"from":"HypH2","to":"Lemma32SignatureInTw","kind":"hard"},{"from":"ProlongedBrownianSetup.WHat","to":"Lemma32SignatureInTw","kind":"hard"},{"from":"GKWDecompositionSetup","to":"Lemma61GramPosDef","kind":"hard"},{"from":"Weight","to":"MemL2w","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"MemL2w","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNormSq","to":"MemL2w","kind":"hard"},{"from":"Weight","to":"MemL2wInv","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"MemL2wInv","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNormSq","to":"MemL2wInv","kind":"hard"},{"from":"MemL2wInv","to":"MemL2wInvOfMemTw","kind":"hard"},{"from":"MemTw","to":"MemL2wInvOfMemTw","kind":"hard"},{"from":"Norm2wInv","to":"MemL2wInvOfMemTw","kind":"hard"},{"from":"NormW","to":"MemL2wInvOfMemTw","kind":"hard"},{"from":"Weight","to":"MemL2wInvOfMemTw","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNorm","to":"MemL2wInvOfMemTw","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNormSq","to":"MemL2wInvOfMemTw","kind":"hard"},{"from":"Preliminaries","to":"MemL2wInvOfMemTw","kind":"hard"},{"from":"Weight","to":"MemTw","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"MemTw","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNorm","to":"MemTw","kind":"hard"},{"from":"Weight","to":"MemTwDual","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"MemTwDual","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNorm","to":"MemTwDual","kind":"hard"},{"from":"MemTwDual","to":"MemTwDualOfMemL2w","kind":"hard"},{"from":"MemL2w","to":"MemTwDualOfMemL2w","kind":"hard"},{"from":"NormWDual","to":"MemTwDualOfMemL2w","kind":"hard"},{"from":"Weight","to":"MemTwDualOfMemL2w","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNorm","to":"MemTwDualOfMemL2w","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNormSq","to":"MemTwDualOfMemL2w","kind":"hard"},{"from":"Norm2w","to":"MemTwDualOfMemL2w","kind":"hard"},{"from":"SatisfiesNFLVR","to":"NflvrOfMartingaleMeasure","kind":"hard"},{"from":"AdmissibleGainsUnderP","to":"NflvrOfMartingaleMeasure","kind":"hard"},{"from":"Weight","to":"Norm2w","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"Norm2w","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNormSq","to":"Norm2w","kind":"hard"},{"from":"Weight","to":"Norm2wInv","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"Norm2wInv","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNormSq","to":"Norm2wInv","kind":"hard"},{"from":"Weight","to":"NormW","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"NormW","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNorm","to":"NormW","kind":"hard"},{"from":"Weight","to":"NormWDual","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"NormWDual","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNorm","to":"NormWDual","kind":"hard"},{"from":"MemTwDual","to":"NormWDual","kind":"hard"},{"from":"ProlongedBrownianSetup","to":"PriceFiltration","kind":"hard"},{"from":"IndexedFiltration","to":"PriceFiltration","kind":"hard"},{"from":"PriceFiltrationSignatureSpace","to":"PriceFiltrationSignatureSpace.AugmentedMarketSpan","kind":"hard"},{"from":"PriceFiltrationSignatureSpace","to":"PriceFiltrationSignatureSpace.CompletenessDepth","kind":"hard"},{"from":"PriceFiltrationSignatureSpace.VInfty","to":"PriceFiltrationSignatureSpace.CompletenessDepth","kind":"hard"},{"from":"PriceFiltrationSignatureSpace.VSubspace","to":"PriceFiltrationSignatureSpace.CompletenessDepth","kind":"hard"},{"from":"PriceFiltrationSignatureSpace","to":"PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration","kind":"hard"},{"from":"PriceFiltrationSignatureSpace.AugmentedMarketSpan","to":"PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration","kind":"hard"},{"from":"PriceFiltrationSignatureSpace","to":"PriceFiltrationSignatureSpace.VInfty","kind":"hard"},{"from":"PriceFiltrationSignatureSpace","to":"PriceFiltrationSignatureSpace.VSubspace","kind":"hard"},{"from":"WordsOfLength","to":"PriceFiltrationSignatureSpace.VSubspace","kind":"hard"},{"from":"Word","to":"PriceFiltrationSignatureSpace.VSubspace","kind":"hard"},{"from":"Word","to":"PriceFiltrationSignatureSpace","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"PriceFiltrationSignatureSpace","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"ProjGt","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNorm","to":"ProjGt","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNormSq","to":"ProjGt","kind":"hard"},{"from":"ProjLe","to":"ProjGt","kind":"hard"},{"from":"Letter","to":"ProjGt","kind":"hard"},{"from":"Word","to":"ProjGt","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"ProjLe","kind":"hard"},{"from":"Letter","to":"ProjLe","kind":"hard"},{"from":"Word","to":"ProjLe","kind":"hard"},{"from":"ProlongedBrownianSetup","to":"ProlongedBrownianSetup.BrownianFiltration","kind":"hard"},{"from":"GeneratedFiltration","to":"ProlongedBrownianSetup.BrownianFiltration","kind":"hard"},{"from":"IndexedFiltration","to":"ProlongedBrownianSetup.BrownianFiltration","kind":"hard"},{"from":"ProlongedBrownianSetup","to":"ProlongedBrownianSetup.SignatureFiltration","kind":"hard"},{"from":"ProlongedBrownianSetup.WHat","to":"ProlongedBrownianSetup.SignatureFiltration","kind":"hard"},{"from":"GeneratedFiltration","to":"ProlongedBrownianSetup.SignatureFiltration","kind":"hard"},{"from":"IndexedFiltration","to":"ProlongedBrownianSetup.SignatureFiltration","kind":"hard"},{"from":"PriceFiltration","to":"ProlongedBrownianSetup.SignatureFiltration","kind":"hard"},{"from":"ProlongedBrownianSetup","to":"ProlongedBrownianSetup.WAug","kind":"hard"},{"from":"ProlongedBrownianSetup","to":"ProlongedBrownianSetup.WHat","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"ProlongedBrownianSetup","kind":"hard"},{"from":"ExtTensorAlgebra.Concat","to":"ProlongedBrownianSetup","kind":"hard"},{"from":"ExtTensorAlgebra.EvalShuffleBasis","to":"ProlongedBrownianSetup","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNorm","to":"ProlongedBrownianSetup","kind":"hard"},{"from":"GeneratedFiltration","to":"ProlongedBrownianSetup","kind":"hard"},{"from":"IndexedFiltration","to":"ProlongedBrownianSetup","kind":"hard"},{"from":"Letter","to":"ProlongedBrownianSetup","kind":"hard"},{"from":"Word","to":"ProlongedBrownianSetup","kind":"hard"},{"from":"HypH1","to":"Proposition311SharpnessOfH1","kind":"hard"},{"from":"Weight","to":"Proposition311SharpnessOfH1","kind":"hard"},{"from":"SuperfactorialFunctional","to":"Proposition311SharpnessOfH1","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"Proposition311SharpnessOfH1","kind":"hard"},{"from":"GKWDecompositionSetup","to":"Proposition65NormalEquations","kind":"hard"},{"from":"Letter","to":"PureBrownianWord","kind":"hard"},{"from":"Word","to":"PureBrownianWord","kind":"hard"},{"from":"SignatureVolatilityModel","to":"QuinticOUSignatureModel","kind":"hard"},{"from":"HypH2","to":"QuinticOUSignatureModel","kind":"hard"},{"from":"Weight.ConstOne","to":"QuinticOUSignatureModel","kind":"hard"},{"from":"HypH1OfIsFinitelySupported","to":"QuinticOUSignatureModel","kind":"hard"},{"from":"ClassicalRiccatiSolution","to":"Remark219BlackScholesRiccati","kind":"hard"},{"from":"Weight","to":"Remark219BlackScholesRiccati","kind":"hard"},{"from":"Weight","to":"RiccatiOpBounded","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"RiccatiOpBounded","kind":"hard"},{"from":"RightShift","to":"RiccatiOpBounded","kind":"hard"},{"from":"StratonovichHalfLaplacian","to":"RiccatiOpBounded","kind":"hard"},{"from":"ShuffleFinite","to":"RiccatiOpBounded","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"RightShift","kind":"hard"},{"from":"Letter","to":"RightShift","kind":"hard"},{"from":"Word","to":"RightShift","kind":"hard"},{"from":"PriceFiltrationSignatureSpace","to":"Section71BlackScholesCompleteness","kind":"hard"},{"from":"PriceFiltrationSignatureSpace.CompletenessDepth","to":"Section71BlackScholesCompleteness","kind":"hard"},{"from":"PriceFiltrationSignatureSpace.VInfty","to":"Section71BlackScholesCompleteness","kind":"hard"},{"from":"PriceFiltrationSignatureSpace.VSubspace","to":"Section71BlackScholesCompleteness","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"ShuffleFinite","kind":"hard"},{"from":"Letter","to":"ShuffleFinite","kind":"hard"},{"from":"Word","to":"ShuffleFinite","kind":"hard"},{"from":"WordsOfLength","to":"ShuffleFinite","kind":"hard"},{"from":"ExtTensorAlgebra.ShuffleBasis","to":"ShuffleFinite","kind":"hard"},{"from":"ProlongedBrownianSetup","to":"ShuffleIdentity","kind":"hard"},{"from":"ProlongedBrownianSetup.WHat","to":"ShuffleIdentity","kind":"hard"},{"from":"ExtTensorAlgebra.EvalShuffleBasis","to":"ShuffleIdentity","kind":"hard"},{"from":"Letter","to":"ShuffleIdentity","kind":"hard"},{"from":"Word","to":"ShuffleIdentity","kind":"hard"},{"from":"ProlongedBrownianSetup","to":"SignatureFiltrationEqBrownianFiltration","kind":"hard"},{"from":"ProlongedBrownianSetup.WHat","to":"SignatureFiltrationEqBrownianFiltration","kind":"hard"},{"from":"ProlongedBrownianSetup.BrownianFiltration","to":"SignatureFiltrationEqBrownianFiltration","kind":"hard"},{"from":"ProlongedBrownianSetup.SignatureFiltration","to":"SignatureFiltrationEqBrownianFiltration","kind":"hard"},{"from":"SignatureVolatilityModel","to":"SignatureHestonLevel2Model","kind":"hard"},{"from":"HypH2","to":"SignatureHestonLevel2Model","kind":"hard"},{"from":"Weight.ConstOne","to":"SignatureHestonLevel2Model","kind":"hard"},{"from":"ExtTensorAlgebra.BasisWord","to":"SignatureHestonLevel2Model","kind":"hard"},{"from":"HypH1OfIsFinitelySupported","to":"SignatureHestonLevel2Model","kind":"hard"},{"from":"SignatureVolatilityModel","to":"SignaturePriceSolution","kind":"hard"},{"from":"ProlongedBrownianSetup","to":"SignaturePriceSolution","kind":"hard"},{"from":"ItoCalculusKit","to":"SignaturePriceSolution","kind":"hard"},{"from":"ProlongedBrownianSetup.SignatureFiltration","to":"SignaturePriceSolution","kind":"hard"},{"from":"ClassicalRiccatiSolution","to":"SignatureRiccatiKit","kind":"hard"},{"from":"Weight","to":"SignatureRiccatiKit","kind":"hard"},{"from":"SignatureVolatilityModel","to":"SignatureVolatilityModel.Sigma","kind":"hard"},{"from":"ProlongedBrownianSetup","to":"SignatureVolatilityModel.Sigma","kind":"hard"},{"from":"ProlongedBrownianSetup.WHat","to":"SignatureVolatilityModel.Sigma","kind":"hard"},{"from":"DualPairing","to":"SignatureVolatilityModel.Sigma","kind":"hard"},{"from":"ExtTensorAlgebra.LevelInner","to":"SignatureVolatilityModel.Sigma","kind":"hard"},{"from":"Weight","to":"SignatureVolatilityModel","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"SignatureVolatilityModel","kind":"hard"},{"from":"HypH1","to":"SignatureVolatilityModel","kind":"hard"},{"from":"HypH2","to":"SignatureVolatilityModel","kind":"hard"},{"from":"HypH3","to":"SignatureVolatilityModel","kind":"hard"},{"from":"Letter","to":"SmoothIteratedIntegral","kind":"hard"},{"from":"Word","to":"SmoothIteratedIntegral","kind":"hard"},{"from":"SmoothIteratedIntegral","to":"SmoothSignature","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"SmoothSignature","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"StratonovichHalfLaplacian","kind":"hard"},{"from":"ExtTensorAlgebra.ExtTensorAlgebra","to":"SuperfactorialFunctional","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNormSq","to":"SuperfactorialFunctional","kind":"hard"},{"from":"PureBrownianWord","to":"SuperfactorialFunctional","kind":"hard"},{"from":"MemTw","to":"TailNorm2wInvLeRatioMulNormW","kind":"hard"},{"from":"NormW","to":"TailNorm2wInvLeRatioMulNormW","kind":"hard"},{"from":"Norm2wInv","to":"TailNorm2wInvLeRatioMulNormW","kind":"hard"},{"from":"MemL2wInv","to":"TailNorm2wInvLeRatioMulNormW","kind":"hard"},{"from":"MemL2wInvOfMemTw","to":"TailNorm2wInvLeRatioMulNormW","kind":"hard"},{"from":"ProjGt","to":"TailNorm2wInvLeRatioMulNormW","kind":"hard"},{"from":"Weight","to":"TailNorm2wInvLeRatioMulNormW","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNorm","to":"TailNorm2wInvLeRatioMulNormW","kind":"hard"},{"from":"SignatureVolatilityModel","to":"TheoremA","kind":"hard"},{"from":"SignaturePriceSolution","to":"TheoremA","kind":"hard"},{"from":"ProlongedBrownianSetup","to":"TheoremA","kind":"hard"},{"from":"ItoCalculusKit","to":"TheoremA","kind":"hard"},{"from":"SignatureVolatilityModel","to":"TheoremB","kind":"hard"},{"from":"SignatureRiccatiKit","to":"TheoremB","kind":"hard"},{"from":"SatisfiesNFLVR","to":"TheoremB","kind":"hard"},{"from":"IsSpecialSemimartingale","to":"TheoremB","kind":"hard"},{"from":"ProlongedBrownianSetup","to":"TheoremB","kind":"hard"},{"from":"PriceFiltrationSignatureSpace","to":"TheoremC","kind":"hard"},{"from":"PriceFiltrationSignatureSpace.VSubspace","to":"TheoremC","kind":"hard"},{"from":"PriceFiltrationSignatureSpace.VInfty","to":"TheoremC","kind":"hard"},{"from":"PriceFiltrationSignatureSpace.CompletenessDepth","to":"TheoremC","kind":"hard"},{"from":"PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration","to":"TheoremC","kind":"hard"},{"from":"GKWDecompositionSetup","to":"TheoremD","kind":"hard"},{"from":"PriceFiltrationSignatureSpace","to":"TheoremD","kind":"hard"},{"from":"PriceFiltrationSignatureSpace.VSubspace","to":"TheoremD","kind":"hard"},{"from":"PriceFiltrationSignatureSpace.CompletenessDepth","to":"TheoremD","kind":"hard"},{"from":"MemTw","to":"Tw","kind":"hard"},{"from":"Weight","to":"Weight.ConstOne","kind":"hard"},{"from":"Weight","to":"Weight.Geometric","kind":"hard"},{"from":"DualPairing","to":"WeightedTruncationEstimates","kind":"hard"},{"from":"Norm2w","to":"WeightedTruncationEstimates","kind":"hard"},{"from":"Norm2wInv","to":"WeightedTruncationEstimates","kind":"hard"},{"from":"MemL2w","to":"WeightedTruncationEstimates","kind":"hard"},{"from":"MemL2wInv","to":"WeightedTruncationEstimates","kind":"hard"},{"from":"ProjGt","to":"WeightedTruncationEstimates","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNorm","to":"WeightedTruncationEstimates","kind":"hard"},{"from":"ExtTensorAlgebra.LevelNormSq","to":"WeightedTruncationEstimates","kind":"hard"},{"from":"ExtTensorAlgebra.LevelInner","to":"WeightedTruncationEstimates","kind":"hard"},{"from":"Weight","to":"WeightedTruncationEstimates","kind":"hard"},{"from":"Preliminaries","to":"WeightedTruncationEstimates","kind":"hard"},{"from":"Letter","to":"Word","kind":"hard"},{"from":"Letter","to":"WordsOfLength","kind":"hard"},{"from":"Word","to":"WordsOfLength","kind":"hard"},{"from":"Preliminaries","to":"WordsOfLength","kind":"hard"}]}; /*HOLES_GRAPH_JSON*/
+    function loadGraph(data) { DATA = data; render(data); }
+    if (EMBEDDED_HOLES_GRAPH && typeof EMBEDDED_HOLES_GRAPH === "object") {
+      loadGraph(EMBEDDED_HOLES_GRAPH);
+    } else {
+      fetch("holes-graph.json", { cache: "no-store" })
+        .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+        .then(loadGraph)
+        .catch(err => {
+          const box = document.getElementById("load-error");
+          box.hidden = false;
+          box.textContent =
+            `Could not load holes-graph.json (${err.message}). ` +
+            `Run python3 scripts/build_holes.py (embeds the graph) or serve the repo root.`;
+        });
+    }
+  </script>
+</body>
+</html>

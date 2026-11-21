@@ -1,0 +1,322 @@
+#!/usr/bin/env python3
+# Copyright (c) 2026 Lars Warren Ericson. All rights reserved.
+"""Build holes-graph.json and HOLES.md for the SignatureVolatility proof-hole board.
+
+File-level board: every SignatureVolatility module is a hole. All modules start as
+unverified TBD (Gemini dump / unverified formalization). Hard edges follow Lean
+imports: A imports B ⇒ hard edge B→A (A cannot be done while B is unfinished).
+
+Override verification later by adding module ids to VERIFIED.
+"""
+from __future__ import annotations
+
+import json
+import re
+from collections import defaultdict
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+LEAN_ROOT = ROOT / "SignatureVolatility"
+OUT_JSON = ROOT / "holes-graph.json"
+OUT_HTML = ROOT / "holes.html"
+HTML_EMBED_MARKER = "/*HOLES_GRAPH_JSON*/"
+OUT_MD = ROOT / "HOLES.md"
+OUT_EDGES = ROOT / "holes-edges.txt"
+
+IMPORT_RE = re.compile(r"^import\s+(SignatureVolatility(?:\.\S+)?)")
+
+# Module ids (short paths) that have been human-verified / sorry-free and may be
+# marked done once all hard predecessors are done. Empty ⇒ everything TBD.
+VERIFIED: set[str] = {
+    "AdmissibleGainsUnderP",
+    "SatisfiesNFLVR",
+}
+
+
+def short_mod(mod: str) -> str:
+    if mod == "SignatureVolatility":
+        return "(root)"
+    if mod.startswith("SignatureVolatility."):
+        return mod[len("SignatureVolatility.") :]
+    return mod
+
+
+def file_to_mod(path: Path) -> str:
+    if path == ROOT / "SignatureVolatility.lean":
+        return "SignatureVolatility"
+    rel = path.relative_to(LEAN_ROOT).with_suffix("").as_posix().replace("/", ".")
+    return f"SignatureVolatility.{rel}"
+
+
+def discover() -> tuple[dict[str, dict], list[tuple[str, str]]]:
+    """Return nodes meta by short id, and hard edges (dep → importer)."""
+    files = [ROOT / "SignatureVolatility.lean"] + sorted(LEAN_ROOT.rglob("*.lean"))
+    mod_to_file: dict[str, str] = {}
+    imports: list[tuple[str, str]] = []  # (importer_mod, dep_mod)
+
+    for path in files:
+        if not path.is_file():
+            continue
+        if path.name.endswith(".backup.lean") or "monolith" in path.name:
+            continue
+        mod = file_to_mod(path)
+        mod_to_file[mod] = str(path.relative_to(ROOT))
+        text = path.read_text(encoding="utf-8")
+        for line in text.splitlines():
+            m = IMPORT_RE.match(line.strip())
+            if not m:
+                continue
+            dep = m.group(1)
+            if dep == mod:
+                continue
+            imports.append((mod, dep))
+
+    # Ensure every imported SignatureVolatility.* appears even if somehow missing.
+    for _importer, dep in imports:
+        if dep.startswith("SignatureVolatility") and dep not in mod_to_file:
+            # Placeholder path from module name.
+            if dep == "SignatureVolatility":
+                mod_to_file[dep] = "SignatureVolatility.lean"
+            else:
+                rel = dep[len("SignatureVolatility.") :].replace(".", "/") + ".lean"
+                mod_to_file[dep] = f"SignatureVolatility/{rel}"
+
+    nodes: dict[str, dict] = {}
+    for mod, file_ in sorted(mod_to_file.items()):
+        sid = short_mod(mod)
+        # Coarse section buckets for HOLES.md grouping.
+        if sid == "(root)":
+            section = 99
+        elif sid == "Basic":
+            section = 0
+        elif "." not in sid:
+            section = 1
+        else:
+            top = sid.split(".", 1)[0]
+            section = {
+                "ExtTensorAlgebra": 2,
+                "Weight": 3,
+                "ProlongedBrownianSetup": 4,
+                "PriceFiltrationSignatureSpace": 5,
+                "SignatureVolatilityModel": 6,
+            }.get(top, 1)
+        nodes[sid] = {
+            "label": sid,
+            "section": section,
+            "file": file_,
+            "detail": "Unverified TBD — treat as a hole until reviewed.",
+            "_mod": mod,
+        }
+
+    short = {mod: short_mod(mod) for mod in mod_to_file}
+    edges: list[tuple[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+    for importer, dep in imports:
+        if dep not in short or importer not in short:
+            continue
+        frm, to = short[dep], short[importer]
+        if frm == to:
+            continue
+        key = (frm, to)
+        if key in seen:
+            continue
+        seen.add(key)
+        edges.append(key)
+    return nodes, edges
+
+
+def build() -> dict:
+    nodes_meta, hard_edges = discover()
+
+    hard_preds: dict[str, list[str]] = {nid: [] for nid in nodes_meta}
+    for frm, to in hard_edges:
+        if frm in nodes_meta and to in nodes_meta:
+            hard_preds[to].append(frm)
+
+    # Every non-verified module counts as a local hole (TBD / unverified).
+    raw_hole = {nid: nid not in VERIFIED for nid in nodes_meta}
+
+    status: dict[str, str] = {}
+    for _ in range(len(nodes_meta) + 2):
+        changed = False
+        for nid in nodes_meta:
+            preds_done = all(status.get(p) == "done" for p in hard_preds[nid])
+            if not raw_hole[nid] and preds_done:
+                st = "done"
+            elif preds_done:
+                st = "open"
+            else:
+                st = "blocked"
+            if status.get(nid) != st:
+                status[nid] = st
+                changed = True
+        if not changed:
+            break
+
+    nodes = []
+    for nid, meta in nodes_meta.items():
+        nodes.append({
+            "id": nid,
+            "label": meta["label"],
+            "section": meta["section"],
+            "file": meta["file"],
+            "status": status[nid],
+            "blocker": None,
+            "detail": meta.get("detail"),
+        })
+
+    by_id = {n["id"]: n for n in nodes}
+    for n in nodes:
+        if n["status"] != "blocked":
+            continue
+        unfinished = [
+            p for p in hard_preds[n["id"]]
+            if by_id.get(p, {}).get("status") != "done"
+        ]
+        if unfinished:
+            # Cap blocker text for modules with huge import sets.
+            shown = unfinished[:8]
+            extra = len(unfinished) - len(shown)
+            suffix = f" (+{extra} more)" if extra > 0 else ""
+            n["blocker"] = "needs " + ", ".join(shown) + suffix
+
+    edges = [
+        {"from": frm, "to": to, "kind": "hard"}
+        for frm, to in hard_edges
+        if frm in nodes_meta and to in nodes_meta
+    ]
+
+    sorry_count = sum(1 for n in nodes if n["status"] in ("open", "blocked"))
+    open_ids = [n["id"] for n in nodes if n["status"] == "open"]
+
+    return {
+        "updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "sorryCount": sorry_count,
+        "legend": {
+            "open": "No unfinished import-deps — verify / prove next (TBD)",
+            "blocked": "Waiting on unfinished imported modules",
+            "done": "Verified (listed in VERIFIED and deps done)",
+        },
+        "notes": [
+            "File-level board: one node per SignatureVolatility .lean module.",
+            "All modules start as unverified TBD (Gemini dump not yet checked).",
+            "Hard edge B→A: A imports B — A cannot be done while B is unfinished.",
+            "Mark a module verified by adding its id to VERIFIED in scripts/build_holes.py.",
+            "Blue = done. Green = open. Grey = blocked.",
+            "Regenerate with: python3 scripts/build_holes.py",
+            f"Open tips: {', '.join(open_ids) if open_ids else '(none)'}.",
+        ],
+        "nodes": nodes,
+        "edges": edges,
+    }
+
+
+def write_md(data: dict) -> None:
+    by_sec: dict[int, list] = {}
+    for n in data["nodes"]:
+        by_sec.setdefault(n["section"], []).append(n)
+    open_n = [n for n in data["nodes"] if n["status"] == "open"]
+    blocked_n = [n for n in data["nodes"] if n["status"] == "blocked"]
+    done_n = [n for n in data["nodes"] if n["status"] == "done"]
+
+    sec_title = {
+        0: "Basic",
+        1: "Top-level modules",
+        2: "ExtTensorAlgebra",
+        3: "Weight",
+        4: "ProlongedBrownianSetup",
+        5: "PriceFiltrationSignatureSpace",
+        6: "SignatureVolatilityModel",
+        99: "Root barrel",
+    }
+
+    lines = [
+        "# Proof holes (Xodarev / SignatureVolatility)",
+        "",
+        "File-level inventory of Lean modules. **Everything is unverified TBD** until "
+        "listed in `VERIFIED` in `scripts/build_holes.py`.",
+        "",
+        f"**Updated:** {data['updated']}",
+        f"**Holes:** {data['sorryCount']} open+blocked · "
+        f"{len(open_n)} open · {len(blocked_n)} blocked · {len(done_n)} done.",
+        "",
+        "**Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).",
+        "",
+        "```bash",
+        "python3 scripts/build_holes.py   # refreshes HOLES.md, holes-graph.json, embeds into holes.html",
+        "scripts/serve_holes.sh          # http://127.0.0.1:8766/holes.html",
+        "```",
+        "",
+        "## Open now (Layer 0)",
+        "",
+    ]
+    if not open_n:
+        lines.append("_None — every module is blocked or verified._")
+    else:
+        lines.append("| Id | File |")
+        lines.append("|---|---|")
+        for n in sorted(open_n, key=lambda x: x["id"]):
+            lines.append(f"| `{n['id']}` | `{n['file']}` |")
+    lines += ["", "## By group", ""]
+    for sec in sorted(by_sec):
+        rows = sorted(by_sec[sec], key=lambda x: x["id"])
+        holes = sum(1 for n in rows if n["status"] != "done")
+        title = sec_title.get(sec, f"group {sec}")
+        lines.append(f"### {title} — {holes} hole(s)")
+        lines.append("")
+        lines.append("| Status | Id | File |")
+        lines.append("|---|---|---|")
+        for n in rows:
+            lines.append(
+                f"| {n['status']} | `{n['id']}` | `{n['file']}` |"
+            )
+        lines.append("")
+    lines += [
+        "## Dependency sketch",
+        "",
+        "Hard edges follow Lean `import SignatureVolatility…` (see `holes-edges.txt`). "
+        "Open [`holes.html`](holes.html) for the interactive board.",
+        "",
+    ]
+    OUT_MD.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def embed_html(data: dict) -> None:
+    if not OUT_HTML.exists():
+        print(f"skip embed: {OUT_HTML.name} missing")
+        return
+    text = OUT_HTML.read_text(encoding="utf-8")
+    start = text.find("const EMBEDDED_HOLES_GRAPH = ")
+    marker = text.find(HTML_EMBED_MARKER, start)
+    if start < 0 or marker < 0:
+        print(f"skip embed: could not find EMBEDDED_HOLES_GRAPH / marker in {OUT_HTML.name}")
+        return
+    line_start = text.rfind("\n", 0, start) + 1
+    end = marker + len(HTML_EMBED_MARKER)
+    payload = json.dumps(data, separators=(",", ":"))
+    new_line = f"    const EMBEDDED_HOLES_GRAPH = {payload}; {HTML_EMBED_MARKER}"
+    OUT_HTML.write_text(text[:line_start] + new_line + text[end:], encoding="utf-8")
+
+
+def main() -> None:
+    data = build()
+    OUT_JSON.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+    write_md(data)
+    OUT_EDGES.write_text(
+        "\n".join(f"{e['from']} -{e['kind']}-> {e['to']}" for e in data["edges"]) + "\n",
+        encoding="utf-8",
+    )
+    embed_html(data)
+    open_n = sum(1 for n in data["nodes"] if n["status"] == "open")
+    blocked_n = sum(1 for n in data["nodes"] if n["status"] == "blocked")
+    done_n = sum(1 for n in data["nodes"] if n["status"] == "done")
+    print(
+        f"Wrote {OUT_JSON.name}, {OUT_MD.name}, embedded {OUT_HTML.name}: "
+        f"{open_n} open, {blocked_n} blocked, {done_n} done "
+        f"(sorryCount={data['sorryCount']})"
+    )
+
+
+if __name__ == "__main__":
+    main()
