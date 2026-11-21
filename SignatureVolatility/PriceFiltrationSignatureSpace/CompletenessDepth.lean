@@ -2,10 +2,6 @@ import SignatureVolatility.PriceFiltrationSignatureSpace
 import SignatureVolatility.PriceFiltrationSignatureSpace.VInfty
 import SignatureVolatility.PriceFiltrationSignatureSpace.VSubspace
 
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
-
 noncomputable section
 
 namespace SignatureVolatility

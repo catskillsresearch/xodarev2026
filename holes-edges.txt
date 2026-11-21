@@ -27,6 +27,7 @@ ExtTensorAlgebra.ExtTensorAlgebra -hard-> ExtTensorAlgebra.EvalShuffleBasis
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> ExtTensorAlgebra.IsFinitelySupported
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> ExtTensorAlgebra.LevelNormSq
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> ExtTensorAlgebra.ShuffleBasis
+ExtTensorAlgebra.ExtTensorAlgebra -hard-> GKWDecompositionSetup
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> HypH1
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> HypH1OfIsFinitelySupported
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> HypH3

@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-21T02:40:53Z",
-  "sorryCount": 29,
+  "updated": "2026-11-21T02:47:10Z",
+  "sorryCount": 26,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -14,7 +14,7 @@
     "Mark a module verified by adding its id to VERIFIED in scripts/build_holes.py.",
     "Blue = done. Green = open. Grey = blocked.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: BlackScholesModel, ClassicalRiccatiSolution, FirstOrderBrownianVolModel, InfiniteGeometricSignatureModel, ItoCalculusKit, Lemma32SignatureInTw, PriceFiltrationSignatureSpace.VSubspace, ProjGt, Proposition311SharpnessOfH1, QuinticOUSignatureModel, ShuffleIdentity, SignatureFiltrationEqBrownianFiltration, SignatureHestonLevel2Model, SignatureVolatilityModel.Sigma."
+    "Open tips: BlackScholesModel, ClassicalRiccatiSolution, FirstOrderBrownianVolModel, InfiniteGeometricSignatureModel, ItoCalculusKit, Lemma32SignatureInTw, Lemma61GramPosDef, ProjGt, Proposition311SharpnessOfH1, Proposition65NormalEquations, QuinticOUSignatureModel, Section71BlackScholesCompleteness, ShuffleIdentity, SignatureFiltrationEqBrownianFiltration, SignatureHestonLevel2Model, SignatureVolatilityModel.Sigma, TheoremC, TheoremD."
   ],
   "nodes": [
     {
@@ -220,8 +220,8 @@
       "label": "GKWDecompositionSetup",
       "section": 1,
       "file": "SignatureVolatility/GKWDecompositionSetup.lean",
-      "status": "blocked",
-      "blocker": "needs PriceFiltrationSignatureSpace.VSubspace",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -319,8 +319,8 @@
       "label": "Lemma61GramPosDef",
       "section": 1,
       "file": "SignatureVolatility/Lemma61GramPosDef.lean",
-      "status": "blocked",
-      "blocker": "needs GKWDecompositionSetup",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -472,8 +472,8 @@
       "label": "PriceFiltrationSignatureSpace.CompletenessDepth",
       "section": 5,
       "file": "SignatureVolatility/PriceFiltrationSignatureSpace/CompletenessDepth.lean",
-      "status": "blocked",
-      "blocker": "needs PriceFiltrationSignatureSpace.VSubspace",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -499,7 +499,7 @@
       "label": "PriceFiltrationSignatureSpace.VSubspace",
       "section": 5,
       "file": "SignatureVolatility/PriceFiltrationSignatureSpace/VSubspace.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -580,8 +580,8 @@
       "label": "Proposition65NormalEquations",
       "section": 1,
       "file": "SignatureVolatility/Proposition65NormalEquations.lean",
-      "status": "blocked",
-      "blocker": "needs GKWDecompositionSetup",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -643,8 +643,8 @@
       "label": "Section71BlackScholesCompleteness",
       "section": 1,
       "file": "SignatureVolatility/Section71BlackScholesCompleteness.lean",
-      "status": "blocked",
-      "blocker": "needs PriceFiltrationSignatureSpace.CompletenessDepth, PriceFiltrationSignatureSpace.VSubspace",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -787,8 +787,8 @@
       "label": "TheoremC",
       "section": 1,
       "file": "SignatureVolatility/TheoremC.lean",
-      "status": "blocked",
-      "blocker": "needs PriceFiltrationSignatureSpace.VSubspace, PriceFiltrationSignatureSpace.CompletenessDepth",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -796,8 +796,8 @@
       "label": "TheoremD",
       "section": 1,
       "file": "SignatureVolatility/TheoremD.lean",
-      "status": "blocked",
-      "blocker": "needs GKWDecompositionSetup, PriceFiltrationSignatureSpace.VSubspace, PriceFiltrationSignatureSpace.CompletenessDepth",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -1051,22 +1051,22 @@
       "kind": "hard"
     },
     {
-      "from": "PriceFiltrationSignatureSpace.VSubspace",
-      "to": "GKWDecompositionSetup",
-      "kind": "hard"
-    },
-    {
-      "from": "ProjLe",
-      "to": "GKWDecompositionSetup",
-      "kind": "hard"
-    },
-    {
       "from": "MemL2wInv",
       "to": "GKWDecompositionSetup",
       "kind": "hard"
     },
     {
       "from": "Norm2wInv",
+      "to": "GKWDecompositionSetup",
+      "kind": "hard"
+    },
+    {
+      "from": "PriceFiltrationSignatureSpace.VSubspace",
+      "to": "GKWDecompositionSetup",
+      "kind": "hard"
+    },
+    {
+      "from": "ProjLe",
       "to": "GKWDecompositionSetup",
       "kind": "hard"
     },

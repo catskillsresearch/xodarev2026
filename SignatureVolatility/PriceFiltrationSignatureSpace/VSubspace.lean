@@ -2,10 +2,6 @@ import SignatureVolatility.PriceFiltrationSignatureSpace
 import SignatureVolatility.WordsOfLength
 import SignatureVolatility.Word
 
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
-
 noncomputable section
 
 namespace SignatureVolatility
@@ -28,12 +24,13 @@ lemma mono (PFS : PriceFiltrationSignatureSpace H_S d) {M N : ℕ} (hMN : M ≤ 
 
 lemma finiteDimensional (PFS : PriceFiltrationSignatureSpace H_S d) (N : ℕ) :
     FiniteDimensional ℝ (PFS.V_subspace N) := by
+  classical
   let S_words : Finset (Word (d + 1)) :=
     (Finset.range (N + 1)).biUnion (wordsOfLength (d + 1))
   have hset : {PFS.Y I | (I : Word (d + 1)) (_ : I.length ≤ N)} =
       (S_words.image PFS.Y : Set H_S) := by
     ext x
-    simp only [Set.mem_setOf_eq, Finset.coe_image, Set.mem_image, Finset.mem_coe,
+    simp only [Set.mem_ofPred_eq, Finset.coe_image, Set.mem_image, Finset.mem_coe,
       S_words, Finset.mem_biUnion, Finset.mem_range, wordsOfLength.mem]
     constructor
     · rintro ⟨I, hI, rfl⟩
@@ -45,8 +42,9 @@ lemma finiteDimensional (PFS : PriceFiltrationSignatureSpace H_S d) (N : ℕ) :
 
 lemma topologicalClosure_eq (PFS : PriceFiltrationSignatureSpace H_S d) (N : ℕ) :
     (PFS.V_subspace N).topologicalClosure = PFS.V_subspace N := by
-  haveI : FiniteDimensional ℝ (PFS.V_subspace N) := finiteDimensional PFS N
-  exact Submodule.IsClosed.topologicalClosure_eq (Submodule.closed_of_finiteDimensional _)
+  have hfin : FiniteDimensional ℝ (PFS.V_subspace N) := finiteDimensional PFS N
+  letI := hfin
+  exact Submodule.topologicalClosure_eq_self (PFS.V_subspace N)
 
 end V_subspace
 
