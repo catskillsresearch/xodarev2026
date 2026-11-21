@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-21T03:19:30Z",
-  "sorryCount": 8,
+  "updated": "2026-11-21T03:28:08Z",
+  "sorryCount": 5,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -14,7 +14,7 @@
     "Mark a module verified by adding its id to VERIFIED in scripts/build_holes.py.",
     "Blue = done. Green = open. Grey = blocked.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: Lemma32SignatureInTw, Remark219BlackScholesRiccati, TailNorm2wInvLeRatioMulNormW, TheoremA, TheoremB, TheoremC, TheoremD."
+    "Open tips: Corollary36SigmaWellDefined, TheoremA, TheoremB, TheoremC, TheoremD."
   ],
   "nodes": [
     {
@@ -67,8 +67,8 @@
       "label": "Corollary36SigmaWellDefined",
       "section": 1,
       "file": "SignatureVolatility/Corollary36SigmaWellDefined.lean",
-      "status": "blocked",
-      "blocker": "needs Lemma32SignatureInTw",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -310,7 +310,7 @@
       "label": "Lemma32SignatureInTw",
       "section": 1,
       "file": "SignatureVolatility/Lemma32SignatureInTw.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -607,7 +607,7 @@
       "label": "Remark219BlackScholesRiccati",
       "section": 1,
       "file": "SignatureVolatility/Remark219BlackScholesRiccati.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -760,7 +760,7 @@
       "label": "TailNorm2wInvLeRatioMulNormW",
       "section": 1,
       "file": "SignatureVolatility/TailNorm2wInvLeRatioMulNormW.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -1146,17 +1146,17 @@
       "kind": "hard"
     },
     {
+      "from": "HypH2",
+      "to": "Lemma32SignatureInTw",
+      "kind": "hard"
+    },
+    {
       "from": "MemTw",
       "to": "Lemma32SignatureInTw",
       "kind": "hard"
     },
     {
       "from": "NormW",
-      "to": "Lemma32SignatureInTw",
-      "kind": "hard"
-    },
-    {
-      "from": "HypH2",
       "to": "Lemma32SignatureInTw",
       "kind": "hard"
     },

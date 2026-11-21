@@ -11,6 +11,7 @@ ExtTensorAlgebra.BasisWord -hard-> BlackScholesModel
 ExtTensorAlgebra.BasisWord -hard-> ExtTensorAlgebra.Antipode
 ExtTensorAlgebra.BasisWord -hard-> ExtTensorAlgebra.Concat
 ExtTensorAlgebra.BasisWord -hard-> FirstOrderBrownianVolModel
+ExtTensorAlgebra.BasisWord -hard-> Remark219BlackScholesRiccati
 ExtTensorAlgebra.BasisWord -hard-> SignatureHestonLevel2Model
 ExtTensorAlgebra.Concat -hard-> BanachAlgebraConcatBound
 ExtTensorAlgebra.Concat -hard-> ChenIdentity
@@ -87,9 +88,11 @@ ExtTensorAlgebra.LevelNormSq -hard-> Norm2wInv
 ExtTensorAlgebra.LevelNormSq -hard-> ProjGt
 ExtTensorAlgebra.LevelNormSq -hard-> SuperfactorialFunctional
 ExtTensorAlgebra.LevelNormSq -hard-> WeightedTruncationEstimates
+ExtTensorAlgebra.ShuffleBasis -hard-> Remark219BlackScholesRiccati
 ExtTensorAlgebra.ShuffleBasis -hard-> ShuffleFinite
 ExtTensorAlgebra.ShuffleWords -hard-> ExtTensorAlgebra.EvalShuffleBasis
 ExtTensorAlgebra.ShuffleWords -hard-> ExtTensorAlgebra.ShuffleBasis
+ExtTensorAlgebra.ShuffleWords -hard-> Remark219BlackScholesRiccati
 GKWDecompositionSetup -hard-> TheoremD
 GeneratedFiltration -hard-> ProlongedBrownianSetup
 GeneratedFiltration -hard-> ProlongedBrownianSetup.BrownianFiltration
@@ -126,6 +129,7 @@ Lemma32SignatureInTw -hard-> Corollary36SigmaWellDefined
 Letter -hard-> ExtTensorAlgebra.ExtTensorAlgebra
 Letter -hard-> ExtTensorAlgebra.ShuffleWords
 Letter -hard-> PureBrownianWord
+Letter -hard-> Remark219BlackScholesRiccati
 Letter -hard-> ShuffleIdentity
 Letter -hard-> SmoothIteratedIntegral
 Letter -hard-> Word
@@ -174,6 +178,7 @@ Preliminaries -hard-> ExtTensorAlgebra.LevelNorm
 Preliminaries -hard-> Lemma61GramPosDef
 Preliminaries -hard-> MemL2wInvOfMemTw
 Preliminaries -hard-> Proposition65NormalEquations
+Preliminaries -hard-> Remark219BlackScholesRiccati
 Preliminaries -hard-> WeightedTruncationEstimates
 Preliminaries -hard-> WordsOfLength
 PriceFiltration -hard-> ProlongedBrownianSetup.SignatureFiltration
@@ -234,9 +239,12 @@ ProlongedBrownianSetup.WHat -hard-> SignatureRiccatiKit
 ProlongedBrownianSetup.WHat -hard-> SignatureVolatilityModel.Sigma
 PureBrownianWord -hard-> SuperfactorialFunctional
 RiccatiOpBounded -hard-> ClassicalRiccatiSolution
+RiccatiOpBounded -hard-> Remark219BlackScholesRiccati
+RightShift -hard-> Remark219BlackScholesRiccati
 RightShift -hard-> RiccatiOpBounded
 SatisfiesNFLVR -hard-> NflvrOfMartingaleMeasure
 SatisfiesNFLVR -hard-> TheoremB
+ShuffleFinite -hard-> Remark219BlackScholesRiccati
 ShuffleFinite -hard-> RiccatiOpBounded
 SignaturePriceSolution -hard-> TheoremA
 SignatureRiccatiKit -hard-> TheoremB
@@ -254,6 +262,7 @@ SignatureVolatilityModel -hard-> TheoremB
 SignatureVolatilityModel.Sigma -hard-> Corollary36SigmaWellDefined
 SignatureVolatilityModel.Sigma -hard-> SignaturePriceSolution
 SmoothIteratedIntegral -hard-> SmoothSignature
+StratonovichHalfLaplacian -hard-> Remark219BlackScholesRiccati
 StratonovichHalfLaplacian -hard-> RiccatiOpBounded
 SuperfactorialFunctional -hard-> Proposition311SharpnessOfH1
 Weight -hard-> BanachAlgebraConcatBound
@@ -307,5 +316,6 @@ WordsOfLength -hard-> ExtTensorAlgebra.LevelNorm
 WordsOfLength -hard-> ExtTensorAlgebra.LevelNormSq
 WordsOfLength -hard-> PriceFiltrationSignatureSpace.VSubspace
 WordsOfLength -hard-> ProjGt
+WordsOfLength -hard-> Remark219BlackScholesRiccati
 WordsOfLength -hard-> ShuffleFinite
 WordsOfLength -hard-> SuperfactorialFunctional

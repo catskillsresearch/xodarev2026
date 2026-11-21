@@ -1,15 +1,11 @@
-import SignatureVolatility.MemTw
-import SignatureVolatility.NormW
-import SignatureVolatility.Norm2wInv
+import SignatureVolatility.ExtTensorAlgebra.LevelNorm
 import SignatureVolatility.MemL2wInv
 import SignatureVolatility.MemL2wInvOfMemTw
+import SignatureVolatility.MemTw
+import SignatureVolatility.Norm2wInv
+import SignatureVolatility.NormW
 import SignatureVolatility.ProjGt
 import SignatureVolatility.Weight
-import SignatureVolatility.ExtTensorAlgebra.LevelNorm
-
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
 
 noncomputable section
 
@@ -41,7 +37,5 @@ theorem tail_norm2wInv_le_ratio_mul_normW {d : ℕ} (w w' : Weight)
     normW w (projGt N b) ≤ ∑' n : ℕ, ρ * (w' n * b.levelNorm n) :=
       hmemTw.tsum_le_tsum hpoint hdom
     _ = ρ * normW w' b := tsum_mul_left
-
-/-! ## Section 2.4: Hypotheses H1–H3, Price SDE, Signature Volatility Model, Price Filtration -/
 
 end SignatureVolatility

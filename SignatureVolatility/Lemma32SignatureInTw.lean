@@ -1,15 +1,13 @@
-import SignatureVolatility.ProlongedBrownianSetup
+import SignatureVolatility.HypH2
 import SignatureVolatility.MemTw
 import SignatureVolatility.NormW
-import SignatureVolatility.Weight
-import SignatureVolatility.HypH2
+import SignatureVolatility.ProlongedBrownianSetup
 import SignatureVolatility.ProlongedBrownianSetup.WHat
-
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
+import SignatureVolatility.Weight
 
 noncomputable section
+
+open MeasureTheory
 
 namespace SignatureVolatility
 

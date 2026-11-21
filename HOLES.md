@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. **Everything is unverified TBD** until listed in `VERIFIED` in `scripts/build_holes.py`.
 
-**Updated:** 2026-11-21T03:19:30Z
-**Holes:** 8 open+blocked · 7 open · 1 blocked · 86 done.
+**Updated:** 2026-11-21T03:28:08Z
+**Holes:** 5 open+blocked · 5 open · 0 blocked · 89 done.
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
 
@@ -16,9 +16,7 @@ scripts/serve_holes.sh          # http://127.0.0.1:8766/holes.html
 
 | Id | File |
 |---|---|
-| `Lemma32SignatureInTw` | `SignatureVolatility/Lemma32SignatureInTw.lean` |
-| `Remark219BlackScholesRiccati` | `SignatureVolatility/Remark219BlackScholesRiccati.lean` |
-| `TailNorm2wInvLeRatioMulNormW` | `SignatureVolatility/TailNorm2wInvLeRatioMulNormW.lean` |
+| `Corollary36SigmaWellDefined` | `SignatureVolatility/Corollary36SigmaWellDefined.lean` |
 | `TheoremA` | `SignatureVolatility/TheoremA.lean` |
 | `TheoremB` | `SignatureVolatility/TheoremB.lean` |
 | `TheoremC` | `SignatureVolatility/TheoremC.lean` |
@@ -26,7 +24,7 @@ scripts/serve_holes.sh          # http://127.0.0.1:8766/holes.html
 
 ## By group
 
-### Top-level modules — 8 hole(s)
+### Top-level modules — 5 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -35,7 +33,7 @@ scripts/serve_holes.sh          # http://127.0.0.1:8766/holes.html
 | done | `BlackScholesModel` | `SignatureVolatility/BlackScholesModel.lean` |
 | done | `ChenIdentity` | `SignatureVolatility/ChenIdentity.lean` |
 | done | `ClassicalRiccatiSolution` | `SignatureVolatility/ClassicalRiccatiSolution.lean` |
-| blocked | `Corollary36SigmaWellDefined` | `SignatureVolatility/Corollary36SigmaWellDefined.lean` |
+| open | `Corollary36SigmaWellDefined` | `SignatureVolatility/Corollary36SigmaWellDefined.lean` |
 | done | `DualPairing` | `SignatureVolatility/DualPairing.lean` |
 | done | `DualPairingLeNormWDualMulNormW` | `SignatureVolatility/DualPairingLeNormWDualMulNormW.lean` |
 | done | `FirstOrderBrownianVolModel` | `SignatureVolatility/FirstOrderBrownianVolModel.lean` |
@@ -49,7 +47,7 @@ scripts/serve_holes.sh          # http://127.0.0.1:8766/holes.html
 | done | `InfiniteGeometricSignatureModel` | `SignatureVolatility/InfiniteGeometricSignatureModel.lean` |
 | done | `IsSpecialSemimartingale` | `SignatureVolatility/IsSpecialSemimartingale.lean` |
 | done | `ItoCalculusKit` | `SignatureVolatility/ItoCalculusKit.lean` |
-| open | `Lemma32SignatureInTw` | `SignatureVolatility/Lemma32SignatureInTw.lean` |
+| done | `Lemma32SignatureInTw` | `SignatureVolatility/Lemma32SignatureInTw.lean` |
 | done | `Lemma61GramPosDef` | `SignatureVolatility/Lemma61GramPosDef.lean` |
 | done | `Letter` | `SignatureVolatility/Letter.lean` |
 | done | `MemL2w` | `SignatureVolatility/MemL2w.lean` |
@@ -73,7 +71,7 @@ scripts/serve_holes.sh          # http://127.0.0.1:8766/holes.html
 | done | `Proposition65NormalEquations` | `SignatureVolatility/Proposition65NormalEquations.lean` |
 | done | `PureBrownianWord` | `SignatureVolatility/PureBrownianWord.lean` |
 | done | `QuinticOUSignatureModel` | `SignatureVolatility/QuinticOUSignatureModel.lean` |
-| open | `Remark219BlackScholesRiccati` | `SignatureVolatility/Remark219BlackScholesRiccati.lean` |
+| done | `Remark219BlackScholesRiccati` | `SignatureVolatility/Remark219BlackScholesRiccati.lean` |
 | done | `RiccatiOpBounded` | `SignatureVolatility/RiccatiOpBounded.lean` |
 | done | `RightShift` | `SignatureVolatility/RightShift.lean` |
 | done | `SatisfiesNFLVR` | `SignatureVolatility/SatisfiesNFLVR.lean` |
@@ -89,7 +87,7 @@ scripts/serve_holes.sh          # http://127.0.0.1:8766/holes.html
 | done | `SmoothSignature` | `SignatureVolatility/SmoothSignature.lean` |
 | done | `StratonovichHalfLaplacian` | `SignatureVolatility/StratonovichHalfLaplacian.lean` |
 | done | `SuperfactorialFunctional` | `SignatureVolatility/SuperfactorialFunctional.lean` |
-| open | `TailNorm2wInvLeRatioMulNormW` | `SignatureVolatility/TailNorm2wInvLeRatioMulNormW.lean` |
+| done | `TailNorm2wInvLeRatioMulNormW` | `SignatureVolatility/TailNorm2wInvLeRatioMulNormW.lean` |
 | open | `TheoremA` | `SignatureVolatility/TheoremA.lean` |
 | open | `TheoremB` | `SignatureVolatility/TheoremB.lean` |
 | open | `TheoremC` | `SignatureVolatility/TheoremC.lean` |
