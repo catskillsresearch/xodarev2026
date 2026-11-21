@@ -1,8 +1,12 @@
-import SignatureVolatility.Weight
-import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
-import SignatureVolatility.ExtTensorAlgebra.LevelNorm
-import SignatureVolatility.MemTwDual
+module
 
+public import SignatureVolatility.Weight
+public import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
+public import SignatureVolatility.ExtTensorAlgebra.LevelNorm
+public import SignatureVolatility.MemTwDual
+
+
+@[expose] public section
 
 open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
 open MeasureTheory Filter Topology Set

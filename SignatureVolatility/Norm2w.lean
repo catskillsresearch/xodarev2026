@@ -1,7 +1,11 @@
-import SignatureVolatility.Weight
-import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
-import SignatureVolatility.ExtTensorAlgebra.LevelNormSq
+module
 
+public import SignatureVolatility.Weight
+public import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
+public import SignatureVolatility.ExtTensorAlgebra.LevelNormSq
+
+
+@[expose] public section
 
 noncomputable section
 

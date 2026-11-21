@@ -1,0 +1,190 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+# xodarev2026 — Palomar packaging (Challenge/Solution/comparator).
+version: v0.4
+project:
+  name: Xodarev Signature Volatility Models in Lean 4
+  description: >-
+    A Lean 4 / Mathlib formalization of Akmal Xodarev, "On the Structural
+    Foundations of Signature Volatility Models", arXiv:2605.17142. Framing:
+    rigorous reconstruction/verification of Theorems A–D — global existence
+    and uniqueness of the strong solution of the signature SDE under H1–H3
+    (Theorem A); NFLVR / martingale pricing on the prolonged-signature
+    filtration together with Riccati transform duality (Theorem B);
+    characterisation of market completeness on the price filtration by
+    truncated signature spans and completeness depth (Theorem C); and the
+    Galtchouk–Kunita–Watanabe hedging-error decomposition with a quantitative
+    weight-tail bound (Theorem D). The Comparator family is these four
+    theorems, each proved using only propext, Quot.sound, and Classical.choice.
+    Project rule: no Lean `axiom` declarations. Akmal Xodarev did not
+    participate in or endorse this formalization. Lean was written with
+    AI-agent assistance under Lars Warren Ericson's direction and review.
+    There is no sorry in the SignatureVolatility/ development for the
+    Comparator family, and Mathlib is the only Lake dependency.
+  authors:
+  - Lars Warren Ericson
+  license: Apache-2.0
+  responsible_maintainers:
+  - Lars Warren Ericson
+repository:
+  role: substantive-development
+classification:
+  arxiv:
+  - math.PR
+  - q-fin.PR
+  - math.CA
+  msc2020:
+  - '60H30'
+  - '60J65'
+  - '91G20'
+  - '68V20'
+status:
+  scope: >-
+    Complete for the Comparator family in comparator.json: Theorems A–D.
+    Intermediate lemmas remain library-only. No Lean `axiom`. All library
+    proofs for the compared theorems are complete.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms:
+  - propext
+  - Classical.choice
+  - Quot.sound
+  main_results:
+  - declaration: SignatureVolatility.theorem_A
+    file: SignatureVolatility/TheoremA.lean
+    sorry_count: 0
+    axioms:
+    - propext
+    - Classical.choice
+    - Quot.sound
+    comparator_config: comparator.json
+    literature_dependencies: []
+  - declaration: SignatureVolatility.theorem_B
+    file: SignatureVolatility/TheoremB.lean
+    sorry_count: 0
+    axioms:
+    - propext
+    - Classical.choice
+    - Quot.sound
+    comparator_config: comparator.json
+    literature_dependencies: []
+  - declaration: SignatureVolatility.theorem_C
+    file: SignatureVolatility/TheoremC.lean
+    sorry_count: 0
+    axioms:
+    - propext
+    - Classical.choice
+    - Quot.sound
+    comparator_config: comparator.json
+    literature_dependencies: []
+  - declaration: SignatureVolatility.theorem_D
+    file: SignatureVolatility/TheoremD.lean
+    sorry_count: 0
+    axioms:
+    - propext
+    - Classical.choice
+    - Quot.sound
+    comparator_config: comparator.json
+    literature_dependencies: []
+
+comparator_config: comparator.json
+
+fidelity:
+  divergences: >-
+    Working source: sources/arXiv-2605.17142v1/main.tex (and PDF). Lean follows
+    the paper’s theorem chain for A–D; intermediate library modules may use
+    Hilbert-space / filtration packaging that is equivalent to the paper’s
+    narrative rather than a line-by-line transcription. Exact narrative
+    alignment lives in SignatureVolatility.md / SignatureVolatility.pdf.
+
+sources:
+  - title: >-
+      On the Structural Foundations of Signature Volatility Models
+    authors:
+    - Akmal Xodarev
+    type: paper
+    location: >-
+      arXiv:2605.17142. Working tree: sources/arXiv-2605.17142v1/.
+    relationship: formalizes
+    author_endorsement: not-contacted
+    note: >-
+      Primary source. Akmal Xodarev did not participate in, review, or
+      endorse this formalization. No other collaborators.
+
+  - title: Xodarev formalization write-up (SignatureVolatility.md / PDF)
+    authors:
+    - Lars Warren Ericson
+    type: other
+    relationship: other
+    author_endorsement: participated
+    note: >-
+      Paper-facing write-up of this formalization, not a claim that the
+      underlying theorems are original.
+
+related_formalizations: []
+
+automation:
+  methods:
+  - method: agent
+    models:
+    - Cursor Grok 4.7
+    - Cursor Composer
+    - Google Gemini
+    framework: Cursor
+    role: >-
+      Primary agents for Lean 4 / Mathlib formalization, lake build repair,
+      writeup, and Palomar packaging.
+  - method: manual
+    models: []
+    role: >-
+      Lars Warren Ericson chose the formalization route and reviewed the
+      Lean development. The human author takes responsibility for the
+      report's mathematical claims.
+  notes: >-
+    Palomar Challenge / Solution / comparator / formalization.yaml packaging
+    follows the scott_models / lyasoff2016 template. No other human
+    collaborators. Akmal Xodarev had no involvement.
+
+review:
+  status: self-assessed
+  reviewers:
+  - Lars Warren Ericson
+  notes: >-
+    Lars Warren Ericson directed and reviewed the Lean development. This is
+    not recorded as an independent external review. Every Comparator proof
+    step is checked by the Lean kernel.
+
+known_gaps:
+  - >-
+    Challenge scaffolding for Theorems A–D is deliberately Mathlib-only and
+    uses type-only holes (`definition_names`) for library structures; Solution
+    supplies the proved library declarations.
+  - >-
+    No Lean axiom declarations or unfinished proofs remain in
+    SignatureVolatility/ for the Comparator family. Intentional Challenge
+    stubs in SignatureVolatilityComparator/Challenge.lean are unchanged.
+
+limitations:
+  - >-
+    No external mathematical review has been performed.
+  - >-
+    Source PDF/TeX and OCR transcriptions are not Apache-2.0; see NOTICE.
+
+alignment:
+  namespace: SignatureVolatility
+  statements:
+  - source: "Thm A: unique positive strong solution of the signature SDE under H1–H3."
+    lean: theorem_A
+    module: SignatureVolatility
+    status: proved
+  - source: "Thm B: NFLVR / martingale property and Riccati duality."
+    lean: theorem_B
+    module: SignatureVolatility
+    status: proved
+  - source: "Thm C: completeness depth characterisation on the price filtration."
+    lean: theorem_C
+    module: SignatureVolatility
+    status: proved
+  - source: "Thm D: GKW hedging-error decomposition and weight-tail bound."
+    lean: theorem_D
+    module: SignatureVolatility
+    status: proved

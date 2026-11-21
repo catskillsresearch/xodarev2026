@@ -1,11 +1,15 @@
-import SignatureVolatility.MemTwDual
-import SignatureVolatility.MemL2w
-import SignatureVolatility.NormWDual
-import SignatureVolatility.Weight
-import SignatureVolatility.ExtTensorAlgebra.LevelNorm
-import SignatureVolatility.ExtTensorAlgebra.LevelNormSq
-import SignatureVolatility.Norm2w
+module
 
+public import SignatureVolatility.MemTwDual
+public import SignatureVolatility.MemL2w
+public import SignatureVolatility.NormWDual
+public import SignatureVolatility.Weight
+public import SignatureVolatility.ExtTensorAlgebra.LevelNorm
+public import SignatureVolatility.ExtTensorAlgebra.LevelNormSq
+public import SignatureVolatility.Norm2w
+
+
+@[expose] public section
 
 noncomputable section
 

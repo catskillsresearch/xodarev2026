@@ -1,13 +1,18 @@
-import SignatureVolatility.ClassicalRiccatiSolution
-import SignatureVolatility.DualPairing
-import SignatureVolatility.ExtTensorAlgebra.FreeTensorAlgebra
-import SignatureVolatility.IsSpecialSemimartingale
-import SignatureVolatility.ProlongedBrownianSetup
-import SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration
-import SignatureVolatility.ProlongedBrownianSetup.WHat
-import SignatureVolatility.SignatureVolatilityModel
-import SignatureVolatility.Weight
-import SignatureVolatility.Word
+module
+
+public import SignatureVolatility.ClassicalRiccatiSolution
+public import SignatureVolatility.DualPairing
+public import SignatureVolatility.ExtTensorAlgebra.FreeTensorAlgebra
+public import SignatureVolatility.IsSpecialSemimartingale
+public import SignatureVolatility.ProlongedBrownianSetup
+public import SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration
+public import SignatureVolatility.ProlongedBrownianSetup.WHat
+public import SignatureVolatility.SignatureVolatilityModel
+public import SignatureVolatility.Weight
+public import SignatureVolatility.Word
+
+
+@[expose] public section
 
 noncomputable section
 

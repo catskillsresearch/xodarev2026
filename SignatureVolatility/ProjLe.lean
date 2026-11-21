@@ -1,4 +1,9 @@
-import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
+module
+
+public import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
+
+
+@[expose] public section
 
 namespace SignatureVolatility
 

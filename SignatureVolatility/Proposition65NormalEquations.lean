@@ -1,4 +1,9 @@
-import SignatureVolatility.Preliminaries
+module
+
+public import SignatureVolatility.Preliminaries
+
+
+@[expose] public section
 
 open scoped RealInnerProductSpace
 

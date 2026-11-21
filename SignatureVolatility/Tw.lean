@@ -1,5 +1,9 @@
-import SignatureVolatility.MemTw
+module
 
+public import SignatureVolatility.MemTw
+
+
+@[expose] public section
 
 noncomputable section
 

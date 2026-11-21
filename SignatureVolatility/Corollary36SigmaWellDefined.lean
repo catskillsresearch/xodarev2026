@@ -1,12 +1,17 @@
-import SignatureVolatility.DualPairingLeNormWDualMulNormW
-import SignatureVolatility.Lemma32SignatureInTw
-import SignatureVolatility.MemTwDualOfMemL2w
-import SignatureVolatility.Norm2w
-import SignatureVolatility.NormW
-import SignatureVolatility.ProlongedBrownianSetup
-import SignatureVolatility.ProlongedBrownianSetup.WHat
-import SignatureVolatility.SignatureVolatilityModel
-import SignatureVolatility.SignatureVolatilityModel.Sigma
+module
+
+public import SignatureVolatility.DualPairingLeNormWDualMulNormW
+public import SignatureVolatility.Lemma32SignatureInTw
+public import SignatureVolatility.MemTwDualOfMemL2w
+public import SignatureVolatility.Norm2w
+public import SignatureVolatility.NormW
+public import SignatureVolatility.ProlongedBrownianSetup
+public import SignatureVolatility.ProlongedBrownianSetup.WHat
+public import SignatureVolatility.SignatureVolatilityModel
+public import SignatureVolatility.SignatureVolatilityModel.Sigma
+
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,7 +1,11 @@
-import SignatureVolatility.MemL2w
-import SignatureVolatility.Weight
-import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
+module
 
+public import SignatureVolatility.MemL2w
+public import SignatureVolatility.Weight
+public import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
+
+
+@[expose] public section
 
 noncomputable section
 

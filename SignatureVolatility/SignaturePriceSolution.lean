@@ -1,9 +1,14 @@
-import SignatureVolatility.ItoCalculusKit
-import SignatureVolatility.ProlongedBrownianSetup
-import SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration
-import SignatureVolatility.ProlongedBrownianSetup.WHat
-import SignatureVolatility.SignatureVolatilityModel
-import SignatureVolatility.SignatureVolatilityModel.Sigma
+module
+
+public import SignatureVolatility.ItoCalculusKit
+public import SignatureVolatility.ProlongedBrownianSetup
+public import SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration
+public import SignatureVolatility.ProlongedBrownianSetup.WHat
+public import SignatureVolatility.SignatureVolatilityModel
+public import SignatureVolatility.SignatureVolatilityModel.Sigma
+
+
+@[expose] public section
 
 noncomputable section
 

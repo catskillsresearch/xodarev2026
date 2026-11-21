@@ -1,5 +1,9 @@
-import SignatureVolatility.PriceFiltrationSignatureSpace
+module
 
+public import SignatureVolatility.PriceFiltrationSignatureSpace
+
+
+@[expose] public section
 
 noncomputable section
 

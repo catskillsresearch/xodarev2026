@@ -26,5 +26,6 @@ arxiv.pdf
 arxiv_with_code.md
 arxiv.*
 lean-listings/
+*.monolith.backup.lean
 view.pdf
 figures/

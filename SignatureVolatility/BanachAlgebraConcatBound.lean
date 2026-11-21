@@ -1,10 +1,14 @@
-import SignatureVolatility.MemTw
-import SignatureVolatility.NormW
-import SignatureVolatility.Weight
-import SignatureVolatility.ExtTensorAlgebra.Concat
-import SignatureVolatility.ExtTensorAlgebra.LevelNorm
-import SignatureVolatility.Preliminaries
+module
 
+public import SignatureVolatility.MemTw
+public import SignatureVolatility.NormW
+public import SignatureVolatility.Weight
+public import SignatureVolatility.ExtTensorAlgebra.Concat
+public import SignatureVolatility.ExtTensorAlgebra.LevelNorm
+public import SignatureVolatility.Preliminaries
+
+
+@[expose] public section
 
 noncomputable section
 

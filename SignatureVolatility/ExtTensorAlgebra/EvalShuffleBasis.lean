@@ -1,6 +1,10 @@
-import SignatureVolatility.ExtTensorAlgebra.ShuffleWords
-import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
+module
 
+public import SignatureVolatility.ExtTensorAlgebra.ShuffleWords
+public import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
+
+
+@[expose] public section
 
 noncomputable section
 

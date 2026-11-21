@@ -1,5 +1,12 @@
 name = "xodarev2026"
-defaultTargets = ["SignatureVolatility"]
+defaultTargets = ["SignatureVolatility", "SignatureVolatilityChallenge", "SignatureVolatilitySolution"]
+
+# Module-system port: privateInPublic keeps transitional private decls visible
+# from public sections (same pattern as nowakowska1982 / lyasoff2016).
+moreLeanArgs = [
+  "-Dbackward.privateInPublic=true",
+  "-Dbackward.privateInPublic.warn=false",
+]
 
 [leanOptions]
 pp.unicode.fun = true
@@ -13,5 +20,11 @@ rev = "e91b128082cc221d6432a6a5aadcd3243af8e76c"
 
 [[lean_lib]]
 name = "SignatureVolatility"
-roots = ["SignatureVolatility"]
-globs = ["SignatureVolatility.+"]
+globs = ["SignatureVolatility", "SignatureVolatility.+"]
+[[lean_lib]]
+name = "SignatureVolatilityChallenge"
+roots = ["SignatureVolatilityComparator.Challenge"]
+
+[[lean_lib]]
+name = "SignatureVolatilitySolution"
+roots = ["SignatureVolatilityComparator.Solution"]

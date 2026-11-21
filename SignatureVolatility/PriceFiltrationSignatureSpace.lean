@@ -1,6 +1,11 @@
-import Mathlib
-import SignatureVolatility.Word
-import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
+module
+
+public import Mathlib
+public import SignatureVolatility.Word
+public import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
+
+
+@[expose] public section
 
 open Set
 

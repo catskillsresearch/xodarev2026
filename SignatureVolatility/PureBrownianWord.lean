@@ -1,5 +1,10 @@
-import SignatureVolatility.Letter
-import SignatureVolatility.Word
+module
+
+public import SignatureVolatility.Letter
+public import SignatureVolatility.Word
+
+
+@[expose] public section
 
 namespace SignatureVolatility
 

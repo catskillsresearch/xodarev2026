@@ -1,7 +1,12 @@
-import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
-import SignatureVolatility.ExtTensorAlgebra.LevelNormSq
-import SignatureVolatility.PureBrownianWord
-import SignatureVolatility.WordsOfLength
+module
+
+public import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
+public import SignatureVolatility.ExtTensorAlgebra.LevelNormSq
+public import SignatureVolatility.PureBrownianWord
+public import SignatureVolatility.WordsOfLength
+
+
+@[expose] public section
 
 noncomputable section
 

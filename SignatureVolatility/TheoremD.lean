@@ -1,15 +1,20 @@
-import SignatureVolatility.GKWDecompositionSetup
-import SignatureVolatility.MemTw
-import SignatureVolatility.NormW
-import SignatureVolatility.Preliminaries
-import SignatureVolatility.PriceFiltrationSignatureSpace
-import SignatureVolatility.PriceFiltrationSignatureSpace.CompletenessDepth
-import SignatureVolatility.PriceFiltrationSignatureSpace.VInfty
-import SignatureVolatility.PriceFiltrationSignatureSpace.VSubspace
-import SignatureVolatility.ProjGt
-import SignatureVolatility.ProjLe
-import SignatureVolatility.TailNorm2wInvLeRatioMulNormW
-import SignatureVolatility.Weight
+module
+
+public import SignatureVolatility.GKWDecompositionSetup
+public import SignatureVolatility.MemTw
+public import SignatureVolatility.NormW
+public import SignatureVolatility.Preliminaries
+public import SignatureVolatility.PriceFiltrationSignatureSpace
+public import SignatureVolatility.PriceFiltrationSignatureSpace.CompletenessDepth
+public import SignatureVolatility.PriceFiltrationSignatureSpace.VInfty
+public import SignatureVolatility.PriceFiltrationSignatureSpace.VSubspace
+public import SignatureVolatility.ProjGt
+public import SignatureVolatility.ProjLe
+public import SignatureVolatility.TailNorm2wInvLeRatioMulNormW
+public import SignatureVolatility.Weight
+
+
+@[expose] public section
 
 noncomputable section
 

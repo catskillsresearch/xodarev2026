@@ -1,8 +1,13 @@
-import SignatureVolatility.DualPairing
-import SignatureVolatility.ExtTensorAlgebra.LevelInner
-import SignatureVolatility.ProlongedBrownianSetup
-import SignatureVolatility.ProlongedBrownianSetup.WHat
-import SignatureVolatility.SignatureVolatilityModel
+module
+
+public import SignatureVolatility.DualPairing
+public import SignatureVolatility.ExtTensorAlgebra.LevelInner
+public import SignatureVolatility.ProlongedBrownianSetup
+public import SignatureVolatility.ProlongedBrownianSetup.WHat
+public import SignatureVolatility.SignatureVolatilityModel
+
+
+@[expose] public section
 
 noncomputable section
 

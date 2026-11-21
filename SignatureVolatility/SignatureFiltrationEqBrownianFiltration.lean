@@ -1,7 +1,12 @@
-import SignatureVolatility.ProlongedBrownianSetup
-import SignatureVolatility.ProlongedBrownianSetup.BrownianFiltration
-import SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration
-import SignatureVolatility.ProlongedBrownianSetup.WHat
+module
+
+public import SignatureVolatility.ProlongedBrownianSetup
+public import SignatureVolatility.ProlongedBrownianSetup.BrownianFiltration
+public import SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration
+public import SignatureVolatility.ProlongedBrownianSetup.WHat
+
+
+@[expose] public section
 
 noncomputable section
 

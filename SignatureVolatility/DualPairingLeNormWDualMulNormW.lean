@@ -1,12 +1,16 @@
-import SignatureVolatility.DualPairing
-import SignatureVolatility.NormWDual
-import SignatureVolatility.NormW
-import SignatureVolatility.MemTwDual
-import SignatureVolatility.MemTw
-import SignatureVolatility.ExtTensorAlgebra.LevelInner
-import SignatureVolatility.ExtTensorAlgebra.LevelNorm
-import SignatureVolatility.Preliminaries
+module
 
+public import SignatureVolatility.DualPairing
+public import SignatureVolatility.NormWDual
+public import SignatureVolatility.NormW
+public import SignatureVolatility.MemTwDual
+public import SignatureVolatility.MemTw
+public import SignatureVolatility.ExtTensorAlgebra.LevelInner
+public import SignatureVolatility.ExtTensorAlgebra.LevelNorm
+public import SignatureVolatility.Preliminaries
+
+
+@[expose] public section
 
 noncomputable section
 

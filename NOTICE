@@ -1,0 +1,14 @@
+This repository's original Lean, scripts, and author-written documentation
+are licensed under the Apache License, Version 2.0 (see LICENSE).
+
+Third-party source material (not Apache-2.0)
+--------------------------------------------
+
+`sources/arXiv-2605.17142v1/` (and related extracts / OCR under `sources/`)
+reproduce Akmal Xodarev, *On the Structural Foundations of Signature Volatility
+Models*, arXiv:2605.17142. Copyright remains with the author / rights holders.
+Included only as the cited primary source for this formalization. Palomar
+and other redistributors must not treat it as licensed under Apache-2.0.
+
+Lake dependencies (Mathlib) retain their own licences; see the upstream
+repository. Pins are recorded in `lake-manifest.json`.

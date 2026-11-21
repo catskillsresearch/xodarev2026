@@ -1,8 +1,13 @@
-import SignatureVolatility.ExtTensorAlgebra.LevelNorm
-import SignatureVolatility.ExtTensorAlgebra.LevelNormSq
-import SignatureVolatility.HypH2
-import SignatureVolatility.SignatureVolatilityModel
-import SignatureVolatility.Weight.Geometric
+module
+
+public import SignatureVolatility.ExtTensorAlgebra.LevelNorm
+public import SignatureVolatility.ExtTensorAlgebra.LevelNormSq
+public import SignatureVolatility.HypH2
+public import SignatureVolatility.SignatureVolatilityModel
+public import SignatureVolatility.Weight.Geometric
+
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,9 +1,14 @@
-import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
-import SignatureVolatility.ExtTensorAlgebra.Concat
-import SignatureVolatility.ExtTensorAlgebra.EvalShuffleBasis
-import SignatureVolatility.ExtTensorAlgebra.LevelNorm
-import SignatureVolatility.GeneratedFiltration
-import SignatureVolatility.IndexedFiltration
+module
+
+public import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
+public import SignatureVolatility.ExtTensorAlgebra.Concat
+public import SignatureVolatility.ExtTensorAlgebra.EvalShuffleBasis
+public import SignatureVolatility.ExtTensorAlgebra.LevelNorm
+public import SignatureVolatility.GeneratedFiltration
+public import SignatureVolatility.IndexedFiltration
+
+
+@[expose] public section
 
 open MeasureTheory
 

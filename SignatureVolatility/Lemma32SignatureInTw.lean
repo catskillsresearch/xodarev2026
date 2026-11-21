@@ -1,9 +1,14 @@
-import SignatureVolatility.HypH2
-import SignatureVolatility.MemTw
-import SignatureVolatility.NormW
-import SignatureVolatility.ProlongedBrownianSetup
-import SignatureVolatility.ProlongedBrownianSetup.WHat
-import SignatureVolatility.Weight
+module
+
+public import SignatureVolatility.HypH2
+public import SignatureVolatility.MemTw
+public import SignatureVolatility.NormW
+public import SignatureVolatility.ProlongedBrownianSetup
+public import SignatureVolatility.ProlongedBrownianSetup.WHat
+public import SignatureVolatility.Weight
+
+
+@[expose] public section
 
 noncomputable section
 

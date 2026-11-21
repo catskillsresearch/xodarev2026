@@ -1,8 +1,13 @@
-import SignatureVolatility.PriceFiltrationSignatureSpace
-import SignatureVolatility.PriceFiltrationSignatureSpace.CompletenessDepth
-import SignatureVolatility.PriceFiltrationSignatureSpace.VInfty
-import SignatureVolatility.PriceFiltrationSignatureSpace.VSubspace
-import SignatureVolatility.Word
+module
+
+public import SignatureVolatility.PriceFiltrationSignatureSpace
+public import SignatureVolatility.PriceFiltrationSignatureSpace.CompletenessDepth
+public import SignatureVolatility.PriceFiltrationSignatureSpace.VInfty
+public import SignatureVolatility.PriceFiltrationSignatureSpace.VSubspace
+public import SignatureVolatility.Word
+
+
+@[expose] public section
 
 noncomputable section
 

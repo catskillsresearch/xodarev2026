@@ -1,4 +1,9 @@
-import SignatureVolatility.Letter
+module
+
+public import SignatureVolatility.Letter
+
+
+@[expose] public section
 
 namespace SignatureVolatility
 

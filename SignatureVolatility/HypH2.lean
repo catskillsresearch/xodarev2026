@@ -1,6 +1,11 @@
-import SignatureVolatility.Weight
-import SignatureVolatility.Weight.ConstOne
-import SignatureVolatility.Weight.Geometric
+module
+
+public import SignatureVolatility.Weight
+public import SignatureVolatility.Weight.ConstOne
+public import SignatureVolatility.Weight.Geometric
+
+
+@[expose] public section
 
 namespace SignatureVolatility
 

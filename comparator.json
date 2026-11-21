@@ -1,0 +1,46 @@
+{
+  "challenge_module": "SignatureVolatilityComparator.Challenge",
+  "solution_module": "SignatureVolatilityComparator.Solution",
+  "theorem_names": [
+    "SignatureVolatility.theorem_A",
+    "SignatureVolatility.theorem_B",
+    "SignatureVolatility.theorem_C",
+    "SignatureVolatility.theorem_D"
+  ],
+  "definition_names": [
+    "SignatureVolatility.ExtTensorAlgebra.levelNormSq",
+    "SignatureVolatility.ExtTensorAlgebra.levelNorm",
+    "SignatureVolatility.ExtTensorAlgebra.levelInner",
+    "SignatureVolatility.ExtTensorAlgebra.concat",
+    "SignatureVolatility.ExtTensorAlgebra.evalShuffleBasis",
+    "SignatureVolatility.ExtTensorAlgebra.shuffleWords",
+    "SignatureVolatility.ExtTensorAlgebra.IsFinitelySupported",
+    "SignatureVolatility.ExtTensorAlgebra.basisWord",
+    "SignatureVolatility.wordsOfLength",
+    "SignatureVolatility.MemL2w",
+    "SignatureVolatility.MemL2wInv",
+    "SignatureVolatility.MemTw",
+    "SignatureVolatility.normW",
+    "SignatureVolatility.norm2w",
+    "SignatureVolatility.norm2wInv",
+    "SignatureVolatility.dualPairing",
+    "SignatureVolatility.generatedFiltration",
+    "SignatureVolatility.ProlongedBrownianSetup.W_hat",
+    "SignatureVolatility.ProlongedBrownianSetup.signatureFiltration",
+    "SignatureVolatility.SignatureVolatilityModel.sigma",
+    "SignatureVolatility.SatisfiesNFLVR",
+    "SignatureVolatility.AdmissibleGainsUnderP",
+    "SignatureVolatility.PriceFiltrationSignatureSpace.V_subspace",
+    "SignatureVolatility.PriceFiltrationSignatureSpace.V_infty",
+    "SignatureVolatility.PriceFiltrationSignatureSpace.completenessDepth",
+    "SignatureVolatility.PriceFiltrationSignatureSpace.augmentedMarketSpan",
+    "SignatureVolatility.PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration",
+    "SignatureVolatility.projLe",
+    "SignatureVolatility.replicableStarProjection"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ]
+}

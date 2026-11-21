@@ -1,9 +1,13 @@
-import SignatureVolatility.ProlongedBrownianSetup
-import SignatureVolatility.ProlongedBrownianSetup.WHat
-import SignatureVolatility.GeneratedFiltration
-import SignatureVolatility.IndexedFiltration
-import SignatureVolatility.PriceFiltration
+module
 
+public import SignatureVolatility.ProlongedBrownianSetup
+public import SignatureVolatility.ProlongedBrownianSetup.WHat
+public import SignatureVolatility.GeneratedFiltration
+public import SignatureVolatility.IndexedFiltration
+public import SignatureVolatility.PriceFiltration
+
+
+@[expose] public section
 
 open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
 open MeasureTheory Filter Topology Set

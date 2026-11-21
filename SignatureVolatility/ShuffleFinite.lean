@@ -1,7 +1,11 @@
-import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
-import SignatureVolatility.WordsOfLength
-import SignatureVolatility.ExtTensorAlgebra.ShuffleBasis
+module
 
+public import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
+public import SignatureVolatility.WordsOfLength
+public import SignatureVolatility.ExtTensorAlgebra.ShuffleBasis
+
+
+@[expose] public section
 
 noncomputable section
 

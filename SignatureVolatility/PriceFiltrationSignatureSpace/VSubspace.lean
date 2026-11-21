@@ -1,6 +1,11 @@
-import SignatureVolatility.PriceFiltrationSignatureSpace
-import SignatureVolatility.WordsOfLength
-import SignatureVolatility.Word
+module
+
+public import SignatureVolatility.PriceFiltrationSignatureSpace
+public import SignatureVolatility.WordsOfLength
+public import SignatureVolatility.Word
+
+
+@[expose] public section
 
 noncomputable section
 

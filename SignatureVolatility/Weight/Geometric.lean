@@ -1,4 +1,9 @@
-import SignatureVolatility.Weight
+module
+
+public import SignatureVolatility.Weight
+
+
+@[expose] public section
 
 namespace SignatureVolatility
 

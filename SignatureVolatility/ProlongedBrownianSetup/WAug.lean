@@ -1,4 +1,9 @@
-import SignatureVolatility.ProlongedBrownianSetup
+module
+
+public import SignatureVolatility.ProlongedBrownianSetup
+
+
+@[expose] public section
 
 open MeasureTheory
 

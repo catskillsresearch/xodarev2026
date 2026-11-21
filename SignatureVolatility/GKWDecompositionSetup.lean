@@ -1,10 +1,15 @@
-import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
-import SignatureVolatility.MemL2wInv
-import SignatureVolatility.Norm2wInv
-import SignatureVolatility.PriceFiltrationSignatureSpace
-import SignatureVolatility.PriceFiltrationSignatureSpace.VSubspace
-import SignatureVolatility.ProjLe
-import SignatureVolatility.Weight
+module
+
+public import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
+public import SignatureVolatility.MemL2wInv
+public import SignatureVolatility.Norm2wInv
+public import SignatureVolatility.PriceFiltrationSignatureSpace
+public import SignatureVolatility.PriceFiltrationSignatureSpace.VSubspace
+public import SignatureVolatility.ProjLe
+public import SignatureVolatility.Weight
+
+
+@[expose] public section
 
 noncomputable section
 

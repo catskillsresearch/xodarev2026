@@ -1,4 +1,9 @@
-import SignatureVolatility.IndexedFiltration
+module
+
+public import SignatureVolatility.IndexedFiltration
+
+@[expose] public section
+
 open MeasureTheory Set
 
 namespace SignatureVolatility

@@ -1,5 +1,10 @@
-import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
-import SignatureVolatility.WordsOfLength
+module
+
+public import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
+public import SignatureVolatility.WordsOfLength
+
+
+@[expose] public section
 
 namespace SignatureVolatility
 

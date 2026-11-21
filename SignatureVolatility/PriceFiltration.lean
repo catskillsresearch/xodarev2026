@@ -1,5 +1,10 @@
-import SignatureVolatility.ProlongedBrownianSetup
-import SignatureVolatility.IndexedFiltration
+module
+
+public import SignatureVolatility.ProlongedBrownianSetup
+public import SignatureVolatility.IndexedFiltration
+
+
+@[expose] public section
 
 open MeasureTheory
 

@@ -1,8 +1,13 @@
-import SignatureVolatility.ExtTensorAlgebra.EvalShuffleBasis
-import SignatureVolatility.Letter
-import SignatureVolatility.ProlongedBrownianSetup
-import SignatureVolatility.ProlongedBrownianSetup.WHat
-import SignatureVolatility.Word
+module
+
+public import SignatureVolatility.ExtTensorAlgebra.EvalShuffleBasis
+public import SignatureVolatility.Letter
+public import SignatureVolatility.ProlongedBrownianSetup
+public import SignatureVolatility.ProlongedBrownianSetup.WHat
+public import SignatureVolatility.Word
+
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,9 +1,13 @@
-import SignatureVolatility.Weight
-import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
-import SignatureVolatility.HypH1
-import SignatureVolatility.HypH2
-import SignatureVolatility.HypH3
+module
 
+public import SignatureVolatility.Weight
+public import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
+public import SignatureVolatility.HypH1
+public import SignatureVolatility.HypH2
+public import SignatureVolatility.HypH3
+
+
+@[expose] public section
 
 open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
 open MeasureTheory Filter Topology Set

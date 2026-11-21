@@ -1,8 +1,13 @@
-import SignatureVolatility.ExtTensorAlgebra.BasisWord
-import SignatureVolatility.HypH1OfIsFinitelySupported
-import SignatureVolatility.HypH2
-import SignatureVolatility.SignatureVolatilityModel
-import SignatureVolatility.Weight.ConstOne
+module
+
+public import SignatureVolatility.ExtTensorAlgebra.BasisWord
+public import SignatureVolatility.HypH1OfIsFinitelySupported
+public import SignatureVolatility.HypH2
+public import SignatureVolatility.SignatureVolatilityModel
+public import SignatureVolatility.Weight.ConstOne
+
+
+@[expose] public section
 
 noncomputable section
 

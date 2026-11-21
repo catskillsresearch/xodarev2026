@@ -1,5 +1,9 @@
-import SignatureVolatility.ExtTensorAlgebra.IsFinitelySupported
+module
 
+public import SignatureVolatility.ExtTensorAlgebra.IsFinitelySupported
+
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,6 +1,10 @@
-import SignatureVolatility.PriceFiltrationSignatureSpace
-import SignatureVolatility.PriceFiltrationSignatureSpace.AugmentedMarketSpan
+module
 
+public import SignatureVolatility.PriceFiltrationSignatureSpace
+public import SignatureVolatility.PriceFiltrationSignatureSpace.AugmentedMarketSpan
+
+
+@[expose] public section
 
 noncomputable section
 

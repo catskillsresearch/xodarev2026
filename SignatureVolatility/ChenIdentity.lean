@@ -1,5 +1,10 @@
-import SignatureVolatility.ProlongedBrownianSetup
-import SignatureVolatility.ExtTensorAlgebra.Concat
+module
+
+public import SignatureVolatility.ProlongedBrownianSetup
+public import SignatureVolatility.ExtTensorAlgebra.Concat
+
+
+@[expose] public section
 
 open MeasureTheory
 

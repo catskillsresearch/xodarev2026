@@ -1,9 +1,13 @@
-import SignatureVolatility.Weight
-import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
-import SignatureVolatility.RightShift
-import SignatureVolatility.StratonovichHalfLaplacian
-import SignatureVolatility.ShuffleFinite
+module
 
+public import SignatureVolatility.Weight
+public import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
+public import SignatureVolatility.RightShift
+public import SignatureVolatility.StratonovichHalfLaplacian
+public import SignatureVolatility.ShuffleFinite
+
+
+@[expose] public section
 
 noncomputable section
 

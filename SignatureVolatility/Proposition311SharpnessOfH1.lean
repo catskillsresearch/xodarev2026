@@ -1,7 +1,12 @@
-import SignatureVolatility.HypH1
-import SignatureVolatility.HypH2
-import SignatureVolatility.SuperfactorialFunctional
-import SignatureVolatility.Weight
+module
+
+public import SignatureVolatility.HypH1
+public import SignatureVolatility.HypH2
+public import SignatureVolatility.SuperfactorialFunctional
+public import SignatureVolatility.Weight
+
+
+@[expose] public section
 
 open Filter Topology
 

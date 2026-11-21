@@ -1,12 +1,17 @@
-import SignatureVolatility.DualPairing
-import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
-import SignatureVolatility.HypH1
-import SignatureVolatility.HypH2
-import SignatureVolatility.Norm2w
-import SignatureVolatility.ProlongedBrownianSetup
-import SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration
-import SignatureVolatility.ProlongedBrownianSetup.WHat
-import SignatureVolatility.Weight
+module
+
+public import SignatureVolatility.DualPairing
+public import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
+public import SignatureVolatility.HypH1
+public import SignatureVolatility.HypH2
+public import SignatureVolatility.Norm2w
+public import SignatureVolatility.ProlongedBrownianSetup
+public import SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration
+public import SignatureVolatility.ProlongedBrownianSetup.WHat
+public import SignatureVolatility.Weight
+
+
+@[expose] public section
 
 noncomputable section
 

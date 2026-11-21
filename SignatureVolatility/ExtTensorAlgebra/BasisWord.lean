@@ -1,5 +1,10 @@
-import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
-import SignatureVolatility.ExtTensorAlgebra.IsFinitelySupported
+module
+
+public import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
+public import SignatureVolatility.ExtTensorAlgebra.IsFinitelySupported
+
+@[expose] public section
+
 noncomputable section
 
 namespace SignatureVolatility

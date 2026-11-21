@@ -1,5 +1,10 @@
-import SignatureVolatility.SatisfiesNFLVR
-import SignatureVolatility.AdmissibleGainsUnderP
+module
+
+public import SignatureVolatility.SatisfiesNFLVR
+public import SignatureVolatility.AdmissibleGainsUnderP
+
+
+@[expose] public section
 
 open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
 open MeasureTheory Filter Topology Set

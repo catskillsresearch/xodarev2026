@@ -1,15 +1,20 @@
-import SignatureVolatility.ClassicalRiccatiSolution
-import SignatureVolatility.ExtTensorAlgebra.BasisWord
-import SignatureVolatility.ExtTensorAlgebra.ShuffleBasis
-import SignatureVolatility.ExtTensorAlgebra.ShuffleWords
-import SignatureVolatility.Letter
-import SignatureVolatility.Preliminaries
-import SignatureVolatility.RiccatiOpBounded
-import SignatureVolatility.RightShift
-import SignatureVolatility.ShuffleFinite
-import SignatureVolatility.StratonovichHalfLaplacian
-import SignatureVolatility.Weight
-import SignatureVolatility.WordsOfLength
+module
+
+public import SignatureVolatility.ClassicalRiccatiSolution
+public import SignatureVolatility.ExtTensorAlgebra.BasisWord
+public import SignatureVolatility.ExtTensorAlgebra.ShuffleBasis
+public import SignatureVolatility.ExtTensorAlgebra.ShuffleWords
+public import SignatureVolatility.Letter
+public import SignatureVolatility.Preliminaries
+public import SignatureVolatility.RiccatiOpBounded
+public import SignatureVolatility.RightShift
+public import SignatureVolatility.ShuffleFinite
+public import SignatureVolatility.StratonovichHalfLaplacian
+public import SignatureVolatility.Weight
+public import SignatureVolatility.WordsOfLength
+
+
+@[expose] public section
 
 noncomputable section
 

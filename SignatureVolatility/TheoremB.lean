@@ -1,19 +1,24 @@
-import SignatureVolatility.AdmissibleGainsUnderP
-import SignatureVolatility.ClassicalRiccatiSolution
-import SignatureVolatility.DualPairing
-import SignatureVolatility.ExtTensorAlgebra.FreeTensorAlgebra
-import SignatureVolatility.IsSpecialSemimartingale
-import SignatureVolatility.ItoCalculusKit
-import SignatureVolatility.NflvrOfMartingaleMeasure
-import SignatureVolatility.ProlongedBrownianSetup
-import SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration
-import SignatureVolatility.ProlongedBrownianSetup.WHat
-import SignatureVolatility.SatisfiesNFLVR
-import SignatureVolatility.SignaturePriceSolution
-import SignatureVolatility.SignatureRiccatiKit
-import SignatureVolatility.SignatureVolatilityModel
-import SignatureVolatility.TheoremA
-import SignatureVolatility.Word
+module
+
+public import SignatureVolatility.AdmissibleGainsUnderP
+public import SignatureVolatility.ClassicalRiccatiSolution
+public import SignatureVolatility.DualPairing
+public import SignatureVolatility.ExtTensorAlgebra.FreeTensorAlgebra
+public import SignatureVolatility.IsSpecialSemimartingale
+public import SignatureVolatility.ItoCalculusKit
+public import SignatureVolatility.NflvrOfMartingaleMeasure
+public import SignatureVolatility.ProlongedBrownianSetup
+public import SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration
+public import SignatureVolatility.ProlongedBrownianSetup.WHat
+public import SignatureVolatility.SatisfiesNFLVR
+public import SignatureVolatility.SignaturePriceSolution
+public import SignatureVolatility.SignatureRiccatiKit
+public import SignatureVolatility.SignatureVolatilityModel
+public import SignatureVolatility.TheoremA
+public import SignatureVolatility.Word
+
+
+@[expose] public section
 
 noncomputable section
 

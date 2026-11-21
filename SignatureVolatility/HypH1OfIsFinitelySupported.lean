@@ -1,10 +1,14 @@
-import SignatureVolatility.HypH1
-import SignatureVolatility.ExtTensorAlgebra.IsFinitelySupported
-import SignatureVolatility.Weight
-import SignatureVolatility.MemL2w
-import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
-import SignatureVolatility.ExtTensorAlgebra.LevelNormSq
+module
 
+public import SignatureVolatility.HypH1
+public import SignatureVolatility.ExtTensorAlgebra.IsFinitelySupported
+public import SignatureVolatility.Weight
+public import SignatureVolatility.MemL2w
+public import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
+public import SignatureVolatility.ExtTensorAlgebra.LevelNormSq
+
+
+@[expose] public section
 
 noncomputable section
 

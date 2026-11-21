@@ -1,8 +1,13 @@
-import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
-import SignatureVolatility.MemTw
-import SignatureVolatility.NormW
-import SignatureVolatility.RiccatiOpBounded
-import SignatureVolatility.Weight
+module
+
+public import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
+public import SignatureVolatility.MemTw
+public import SignatureVolatility.NormW
+public import SignatureVolatility.RiccatiOpBounded
+public import SignatureVolatility.Weight
+
+
+@[expose] public section
 
 noncomputable section
 
