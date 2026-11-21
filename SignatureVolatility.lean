@@ -83,9 +83,13 @@ public import SignatureVolatility.SmoothSignature
 public import SignatureVolatility.StratonovichHalfLaplacian
 public import SignatureVolatility.SuperfactorialFunctional
 public import SignatureVolatility.TailNorm2wInvLeRatioMulNormW
+public import SignatureVolatility.TheoremAOfBrownianSetupItoKit
 public import SignatureVolatility.TheoremA
+public import SignatureVolatility.TheoremBOfSetupItoRiccatiKit
 public import SignatureVolatility.TheoremB
+public import SignatureVolatility.TheoremCOfMarketKit
 public import SignatureVolatility.TheoremC
+public import SignatureVolatility.TheoremDOfMarketKit
 public import SignatureVolatility.TheoremD
 public import SignatureVolatility.Tw
 public import SignatureVolatility.Weight.ConstOne

@@ -32,8 +32,27 @@ IMPORT_RE = re.compile(
     r"^(?:public\s+)?(?:meta\s+)?import\s+(?:all\s+)?(SignatureVolatility(?:\.\S+)?)"
 )
 
+SORRY_RE = re.compile(r"(?<![A-Za-z0-9_])sorry(?![A-Za-z0-9_])")
+
+# Campaign kit / theorem modules that must be paper-strength (nontrivial Ito, Stratonovich
+# signature, Riccati, Davis–Obłój, GKW). Listed here so HOLES.md always surfaces them; they
+# are never "done" while they contain `sorry` (see `file_has_sorry`).
+PAPER_KIT_GOALS: list[str] = [
+    "ProlongedBrownianSetup.StratonovichOfBM",
+    "ItoCalculusKit.OfMathFin",
+    "SignatureRiccatiKit.OfSetup",
+    "PriceFiltrationSignatureSpace.OfMarket",
+    "GKWDecompositionSetup.OfPFS",
+    # Paper entry theorems (instance wrappers; blocked until the kits above are done):
+    "TheoremA",
+    "TheoremB",
+    "TheoremC",
+    "TheoremD",
+]
+
 # Module ids (short paths) that have been human-verified / sorry-free and may be
 # marked done once all hard predecessors are done. Empty ⇒ everything TBD.
+# Do NOT list paper-kit goal modules here until they are sorry-free at paper strength.
 VERIFIED: set[str] = {
     "AdmissibleGainsUnderP",
     "BanachAlgebraConcatBound",
@@ -74,7 +93,6 @@ VERIFIED: set[str] = {
     "Lemma61GramPosDef",
     "IsSpecialSemimartingale",
     "ItoCalculusKit",
-    "ItoCalculusKit.OfMathFin",
     "Letter",
     "MemL2w",
     "MemL2wInv",
@@ -127,9 +145,13 @@ VERIFIED: set[str] = {
     "SuperfactorialFunctional",
     "TailNorm2wInvLeRatioMulNormW",
     "TheoremA",
+    "TheoremAOfBrownianSetupItoKit",
     "TheoremB",
+    "TheoremBOfSetupItoRiccatiKit",
     "TheoremC",
+    "TheoremCOfMarketKit",
     "TheoremD",
+    "TheoremDOfMarketKit",
     "TimeReindex",
     "Tw",
     "Word",
@@ -147,6 +169,19 @@ def short_mod(mod: str) -> str:
     if mod.startswith("SignatureVolatility."):
         return mod[len("SignatureVolatility.") :]
     return mod
+
+
+def file_has_sorry(path: Path) -> bool:
+    """True if the Lean file contains a `sorry` token (not in a comment-only line heuristically)."""
+    try:
+        text = path.read_text(encoding="utf-8")
+    except OSError:
+        return False
+    for line in text.splitlines():
+        code = line.split("--", 1)[0]
+        if SORRY_RE.search(code):
+            return True
+    return False
 
 
 def file_to_mod(path: Path) -> str:
@@ -269,8 +304,14 @@ def build() -> dict:
         if frm in nodes_meta and to in nodes_meta:
             hard_preds[to].append(frm)
 
-    # Every non-verified module counts as a local hole (TBD / unverified).
-    raw_hole = {nid: nid not in VERIFIED for nid in nodes_meta}
+    has_sorry: dict[str, bool] = {}
+    for nid, meta in nodes_meta.items():
+        has_sorry[nid] = file_has_sorry(ROOT / meta["file"])
+
+    # Hole unless verified AND sorry-free. `sorry` always wins over VERIFIED.
+    raw_hole = {
+        nid: (nid not in VERIFIED) or has_sorry[nid] for nid in nodes_meta
+    }
 
     status: dict[str, str] = {}
     for _ in range(len(nodes_meta) + 2):
@@ -291,6 +332,11 @@ def build() -> dict:
 
     nodes = []
     for nid, meta in nodes_meta.items():
+        detail = meta.get("detail")
+        if has_sorry[nid]:
+            detail = (detail or "") + (" " if detail else "") + "Contains `sorry` (paper gap)."
+        if nid in PAPER_KIT_GOALS:
+            detail = (detail or "") + (" " if detail else "") + "Paper kit / theorem goal."
         nodes.append({
             "id": nid,
             "label": meta["label"],
@@ -298,7 +344,9 @@ def build() -> dict:
             "file": meta["file"],
             "status": status[nid],
             "blocker": None,
-            "detail": meta.get("detail"),
+            "detail": detail,
+            "hasSorry": has_sorry[nid],
+            "paperKitGoal": nid in PAPER_KIT_GOALS,
         })
 
     by_id = {n["id"]: n for n in nodes}
@@ -335,14 +383,16 @@ def build() -> dict:
         },
         "notes": [
             "File-level board: one node per SignatureVolatility .lean module.",
-            "All modules start as unverified TBD (Gemini dump not yet checked).",
+            "Done = listed in VERIFIED and deps done and file contains no `sorry`.",
+            "Any `sorry` forces open/blocked regardless of VERIFIED.",
             "Hard edge B→A: A imports B (direct, submodule files only; barrel omitted).",
             "Drawn edges are transitively reduced; blocking still uses all direct imports.",
-            "Mark a module verified by adding its id to VERIFIED in scripts/build_holes.py.",
+            "Paper kit goals: " + ", ".join(PAPER_KIT_GOALS) + ".",
             "Blue = done. Green = open. Grey = blocked.",
             "Regenerate with: python3 scripts/build_holes.py",
             f"Open tips: {', '.join(open_ids) if open_ids else '(none)'}.",
         ],
+        "paperKitGoals": PAPER_KIT_GOALS,
         "nodes": nodes,
         "edges": edges,
     }
@@ -367,15 +417,20 @@ def write_md(data: dict) -> None:
         99: "Root barrel",
     }
 
+    sorry_n = [n for n in data["nodes"] if n.get("hasSorry")]
+    paper_n = [n for n in data["nodes"] if n.get("paperKitGoal")]
+
     lines = [
         "# Proof holes (Xodarev / SignatureVolatility)",
         "",
-        "File-level inventory of Lean modules. **Everything is unverified TBD** until "
-        "listed in `VERIFIED` in `scripts/build_holes.py`.",
+        "File-level inventory of Lean modules. A module is **done** only if it is listed in "
+        "`VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the "
+        "file contains no `sorry`.",
         "",
         f"**Updated:** {data['updated']}",
         f"**Holes:** {data['sorryCount']} open+blocked · "
-        f"{len(open_n)} open · {len(blocked_n)} blocked · {len(done_n)} done.",
+        f"{len(open_n)} open · {len(blocked_n)} blocked · {len(done_n)} done · "
+        f"{len(sorry_n)} file(s) with `sorry`.",
         "",
         "**Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).",
         "",
@@ -384,9 +439,32 @@ def write_md(data: dict) -> None:
         "scripts/serve_holes.sh          # http://127.0.0.1:8766/holes.html",
         "```",
         "",
-        "## Open now (Layer 0)",
+        "## Paper kit / theorem goals (before Challenge rewrite)",
+        "",
+        "These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovich "
+        "signature, Riccati duality, Davis–Obłój PFS, GKW) before updating Palomar Challenge / "
+        "`formalization.yaml`.",
         "",
     ]
+    if not paper_n:
+        lines.append("_None listed in `PAPER_KIT_GOALS`._")
+    else:
+        lines.append("| Status | Id | `sorry`? | File |")
+        lines.append("|---|---|---|---|")
+        for n in sorted(paper_n, key=lambda x: x["id"]):
+            lines.append(
+                f"| {n['status']} | `{n['id']}` | "
+                f"{'yes' if n.get('hasSorry') else 'no'} | `{n['file']}` |"
+            )
+    lines += ["", "## Files with `sorry`", ""]
+    if not sorry_n:
+        lines.append("_None._")
+    else:
+        lines.append("| Status | Id | File |")
+        lines.append("|---|---|---|")
+        for n in sorted(sorry_n, key=lambda x: x["id"]):
+            lines.append(f"| {n['status']} | `{n['id']}` | `{n['file']}` |")
+    lines += ["", "## Open now (Layer 0)", ""]
     if not open_n:
         lines.append("_None — every module is blocked or verified._")
     else:

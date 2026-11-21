@@ -1,9 +1,9 @@
 # Proof holes (Xodarev / SignatureVolatility)
 
-File-level inventory of Lean modules. **Everything is unverified TBD** until listed in `VERIFIED` in `scripts/build_holes.py`.
+File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-21T16:18:30Z
-**Holes:** 0 open+blocked · 0 open · 0 blocked · 103 done.
+**Updated:** 2026-11-21T16:59:59Z
+**Holes:** 9 open+blocked · 1 open · 8 blocked · 102 done · 5 file(s) with `sorry`.
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
 
@@ -12,13 +12,41 @@ python3 scripts/build_holes.py   # refreshes HOLES.md, holes-graph.json, embeds 
 scripts/serve_holes.sh          # http://127.0.0.1:8766/holes.html
 ```
 
+## Paper kit / theorem goals (before Challenge rewrite)
+
+These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovich signature, Riccati duality, Davis–Obłój PFS, GKW) before updating Palomar Challenge / `formalization.yaml`.
+
+| Status | Id | `sorry`? | File |
+|---|---|---|---|
+| blocked | `GKWDecompositionSetup.OfPFS` | yes | `SignatureVolatility/GKWDecompositionSetup/OfPFS.lean` |
+| blocked | `ItoCalculusKit.OfMathFin` | yes | `SignatureVolatility/ItoCalculusKit/OfMathFin.lean` |
+| blocked | `PriceFiltrationSignatureSpace.OfMarket` | yes | `SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean` |
+| open | `ProlongedBrownianSetup.StratonovichOfBM` | yes | `SignatureVolatility/ProlongedBrownianSetup/StratonovichOfBM.lean` |
+| blocked | `SignatureRiccatiKit.OfSetup` | yes | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
+| blocked | `TheoremA` | no | `SignatureVolatility/TheoremA.lean` |
+| blocked | `TheoremB` | no | `SignatureVolatility/TheoremB.lean` |
+| blocked | `TheoremC` | no | `SignatureVolatility/TheoremC.lean` |
+| blocked | `TheoremD` | no | `SignatureVolatility/TheoremD.lean` |
+
+## Files with `sorry`
+
+| Status | Id | File |
+|---|---|---|
+| blocked | `GKWDecompositionSetup.OfPFS` | `SignatureVolatility/GKWDecompositionSetup/OfPFS.lean` |
+| blocked | `ItoCalculusKit.OfMathFin` | `SignatureVolatility/ItoCalculusKit/OfMathFin.lean` |
+| blocked | `PriceFiltrationSignatureSpace.OfMarket` | `SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean` |
+| open | `ProlongedBrownianSetup.StratonovichOfBM` | `SignatureVolatility/ProlongedBrownianSetup/StratonovichOfBM.lean` |
+| blocked | `SignatureRiccatiKit.OfSetup` | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
+
 ## Open now (Layer 0)
 
-_None — every module is blocked or verified._
+| Id | File |
+|---|---|
+| `ProlongedBrownianSetup.StratonovichOfBM` | `SignatureVolatility/ProlongedBrownianSetup/StratonovichOfBM.lean` |
 
 ## By group
 
-### Top-level modules — 0 hole(s)
+### Top-level modules — 7 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -32,6 +60,7 @@ _None — every module is blocked or verified._
 | done | `DualPairingLeNormWDualMulNormW` | `SignatureVolatility/DualPairingLeNormWDualMulNormW.lean` |
 | done | `FirstOrderBrownianVolModel` | `SignatureVolatility/FirstOrderBrownianVolModel.lean` |
 | done | `GKWDecompositionSetup` | `SignatureVolatility/GKWDecompositionSetup.lean` |
+| blocked | `GKWDecompositionSetup.OfPFS` | `SignatureVolatility/GKWDecompositionSetup/OfPFS.lean` |
 | done | `GeneratedFiltration` | `SignatureVolatility/GeneratedFiltration.lean` |
 | done | `HypH1` | `SignatureVolatility/HypH1.lean` |
 | done | `HypH1OfIsFinitelySupported` | `SignatureVolatility/HypH1OfIsFinitelySupported.lean` |
@@ -41,7 +70,7 @@ _None — every module is blocked or verified._
 | done | `InfiniteGeometricSignatureModel` | `SignatureVolatility/InfiniteGeometricSignatureModel.lean` |
 | done | `IsSpecialSemimartingale` | `SignatureVolatility/IsSpecialSemimartingale.lean` |
 | done | `ItoCalculusKit` | `SignatureVolatility/ItoCalculusKit.lean` |
-| done | `ItoCalculusKit.OfMathFin` | `SignatureVolatility/ItoCalculusKit/OfMathFin.lean` |
+| blocked | `ItoCalculusKit.OfMathFin` | `SignatureVolatility/ItoCalculusKit/OfMathFin.lean` |
 | done | `Lemma32SignatureInTw` | `SignatureVolatility/Lemma32SignatureInTw.lean` |
 | done | `Lemma61GramPosDef` | `SignatureVolatility/Lemma61GramPosDef.lean` |
 | done | `Letter` | `SignatureVolatility/Letter.lean` |
@@ -77,16 +106,21 @@ _None — every module is blocked or verified._
 | done | `SignatureHestonLevel2Model` | `SignatureVolatility/SignatureHestonLevel2Model.lean` |
 | done | `SignaturePriceSolution` | `SignatureVolatility/SignaturePriceSolution.lean` |
 | done | `SignatureRiccatiKit` | `SignatureVolatility/SignatureRiccatiKit.lean` |
+| blocked | `SignatureRiccatiKit.OfSetup` | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
 | done | `SignatureVolatilityModel` | `SignatureVolatility/SignatureVolatilityModel.lean` |
 | done | `SmoothIteratedIntegral` | `SignatureVolatility/SmoothIteratedIntegral.lean` |
 | done | `SmoothSignature` | `SignatureVolatility/SmoothSignature.lean` |
 | done | `StratonovichHalfLaplacian` | `SignatureVolatility/StratonovichHalfLaplacian.lean` |
 | done | `SuperfactorialFunctional` | `SignatureVolatility/SuperfactorialFunctional.lean` |
 | done | `TailNorm2wInvLeRatioMulNormW` | `SignatureVolatility/TailNorm2wInvLeRatioMulNormW.lean` |
-| done | `TheoremA` | `SignatureVolatility/TheoremA.lean` |
-| done | `TheoremB` | `SignatureVolatility/TheoremB.lean` |
-| done | `TheoremC` | `SignatureVolatility/TheoremC.lean` |
-| done | `TheoremD` | `SignatureVolatility/TheoremD.lean` |
+| blocked | `TheoremA` | `SignatureVolatility/TheoremA.lean` |
+| done | `TheoremAOfBrownianSetupItoKit` | `SignatureVolatility/TheoremAOfBrownianSetupItoKit.lean` |
+| blocked | `TheoremB` | `SignatureVolatility/TheoremB.lean` |
+| done | `TheoremBOfSetupItoRiccatiKit` | `SignatureVolatility/TheoremBOfSetupItoRiccatiKit.lean` |
+| blocked | `TheoremC` | `SignatureVolatility/TheoremC.lean` |
+| done | `TheoremCOfMarketKit` | `SignatureVolatility/TheoremCOfMarketKit.lean` |
+| blocked | `TheoremD` | `SignatureVolatility/TheoremD.lean` |
+| done | `TheoremDOfMarketKit` | `SignatureVolatility/TheoremDOfMarketKit.lean` |
 | done | `TimeReindex` | `SignatureVolatility/TimeReindex.lean` |
 | done | `Tw` | `SignatureVolatility/Tw.lean` |
 | done | `Weight` | `SignatureVolatility/Weight.lean` |
@@ -124,7 +158,7 @@ _None — every module is blocked or verified._
 | done | `Weight.ConstOne` | `SignatureVolatility/Weight/ConstOne.lean` |
 | done | `Weight.Geometric` | `SignatureVolatility/Weight/Geometric.lean` |
 
-### ProlongedBrownianSetup — 0 hole(s)
+### ProlongedBrownianSetup — 1 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -132,16 +166,18 @@ _None — every module is blocked or verified._
 | done | `ProlongedBrownianSetup.OfBrownian` | `SignatureVolatility/ProlongedBrownianSetup/OfBrownian.lean` |
 | done | `ProlongedBrownianSetup.SignatureFiltration` | `SignatureVolatility/ProlongedBrownianSetup/SignatureFiltration.lean` |
 | done | `ProlongedBrownianSetup.SignatureOfBM` | `SignatureVolatility/ProlongedBrownianSetup/SignatureOfBM.lean` |
+| open | `ProlongedBrownianSetup.StratonovichOfBM` | `SignatureVolatility/ProlongedBrownianSetup/StratonovichOfBM.lean` |
 | done | `ProlongedBrownianSetup.WAug` | `SignatureVolatility/ProlongedBrownianSetup/WAug.lean` |
 | done | `ProlongedBrownianSetup.WHat` | `SignatureVolatility/ProlongedBrownianSetup/WHat.lean` |
 
-### PriceFiltrationSignatureSpace — 0 hole(s)
+### PriceFiltrationSignatureSpace — 1 hole(s)
 
 | Status | Id | File |
 |---|---|---|
 | done | `PriceFiltrationSignatureSpace.AugmentedMarketSpan` | `SignatureVolatility/PriceFiltrationSignatureSpace/AugmentedMarketSpan.lean` |
 | done | `PriceFiltrationSignatureSpace.CompletenessDepth` | `SignatureVolatility/PriceFiltrationSignatureSpace/CompletenessDepth.lean` |
 | done | `PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration` | `SignatureVolatility/PriceFiltrationSignatureSpace/IsCompleteOnPriceFiltration.lean` |
+| blocked | `PriceFiltrationSignatureSpace.OfMarket` | `SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean` |
 | done | `PriceFiltrationSignatureSpace.VInfty` | `SignatureVolatility/PriceFiltrationSignatureSpace/VInfty.lean` |
 | done | `PriceFiltrationSignatureSpace.VSubspace` | `SignatureVolatility/PriceFiltrationSignatureSpace/VSubspace.lean` |
 
