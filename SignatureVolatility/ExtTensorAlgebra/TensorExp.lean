@@ -45,6 +45,25 @@ lemma concat_tensorExp_zero_left {d : ℕ} (a : ExtTensorAlgebra d) :
   · intro hneg
     exact (hneg (by simp)).elim
 
+lemma concat_tensorExp_zero_right {d : ℕ} (a : ExtTensorAlgebra d) :
+    a ⊗ₜ tensorExp (fun _ : Fin d => (0 : ℝ)) = a := by
+  ext I
+  simp only [concat, tensorExp]
+  rw [sum_eq_single I.length]
+  · simp [List.take_length, List.drop_length]
+  · intro k hk hkne
+    have hkle : k ≤ I.length := Nat.lt_succ_iff.mp (mem_range.mp hk)
+    have hdrop : I.drop k ≠ [] := by
+      intro h
+      have := congrArg List.length h
+      simp [List.length_drop] at this
+      omega
+    cases h : I.drop k with
+    | nil => exact (hdrop h).elim
+    | cons _ _ => simp
+  · intro hneg
+    exact (hneg (by simp)).elim
+
 /-- Folded tensor product of level-1 exponentials along a chain of increments. -/
 def foldTensorExp {d : ℕ} : List (Fin d → ℝ) → ExtTensorAlgebra d
   | [] => tensorExp 0

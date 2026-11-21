@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-21T18:42:44Z
-**Holes:** 12 open+blocked · 1 open · 11 blocked · 109 done · 7 file(s) with `sorry`.
+**Updated:** 2026-11-21T19:55:48Z
+**Holes:** 10 open+blocked · 1 open · 9 blocked · 113 done · 5 file(s) with `sorry`.
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
 
@@ -35,16 +35,14 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | blocked | `GKWDecompositionSetup.OfPFS` | `SignatureVolatility/GKWDecompositionSetup/OfPFS.lean` |
 | blocked | `ItoCalculusKit.OfMathFin` | `SignatureVolatility/ItoCalculusKit/OfMathFin.lean` |
 | blocked | `PriceFiltrationSignatureSpace.OfMarket` | `SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean` |
-| open | `ProlongedBrownianSetup.Sig2Strat` | `SignatureVolatility/ProlongedBrownianSetup/Sig2Strat.lean` |
-| blocked | `ProlongedBrownianSetup.Sig2StratChenShuffle` | `SignatureVolatility/ProlongedBrownianSetup/Sig2StratChenShuffle.lean` |
-| blocked | `ProlongedBrownianSetup.Sig2StratMoments` | `SignatureVolatility/ProlongedBrownianSetup/Sig2StratMoments.lean` |
+| open | `ProlongedBrownianSetup.Sig2StratMoments` | `SignatureVolatility/ProlongedBrownianSetup/Sig2StratMoments.lean` |
 | blocked | `SignatureRiccatiKit.OfSetup` | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
 
 ## Open now (Layer 0)
 
 | Id | File |
 |---|---|
-| `ProlongedBrownianSetup.Sig2Strat` | `SignatureVolatility/ProlongedBrownianSetup/Sig2Strat.lean` |
+| `ProlongedBrownianSetup.Sig2StratMoments` | `SignatureVolatility/ProlongedBrownianSetup/Sig2StratMoments.lean` |
 
 ## By group
 
@@ -160,7 +158,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `Weight.ConstOne` | `SignatureVolatility/Weight/ConstOne.lean` |
 | done | `Weight.Geometric` | `SignatureVolatility/Weight/Geometric.lean` |
 
-### ProlongedBrownianSetup — 4 hole(s)
+### ProlongedBrownianSetup — 2 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -172,9 +170,11 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `ProlongedBrownianSetup.ItoWordIntegralLe1` | `SignatureVolatility/ProlongedBrownianSetup/ItoWordIntegralLe1.lean` |
 | done | `ProlongedBrownianSetup.ItoWordIntegralLe2` | `SignatureVolatility/ProlongedBrownianSetup/ItoWordIntegralLe2.lean` |
 | done | `ProlongedBrownianSetup.OfBrownian` | `SignatureVolatility/ProlongedBrownianSetup/OfBrownian.lean` |
-| open | `ProlongedBrownianSetup.Sig2Strat` | `SignatureVolatility/ProlongedBrownianSetup/Sig2Strat.lean` |
-| blocked | `ProlongedBrownianSetup.Sig2StratChenShuffle` | `SignatureVolatility/ProlongedBrownianSetup/Sig2StratChenShuffle.lean` |
-| blocked | `ProlongedBrownianSetup.Sig2StratMoments` | `SignatureVolatility/ProlongedBrownianSetup/Sig2StratMoments.lean` |
+| done | `ProlongedBrownianSetup.Sig2Strat` | `SignatureVolatility/ProlongedBrownianSetup/Sig2Strat.lean` |
+| done | `ProlongedBrownianSetup.Sig2StratAdapted` | `SignatureVolatility/ProlongedBrownianSetup/Sig2StratAdapted.lean` |
+| done | `ProlongedBrownianSetup.Sig2StratChenShuffle` | `SignatureVolatility/ProlongedBrownianSetup/Sig2StratChenShuffle.lean` |
+| done | `ProlongedBrownianSetup.Sig2StratDyadic` | `SignatureVolatility/ProlongedBrownianSetup/Sig2StratDyadic.lean` |
+| open | `ProlongedBrownianSetup.Sig2StratMoments` | `SignatureVolatility/ProlongedBrownianSetup/Sig2StratMoments.lean` |
 | done | `ProlongedBrownianSetup.SignatureFiltration` | `SignatureVolatility/ProlongedBrownianSetup/SignatureFiltration.lean` |
 | done | `ProlongedBrownianSetup.SignatureOfBM` | `SignatureVolatility/ProlongedBrownianSetup/SignatureOfBM.lean` |
 | done | `ProlongedBrownianSetup.StratonovichItoConversion` | `SignatureVolatility/ProlongedBrownianSetup/StratonovichItoConversion.lean` |

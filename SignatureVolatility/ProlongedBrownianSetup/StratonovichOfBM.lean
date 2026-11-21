@@ -14,9 +14,10 @@ open MeasureTheory
 namespace SignatureVolatility
 
 /-!
-# Paper-strength Stratonovich / Itô signature of `(t, W)` (Phase 1)
+# Paper-strength Stratonovich / geometric signature of `(t, W)` (Phase 1)
 
-Packs `sig2Strat` (Itô word integrals + triangular Stratonovich conversion) into
+Packs `sig2Strat` (multiplicative chordal / resolution-0 geometric lift of `(t, W)`, with
+Chen/shuffle from dyadic algebra and level ≤1 match to Itô+conversion) into
 `ProlongedBrownianSetup`. Analytic content lives in the imported submodules; this file
 is only the assembler (no local proof holes).
 -/

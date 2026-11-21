@@ -144,6 +144,96 @@ lemma tensorExp_shuffle {d : ℕ} (v : Fin d → ℝ) (I J : Word d) :
           ((I.map v).prod * (J.map v).prod / ((I.length + J.length).factorial : ℝ)) := by
       field_simp [hnm0]
 
+/-! ### Concatenation of group-like elements is group-like -/
+
+/-- Sum of `F` over all deconcatenations `I = I₁ ++ I₂`. -/
+private def splitSum {d : ℕ} (F : Word d → Word d → ℝ) (I : Word d) : ℝ :=
+  ∑ k ∈ Finset.range (I.length + 1), F (I.take k) (I.drop k)
+
+/-- Sum of `f` over all shuffles of `I` and `J`. -/
+private def shuffleSum {d : ℕ} (f : Word d → ℝ) (I J : Word d) : ℝ :=
+  ((shuffleWords I J).map f).sum
+
+private lemma splitSum_nil {d : ℕ} (F : Word d → Word d → ℝ) :
+    splitSum F [] = F [] [] := by
+  simp [splitSum]
+
+private lemma splitSum_cons {d : ℕ} (F : Word d → Word d → ℝ) (i : Fin d) (I : Word d) :
+    splitSum F (i :: I) = F [] (i :: I) + splitSum (fun a b => F (i :: a) b) I := by
+  simp only [splitSum, length_cons, Finset.sum_range_succ', take_succ_cons, drop_succ_cons,
+    take_zero, drop_zero]
+  exact add_comm _ _
+
+private lemma splitSum_add {d : ℕ} (F G : Word d → Word d → ℝ) (I : Word d) :
+    splitSum (fun a b => F a b + G a b) I = splitSum F I + splitSum G I :=
+  Finset.sum_add_distrib
+
+private lemma shuffleSum_nil_left {d : ℕ} (f : Word d → ℝ) (J : Word d) :
+    shuffleSum f [] J = f J := by
+  simp [shuffleSum, shuffleWords]
+
+private lemma shuffleSum_nil_right {d : ℕ} (f : Word d → ℝ) (I : Word d) :
+    shuffleSum f I [] = f I := by
+  cases I <;> simp [shuffleSum, shuffleWords]
+
+private lemma shuffleSum_cons_cons {d : ℕ} (f : Word d → ℝ) (i j : Fin d) (I J : Word d) :
+    shuffleSum f (i :: I) (j :: J) =
+      shuffleSum (fun K => f (i :: K)) I (j :: J) +
+        shuffleSum (fun K => f (j :: K)) (i :: I) J := by
+  simp [shuffleSum, shuffleWords, Function.comp_def]
+
+private lemma shuffleSum_add {d : ℕ} (f g : Word d → ℝ) (I J : Word d) :
+    shuffleSum (fun K => f K + g K) I J = shuffleSum f I J + shuffleSum g I J :=
+  List.sum_map_add
+
+private lemma shuffleSum_mul_left {d : ℕ} (c : ℝ) (f : Word d → ℝ) (I J : Word d) :
+    shuffleSum (fun K => c * f K) I J = c * shuffleSum f I J :=
+  List.sum_map_mul_left _ _ _
+
+private lemma shuffleSum_mul_right {d : ℕ} (c : ℝ) (f : Word d → ℝ) (I J : Word d) :
+    shuffleSum (fun K => f K * c) I J = shuffleSum f I J * c :=
+  List.sum_map_mul_right _ _ _
+
+/-- Deconcatenation is multiplicative for the shuffle product: splitting a shuffle of
+`I` and `J` is the same as shuffling the pieces of a splitting of `I` and of `J`. -/
+private lemma shuffleSum_splitSum {d : ℕ} (F : Word d → Word d → ℝ) (I J : Word d) :
+    shuffleSum (splitSum F) I J =
+      splitSum (fun I₁ I₂ => splitSum (fun J₁ J₂ =>
+        shuffleSum (fun K₁ => shuffleSum (F K₁) I₂ J₂) I₁ J₁) J) I := by
+  induction I generalizing F J with
+  | nil => simp [splitSum_nil, shuffleSum_nil_left]
+  | cons i I ih =>
+    induction J generalizing F with
+    | nil => simp [splitSum_nil, shuffleSum_nil_right]
+    | cons j J ihJ =>
+      simp only [shuffleSum_cons_cons, splitSum_cons, splitSum_add, shuffleSum_add, ih, ihJ,
+        shuffleSum_nil_left, shuffleSum_nil_right]
+      ring
+
+/-- Group-like elements (shuffle characters) are closed under concatenation. -/
+lemma concat_shuffle {d : ℕ} {A B : ExtTensorAlgebra d}
+    (hA : ∀ I J, A.coeff I * A.coeff J = evalShuffleBasis I J A)
+    (hB : ∀ I J, B.coeff I * B.coeff J = evalShuffleBasis I J B)
+    (I J : Word d) :
+    (A ⊗ₜ B).coeff I * (A ⊗ₜ B).coeff J = evalShuffleBasis I J (A ⊗ₜ B) := by
+  have hA' : ∀ I J, shuffleSum A.coeff I J = A.coeff I * A.coeff J := fun I J => (hA I J).symm
+  have hB' : ∀ I J, shuffleSum B.coeff I J = B.coeff I * B.coeff J := fun I J => (hB I J).symm
+  change splitSum (fun a b => A.coeff a * B.coeff b) I *
+      splitSum (fun a b => A.coeff a * B.coeff b) J =
+    shuffleSum (splitSum fun a b => A.coeff a * B.coeff b) I J
+  rw [shuffleSum_splitSum]
+  simp only [shuffleSum_mul_left, shuffleSum_mul_right, hA', hB']
+  simp only [splitSum, Finset.sum_mul_sum]
+  exact Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring
+
+/-- Group-like / shuffle identity for folded products of level-1 exponentials. -/
+lemma foldTensorExp_shuffle {d : ℕ} (vs : List (Fin d → ℝ)) (I J : Word d) :
+    (foldTensorExp vs).coeff I * (foldTensorExp vs).coeff J =
+      evalShuffleBasis I J (foldTensorExp vs) := by
+  induction vs generalizing I J with
+  | nil => exact tensorExp_shuffle 0 I J
+  | cons v vs ih => exact concat_shuffle (tensorExp_shuffle v) ih I J
+
 end ExtTensorAlgebra
 
 end SignatureVolatility

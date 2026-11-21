@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-21T18:42:44Z",
-  "sorryCount": 12,
+  "updated": "2026-11-21T19:55:48Z",
+  "sorryCount": 10,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, SignatureRiccatiKit.OfSetup, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done. Green = open. Grey = blocked.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: ProlongedBrownianSetup.Sig2Strat."
+    "Open tips: ProlongedBrownianSetup.Sig2StratMoments."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -837,10 +837,21 @@
       "label": "ProlongedBrownianSetup.Sig2Strat",
       "section": 4,
       "file": "SignatureVolatility/ProlongedBrownianSetup/Sig2Strat.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
-      "hasSorry": true,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ProlongedBrownianSetup.Sig2StratAdapted",
+      "label": "ProlongedBrownianSetup.Sig2StratAdapted",
+      "section": 4,
+      "file": "SignatureVolatility/ProlongedBrownianSetup/Sig2StratAdapted.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -848,10 +859,21 @@
       "label": "ProlongedBrownianSetup.Sig2StratChenShuffle",
       "section": 4,
       "file": "SignatureVolatility/ProlongedBrownianSetup/Sig2StratChenShuffle.lean",
-      "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup.Sig2Strat",
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
-      "hasSorry": true,
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ProlongedBrownianSetup.Sig2StratDyadic",
+      "label": "ProlongedBrownianSetup.Sig2StratDyadic",
+      "section": 4,
+      "file": "SignatureVolatility/ProlongedBrownianSetup/Sig2StratDyadic.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -859,8 +881,8 @@
       "label": "ProlongedBrownianSetup.Sig2StratMoments",
       "section": 4,
       "file": "SignatureVolatility/ProlongedBrownianSetup/Sig2StratMoments.lean",
-      "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup.Sig2Strat",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
       "hasSorry": true,
       "paperKitGoal": false
@@ -904,7 +926,7 @@
       "section": 4,
       "file": "SignatureVolatility/ProlongedBrownianSetup/StratonovichOfBM.lean",
       "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup.Sig2Strat, ProlongedBrownianSetup.Sig2StratChenShuffle, ProlongedBrownianSetup.Sig2StratMoments",
+      "blocker": "needs ProlongedBrownianSetup.Sig2StratMoments",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Paper kit / theorem goal.",
       "hasSorry": false,
       "paperKitGoal": true
@@ -1988,7 +2010,7 @@
       "kind": "hard"
     },
     {
-      "from": "GeneratedFiltration",
+      "from": "ProlongedBrownianSetup.SignatureOfBM",
       "to": "ProlongedBrownianSetup.Sig2Strat",
       "kind": "hard"
     },
@@ -1998,13 +2020,13 @@
       "kind": "hard"
     },
     {
-      "from": "ExtTensorAlgebra.Concat",
-      "to": "ProlongedBrownianSetup.Sig2StratChenShuffle",
+      "from": "GeneratedFiltration",
+      "to": "ProlongedBrownianSetup.Sig2StratAdapted",
       "kind": "hard"
     },
     {
-      "from": "ExtTensorAlgebra.EvalShuffleBasis",
-      "to": "ProlongedBrownianSetup.Sig2StratChenShuffle",
+      "from": "ProlongedBrownianSetup.StratonovichItoConversion",
+      "to": "ProlongedBrownianSetup.Sig2StratAdapted",
       "kind": "hard"
     },
     {
@@ -2013,8 +2035,18 @@
       "kind": "hard"
     },
     {
-      "from": "ExtTensorAlgebra.LevelNorm",
-      "to": "ProlongedBrownianSetup.Sig2StratMoments",
+      "from": "ProlongedBrownianSetup.Sig2StratDyadic",
+      "to": "ProlongedBrownianSetup.Sig2StratChenShuffle",
+      "kind": "hard"
+    },
+    {
+      "from": "ExtTensorAlgebra.TensorExpShuffle",
+      "to": "ProlongedBrownianSetup.Sig2StratDyadic",
+      "kind": "hard"
+    },
+    {
+      "from": "ProlongedBrownianSetup.OfBrownian",
+      "to": "ProlongedBrownianSetup.Sig2StratDyadic",
       "kind": "hard"
     },
     {
@@ -2065,11 +2097,6 @@
     {
       "from": "WordsOfLength",
       "to": "ProlongedBrownianSetup.StratonovichItoConversion",
-      "kind": "hard"
-    },
-    {
-      "from": "ProlongedBrownianSetup",
-      "to": "ProlongedBrownianSetup.StratonovichOfBM",
       "kind": "hard"
     },
     {
