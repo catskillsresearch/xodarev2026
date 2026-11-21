@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-21T03:40:21Z",
-  "sorryCount": 1,
+  "updated": "2026-11-21T03:45:50Z",
+  "sorryCount": 0,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -14,7 +14,7 @@
     "Mark a module verified by adding its id to VERIFIED in scripts/build_holes.py.",
     "Blue = done. Green = open. Grey = blocked.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: TheoremD."
+    "Open tips: (none)."
   ],
   "nodes": [
     {
@@ -796,7 +796,7 @@
       "label": "TheoremD",
       "section": 1,
       "file": "SignatureVolatility/TheoremD.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -1652,6 +1652,11 @@
     },
     {
       "from": "PriceFiltrationSignatureSpace.CompletenessDepth",
+      "to": "TheoremD",
+      "kind": "hard"
+    },
+    {
+      "from": "TailNorm2wInvLeRatioMulNormW",
       "to": "TheoremD",
       "kind": "hard"
     },

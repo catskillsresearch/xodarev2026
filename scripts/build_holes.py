@@ -119,6 +119,7 @@ VERIFIED: set[str] = {
     "TheoremA",
     "TheoremB",
     "TheoremC",
+    "TheoremD",
     "Tw",
     "Word",
     "WordsOfLength",

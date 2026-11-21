@@ -155,6 +155,7 @@ MemTw -hard-> DualPairingLeNormWDualMulNormW
 MemTw -hard-> Lemma32SignatureInTw
 MemTw -hard-> MemL2wInvOfMemTw
 MemTw -hard-> TailNorm2wInvLeRatioMulNormW
+MemTw -hard-> TheoremD
 MemTw -hard-> Tw
 MemTwDual -hard-> DualPairingLeNormWDualMulNormW
 MemTwDual -hard-> MemTwDualOfMemL2w
@@ -176,6 +177,7 @@ NormW -hard-> DualPairingLeNormWDualMulNormW
 NormW -hard-> Lemma32SignatureInTw
 NormW -hard-> MemL2wInvOfMemTw
 NormW -hard-> TailNorm2wInvLeRatioMulNormW
+NormW -hard-> TheoremD
 NormWDual -hard-> DualPairingLeNormWDualMulNormW
 NormWDual -hard-> MemTwDualOfMemL2w
 Preliminaries -hard-> BanachAlgebraConcatBound
@@ -188,6 +190,7 @@ Preliminaries -hard-> Proposition65NormalEquations
 Preliminaries -hard-> Remark219BlackScholesRiccati
 Preliminaries -hard-> TheoremA
 Preliminaries -hard-> TheoremC
+Preliminaries -hard-> TheoremD
 Preliminaries -hard-> WeightedTruncationEstimates
 Preliminaries -hard-> WordsOfLength
 PriceFiltration -hard-> ProlongedBrownianSetup.SignatureFiltration
@@ -209,15 +212,18 @@ PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration -hard-> TheoremC
 PriceFiltrationSignatureSpace.VInfty -hard-> PriceFiltrationSignatureSpace.CompletenessDepth
 PriceFiltrationSignatureSpace.VInfty -hard-> Section71BlackScholesCompleteness
 PriceFiltrationSignatureSpace.VInfty -hard-> TheoremC
+PriceFiltrationSignatureSpace.VInfty -hard-> TheoremD
 PriceFiltrationSignatureSpace.VSubspace -hard-> GKWDecompositionSetup
 PriceFiltrationSignatureSpace.VSubspace -hard-> PriceFiltrationSignatureSpace.CompletenessDepth
 PriceFiltrationSignatureSpace.VSubspace -hard-> Section71BlackScholesCompleteness
 PriceFiltrationSignatureSpace.VSubspace -hard-> TheoremC
 PriceFiltrationSignatureSpace.VSubspace -hard-> TheoremD
 ProjGt -hard-> TailNorm2wInvLeRatioMulNormW
+ProjGt -hard-> TheoremD
 ProjGt -hard-> WeightedTruncationEstimates
 ProjLe -hard-> GKWDecompositionSetup
 ProjLe -hard-> ProjGt
+ProjLe -hard-> TheoremD
 ProlongedBrownianSetup -hard-> ChenIdentity
 ProlongedBrownianSetup -hard-> Corollary36SigmaWellDefined
 ProlongedBrownianSetup -hard-> ItoCalculusKit
@@ -281,6 +287,7 @@ SmoothIteratedIntegral -hard-> SmoothSignature
 StratonovichHalfLaplacian -hard-> Remark219BlackScholesRiccati
 StratonovichHalfLaplacian -hard-> RiccatiOpBounded
 SuperfactorialFunctional -hard-> Proposition311SharpnessOfH1
+TailNorm2wInvLeRatioMulNormW -hard-> TheoremD
 TheoremA -hard-> TheoremB
 Weight -hard-> BanachAlgebraConcatBound
 Weight -hard-> ClassicalRiccatiSolution
@@ -306,6 +313,7 @@ Weight -hard-> RiccatiOpBounded
 Weight -hard-> SignatureRiccatiKit
 Weight -hard-> SignatureVolatilityModel
 Weight -hard-> TailNorm2wInvLeRatioMulNormW
+Weight -hard-> TheoremD
 Weight -hard-> Weight.ConstOne
 Weight -hard-> Weight.Geometric
 Weight -hard-> WeightedTruncationEstimates
