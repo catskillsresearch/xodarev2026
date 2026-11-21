@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. **Everything is unverified TBD** until listed in `VERIFIED` in `scripts/build_holes.py`.
 
-**Updated:** 2026-11-21T01:50:36Z
-**Holes:** 93 open+blocked · 5 open · 88 blocked · 2 done.
+**Updated:** 2026-11-21T01:58:34Z
+**Holes:** 88 open+blocked · 3 open · 85 blocked · 7 done.
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
 
@@ -16,15 +16,13 @@ scripts/serve_holes.sh          # http://127.0.0.1:8766/holes.html
 
 | Id | File |
 |---|---|
-| `IndexedFiltration` | `SignatureVolatility/IndexedFiltration.lean` |
-| `Letter` | `SignatureVolatility/Letter.lean` |
-| `NflvrOfMartingaleMeasure` | `SignatureVolatility/NflvrOfMartingaleMeasure.lean` |
-| `Preliminaries` | `SignatureVolatility/Preliminaries.lean` |
+| `IsSpecialSemimartingale` | `SignatureVolatility/IsSpecialSemimartingale.lean` |
 | `Weight` | `SignatureVolatility/Weight.lean` |
+| `Word` | `SignatureVolatility/Word.lean` |
 
 ## By group
 
-### Top-level modules — 67 hole(s)
+### Top-level modules — 62 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -38,30 +36,30 @@ scripts/serve_holes.sh          # http://127.0.0.1:8766/holes.html
 | blocked | `DualPairingLeNormWDualMulNormW` | `SignatureVolatility/DualPairingLeNormWDualMulNormW.lean` |
 | blocked | `FirstOrderBrownianVolModel` | `SignatureVolatility/FirstOrderBrownianVolModel.lean` |
 | blocked | `GKWDecompositionSetup` | `SignatureVolatility/GKWDecompositionSetup.lean` |
-| blocked | `GeneratedFiltration` | `SignatureVolatility/GeneratedFiltration.lean` |
+| done | `GeneratedFiltration` | `SignatureVolatility/GeneratedFiltration.lean` |
 | blocked | `HypH1` | `SignatureVolatility/HypH1.lean` |
 | blocked | `HypH1OfIsFinitelySupported` | `SignatureVolatility/HypH1OfIsFinitelySupported.lean` |
 | blocked | `HypH2` | `SignatureVolatility/HypH2.lean` |
 | blocked | `HypH3` | `SignatureVolatility/HypH3.lean` |
-| open | `IndexedFiltration` | `SignatureVolatility/IndexedFiltration.lean` |
+| done | `IndexedFiltration` | `SignatureVolatility/IndexedFiltration.lean` |
 | blocked | `InfiniteGeometricSignatureModel` | `SignatureVolatility/InfiniteGeometricSignatureModel.lean` |
-| blocked | `IsSpecialSemimartingale` | `SignatureVolatility/IsSpecialSemimartingale.lean` |
+| open | `IsSpecialSemimartingale` | `SignatureVolatility/IsSpecialSemimartingale.lean` |
 | blocked | `ItoCalculusKit` | `SignatureVolatility/ItoCalculusKit.lean` |
 | blocked | `Lemma32SignatureInTw` | `SignatureVolatility/Lemma32SignatureInTw.lean` |
 | blocked | `Lemma61GramPosDef` | `SignatureVolatility/Lemma61GramPosDef.lean` |
-| open | `Letter` | `SignatureVolatility/Letter.lean` |
+| done | `Letter` | `SignatureVolatility/Letter.lean` |
 | blocked | `MemL2w` | `SignatureVolatility/MemL2w.lean` |
 | blocked | `MemL2wInv` | `SignatureVolatility/MemL2wInv.lean` |
 | blocked | `MemL2wInvOfMemTw` | `SignatureVolatility/MemL2wInvOfMemTw.lean` |
 | blocked | `MemTw` | `SignatureVolatility/MemTw.lean` |
 | blocked | `MemTwDual` | `SignatureVolatility/MemTwDual.lean` |
 | blocked | `MemTwDualOfMemL2w` | `SignatureVolatility/MemTwDualOfMemL2w.lean` |
-| open | `NflvrOfMartingaleMeasure` | `SignatureVolatility/NflvrOfMartingaleMeasure.lean` |
+| done | `NflvrOfMartingaleMeasure` | `SignatureVolatility/NflvrOfMartingaleMeasure.lean` |
 | blocked | `Norm2w` | `SignatureVolatility/Norm2w.lean` |
 | blocked | `Norm2wInv` | `SignatureVolatility/Norm2wInv.lean` |
 | blocked | `NormW` | `SignatureVolatility/NormW.lean` |
 | blocked | `NormWDual` | `SignatureVolatility/NormWDual.lean` |
-| open | `Preliminaries` | `SignatureVolatility/Preliminaries.lean` |
+| done | `Preliminaries` | `SignatureVolatility/Preliminaries.lean` |
 | blocked | `PriceFiltration` | `SignatureVolatility/PriceFiltration.lean` |
 | blocked | `PriceFiltrationSignatureSpace` | `SignatureVolatility/PriceFiltrationSignatureSpace.lean` |
 | blocked | `ProjGt` | `SignatureVolatility/ProjGt.lean` |
@@ -95,7 +93,7 @@ scripts/serve_holes.sh          # http://127.0.0.1:8766/holes.html
 | blocked | `Tw` | `SignatureVolatility/Tw.lean` |
 | open | `Weight` | `SignatureVolatility/Weight.lean` |
 | blocked | `WeightedTruncationEstimates` | `SignatureVolatility/WeightedTruncationEstimates.lean` |
-| blocked | `Word` | `SignatureVolatility/Word.lean` |
+| open | `Word` | `SignatureVolatility/Word.lean` |
 | blocked | `WordsOfLength` | `SignatureVolatility/WordsOfLength.lean` |
 
 ### ExtTensorAlgebra — 13 hole(s)

@@ -30,6 +30,11 @@ IMPORT_RE = re.compile(r"^import\s+(SignatureVolatility(?:\.\S+)?)")
 # marked done once all hard predecessors are done. Empty ⇒ everything TBD.
 VERIFIED: set[str] = {
     "AdmissibleGainsUnderP",
+    "GeneratedFiltration",
+    "IndexedFiltration",
+    "Letter",
+    "NflvrOfMartingaleMeasure",
+    "Preliminaries",
     "SatisfiesNFLVR",
 }
 
