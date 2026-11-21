@@ -1,16 +1,14 @@
-import SignatureVolatility.SignatureVolatilityModel
-import SignatureVolatility.HypH2
-import SignatureVolatility.Weight.ConstOne
 import SignatureVolatility.ExtTensorAlgebra.BasisWord
 import SignatureVolatility.HypH1OfIsFinitelySupported
-
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
+import SignatureVolatility.HypH2
+import SignatureVolatility.SignatureVolatilityModel
+import SignatureVolatility.Weight.ConstOne
 
 noncomputable section
 
 namespace SignatureVolatility
+
+private def firstOrderWord : Word 2 := [1]
 
 def firstOrderBrownianVolModel (T s₀ σ₀ α : ℝ) (hT : 0 < T) (hs₀ : 0 < s₀) (hσ₀ : σ₀ ≠ 0) :
     SignatureVolatilityModel where
@@ -19,18 +17,22 @@ def firstOrderBrownianVolModel (T s₀ σ₀ α : ℝ) (hT : 0 < T) (hs₀ : 0 <
   T := T
   hT := hT
   w := Weight.constOne
-  ℓ := σ₀ • ExtTensorAlgebra.basisWord [] + α • ExtTensorAlgebra.basisWord [(0 : Fin 1).succ]
+  ℓ := σ₀ • ExtTensorAlgebra.basisWord ([] : Word 2) +
+      α • ExtTensorAlgebra.basisWord firstOrderWord
   s₀ := s₀
   hs₀ := hs₀
   h1 := hypH1_of_isFinitelySupported Weight.constOne ⟨1, fun I hI => by
-    have hne0 : I ≠ [] := fun h => by subst h; exact Nat.not_lt_zero _ (Nat.zero_lt_one.trans hI)
-    have hne1 : I ≠ [(0 : Fin 1).succ] := fun h => by subst h; exact lt_irrefl 1 hI
-    change σ₀ * (if I = [] then 1 else 0) + α * (if I = [(0 : Fin 1).succ] then 1 else 0) = 0
+    have hne0 : I ≠ [] := fun h => by subst h; simp at hI
+    have hne1 : I ≠ firstOrderWord := fun h => by subst h; simp [firstOrderWord] at hI
+    change σ₀ * (if I = [] then 1 else 0) + α * (if I = firstOrderWord then 1 else 0) = 0
     simp [hne0, hne1]⟩
   h2 := HypH2.constOne_admissible
   h3 := ⟨fun hzero => by
-    have hc := congrArg (fun a => a.coeff []) hzero
-    change σ₀ * 1 + α * 0 = 0 at hc
-    linarith [hσ₀]⟩
+    have hc := congrArg (fun a => a.coeff ([] : Word 2)) hzero
+    rw [show (0 : ExtTensorAlgebra 2).coeff ([] : Word 2) = 0 from rfl] at hc
+    have hc' : σ₀ * 1 + α * 0 = 0 := by
+      conv_lhs at hc => simp [ExtTensorAlgebra.basisWord, firstOrderWord]
+      exact hc
+    simpa using hσ₀ (by linarith)⟩
 
 end SignatureVolatility

@@ -1,14 +1,12 @@
-import SignatureVolatility.Weight
 import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
-import SignatureVolatility.RiccatiOpBounded
 import SignatureVolatility.MemTw
 import SignatureVolatility.NormW
-
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
+import SignatureVolatility.RiccatiOpBounded
+import SignatureVolatility.Weight
 
 noncomputable section
+
+open Set
 
 namespace SignatureVolatility
 

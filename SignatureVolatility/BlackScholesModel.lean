@@ -1,12 +1,8 @@
-import SignatureVolatility.SignatureVolatilityModel
-import SignatureVolatility.HypH2
-import SignatureVolatility.Weight.ConstOne
 import SignatureVolatility.ExtTensorAlgebra.BasisWord
 import SignatureVolatility.HypH1OfIsFinitelySupported
-
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
+import SignatureVolatility.HypH2
+import SignatureVolatility.SignatureVolatilityModel
+import SignatureVolatility.Weight.ConstOne
 
 noncomputable section
 
@@ -19,7 +15,7 @@ def blackScholesModel (T s₀ σ₀ : ℝ) (hT : 0 < T) (hs₀ : 0 < s₀) (hσ�
   T := T
   hT := hT
   w := Weight.constOne
-  ℓ := σ₀ • ExtTensorAlgebra.basisWord []
+  ℓ := σ₀ • ExtTensorAlgebra.basisWord ([] : Word 2)
   s₀ := s₀
   hs₀ := hs₀
   h1 := hypH1_of_isFinitelySupported Weight.constOne ⟨0, fun I hI => by
@@ -28,8 +24,9 @@ def blackScholesModel (T s₀ σ₀ : ℝ) (hT : 0 < T) (hs₀ : 0 < s₀) (hσ�
     simp [hne]⟩
   h2 := HypH2.constOne_admissible
   h3 := ⟨fun hzero => by
-    have hc := congrArg (fun a => a.coeff []) hzero
-    simp [ExtTensorAlgebra.basisWord] at hc
+    have hc := congrArg (fun a => a.coeff ([] : Word 2)) hzero
+    change σ₀ * (if ([] : Word 2) = [] then (1 : ℝ) else 0) = 0 at hc
+    simp at hc
     exact hσ₀ hc⟩
 
 end SignatureVolatility

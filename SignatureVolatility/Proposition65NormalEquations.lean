@@ -1,10 +1,6 @@
-import SignatureVolatility.GKWDecompositionSetup
+import SignatureVolatility.Preliminaries
 
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
-
-noncomputable section
+open scoped RealInnerProductSpace
 
 namespace SignatureVolatility
 

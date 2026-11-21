@@ -1,11 +1,8 @@
-import SignatureVolatility.SignatureVolatilityModel
-import SignatureVolatility.HypH2
-import SignatureVolatility.Weight.ConstOne
 import SignatureVolatility.HypH1OfIsFinitelySupported
-
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
+import SignatureVolatility.HypH2
+import SignatureVolatility.SignatureVolatilityModel
+import SignatureVolatility.Weight.ConstOne
+import SignatureVolatility.Word
 
 noncomputable section
 

@@ -1,11 +1,9 @@
 import SignatureVolatility.HypH1
-import SignatureVolatility.Weight
+import SignatureVolatility.HypH2
 import SignatureVolatility.SuperfactorialFunctional
-import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
+import SignatureVolatility.Weight
 
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
+open Filter Topology
 
 noncomputable section
 
@@ -45,7 +43,5 @@ theorem proposition_3_11_sharpness_of_H1 {α : ℝ} (hα : 0 < α) :
     have habs_lt : |α * x| < 1 := summable_geometric_iff_norm_lt_one.mp hsum
     rw [abs_mul, abs_of_pos hα] at habs_lt
     linarith
-
-/-! ## Section 4: Equivalent Martingale Measure, NFLVR, Semimartingales, Riccati Duality (Theorem B) -/
 
 end SignatureVolatility

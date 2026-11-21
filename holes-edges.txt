@@ -44,7 +44,6 @@ ExtTensorAlgebra.ExtTensorAlgebra -hard-> PriceFiltrationSignatureSpace
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> ProjGt
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> ProjLe
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> ProlongedBrownianSetup
-ExtTensorAlgebra.ExtTensorAlgebra -hard-> Proposition311SharpnessOfH1
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> RiccatiOpBounded
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> RightShift
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> ShuffleFinite
@@ -89,8 +88,6 @@ ExtTensorAlgebra.LevelNormSq -hard-> WeightedTruncationEstimates
 ExtTensorAlgebra.ShuffleBasis -hard-> ShuffleFinite
 ExtTensorAlgebra.ShuffleWords -hard-> ExtTensorAlgebra.EvalShuffleBasis
 ExtTensorAlgebra.ShuffleWords -hard-> ExtTensorAlgebra.ShuffleBasis
-GKWDecompositionSetup -hard-> Lemma61GramPosDef
-GKWDecompositionSetup -hard-> Proposition65NormalEquations
 GKWDecompositionSetup -hard-> TheoremD
 GeneratedFiltration -hard-> ProlongedBrownianSetup
 GeneratedFiltration -hard-> ProlongedBrownianSetup.BrownianFiltration
@@ -108,6 +105,7 @@ HypH2 -hard-> FirstOrderBrownianVolModel
 HypH2 -hard-> InfiniteGeometricSignatureModel
 HypH2 -hard-> ItoCalculusKit
 HypH2 -hard-> Lemma32SignatureInTw
+HypH2 -hard-> Proposition311SharpnessOfH1
 HypH2 -hard-> QuinticOUSignatureModel
 HypH2 -hard-> SignatureHestonLevel2Model
 HypH2 -hard-> SignatureVolatilityModel
@@ -124,7 +122,6 @@ ItoCalculusKit -hard-> TheoremA
 Lemma32SignatureInTw -hard-> Corollary36SigmaWellDefined
 Letter -hard-> ExtTensorAlgebra.ExtTensorAlgebra
 Letter -hard-> ExtTensorAlgebra.ShuffleWords
-Letter -hard-> ProjGt
 Letter -hard-> PureBrownianWord
 Letter -hard-> ShuffleIdentity
 Letter -hard-> SmoothIteratedIntegral
@@ -132,7 +129,6 @@ Letter -hard-> Word
 Letter -hard-> WordsOfLength
 MemL2w -hard-> HypH1
 MemL2w -hard-> HypH1OfIsFinitelySupported
-MemL2w -hard-> InfiniteGeometricSignatureModel
 MemL2w -hard-> MemTwDualOfMemL2w
 MemL2w -hard-> WeightedTruncationEstimates
 MemL2wInv -hard-> GKWDecompositionSetup
@@ -172,7 +168,9 @@ Preliminaries -hard-> BanachAlgebraConcatBound
 Preliminaries -hard-> DualPairingLeNormWDualMulNormW
 Preliminaries -hard-> ExtTensorAlgebra.LevelInner
 Preliminaries -hard-> ExtTensorAlgebra.LevelNorm
+Preliminaries -hard-> Lemma61GramPosDef
 Preliminaries -hard-> MemL2wInvOfMemTw
+Preliminaries -hard-> Proposition65NormalEquations
 Preliminaries -hard-> WeightedTruncationEstimates
 Preliminaries -hard-> WordsOfLength
 PriceFiltration -hard-> ProlongedBrownianSetup.SignatureFiltration
@@ -287,14 +285,17 @@ Word -hard-> ExtTensorAlgebra.ExtTensorAlgebra
 Word -hard-> ExtTensorAlgebra.ShuffleWords
 Word -hard-> PriceFiltrationSignatureSpace
 Word -hard-> PriceFiltrationSignatureSpace.VSubspace
-Word -hard-> ProjGt
 Word -hard-> PureBrownianWord
+Word -hard-> QuinticOUSignatureModel
+Word -hard-> Section71BlackScholesCompleteness
 Word -hard-> ShuffleIdentity
+Word -hard-> SignatureHestonLevel2Model
 Word -hard-> SmoothIteratedIntegral
 Word -hard-> WordsOfLength
 WordsOfLength -hard-> ExtTensorAlgebra.LevelInner
 WordsOfLength -hard-> ExtTensorAlgebra.LevelNorm
 WordsOfLength -hard-> ExtTensorAlgebra.LevelNormSq
 WordsOfLength -hard-> PriceFiltrationSignatureSpace.VSubspace
+WordsOfLength -hard-> ProjGt
 WordsOfLength -hard-> ShuffleFinite
 WordsOfLength -hard-> SuperfactorialFunctional

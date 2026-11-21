@@ -2,12 +2,7 @@ import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
 import SignatureVolatility.ExtTensorAlgebra.LevelNorm
 import SignatureVolatility.ExtTensorAlgebra.LevelNormSq
 import SignatureVolatility.ProjLe
-import SignatureVolatility.Letter
-import SignatureVolatility.Word
-
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
+import SignatureVolatility.WordsOfLength
 
 noncomputable section
 
@@ -34,10 +29,13 @@ lemma levelNormSq {d : ℕ} (N : ℕ) (a : ExtTensorAlgebra d) (n : ℕ) :
   unfold ExtTensorAlgebra.levelNormSq projGt
   split_ifs with h
   · refine Finset.sum_congr rfl fun I hI => ?_
-    rw [wordsOfLength.mem.mp hI, if_pos h]
+    have hlen : I.length = n := (wordsOfLength.mem (d := d)).1 hI
+    have hlt : N < I.length := hlen ▸ h
+    simp [if_pos hlt]
   · refine Finset.sum_eq_zero fun I hI => ?_
-    rw [wordsOfLength.mem.mp hI, if_neg h]
-    ring
+    have hlen : I.length = n := (wordsOfLength.mem (d := d)).1 hI
+    have hnot : ¬ N < I.length := not_lt.mpr (hlen ▸ le_of_not_gt h)
+    simp [if_neg hnot]
 
 lemma levelNorm {d : ℕ} (N : ℕ) (a : ExtTensorAlgebra d) (n : ℕ) :
     (projGt N a).levelNorm n = if N < n then a.levelNorm n else 0 := by

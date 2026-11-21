@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-21T02:47:10Z",
-  "sorryCount": 26,
+  "updated": "2026-11-21T03:08:49Z",
+  "sorryCount": 15,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -14,7 +14,7 @@
     "Mark a module verified by adding its id to VERIFIED in scripts/build_holes.py.",
     "Blue = done. Green = open. Grey = blocked.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: BlackScholesModel, ClassicalRiccatiSolution, FirstOrderBrownianVolModel, InfiniteGeometricSignatureModel, ItoCalculusKit, Lemma32SignatureInTw, Lemma61GramPosDef, ProjGt, Proposition311SharpnessOfH1, Proposition65NormalEquations, QuinticOUSignatureModel, Section71BlackScholesCompleteness, ShuffleIdentity, SignatureFiltrationEqBrownianFiltration, SignatureHestonLevel2Model, SignatureVolatilityModel.Sigma, TheoremC, TheoremD."
+    "Open tips: ItoCalculusKit, Lemma32SignatureInTw, Remark219BlackScholesRiccati, ShuffleIdentity, SignatureFiltrationEqBrownianFiltration, SignatureRiccatiKit, SignatureVolatilityModel.Sigma, TailNorm2wInvLeRatioMulNormW, TheoremC, TheoremD, WeightedTruncationEstimates."
   ],
   "nodes": [
     {
@@ -40,7 +40,7 @@
       "label": "BlackScholesModel",
       "section": 1,
       "file": "SignatureVolatility/BlackScholesModel.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -58,7 +58,7 @@
       "label": "ClassicalRiccatiSolution",
       "section": 1,
       "file": "SignatureVolatility/ClassicalRiccatiSolution.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -211,7 +211,7 @@
       "label": "FirstOrderBrownianVolModel",
       "section": 1,
       "file": "SignatureVolatility/FirstOrderBrownianVolModel.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -283,7 +283,7 @@
       "label": "InfiniteGeometricSignatureModel",
       "section": 1,
       "file": "SignatureVolatility/InfiniteGeometricSignatureModel.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -319,7 +319,7 @@
       "label": "Lemma61GramPosDef",
       "section": 1,
       "file": "SignatureVolatility/Lemma61GramPosDef.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -508,7 +508,7 @@
       "label": "ProjGt",
       "section": 1,
       "file": "SignatureVolatility/ProjGt.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -571,7 +571,7 @@
       "label": "Proposition311SharpnessOfH1",
       "section": 1,
       "file": "SignatureVolatility/Proposition311SharpnessOfH1.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -580,7 +580,7 @@
       "label": "Proposition65NormalEquations",
       "section": 1,
       "file": "SignatureVolatility/Proposition65NormalEquations.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -598,7 +598,7 @@
       "label": "QuinticOUSignatureModel",
       "section": 1,
       "file": "SignatureVolatility/QuinticOUSignatureModel.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -607,8 +607,8 @@
       "label": "Remark219BlackScholesRiccati",
       "section": 1,
       "file": "SignatureVolatility/Remark219BlackScholesRiccati.lean",
-      "status": "blocked",
-      "blocker": "needs ClassicalRiccatiSolution",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -643,7 +643,7 @@
       "label": "Section71BlackScholesCompleteness",
       "section": 1,
       "file": "SignatureVolatility/Section71BlackScholesCompleteness.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -679,7 +679,7 @@
       "label": "SignatureHestonLevel2Model",
       "section": 1,
       "file": "SignatureVolatility/SignatureHestonLevel2Model.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -697,8 +697,8 @@
       "label": "SignatureRiccatiKit",
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit.lean",
-      "status": "blocked",
-      "blocker": "needs ClassicalRiccatiSolution",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -760,8 +760,8 @@
       "label": "TailNorm2wInvLeRatioMulNormW",
       "section": 1,
       "file": "SignatureVolatility/TailNorm2wInvLeRatioMulNormW.lean",
-      "status": "blocked",
-      "blocker": "needs ProjGt",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -841,8 +841,8 @@
       "label": "WeightedTruncationEstimates",
       "section": 1,
       "file": "SignatureVolatility/WeightedTruncationEstimates.lean",
-      "status": "blocked",
-      "blocker": "needs ProjGt",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -876,11 +876,6 @@
       "kind": "hard"
     },
     {
-      "from": "SignatureVolatilityModel",
-      "to": "BlackScholesModel",
-      "kind": "hard"
-    },
-    {
       "from": "ExtTensorAlgebra.BasisWord",
       "to": "BlackScholesModel",
       "kind": "hard"
@@ -891,13 +886,13 @@
       "kind": "hard"
     },
     {
-      "from": "ProlongedBrownianSetup",
-      "to": "ChenIdentity",
+      "from": "SignatureVolatilityModel",
+      "to": "BlackScholesModel",
       "kind": "hard"
     },
     {
-      "from": "RiccatiOpBounded",
-      "to": "ClassicalRiccatiSolution",
+      "from": "ProlongedBrownianSetup",
+      "to": "ChenIdentity",
       "kind": "hard"
     },
     {
@@ -907,6 +902,11 @@
     },
     {
       "from": "NormW",
+      "to": "ClassicalRiccatiSolution",
+      "kind": "hard"
+    },
+    {
+      "from": "RiccatiOpBounded",
       "to": "ClassicalRiccatiSolution",
       "kind": "hard"
     },
@@ -1036,17 +1036,17 @@
       "kind": "hard"
     },
     {
-      "from": "SignatureVolatilityModel",
-      "to": "FirstOrderBrownianVolModel",
-      "kind": "hard"
-    },
-    {
       "from": "ExtTensorAlgebra.BasisWord",
       "to": "FirstOrderBrownianVolModel",
       "kind": "hard"
     },
     {
       "from": "HypH1OfIsFinitelySupported",
+      "to": "FirstOrderBrownianVolModel",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureVolatilityModel",
       "to": "FirstOrderBrownianVolModel",
       "kind": "hard"
     },
@@ -1106,12 +1106,12 @@
       "kind": "hard"
     },
     {
-      "from": "SignatureVolatilityModel",
+      "from": "ExtTensorAlgebra.LevelNorm",
       "to": "InfiniteGeometricSignatureModel",
       "kind": "hard"
     },
     {
-      "from": "ExtTensorAlgebra.LevelNorm",
+      "from": "SignatureVolatilityModel",
       "to": "InfiniteGeometricSignatureModel",
       "kind": "hard"
     },
@@ -1166,7 +1166,7 @@
       "kind": "hard"
     },
     {
-      "from": "GKWDecompositionSetup",
+      "from": "Preliminaries",
       "to": "Lemma61GramPosDef",
       "kind": "hard"
     },
@@ -1396,12 +1396,17 @@
       "kind": "hard"
     },
     {
+      "from": "HypH2",
+      "to": "Proposition311SharpnessOfH1",
+      "kind": "hard"
+    },
+    {
       "from": "SuperfactorialFunctional",
       "to": "Proposition311SharpnessOfH1",
       "kind": "hard"
     },
     {
-      "from": "GKWDecompositionSetup",
+      "from": "Preliminaries",
       "to": "Proposition65NormalEquations",
       "kind": "hard"
     },
@@ -1411,12 +1416,12 @@
       "kind": "hard"
     },
     {
-      "from": "SignatureVolatilityModel",
+      "from": "HypH1OfIsFinitelySupported",
       "to": "QuinticOUSignatureModel",
       "kind": "hard"
     },
     {
-      "from": "HypH1OfIsFinitelySupported",
+      "from": "SignatureVolatilityModel",
       "to": "QuinticOUSignatureModel",
       "kind": "hard"
     },
@@ -1481,17 +1486,17 @@
       "kind": "hard"
     },
     {
-      "from": "SignatureVolatilityModel",
-      "to": "SignatureHestonLevel2Model",
-      "kind": "hard"
-    },
-    {
       "from": "ExtTensorAlgebra.BasisWord",
       "to": "SignatureHestonLevel2Model",
       "kind": "hard"
     },
     {
       "from": "HypH1OfIsFinitelySupported",
+      "to": "SignatureHestonLevel2Model",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureVolatilityModel",
       "to": "SignatureHestonLevel2Model",
       "kind": "hard"
     },

@@ -1,20 +1,15 @@
-import SignatureVolatility.SignatureVolatilityModel
-import SignatureVolatility.HypH2
-import SignatureVolatility.Weight.Geometric
-import SignatureVolatility.MemL2w
 import SignatureVolatility.ExtTensorAlgebra.LevelNorm
 import SignatureVolatility.ExtTensorAlgebra.LevelNormSq
-
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
+import SignatureVolatility.HypH2
+import SignatureVolatility.SignatureVolatilityModel
+import SignatureVolatility.Weight.Geometric
 
 noncomputable section
 
 namespace SignatureVolatility
 
 def infiniteGeometricSignatureModel (d : ℕ) (hd : 0 < d) (T s₀ r q C : ℝ)
-    (hT : 0 < T) (hs₀ : 0 < s₀) (hr : 1 ≤ r) (hq0 : 0 ≤ q) (hqr : q < r) (hC : 0 ≤ C)
+    (hT : 0 < T) (hs₀ : 0 < s₀) (hr : 1 ≤ r) (hq0 : 0 ≤ q) (hqr : q < r) (_hC : 0 ≤ C)
     (ℓ : ExtTensorAlgebra (d + 1)) (hnz : ℓ ≠ 0)
     (hdecay : ∀ n : ℕ, ℓ.levelNorm n ≤ C * q ^ n) : SignatureVolatilityModel where
   d := d

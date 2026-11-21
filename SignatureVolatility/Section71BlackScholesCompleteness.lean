@@ -2,10 +2,7 @@ import SignatureVolatility.PriceFiltrationSignatureSpace
 import SignatureVolatility.PriceFiltrationSignatureSpace.CompletenessDepth
 import SignatureVolatility.PriceFiltrationSignatureSpace.VInfty
 import SignatureVolatility.PriceFiltrationSignatureSpace.VSubspace
-
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
+import SignatureVolatility.Word
 
 noncomputable section
 
@@ -17,7 +14,7 @@ theorem section_7_1_black_scholes_completeness {H_S : Type*} [NormedAddCommGroup
     (hVtop : PFS.V_infty = ⊤)
     (hBS_span : ∀ I : Word 2, PFS.Y I ∈ PFS.V_subspace 0) :
     PFS.completenessDepth = 0 := by
-  apply le_antisymm _ ( zero_le _ )
+  apply le_antisymm _ zero_le
   unfold PriceFiltrationSignatureSpace.completenessDepth
   refine csInf_le (OrderBot.bddBelow _) ⟨0, rfl, ?_⟩
   apply le_antisymm
