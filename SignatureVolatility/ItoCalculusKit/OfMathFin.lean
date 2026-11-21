@@ -18,9 +18,12 @@ namespace SignatureVolatility
 # Paper-strength `ItoCalculusKit` from MathFin (Phase 2)
 
 **Status: ASSEMBLED.** Process fields from the dyadic limUnder bridge (`MathFinBridge` /
-`ItoQuadDoleans`). `doleans_sde` is proved for `d = 0`; the `0 < d` leaf is
+`ItoQuadDoleans`). `doleans_sde` (signature volatility under H1–H3 + pathwise continuity) is
+proved for `d = 0` and, for `0 < d`, for constant `σ` (Black–Scholes: pathwise Föllmer–Itô +
+almost-sure quadratic variation); the non-constant `0 < d` leaf is the axiom
 `kit_doleans_sde_of_driver`. Analytic obligations `stopped_l2_localisation` and
-`novikov_doob_l2_martingale` remain named axioms.
+`novikov_doob_l2_martingale` remain named axioms (envelope is a.e.; driver is
+everywhere-continuous with independent coordinate *processes*).
 -/
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}

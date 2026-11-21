@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-21T20:02:22Z",
-  "sorryCount": 8,
+  "updated": "2026-11-21T23:30:46Z",
+  "sorryCount": 13,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, SignatureRiccatiKit.OfSetup, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done. Green = open. Grey = blocked.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: ItoCalculusKit.OfMathFin."
+    "Open tips: ItoCalculusKit.MathFinBridge."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -448,15 +448,103 @@
       "paperKitGoal": false
     },
     {
+      "id": "ItoCalculusKit.BrownianQuadVarAS",
+      "label": "ItoCalculusKit.BrownianQuadVarAS",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/BrownianQuadVarAS.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.DoleansSDE",
+      "label": "ItoCalculusKit.DoleansSDE",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/DoleansSDE.lean",
+      "status": "blocked",
+      "blocker": "needs ItoCalculusKit.MathFinBridge",
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.FourthMoment",
+      "label": "ItoCalculusKit.FourthMoment",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/FourthMoment.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.ItoQuadDoleans",
+      "label": "ItoCalculusKit.ItoQuadDoleans",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/ItoQuadDoleans.lean",
+      "status": "blocked",
+      "blocker": "needs ItoCalculusKit.MathFinBridge",
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.MathFinBridge",
+      "label": "ItoCalculusKit.MathFinBridge",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/MathFinBridge.lean",
+      "status": "open",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.NovikovDoob",
+      "label": "ItoCalculusKit.NovikovDoob",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/NovikovDoob.lean",
+      "status": "blocked",
+      "blocker": "needs ItoCalculusKit.MathFinBridge",
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
       "id": "ItoCalculusKit.OfMathFin",
       "label": "ItoCalculusKit.OfMathFin",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/OfMathFin.lean",
-      "status": "open",
-      "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap). Paper kit / theorem goal.",
-      "hasSorry": true,
+      "status": "blocked",
+      "blocker": "needs ItoCalculusKit.DoleansSDE, ItoCalculusKit.ItoQuadDoleans, ItoCalculusKit.NovikovDoob, ItoCalculusKit.StoppedL2",
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Paper kit / theorem goal.",
+      "hasSorry": false,
       "paperKitGoal": true
+    },
+    {
+      "id": "ItoCalculusKit.PathwiseExpIto",
+      "label": "ItoCalculusKit.PathwiseExpIto",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/PathwiseExpIto.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.StoppedL2",
+      "label": "ItoCalculusKit.StoppedL2",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/StoppedL2.lean",
+      "status": "blocked",
+      "blocker": "needs ItoCalculusKit.MathFinBridge",
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
     },
     {
       "id": "Lemma32SignatureInTw",
@@ -1690,13 +1778,133 @@
       "kind": "hard"
     },
     {
+      "from": "ItoCalculusKit.FourthMoment",
+      "to": "ItoCalculusKit.BrownianQuadVarAS",
+      "kind": "hard"
+    },
+    {
+      "from": "ProlongedBrownianSetup.ItoIntegralAgainstBM",
+      "to": "ItoCalculusKit.BrownianQuadVarAS",
+      "kind": "hard"
+    },
+    {
+      "from": "DualPairing",
+      "to": "ItoCalculusKit.DoleansSDE",
+      "kind": "hard"
+    },
+    {
+      "from": "HypH1",
+      "to": "ItoCalculusKit.DoleansSDE",
+      "kind": "hard"
+    },
+    {
+      "from": "HypH2",
+      "to": "ItoCalculusKit.DoleansSDE",
+      "kind": "hard"
+    },
+    {
+      "from": "HypH3",
+      "to": "ItoCalculusKit.DoleansSDE",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.BrownianQuadVarAS",
+      "to": "ItoCalculusKit.DoleansSDE",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.MathFinBridge",
+      "to": "ItoCalculusKit.DoleansSDE",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.PathwiseExpIto",
+      "to": "ItoCalculusKit.DoleansSDE",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.MathFinBridge",
+      "to": "ItoCalculusKit.ItoQuadDoleans",
+      "kind": "hard"
+    },
+    {
+      "from": "ProlongedBrownianSetup.Sig2StratAdapted",
+      "to": "ItoCalculusKit.MathFinBridge",
+      "kind": "hard"
+    },
+    {
+      "from": "ProlongedBrownianSetup.StratonovichOfBM",
+      "to": "ItoCalculusKit.MathFinBridge",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureFiltrationEqBrownianFiltration",
+      "to": "ItoCalculusKit.MathFinBridge",
+      "kind": "hard"
+    },
+    {
+      "from": "HypH1",
+      "to": "ItoCalculusKit.NovikovDoob",
+      "kind": "hard"
+    },
+    {
+      "from": "HypH2",
+      "to": "ItoCalculusKit.NovikovDoob",
+      "kind": "hard"
+    },
+    {
+      "from": "HypH3",
+      "to": "ItoCalculusKit.NovikovDoob",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.MathFinBridge",
+      "to": "ItoCalculusKit.NovikovDoob",
+      "kind": "hard"
+    },
+    {
+      "from": "DualPairing",
+      "to": "ItoCalculusKit.NovikovDoob",
+      "kind": "hard"
+    },
+    {
       "from": "ItoCalculusKit",
       "to": "ItoCalculusKit.OfMathFin",
       "kind": "hard"
     },
     {
-      "from": "ProlongedBrownianSetup.StratonovichOfBM",
+      "from": "ItoCalculusKit.DoleansSDE",
       "to": "ItoCalculusKit.OfMathFin",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.ItoQuadDoleans",
+      "to": "ItoCalculusKit.OfMathFin",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.NovikovDoob",
+      "to": "ItoCalculusKit.OfMathFin",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.StoppedL2",
+      "to": "ItoCalculusKit.OfMathFin",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.MathFinBridge",
+      "to": "ItoCalculusKit.StoppedL2",
+      "kind": "hard"
+    },
+    {
+      "from": "DualPairing",
+      "to": "ItoCalculusKit.StoppedL2",
+      "kind": "hard"
+    },
+    {
+      "from": "Norm2w",
+      "to": "ItoCalculusKit.StoppedL2",
       "kind": "hard"
     },
     {

@@ -230,8 +230,12 @@ structure ItoCalculusKit (Ω : Type u_1) [m₀ : MeasurableSpace Ω]
   doleansExp : (ℝ → Ω → ℝ) → ℝ → Ω → ℝ
   doleansExp_def : ∀ σ t ω,
     doleansExp σ t ω = Real.exp (itoInt σ t ω - (1 / 2 : ℝ) * quadVar σ t ω)
-  doleans_sde : ∀ (s₀ : ℝ) (σ : ℝ → Ω → ℝ),
+  doleans_sde : ∀ (w : Weight) (_hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1))
+    (_hℓ : HypH1 w ℓ) (s₀ : ℝ),
+    let σ : ℝ → Ω → ℝ := fun t ω => dualPairing ℓ (setup.W_hat t ω)
+    HypH3 ℙ T σ →
     (∀ᵐ ω ∂ℙ, IntegrableOn (fun s => (σ s ω) ^ 2) (Icc 0 T) volume) →
+    (∀ᵐ ω ∂ℙ, ContinuousOn (fun s => σ s ω) (Icc 0 T)) →
     ∀ t ∈ Icc 0 T, ∀ᵐ ω ∂ℙ,
       s₀ * doleansExp σ t ω = s₀ + itoInt (fun s ω' => (s₀ * doleansExp σ s ω') * σ s ω') t ω
   stopped_l2_localisation : ∀ (w : Weight) (ℓ : ExtTensorAlgebra (d + 1)) (s₀ : ℝ)
@@ -255,7 +259,7 @@ structure ItoCalculusKit (Ω : Type u_1) [m₀ : MeasurableSpace Ω]
       Integrable (S t) ℙ ∧
       ℙ[S t | setup.signatureFiltration.σAlg s] =ᵐ[ℙ] S s) ∧
     (∃ S_sup : Ω → ℝ, Measurable S_sup ∧
-      (∀ ω, ∀ t ∈ Icc 0 T, |S t ω| ≤ S_sup ω) ∧
+      (∀ᵐ ω ∂ℙ, ∀ t ∈ Icc 0 T, |S t ω| ≤ S_sup ω) ∧
       Integrable (fun ω => (S_sup ω) ^ 2) ℙ) ∧
     (∀ᵐ ω ∂ℙ, IntegrableOn (fun s => (σ s ω) ^ 2) (Icc 0 T) volume)
 
@@ -283,7 +287,7 @@ structure SignaturePriceSolution {Ω : Type u_1} [MeasurableSpace Ω]
   solves_sde : ∀ t ∈ Icc 0 M.T, ∀ᵐ ω ∂ℙ,
     S t ω = M.s₀ + ito.itoInt (fun s ω' => S s ω' * SignatureVolatilityModel.sigma M setup s ω') t ω
   sup_l2_integrable : ∃ S_sup : Ω → ℝ, Measurable S_sup ∧
-    (∀ ω, ∀ t ∈ Icc 0 M.T, |S t ω| ≤ S_sup ω) ∧
+    (∀ᵐ ω ∂ℙ, ∀ t ∈ Icc 0 M.T, |S t ω| ≤ S_sup ω) ∧
     Integrable (fun ω => (S_sup ω) ^ 2) ℙ
   is_martingale : ∀ ⦃s t : ℝ⦄, 0 ≤ s → s ≤ t → t ≤ M.T →
     Integrable (S t) ℙ ∧

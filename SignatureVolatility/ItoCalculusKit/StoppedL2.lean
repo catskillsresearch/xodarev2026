@@ -20,8 +20,8 @@ namespace SignatureVolatility
 # Stopped L² localisation for the paper Itô kit
 
 Gronwall majorants + modification uniqueness for the linear signature SDE
-`dS = S · ⟨ℓ, Ŵ⟩ dW`. Analytic content: MathFin `sde_pathwise_uniqueness` after
-energy estimates controlled by `norm2w` and `factorial_moment_control`.
+`dS = S · ⟨ℓ, Ŵ⟩ dW`. Analytic content: energy estimates controlled by `norm2w`
+under the strengthened continuous independent driver.
 -/
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}

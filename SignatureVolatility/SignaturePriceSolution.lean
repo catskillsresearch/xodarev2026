@@ -32,7 +32,7 @@ structure SignaturePriceSolution {Ω : Type*} [MeasurableSpace Ω]
   solves_sde : ∀ t ∈ Icc 0 M.T, ∀ᵐ ω ∂ℙ,
     S t ω = M.s₀ + ito.itoInt (fun s ω' => S s ω' * SignatureVolatilityModel.sigma M setup s ω') t ω
   sup_l2_integrable : ∃ S_sup : Ω → ℝ, Measurable S_sup ∧
-    (∀ ω, ∀ t ∈ Icc 0 M.T, |S t ω| ≤ S_sup ω) ∧
+    (∀ᵐ ω ∂ℙ, ∀ t ∈ Icc 0 M.T, |S t ω| ≤ S_sup ω) ∧
     Integrable (fun ω => (S_sup ω) ^ 2) ℙ
   is_martingale : ∀ ⦃s t : ℝ⦄, 0 ≤ s → s ≤ t → t ≤ M.T →
     Integrable (S t) ℙ ∧

@@ -39,8 +39,16 @@ structure ItoCalculusKit (Ω : Type*) [m₀ : MeasurableSpace Ω]
   doleansExp : (ℝ → Ω → ℝ) → ℝ → Ω → ℝ
   doleansExp_def : ∀ σ t ω,
     doleansExp σ t ω = Real.exp (itoInt σ t ω - (1 / 2 : ℝ) * quadVar σ t ω)
-  doleans_sde : ∀ (s₀ : ℝ) (σ : ℝ → Ω → ℝ),
+  /-- Doléans SDE for the signature volatility `σ = ⟨ℓ, Ŵ⟩` under H1–H3, with pathwise
+  square-integrability and pathwise continuity of `σ` on `[0, T]`. The statement is restricted
+  to this adapted class (as in the two fields below) because it is false for arbitrary `σ`:
+  null-set spikes, anticipating integrands and integrands violating H3 are counterexamples. -/
+  doleans_sde : ∀ (w : Weight) (_hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1))
+    (_hℓ : HypH1 w ℓ) (s₀ : ℝ),
+    let σ : ℝ → Ω → ℝ := fun t ω => dualPairing ℓ (setup.W_hat t ω)
+    HypH3 ℙ T σ →
     (∀ᵐ ω ∂ℙ, IntegrableOn (fun s => (σ s ω) ^ 2) (Icc 0 T) volume) →
+    (∀ᵐ ω ∂ℙ, ContinuousOn (fun s => σ s ω) (Icc 0 T)) →
     ∀ t ∈ Icc 0 T, ∀ᵐ ω ∂ℙ,
       s₀ * doleansExp σ t ω = s₀ + itoInt (fun s ω' => (s₀ * doleansExp σ s ω') * σ s ω') t ω
   /-- L² localisation / Gronwall package. Conclusion is uniqueness **up to modification**. -/
@@ -66,7 +74,7 @@ structure ItoCalculusKit (Ω : Type*) [m₀ : MeasurableSpace Ω]
       Integrable (S t) ℙ ∧
       ℙ[S t | setup.signatureFiltration.σAlg s] =ᵐ[ℙ] S s) ∧
     (∃ S_sup : Ω → ℝ, Measurable S_sup ∧
-      (∀ ω, ∀ t ∈ Icc 0 T, |S t ω| ≤ S_sup ω) ∧
+      (∀ᵐ ω ∂ℙ, ∀ t ∈ Icc 0 T, |S t ω| ≤ S_sup ω) ∧
       Integrable (fun ω => (S_sup ω) ^ 2) ℙ) ∧
     (∀ᵐ ω ∂ℙ, IntegrableOn (fun s => (σ s ω) ^ 2) (Icc 0 T) volume)
 

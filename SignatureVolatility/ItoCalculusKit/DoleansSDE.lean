@@ -1,22 +1,54 @@
 module
 
+public import SignatureVolatility.DualPairing
+public import SignatureVolatility.HypH1
+public import SignatureVolatility.HypH2
+public import SignatureVolatility.HypH3
+public import SignatureVolatility.ItoCalculusKit.BrownianQuadVarAS
 public import SignatureVolatility.ItoCalculusKit.MathFinBridge
+public import SignatureVolatility.ItoCalculusKit.PathwiseExpIto
 
 
 @[expose] public section
 
-open MeasureTheory Set
-
-noncomputable section
+open MeasureTheory ProbabilityTheory Filter Topology Set
+open scoped NNReal
 
 namespace SignatureVolatility
 
 /-!
 # Doléans SDE for the MathFin-bridge Itô kit
 
-`d = 0` is discharged directly (no driver ⇒ Ito = QV = 0 ⇒ Doléans = 1).
-The `0 < d` case is the pathwise Föllmer–Itô identity for the dyadic limUnder
-totalization under `IntegrableOn σ²`.
+Proved here (no axioms beyond Lean's standard three):
+
+* `d = 0` (`kit_doleans_sde_of_no_driver`): no driver ⇒ Itô = QV = 0 ⇒ Doléans = 1.
+* **Constant volatility / Black–Scholes** (`kit_doleans_sde_const`, `kit_doleans_sde_one`,
+  `kit_doleans_sde_of_const_on`): for `σ ≡ c` (on `[0, T] × Ω`) and `0 < d`,
+  `s₀ Z_t = s₀ + ∫₀ᵗ s₀ Z_s c dW_s` a.s. for the `limUnder` kit. Ingredients:
+  - `kitDoleansExp_const`: `Z_t = exp (c W⁰_t - c² t / 2)` pointwise in `ω`;
+  - `ae_tendsto_qvBlocks` (`BrownianQuadVarAS`): almost-sure, full-sequence quadratic variation
+    of `W⁰` on rational blocks of the uniform grids `t·j/(n+1)` (fourth moments + Borel–Cantelli);
+  - `tendsto_expRiemann` (`PathwiseExpIto`): pathwise Föllmer–Itô formula for the exponential,
+    giving a.s. convergence of the left Itô–Riemann sums of `s₀ Z c` to `s₀ (Z_t - 1)`;
+  - Bochner integrability of the raw Itô limit (Gaussian mgf) and of the raw quadratic variation
+    `∫₀ᵗ (s₀ Z c)²` (pathwise Riemann sums + Fatou), so the `kitPairIntegrable` gate is open and
+    `condExp` onto the path filtration is the identity.
+* Pathwise continuity of the signature volatility (`continuousOn_sigma_of_brownian`), feeding the
+  `ContinuousOn` hypothesis of the kit field.
+
+Still an axiom: `kit_doleans_sde_of_driver`, the SDE for `0 < d` and a **non-constant** signature
+volatility `σ = ⟨ℓ, Ŵ⟩` under H1–H3.
+
+The SDE is **false** for arbitrary `σ : ℝ → Ω → ℝ`, because `kitItoInt` / `kitQuadVar` are
+`limUnder`s of left Riemann sums on the uniform grids `t·j/(n+1)`, gated by Bochner
+integrability, then projected by `condExp`:
+
+* `IntegrableOn σ²` alone: a deterministic `σ` supported on the null set `{1 - 1/k}` is a
+  machine-checked counterexample (grids see null-set spikes).
+* adding pathwise continuity: a time-constant `σ = 𝟙_A` with `A` independent of the driver
+  (anticipating) gives `s₀·Z_t ≠ s₀ + ∫ s₀ Z σ dW` after the `condExp` projection.
+* adding adaptedness: `σ = W⁰` violates H3 and `∫₀ᵗ Z²σ²` is not integrable for `t ≥ 0.63`,
+  so the integrability gate zeroes the right-hand integral.
 -/
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}
@@ -39,28 +71,536 @@ theorem kit_doleans_sde_of_no_driver (B : MultiBrownian Ω P d) (hd : ¬ 0 < d)
   simp [hZ, kitItoInt, hPair, hIto0,
     condExp_const ((pathFiltration B).le_ambient t) (0 : ℝ)]
 
-/-- Pathwise Föllmer–Itô Doléans SDE for a positive-dimensional driver.
-Analytic content: dyadic left-Riemann limUnder agrees a.e. with the continuous Itô
-integral under `IntegrableOn σ²`, and the exponential formula yields the linear SDE. -/
-axiom kit_doleans_sde_of_driver {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0 < d)
-    (hT : 0 < T) (s₀ : ℝ) (σ : ℝ → Ω → ℝ)
-    (hquad : ∀ᵐ ω ∂P, IntegrableOn (fun s => (σ s ω) ^ 2) (Icc 0 T) volume)
-    (t : ℝ) (ht : t ∈ Icc 0 T) :
-    ∀ᵐ ω ∂P,
-      s₀ * kitDoleansExp B σ t ω =
-        s₀ + kitItoInt B (fun s ω' => (s₀ * kitDoleansExp B σ s ω') * σ s ω') t ω
+/-! ## Pathwise continuity of the signature volatility -/
 
-/-- Doléans SDE under pathwise square-integrability of `σ`. -/
-theorem kit_doleans_sde {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T)
-    (s₀ : ℝ) (σ : ℝ → Ω → ℝ)
-    (hquad : ∀ᵐ ω ∂P, IntegrableOn (fun s => (σ s ω) ^ 2) (Icc 0 T) volume) :
+/-- The time-augmented increment `(s, W_s) - (0, W_0)` is continuous in `s` along every path. -/
+lemma continuous_wAug_sub (B : MultiBrownian Ω P d) (ω : Ω) (j : Fin (d + 1)) :
+    Continuous fun s : ℝ => MultiBrownian.wAug B s ω j - MultiBrownian.wAug B 0 ω j := by
+  refine Continuous.sub ?_ continuous_const
+  by_cases h : (j : ℕ) = 0
+  · simp only [MultiBrownian.wAug, h, ↓reduceDIte]
+    exact continuous_id
+  · simp only [MultiBrownian.wAug, h, ↓reduceDIte]
+    exact (B.pathContinuous _ ω).comp continuous_real_toNNReal
+
+/-- **Pathwise continuity of `σ = ⟨ℓ, Ŵ⟩`** on `[0, T]` for the Stratonovich setup over a
+continuous driver, under H1–H2 (Weierstrass M-test on the level series). -/
+theorem continuousOn_sigma_of_brownian {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T)
+    (w : Weight) (hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1)) (hℓ : HypH1 w ℓ) (ω : Ω) :
+    ContinuousOn
+      (fun s => dualPairing ℓ ((prolongedBrownianSetup_stratonovich_of_brownian B hT).W_hat s ω))
+      (Icc 0 T) := by
+  have hxc := continuous_wAug_sub B ω
+  have hWhat : ∀ s, (prolongedBrownianSetup_stratonovich_of_brownian B hT).W_hat s ω =
+      ExtTensorAlgebra.tensorExp
+        (fun j => MultiBrownian.wAug B s ω j - MultiBrownian.wAug B 0 ω j) :=
+    fun s => sig2OfBrownian_zero_left B s ω
+  have hnorm : ∀ s n, ((prolongedBrownianSetup_stratonovich_of_brownian B hT).W_hat s ω).levelNorm n =
+      incrNorm B s ω ^ n / (n.factorial : ℝ) := fun s n => sig2OfBrownian_levelNorm_eq B s ω n
+  -- each level is continuous
+  have hterm : ∀ n, Continuous fun s =>
+      ℓ.levelInner ((prolongedBrownianSetup_stratonovich_of_brownian B hT).W_hat s ω) n := by
+    intro n
+    simp only [hWhat, ExtTensorAlgebra.levelInner, ExtTensorAlgebra.tensorExp]
+    refine continuous_finsetSum _ fun I _ => continuous_const.mul ?_
+    exact (continuous_list_prod I fun j _ => hxc j).div_const _
+  -- uniform bound on the increment norm over `[0, T]`
+  have hincr : Continuous fun s => incrNorm B s ω := by
+    unfold incrNorm
+    exact Real.continuous_sqrt.comp (continuous_finsetSum _ fun j _ => (hxc j).pow 2)
+  obtain ⟨R₀, hR₀⟩ := (isCompact_Icc (a := (0 : ℝ)) (b := T)).bddAbove_image hincr.continuousOn
+  set R : ℝ := max R₀ 0 with hRdef
+  have hR : ∀ s ∈ Icc 0 T, incrNorm B s ω ≤ R := fun s hs =>
+    (hR₀ (mem_image_of_mem _ hs)).trans (le_max_left _ _)
+  -- H1 gives `‖ℓ_n‖ ≤ C · w n`
+  have hS := hℓ.mem_l2w
+  have hnn : ∀ n, 0 ≤ ℓ.levelNormSq n / (w n) ^ 2 := fun n =>
+    div_nonneg (ExtTensorAlgebra.levelNormSq.nonneg ℓ n) (sq_nonneg _)
+  set C : ℝ := Real.sqrt (∑' n, ℓ.levelNormSq n / (w n) ^ 2) with hC
+  have hℓn : ∀ n, ℓ.levelNorm n ≤ C * w n := by
+    intro n
+    have h1 : ℓ.levelNormSq n / (w n) ^ 2 ≤ ∑' n, ℓ.levelNormSq n / (w n) ^ 2 :=
+      hS.le_tsum n fun j _ => hnn j
+    have hwpos := w.pos n
+    have h2 : ℓ.levelNormSq n ≤ (∑' n, ℓ.levelNormSq n / (w n) ^ 2) * (w n) ^ 2 := by
+      rwa [div_le_iff₀ (by positivity)] at h1
+    calc ℓ.levelNorm n = Real.sqrt (ℓ.levelNormSq n) := rfl
+      _ ≤ Real.sqrt ((∑' n, ℓ.levelNormSq n / (w n) ^ 2) * (w n) ^ 2) := Real.sqrt_le_sqrt h2
+      _ = C * w n := by
+          rw [Real.sqrt_mul (tsum_nonneg hnn), Real.sqrt_sq hwpos.le]
+  -- M-test
+  have hsum : Summable fun n : ℕ => C * (w n * (R ^ n / (n.factorial : ℝ))) :=
+    (hw.subfactorial_nonneg (le_max_right _ _)).mul_left C
+  refine continuousOn_tsum (fun n => (hterm n).continuousOn) hsum fun n s hs => ?_
+  have hi0 := incrNorm_nonneg B s ω
+  calc ‖ℓ.levelInner ((prolongedBrownianSetup_stratonovich_of_brownian B hT).W_hat s ω) n‖
+      ≤ ℓ.levelNorm n *
+          ((prolongedBrownianSetup_stratonovich_of_brownian B hT).W_hat s ω).levelNorm n :=
+        ExtTensorAlgebra.levelInner.abs_le _ _ n
+    _ = ℓ.levelNorm n * (incrNorm B s ω ^ n / (n.factorial : ℝ)) := by rw [hnorm]
+    _ ≤ (C * w n) * (R ^ n / (n.factorial : ℝ)) := by
+        refine mul_le_mul (hℓn n) ?_ (by positivity) (by have := w.pos n; positivity)
+        exact div_le_div_of_nonneg_right (pow_le_pow_left₀ hi0 (hR s hs) n) (Nat.cast_nonneg _)
+    _ = C * (w n * (R ^ n / (n.factorial : ℝ))) := by ring
+
+/-! ## Constant volatility: the kit Doléans exponential is geometric Brownian motion -/
+
+lemma forceMeasurableProcess_const (c : ℝ) :
+    forceMeasurableProcess (fun (_ : ℝ) (_ : Ω) => c) = fun _ _ => c := by
+  funext u
+  simp [forceMeasurableProcess, forceMeasurable]
+
+/-- For `σ ≡ c` the Riemann sums telescope: the raw Itô integral is `c · W⁰_t`, for every `ω`. -/
+lemma kitItoIntRaw_const (B : MultiBrownian Ω P d) (hd : 0 < d) (c : ℝ) {t : ℝ} (ht : 0 ≤ t) :
+    kitItoIntRaw B (fun _ _ => c) t =
+      fun ω => c * B.Wnn (Real.toNNReal t) ω (kitDriver hd) := by
+  funext ω
+  have hR : ∀ n, itoRiemann_process B (kitDriver hd)
+      (forceMeasurableProcess (fun _ _ => c)) 0 t n ω =
+        c * B.Wnn (Real.toNNReal t) ω (kitDriver hd) := by
+    intro n
+    simp only [itoRiemann_process, forceMeasurableProcess_const, wnnIncr, ← Finset.mul_sum]
+    have hsum := Finset.sum_range_sub
+      (fun j : ℕ => B.Wnn (Real.toNNReal (0 + (j : ℝ) * ((t - 0) / ((n + 1 : ℕ) : ℝ)))) ω
+        (kitDriver hd)) (n + 1)
+    have hcast : ∀ j : ℕ, ((j + 1 : ℕ) : ℝ) = (j : ℝ) + 1 := fun j => by push_cast; ring
+    simp only [hcast] at hsum ⊢
+    rw [hsum]
+    have hn : ((n : ℝ) + 1) ≠ 0 := by positivity
+    have h1 : 0 + ((n : ℝ) + 1) * ((t - 0) / ((n : ℝ) + 1)) = t := by field_simp; ring
+    have h0 : 0 + ((0 : ℕ) : ℝ) * ((t - 0) / ((n : ℝ) + 1)) = 0 := by simp
+    rw [h1, h0, Real.toNNReal_zero, B.Wnn_zero, sub_zero]
+  simp only [kitItoIntRaw, hd, itoIntegral_process, ht, ↓reduceDIte]
+  rw [show (fun n => itoRiemann_process B (kitDriver hd)
+      (forceMeasurableProcess (fun _ _ => c)) 0 t n ω) =
+      fun _ => c * B.Wnn (Real.toNNReal t) ω (kitDriver hd) from funext hR]
+  exact tendsto_const_nhds.limUnder_eq
+
+/-- For `σ ≡ c` the raw quadratic variation is `c² t`. -/
+lemma kitQuadVarRaw_const (B : MultiBrownian Ω P d) (hd : 0 < d) (c : ℝ) {t : ℝ} (ht : 0 ≤ t) :
+    kitQuadVarRaw B (fun (_ : ℝ) (_ : Ω) => c) t = fun _ => c ^ 2 * t := by
+  funext ω
+  have hR : ∀ n, lebRiemann_process
+      (fun s ω' => forceMeasurableProcess (fun (_ : ℝ) (_ : Ω) => c) s ω' *
+        forceMeasurableProcess (fun (_ : ℝ) (_ : Ω) => c) s ω') 0 t n ω = c ^ 2 * t := by
+    intro n
+    simp only [lebRiemann_process, forceMeasurableProcess_const, Finset.sum_const,
+      Finset.card_range, nsmul_eq_mul]
+    have hn : ((n : ℝ) + 1) ≠ 0 := by positivity
+    push_cast
+    field_simp
+    ring
+  simp only [kitQuadVarRaw, hd, ↓reduceIte, lebIntegral_process, ht, ↓reduceDIte]
+  rw [show (fun n => lebRiemann_process
+      (fun s ω' => forceMeasurableProcess (fun (_ : ℝ) (_ : Ω) => c) s ω' *
+        forceMeasurableProcess (fun (_ : ℝ) (_ : Ω) => c) s ω') 0 t n ω) =
+      fun _ => c ^ 2 * t from funext hR]
+  exact tendsto_const_nhds.limUnder_eq
+
+lemma kitPairIntegrable_const (B : MultiBrownian Ω P d) (hd : 0 < d) (c : ℝ) {t : ℝ}
+    (ht : 0 ≤ t) : kitPairIntegrable B (fun _ _ => c) t := by
+  refine ⟨?_, ?_⟩
+  · rw [kitItoIntRaw_const B hd c ht]
+    exact ((B.isBrownian (kitDriver hd)).toIsPreBrownianReal.integrable_eval _).const_mul c
+  · rw [kitQuadVarRaw_const B hd c ht]
+    exact integrable_const _
+
+/-- **Pointwise** (every `ω`): for `σ ≡ c`, `kitItoInt` is `c · W⁰_t`. -/
+lemma kitItoInt_const (B : MultiBrownian Ω P d) (hd : 0 < d) (c : ℝ) {t : ℝ} (ht : 0 ≤ t)
+    (ω : Ω) :
+    kitItoInt B (fun _ _ => c) t ω = c * B.Wnn (Real.toNNReal t) ω (kitDriver hd) := by
+  have hpair := kitPairIntegrable_const B hd c ht
+  have hsm : StronglyMeasurable[(pathFiltration B).σAlg t]
+      (kitItoIntRaw B (fun _ _ => c) t) := by
+    rw [kitItoIntRaw_const B hd c ht]
+    exact ((measurable_W_pathFiltration B (T := t) ⟨t, ht, le_rfl⟩
+      (kitDriver hd)).const_mul c).stronglyMeasurable
+  simp only [kitItoInt, hpair, ↓reduceIte]
+  rw [condExp_of_stronglyMeasurable ((pathFiltration B).le_ambient t) hsm hpair.1,
+    kitItoIntRaw_const B hd c ht]
+
+/-- **Pointwise** (every `ω`): for `σ ≡ c`, `kitQuadVar` is `c² t`. -/
+lemma kitQuadVar_const (B : MultiBrownian Ω P d) (hd : 0 < d) (c : ℝ) {t : ℝ} (ht : 0 ≤ t)
+    (ω : Ω) : kitQuadVar B (fun _ _ => c) t ω = c ^ 2 * t := by
+  have hpair := kitPairIntegrable_const B hd c ht
+  simp only [kitQuadVar, hpair, ↓reduceIte]
+  rw [kitQuadVarRaw_const B hd c ht, condExp_const ((pathFiltration B).le_ambient t) (c ^ 2 * t)]
+
+/-- **Black–Scholes left-hand side.** For constant volatility `σ ≡ c` the kit Doléans
+exponential is geometric Brownian motion, pointwise in `ω`. -/
+theorem kitDoleansExp_const (B : MultiBrownian Ω P d) (hd : 0 < d) (c : ℝ) {t : ℝ}
+    (ht : 0 ≤ t) (ω : Ω) :
+    kitDoleansExp B (fun _ _ => c) t ω =
+      Real.exp (c * B.Wnn (Real.toNNReal t) ω (kitDriver hd) - (1 / 2 : ℝ) * (c ^ 2 * t)) := by
+  rw [kitDoleansExp_def, kitItoInt_const B hd c ht, kitQuadVar_const B hd c ht]
+
+/-! ## Constant volatility: the Doléans SDE (Black–Scholes case) -/
+
+lemma measurable_kitDoleansExp (B : MultiBrownian Ω P d) (σ : ℝ → Ω → ℝ) (s : ℝ) :
+    Measurable (kitDoleansExp B σ s) :=
+  Real.measurable_exp.comp
+    ((kitItoInt_meas B σ s).sub ((kitQuadVar_meas B σ s).const_mul (1 / 2 : ℝ)))
+
+lemma forceMeasurableProcess_of_measurable {H : ℝ → Ω → ℝ} (hH : ∀ u, Measurable (H u)) :
+    forceMeasurableProcess H = H := by
+  funext u
+  simp [forceMeasurableProcess, forceMeasurable, hH u]
+
+/-- The integrand `s₀ · Z · σ` of the Doléans SDE for `σ ≡ c`. -/
+noncomputable def doleansConstIntegrand (B : MultiBrownian Ω P d) (c s₀ : ℝ) : ℝ → Ω → ℝ :=
+  fun s ω' => (s₀ * kitDoleansExp B (fun _ _ => c) s ω') * c
+
+lemma measurable_doleansConstIntegrand (B : MultiBrownian Ω P d) (c s₀ : ℝ) (s : ℝ) :
+    Measurable (doleansConstIntegrand B c s₀ s) :=
+  ((measurable_kitDoleansExp B _ s).const_mul s₀).mul_const c
+
+lemma doleansConstIntegrand_apply (B : MultiBrownian Ω P d) (hd : 0 < d) (c s₀ : ℝ) {s : ℝ}
+    (hs : 0 ≤ s) (ω : Ω) :
+    doleansConstIntegrand B c s₀ s ω =
+      s₀ * (Real.exp (c * B.Wnn (Real.toNNReal s) ω (kitDriver hd) -
+        (1 / 2 : ℝ) * (c ^ 2 * s)) * c) := by
+  rw [doleansConstIntegrand, kitDoleansExp_const B hd c hs]
+  ring
+
+/-- The left Itô–Riemann sums of `s₀ Z c` are `s₀` times the pathwise exponential sums. -/
+lemma itoRiemann_doleansConst (B : MultiBrownian Ω P d) (hd : 0 < d) (c s₀ : ℝ) {t : ℝ}
+    (ht : 0 ≤ t) (n : ℕ) (ω : Ω) :
+    itoRiemann_process B (kitDriver hd)
+        (forceMeasurableProcess (doleansConstIntegrand B c s₀)) 0 t n ω =
+      s₀ * ∑ j ∈ Finset.range (n + 1),
+        Real.exp (c * B.Wnn (Real.toNNReal ((j : ℝ) * (t / ((n : ℝ) + 1)))) ω (kitDriver hd) -
+            (1 / 2 : ℝ) * (c ^ 2 * ((j : ℝ) * (t / ((n : ℝ) + 1))))) *
+          (c * (B.Wnn (Real.toNNReal (((j : ℝ) + 1) * (t / ((n : ℝ) + 1)))) ω (kitDriver hd) -
+            B.Wnn (Real.toNNReal ((j : ℝ) * (t / ((n : ℝ) + 1)))) ω (kitDriver hd))) := by
+  rw [forceMeasurableProcess_of_measurable (measurable_doleansConstIntegrand B c s₀),
+    Finset.mul_sum]
+  simp only [itoRiemann_process, wnnIncr, zero_add, sub_zero, Nat.cast_add, Nat.cast_one]
+  refine Finset.sum_congr rfl fun j _ => ?_
+  have hj : 0 ≤ (j : ℝ) * (t / ((n : ℝ) + 1)) := by positivity
+  rw [doleansConstIntegrand_apply B hd c s₀ hj]
+  ring
+
+/-- **Almost-sure, full-sequence convergence of the Itô–Riemann sums** of `s₀ Z c` on the uniform
+grids: the raw `limUnder` Itô integral is `s₀ (Z_t - 1)` (pathwise Föllmer–Itô + a.s. quadratic
+variation). -/
+lemma kitItoIntRaw_doleansConst_ae (B : MultiBrownian Ω P d) (hd : 0 < d) (c s₀ : ℝ) {t : ℝ}
+    (ht : 0 ≤ t) :
+    kitItoIntRaw B (doleansConstIntegrand B c s₀) t =ᵐ[P] fun ω =>
+      s₀ * (Real.exp (c * B.Wnn (Real.toNNReal t) ω (kitDriver hd) -
+        (1 / 2 : ℝ) * (c ^ 2 * t)) - 1) := by
+  filter_upwards [ae_tendsto_qvBlocks B (kitDriver hd) ht] with ω hω
+  have hx : Continuous fun s : ℝ => B.Wnn (Real.toNNReal s) ω (kitDriver hd) :=
+    (B.pathContinuous _ ω).comp continuous_real_toNNReal
+  have h := (tendsto_expRiemann ht c hx (fun K i => hω K i)).const_mul s₀
+  simp only [Real.toNNReal_zero, B.Wnn_zero, mul_zero, Real.exp_zero] at h
+  simp only [kitItoIntRaw, hd, ↓reduceDIte, itoIntegral_process, ht]
+  rw [funext fun n => itoRiemann_doleansConst B hd c s₀ ht n ω]
+  exact h.limUnder_eq
+
+lemma integrable_exp_mul_Wnn (B : MultiBrownian Ω P d) (k : Fin d) (a : ℝ) (s : ℝ≥0) :
+    Integrable (fun ω => Real.exp (a * B.Wnn s ω k)) P :=
+  ((B.isBrownian k).toIsPreBrownianReal.hasLaw_eval s).integrable_comp
+    (integrable_exp_mul_gaussianReal a)
+
+lemma integral_exp_mul_Wnn (B : MultiBrownian Ω P d) (k : Fin d) (a : ℝ) (s : ℝ≥0) :
+    ∫ ω, Real.exp (a * B.Wnn s ω k) ∂P = Real.exp ((s : ℝ) * a ^ 2 / 2) := by
+  have h := mgf_gaussianReal ((B.isBrownian k).toIsPreBrownianReal.hasLaw_eval s) a
+  simpa [mgf] using h
+
+lemma integrable_kitItoIntRaw_doleansConst (B : MultiBrownian Ω P d) (hd : 0 < d) (c s₀ : ℝ)
+    {t : ℝ} (ht : 0 ≤ t) :
+    Integrable (kitItoIntRaw B (doleansConstIntegrand B c s₀) t) P := by
+  refine Integrable.congr ?_ (kitItoIntRaw_doleansConst_ae B hd c s₀ ht).symm
+  simp only [Real.exp_sub]
+  exact (((integrable_exp_mul_Wnn B (kitDriver hd) c (Real.toNNReal t)).div_const _).sub
+    (integrable_const 1)).const_mul s₀
+
+omit [IsProbabilityMeasure P] in
+/-- Fatou: a pointwise limit of nonnegative integrable functions with bounded integrals is
+integrable. -/
+lemma integrable_of_tendsto_of_integral_le {R : ℕ → Ω → ℝ} {L : Ω → ℝ}
+    (hRm : ∀ n, Measurable (R n)) (hR0 : ∀ n ω, 0 ≤ R n ω) (hRi : ∀ n, Integrable (R n) P)
+    (hlim : ∀ ω, Tendsto (fun n => R n ω) atTop (𝓝 (L ω))) {C : ℝ}
+    (hC : ∀ n, ∫ ω, R n ω ∂P ≤ C) : Integrable L P := by
+  have hLm : Measurable L := measurable_of_tendsto_metrizable hRm (tendsto_pi_nhds.mpr hlim)
+  refine ⟨hLm.aestronglyMeasurable, ?_⟩
+  have hL0 : ∀ ω, 0 ≤ L ω := fun ω => ge_of_tendsto' (hlim ω) fun n => hR0 n ω
+  have h1 : ∫⁻ ω, ‖L ω‖ₑ ∂P = ∫⁻ ω, liminf (fun n => ENNReal.ofReal (R n ω)) atTop ∂P := by
+    refine lintegral_congr fun ω => ?_
+    rw [Real.enorm_eq_ofReal (hL0 ω)]
+    exact ((ENNReal.continuous_ofReal.tendsto _).comp (hlim ω)).liminf_eq.symm
+  rw [HasFiniteIntegral, h1]
+  refine lt_of_le_of_lt (lintegral_liminf_le fun n => (hRm n).ennreal_ofReal) ?_
+  refine lt_of_le_of_lt (liminf_le_of_le (by isBoundedDefault) fun b hb => ?_)
+    (ENNReal.ofReal_lt_top (r := C))
+  obtain ⟨n, hn⟩ := hb.exists
+  refine hn.trans ?_
+  rw [← ofReal_integral_eq_lintegral_ofReal (hRi n) (ae_of_all _ (hR0 n))]
+  exact ENNReal.ofReal_le_ofReal (hC n)
+
+/-- The raw quadratic variation `∫₀ᵗ (s₀ Z c)²` is Bochner-integrable (Riemann sums converge
+pathwise by continuity; Fatou + the Gaussian moment generating function bound the limit). -/
+lemma integrable_kitQuadVarRaw_doleansConst (B : MultiBrownian Ω P d) (hd : 0 < d) (c s₀ : ℝ)
+    {t : ℝ} (ht : 0 ≤ t) :
+    Integrable (kitQuadVarRaw B (doleansConstIntegrand B c s₀) t) P := by
+  set k : Fin d := kitDriver hd with hk
+  set G : Ω → ℝ → ℝ := fun ω s =>
+    (s₀ * (Real.exp (c * B.Wnn (Real.toNNReal s) ω k - (1 / 2 : ℝ) * (c ^ 2 * s)) * c)) ^ 2
+    with hG
+  have hGc : ∀ ω, Continuous (G ω) := fun ω => by
+    have hx : Continuous fun s : ℝ => B.Wnn (Real.toNNReal s) ω k :=
+      (B.pathContinuous _ ω).comp continuous_real_toNNReal
+    simp only [hG]
+    fun_prop
+  have hGeq : ∀ ω s, G ω s = (s₀ * c) ^ 2 * Real.exp (-(c ^ 2 * s)) *
+      Real.exp ((2 * c) * B.Wnn (Real.toNNReal s) ω k) := fun ω s => by
+    have hexp : Real.exp (c * B.Wnn (Real.toNNReal s) ω k - (1 / 2 : ℝ) * (c ^ 2 * s)) ^ 2 =
+        Real.exp (-(c ^ 2 * s)) * Real.exp ((2 * c) * B.Wnn (Real.toNNReal s) ω k) := by
+      rw [← Real.exp_add, ← Real.exp_nat_mul]
+      congr 1
+      push_cast
+      ring
+    simp only [hG]
+    rw [mul_assoc, ← hexp]
+    ring
+  set R : ℕ → Ω → ℝ := fun n ω => ∑ j ∈ Finset.range (n + 1),
+    G ω ((j : ℝ) * (t / ((n : ℝ) + 1))) * (t / ((n : ℝ) + 1)) with hR
+  have hRlim : ∀ ω, Tendsto (fun n => R n ω) atTop
+      (𝓝 (kitQuadVarRaw B (doleansConstIntegrand B c s₀) t ω)) := by
+    intro ω
+    have hlim := tendsto_lebRiemann_of_continuousOn ht (hGc ω).continuousOn
+    have hRn : ∀ n, lebRiemann_process
+        (fun s ω' => forceMeasurableProcess (doleansConstIntegrand B c s₀) s ω' *
+          forceMeasurableProcess (doleansConstIntegrand B c s₀) s ω') 0 t n ω = R n ω := by
+      intro n
+      rw [forceMeasurableProcess_of_measurable (measurable_doleansConstIntegrand B c s₀)]
+      simp only [lebRiemann_process, zero_add, sub_zero, Nat.cast_add, Nat.cast_one, hR]
+      refine Finset.sum_congr rfl fun j _ => ?_
+      have hj : 0 ≤ (j : ℝ) * (t / ((n : ℝ) + 1)) := by positivity
+      rw [doleansConstIntegrand_apply B hd c s₀ hj]
+      simp only [hG]
+      ring
+    have heq : kitQuadVarRaw B (doleansConstIntegrand B c s₀) t ω = ∫ s in (0 : ℝ)..t, G ω s := by
+      simp only [kitQuadVarRaw, hd, ↓reduceIte, lebIntegral_process, ht, ↓reduceDIte]
+      rw [funext hRn]
+      exact hlim.limUnder_eq
+    rw [heq]
+    exact hlim
+  have hGm : ∀ s, Measurable fun ω => G ω s := fun s =>
+    ((((((B.Wnn_meas (Real.toNNReal s) k).const_mul c).sub_const _).exp).mul_const c).const_mul
+      s₀).pow_const 2
+  have hGi : ∀ s, Integrable (fun ω => G ω s) P := fun s => by
+    simp only [hGeq]
+    exact (integrable_exp_mul_Wnn B k (2 * c) (Real.toNNReal s)).const_mul _
+  have hGle : ∀ s, 0 ≤ s → s ≤ t →
+      ∫ ω, G ω s ∂P ≤ (s₀ * c) ^ 2 * Real.exp (t * (2 * c) ^ 2 / 2) := fun s hs hst => by
+    simp only [hGeq]
+    rw [integral_const_mul, integral_exp_mul_Wnn, Real.coe_toNNReal _ hs]
+    have h1 : Real.exp (-(c ^ 2 * s)) ≤ 1 := by
+      rw [Real.exp_le_one_iff]
+      nlinarith [sq_nonneg c]
+    have h2 : Real.exp (s * (2 * c) ^ 2 / 2) ≤ Real.exp (t * (2 * c) ^ 2 / 2) := by
+      rw [Real.exp_le_exp]
+      nlinarith [sq_nonneg (2 * c)]
+    have h3 : 0 ≤ (s₀ * c) ^ 2 := sq_nonneg _
+    calc (s₀ * c) ^ 2 * Real.exp (-(c ^ 2 * s)) * Real.exp (s * (2 * c) ^ 2 / 2)
+        ≤ (s₀ * c) ^ 2 * 1 * Real.exp (t * (2 * c) ^ 2 / 2) := by
+          gcongr
+      _ = (s₀ * c) ^ 2 * Real.exp (t * (2 * c) ^ 2 / 2) := by ring
+  refine integrable_of_tendsto_of_integral_le (R := R)
+    (C := (s₀ * c) ^ 2 * Real.exp (t * (2 * c) ^ 2 / 2) * t)
+    (fun n => Finset.measurable_sum _ fun j _ => (hGm _).mul_const _)
+    (fun n ω => Finset.sum_nonneg fun j _ =>
+      mul_nonneg (sq_nonneg _) (div_nonneg ht (by positivity)))
+    (fun n => integrable_finsetSum _ fun j _ => (hGi _).mul_const _) hRlim fun n => ?_
+  have hn1 : (0 : ℝ) < (n : ℝ) + 1 := by positivity
+  have hΔ0 : 0 ≤ t / ((n : ℝ) + 1) := div_nonneg ht hn1.le
+  simp only [hR]
+  rw [integral_finsetSum _ fun j _ => (hGi _).mul_const _]
+  calc ∑ j ∈ Finset.range (n + 1),
+        ∫ ω, G ω ((j : ℝ) * (t / ((n : ℝ) + 1))) * (t / ((n : ℝ) + 1)) ∂P
+      ≤ ∑ _j ∈ Finset.range (n + 1),
+        (s₀ * c) ^ 2 * Real.exp (t * (2 * c) ^ 2 / 2) * (t / ((n : ℝ) + 1)) := by
+        refine Finset.sum_le_sum fun j hj => ?_
+        rw [integral_mul_const]
+        refine mul_le_mul_of_nonneg_right (hGle _ (by positivity) ?_) hΔ0
+        have hjr : (j : ℝ) ≤ (n : ℝ) + 1 := by
+          exact_mod_cast (Finset.mem_range.mp hj).le
+        calc (j : ℝ) * (t / ((n : ℝ) + 1)) ≤ ((n : ℝ) + 1) * (t / ((n : ℝ) + 1)) :=
+              mul_le_mul_of_nonneg_right hjr hΔ0
+          _ = t := by field_simp
+    _ = (s₀ * c) ^ 2 * Real.exp (t * (2 * c) ^ 2 / 2) * t := by
+        rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+        push_cast
+        field_simp
+
+lemma kitPairIntegrable_doleansConst (B : MultiBrownian Ω P d) (hd : 0 < d) (c s₀ : ℝ) {t : ℝ}
+    (ht : 0 ≤ t) : kitPairIntegrable B (doleansConstIntegrand B c s₀) t :=
+  ⟨integrable_kitItoIntRaw_doleansConst B hd c s₀ ht,
+    integrable_kitQuadVarRaw_doleansConst B hd c s₀ ht⟩
+
+/-- **Black–Scholes right-hand side.** For `σ ≡ c`, the kit Itô integral of `s₀ Z c` is
+`s₀ (Z_t - 1)` almost surely (`condExp` acts as the identity on the adapted limit). -/
+theorem kitItoInt_doleansConst_ae (B : MultiBrownian Ω P d) (hd : 0 < d) (c s₀ : ℝ) {t : ℝ}
+    (ht : 0 ≤ t) :
+    kitItoInt B (doleansConstIntegrand B c s₀) t =ᵐ[P] fun ω =>
+      s₀ * (Real.exp (c * B.Wnn (Real.toNNReal t) ω (kitDriver hd) -
+        (1 / 2 : ℝ) * (c ^ 2 * t)) - 1) := by
+  have hpair := kitPairIntegrable_doleansConst B hd c s₀ ht
+  have hraw := kitItoIntRaw_doleansConst_ae B hd c s₀ ht
+  have hsm : StronglyMeasurable[(pathFiltration B).σAlg t] (fun ω =>
+      s₀ * (Real.exp (c * B.Wnn (Real.toNNReal t) ω (kitDriver hd) -
+        (1 / 2 : ℝ) * (c ^ 2 * t)) - 1)) :=
+    ((((((measurable_W_pathFiltration B (T := t) ⟨t, ht, le_rfl⟩ (kitDriver hd)).const_mul
+      c).sub_const _).exp).sub_const 1).const_mul s₀).stronglyMeasurable
+  simp only [kitItoInt, hpair, ↓reduceIte]
+  refine (condExp_congr_ae hraw).trans ?_
+  rw [condExp_of_stronglyMeasurable ((pathFiltration B).le_ambient t) hsm (hpair.1.congr hraw)]
+
+/-- **Doléans SDE for constant volatility** (Black–Scholes): for the `limUnder` kit with
+`σ ≡ c`, `s₀ Z_t = s₀ + ∫₀ᵗ s₀ Z_s c dW_s` almost surely, for every `t ≥ 0`. -/
+theorem kit_doleans_sde_const (B : MultiBrownian Ω P d) (hd : 0 < d) (c s₀ : ℝ) {t : ℝ}
+    (ht : 0 ≤ t) :
+    ∀ᵐ ω ∂P, s₀ * kitDoleansExp B (fun _ _ => c) t ω =
+      s₀ + kitItoInt B (fun s ω' => (s₀ * kitDoleansExp B (fun _ _ => c) s ω') * c) t ω := by
+  filter_upwards [kitItoInt_doleansConst_ae B hd c s₀ ht] with ω hω
+  change _ = s₀ + kitItoInt B (doleansConstIntegrand B c s₀) t ω
+  rw [hω, kitDoleansExp_const B hd c ht]
+  ring
+
+/-- **Doléans SDE for unit volatility** `σ ≡ 1`. -/
+theorem kit_doleans_sde_one (B : MultiBrownian Ω P d) (hd : 0 < d) (s₀ : ℝ) {t : ℝ}
+    (ht : 0 ≤ t) :
+    ∀ᵐ ω ∂P, s₀ * kitDoleansExp B (fun _ _ => 1) t ω =
+      s₀ + kitItoInt B (fun s ω' => (s₀ * kitDoleansExp B (fun _ _ => 1) s ω') * 1) t ω :=
+  kit_doleans_sde_const B hd 1 s₀ ht
+
+/-! ## Locality: the kit only reads the integrand on the grid points of `[0, t]` -/
+
+private lemma grid_mem_Icc {t : ℝ} (ht : 0 ≤ t) {n j : ℕ} (hj : j < n + 1) :
+    0 + (j : ℝ) * ((t - 0) / ((n + 1 : ℕ) : ℝ)) ∈ Icc 0 t := by
+  have hn : (0 : ℝ) < ((n + 1 : ℕ) : ℝ) := by positivity
+  have hΔ : 0 ≤ (t - 0) / ((n + 1 : ℕ) : ℝ) := div_nonneg (by simpa using ht) hn.le
+  have hjr : (j : ℝ) ≤ ((n + 1 : ℕ) : ℝ) := by exact_mod_cast hj.le
+  refine ⟨by positivity, ?_⟩
+  calc 0 + (j : ℝ) * ((t - 0) / ((n + 1 : ℕ) : ℝ))
+      ≤ ((n + 1 : ℕ) : ℝ) * ((t - 0) / ((n + 1 : ℕ) : ℝ)) := by
+        rw [zero_add]
+        exact mul_le_mul_of_nonneg_right hjr hΔ
+    _ = t := by field_simp; ring
+
+lemma kitItoIntRaw_congr (B : MultiBrownian Ω P d) {H H' : ℝ → Ω → ℝ} {t : ℝ}
+    (h : ∀ u ∈ Icc 0 t, H u = H' u) : kitItoIntRaw B H t = kitItoIntRaw B H' t := by
+  funext ω
+  unfold kitItoIntRaw
+  split_ifs with hd
+  · by_cases ht : 0 ≤ t
+    · simp only [itoIntegral_process, ht, ↓reduceDIte]
+      congr 1
+      funext n
+      simp only [itoRiemann_process]
+      refine Finset.sum_congr rfl fun j hj => ?_
+      simp only [forceMeasurableProcess, h _ (grid_mem_Icc ht (Finset.mem_range.mp hj))]
+    · simp [itoIntegral_process, ht]
+  · rfl
+
+lemma kitQuadVarRaw_congr (B : MultiBrownian Ω P d) {H H' : ℝ → Ω → ℝ} {t : ℝ}
+    (h : ∀ u ∈ Icc 0 t, H u = H' u) : kitQuadVarRaw B H t = kitQuadVarRaw B H' t := by
+  funext ω
+  unfold kitQuadVarRaw
+  split_ifs with hd
+  · by_cases ht : 0 ≤ t
+    · simp only [lebIntegral_process, ht, ↓reduceDIte]
+      congr 1
+      funext n
+      simp only [lebRiemann_process]
+      refine Finset.sum_congr rfl fun j hj => ?_
+      simp only [forceMeasurableProcess, h _ (grid_mem_Icc ht (Finset.mem_range.mp hj))]
+    · simp [lebIntegral_process, ht]
+  · rfl
+
+lemma kitItoInt_congr (B : MultiBrownian Ω P d) {H H' : ℝ → Ω → ℝ} {t : ℝ}
+    (h : ∀ u ∈ Icc 0 t, H u = H' u) : kitItoInt B H t = kitItoInt B H' t := by
+  unfold kitItoInt kitPairIntegrable
+  rw [kitItoIntRaw_congr B h, kitQuadVarRaw_congr B h]
+
+lemma kitQuadVar_congr (B : MultiBrownian Ω P d) {H H' : ℝ → Ω → ℝ} {t : ℝ}
+    (h : ∀ u ∈ Icc 0 t, H u = H' u) : kitQuadVar B H t = kitQuadVar B H' t := by
+  unfold kitQuadVar kitPairIntegrable
+  rw [kitItoIntRaw_congr B h, kitQuadVarRaw_congr B h]
+
+/-- **Doléans SDE whenever `σ` is constant on `[0, T] × Ω`** (in particular for a signature
+volatility `⟨ℓ, Ŵ⟩` with `ℓ` supported on the empty word): the Black–Scholes case of the kit. -/
+theorem kit_doleans_sde_of_const_on {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0 < d) (s₀ c : ℝ)
+    (σ : ℝ → Ω → ℝ) (hσ : ∀ s ∈ Icc 0 T, ∀ ω, σ s ω = c) :
     ∀ t ∈ Icc 0 T, ∀ᵐ ω ∂P,
       s₀ * kitDoleansExp B σ t ω =
         s₀ + kitItoInt B (fun s ω' => (s₀ * kitDoleansExp B σ s ω') * σ s ω') t ω := by
   intro t ht
+  have hZ : ∀ s ∈ Icc 0 T, ∀ ω,
+      kitDoleansExp B σ s ω = kitDoleansExp B (fun _ _ => c) s ω := by
+    intro s hs ω
+    have hc : ∀ u ∈ Icc 0 s, σ u = (fun (_ : ℝ) (_ : Ω) => c) u := fun u hu =>
+      funext (hσ u ⟨hu.1, hu.2.trans hs.2⟩)
+    rw [kitDoleansExp_def, kitDoleansExp_def, kitItoInt_congr B hc, kitQuadVar_congr B hc]
+  have hint : kitItoInt B (fun s ω' => (s₀ * kitDoleansExp B σ s ω') * σ s ω') t =
+      kitItoInt B (fun s ω' => (s₀ * kitDoleansExp B (fun _ _ => c) s ω') * c) t :=
+    kitItoInt_congr B fun u hu => by
+      have huT : u ∈ Icc 0 T := ⟨hu.1, hu.2.trans ht.2⟩
+      funext ω'
+      rw [hZ u huT, hσ u huT]
+  filter_upwards [kit_doleans_sde_const B hd c s₀ ht.1] with ω hω
+  rw [hZ t ht, hint]
+  exact hω
+
+/-! ## The Doléans SDE -/
+
+/-- **Remaining analytic gap (single axiom).** Doléans SDE for a positive-dimensional driver and a
+**non-constant** signature volatility `σ = ⟨ℓ, Ŵ⟩` (an analytic function of `(t, W_t)` for the
+chordal lift) under H1–H3. The constant case (`σ ≡ c` on `[0, T] × Ω`, Black–Scholes) is
+*proved* in `kit_doleans_sde_of_const_on` and excluded here. Analytic content still to be
+formalized for non-constant `σ`:
+
+1. almost-sure convergence, along the *full* sequence of uniform partitions `t·j/(n+1)`, of the
+   left Itô–Riemann sums of `σ` and of `s₀ Z σ` (for constant `σ` this is
+   `kitItoIntRaw_doleansConst_ae`: pathwise Föllmer–Itô + a.s. block quadratic variation; for
+   `d ≥ 2` the integrand `σ(t, W_t)` is not a function of the driver coordinate alone, so
+   martingale fourth-moment bounds are needed instead of a one-dimensional Föllmer formula);
+2. the pathwise Itô formula for `exp` of the resulting semimartingale along those partitions;
+3. Bochner integrability of the raw Itô / quadratic-variation limits of `s₀ Z σ` (moments of `Z`
+   from H3), so that `kitPairIntegrable` holds and `condExp` acts as the identity. -/
+axiom kit_doleans_sde_of_driver {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0 < d) (hT : 0 < T)
+    (w : Weight) (_hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1)) (_hℓ : HypH1 w ℓ) (s₀ : ℝ) :
+    let setup := prolongedBrownianSetup_stratonovich_of_brownian B hT
+    let σ : ℝ → Ω → ℝ := fun t ω => dualPairing ℓ (setup.W_hat t ω)
+    (¬ ∃ c : ℝ, ∀ s ∈ Icc 0 T, ∀ ω, σ s ω = c) →
+    HypH3 P T σ →
+    (∀ᵐ ω ∂P, IntegrableOn (fun s => (σ s ω) ^ 2) (Icc 0 T) volume) →
+    (∀ᵐ ω ∂P, ContinuousOn (fun s => σ s ω) (Icc 0 T)) →
+    ∀ t ∈ Icc 0 T, ∀ᵐ ω ∂P,
+      s₀ * kitDoleansExp B σ t ω =
+        s₀ + kitItoInt B (fun s ω' => (s₀ * kitDoleansExp B σ s ω') * σ s ω') t ω
+
+/-- Doléans SDE for the signature volatility under H1–H3, pathwise square-integrability and
+pathwise continuity of `σ`. Proved for `d = 0` and for constant `σ`; the non-constant case with a
+driver is `kit_doleans_sde_of_driver`. -/
+theorem kit_doleans_sde {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T)
+    (w : Weight) (hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1)) (hℓ : HypH1 w ℓ) (s₀ : ℝ) :
+    let setup := prolongedBrownianSetup_stratonovich_of_brownian B hT
+    let σ : ℝ → Ω → ℝ := fun t ω => dualPairing ℓ (setup.W_hat t ω)
+    HypH3 P T σ →
+    (∀ᵐ ω ∂P, IntegrableOn (fun s => (σ s ω) ^ 2) (Icc 0 T) volume) →
+    (∀ᵐ ω ∂P, ContinuousOn (fun s => σ s ω) (Icc 0 T)) →
+    ∀ t ∈ Icc 0 T, ∀ᵐ ω ∂P,
+      s₀ * kitDoleansExp B σ t ω =
+        s₀ + kitItoInt B (fun s ω' => (s₀ * kitDoleansExp B σ s ω') * σ s ω') t ω := by
+  intro setup σ h3 hquad hcont t ht
   classical
   by_cases hd : 0 < d
-  · exact kit_doleans_sde_of_driver B hd hT s₀ σ hquad t ht
+  · by_cases hconst : ∃ c : ℝ, ∀ s ∈ Icc 0 T, ∀ ω, σ s ω = c
+    · obtain ⟨c, hc⟩ := hconst
+      exact kit_doleans_sde_of_const_on B hd s₀ c σ hc t ht
+    · exact kit_doleans_sde_of_driver B hd hT w hw ℓ hℓ s₀ hconst h3 hquad hcont t ht
   · exact ae_of_all P fun ω => kit_doleans_sde_of_no_driver B hd s₀ σ t ω
 
 end SignatureVolatility

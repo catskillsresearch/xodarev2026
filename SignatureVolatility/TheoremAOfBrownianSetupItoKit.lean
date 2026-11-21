@@ -18,13 +18,17 @@ open MeasureTheory Set
 
 namespace SignatureVolatility
 
-/-- Kit-level Theorem A: unique signature-price solution up to modification, under H3 on `σ`,
-relative to an abstract `ProlongedBrownianSetup` and `ItoCalculusKit`. -/
+/-- Kit-level Theorem A: unique signature-price solution up to modification, under H3 on `σ`
+and pathwise continuity of `σ` on `[0, T]`, relative to an abstract `ProlongedBrownianSetup`
+and `ItoCalculusKit`. (An abstract setup carries no time-regularity of `sig2`; for the
+Brownian setup `hcont` is `continuousOn_sigma_of_brownian`.) -/
 theorem theorem_A_of_Brownian_Setup_Ito_Kit {Ω : Type*} [MeasurableSpace Ω]
     {ℙ : Measure Ω} [IsProbabilityMeasure ℙ]
     (M : SignatureVolatilityModel) (setup : ProlongedBrownianSetup Ω ℙ M.d M.T)
     (ito : ItoCalculusKit Ω ℙ M.d M.T setup)
-    (h3 : HypH3 ℙ M.T (SignatureVolatilityModel.sigma M setup)) :
+    (h3 : HypH3 ℙ M.T (SignatureVolatilityModel.sigma M setup))
+    (hcont : ∀ᵐ ω ∂ℙ,
+      ContinuousOn (fun s => SignatureVolatilityModel.sigma M setup s ω) (Icc 0 M.T)) :
     ∃ (sol : SignaturePriceSolution M setup ito),
       ∀ (S_tilde : ℝ → Ω → ℝ),
         (∀ t ∈ Icc 0 M.T, ∀ᵐ ω ∂ℙ,
@@ -61,7 +65,7 @@ theorem theorem_A_of_Brownian_Setup_Ito_Kit {Ω : Type*} [MeasurableSpace Ω]
     exact mul_pos M.hs₀ (Real.exp_pos _)
   have hsde : ∀ t ∈ Icc 0 M.T, ∀ᵐ ω ∂ℙ,
       S t ω = M.s₀ + ito.itoInt (fun s ω' => S s ω' * σ s ω') t ω :=
-    ito.doleans_sde M.s₀ σ hquad
+    ito.doleans_sde M.w M.h2 M.ℓ M.h1 M.s₀ h3 hquad hcont
   let sol : SignaturePriceSolution M setup ito :=
     { S := S
       S_zero := hS_zero

@@ -1,6 +1,7 @@
 module
 
 public import Mathlib.Probability.BrownianMotion.Basic
+public import Mathlib.Probability.Independence.Basic
 public import SignatureVolatility.TimeReindex
 
 
@@ -15,7 +16,12 @@ namespace SignatureVolatility
 
 /-- A `d`-dimensional Brownian driver on `ℝ≥0`, packaged for reindexing to the
 signature-volatility `ℝ`-time API. Coordinates are one-dimensional Brownian
-motions in the sense of Mathlib's `IsBrownianReal`. -/
+motions in the sense of Mathlib's `IsBrownianReal`, with **everywhere**-continuous
+paths and coordinate **processes** that are mutually independent (so `W` is a
+`d`-dimensional Brownian motion in its own joint filtration and joint-filtration
+martingale calculi are available; a.s.-only continuity and coordinates that are
+independent at each fixed time but entangled across times — e.g. one coordinate
+anticipating the future of another — are excluded). -/
 structure MultiBrownian (Ω : Type*) [m₀ : MeasurableSpace Ω]
     (P : Measure Ω) [IsProbabilityMeasure P] (d : ℕ) where
   /-- Coordinate processes on Mathlib time `ℝ≥0`. -/
@@ -23,8 +29,28 @@ structure MultiBrownian (Ω : Type*) [m₀ : MeasurableSpace Ω]
   isBrownian : ∀ i : Fin d, IsBrownianReal (fun t ω => Wnn t ω i) P
   Wnn_zero : ∀ ω i, Wnn 0 ω i = 0
   Wnn_meas : ∀ t i, Measurable (fun ω => Wnn t ω i)
+  /-- Paths are continuous at every `ω` (not merely almost every). -/
+  pathContinuous : ∀ (i : Fin d) (ω : Ω), Continuous fun t : ℝ≥0 => Wnn t ω i
+  /-- The coordinate **processes** `ω ↦ (t ↦ W_t^i(ω))` are mutually independent (path space
+  `ℝ≥0 → ℝ` with the product σ-algebra). Strictly stronger than independence of the coordinates
+  at each fixed time (`coordsIndep_eval`): it rules out future-entangled coordinates, for which
+  an integrand `σ(t, W_t)` would anticipate the driver and Novikov / the Doléans SDE fail. -/
+  coordsIndep : iIndepFun (fun i : Fin d => fun ω => fun t : ℝ≥0 => Wnn t ω i) P
 
 namespace MultiBrownian
+
+/-- Fixed-time independence of the coordinates (the former, weaker, structure field). -/
+lemma coordsIndep_eval {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P]
+    {d : ℕ} (B : MultiBrownian Ω P d) (t : ℝ≥0) :
+    iIndepFun (fun i : Fin d => fun ω => B.Wnn t ω i) P :=
+  B.coordsIndep.comp (fun _ f => f t) fun _ => measurable_pi_apply t
+
+/-- Joint independence of any finite-dimensional time marginals of distinct coordinates: the
+vectors `(W^i_{t})_{t ∈ I}` are independent across `i`. -/
+lemma coordsIndep_restrict {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω}
+    [IsProbabilityMeasure P] {d : ℕ} (B : MultiBrownian Ω P d) (I : Finset ℝ≥0) :
+    iIndepFun (fun i : Fin d => fun ω => I.restrict fun t => B.Wnn t ω i) P :=
+  B.coordsIndep.comp (fun _ f => I.restrict f) fun _ => Finset.measurable_restrict I
 
 /-- Reindexed driver `ℝ → Ω → Fin d → ℝ` (negative times read time `0`). -/
 def W {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}
