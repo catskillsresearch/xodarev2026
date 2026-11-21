@@ -1,11 +1,8 @@
+import Mathlib
 import SignatureVolatility.Word
 import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
 
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
-
-noncomputable section
+open Set
 
 namespace SignatureVolatility
 

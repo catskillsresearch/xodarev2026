@@ -4,12 +4,8 @@ import SignatureVolatility.ExtTensorAlgebra.EvalShuffleBasis
 import SignatureVolatility.ExtTensorAlgebra.LevelNorm
 import SignatureVolatility.GeneratedFiltration
 import SignatureVolatility.IndexedFiltration
-import SignatureVolatility.Letter
-import SignatureVolatility.Word
 
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
+open MeasureTheory
 
 noncomputable section
 

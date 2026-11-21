@@ -3,9 +3,6 @@ import SignatureVolatility.Weight
 import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
 
 
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
-
 noncomputable section
 
 namespace SignatureVolatility

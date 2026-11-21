@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. **Everything is unverified TBD** until listed in `VERIFIED` in `scripts/build_holes.py`.
 
-**Updated:** 2026-11-21T02:18:06Z
-**Holes:** 79 open+blocked · 2 open · 77 blocked · 16 done.
+**Updated:** 2026-11-21T02:40:53Z
+**Holes:** 29 open+blocked · 14 open · 15 blocked · 65 done.
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
 
@@ -16,102 +16,114 @@ scripts/serve_holes.sh          # http://127.0.0.1:8766/holes.html
 
 | Id | File |
 |---|---|
-| `ExtTensorAlgebra.ExtTensorAlgebra` | `SignatureVolatility/ExtTensorAlgebra/ExtTensorAlgebra.lean` |
-| `ExtTensorAlgebra.ShuffleWords` | `SignatureVolatility/ExtTensorAlgebra/ShuffleWords.lean` |
+| `BlackScholesModel` | `SignatureVolatility/BlackScholesModel.lean` |
+| `ClassicalRiccatiSolution` | `SignatureVolatility/ClassicalRiccatiSolution.lean` |
+| `FirstOrderBrownianVolModel` | `SignatureVolatility/FirstOrderBrownianVolModel.lean` |
+| `InfiniteGeometricSignatureModel` | `SignatureVolatility/InfiniteGeometricSignatureModel.lean` |
+| `ItoCalculusKit` | `SignatureVolatility/ItoCalculusKit.lean` |
+| `Lemma32SignatureInTw` | `SignatureVolatility/Lemma32SignatureInTw.lean` |
+| `PriceFiltrationSignatureSpace.VSubspace` | `SignatureVolatility/PriceFiltrationSignatureSpace/VSubspace.lean` |
+| `ProjGt` | `SignatureVolatility/ProjGt.lean` |
+| `Proposition311SharpnessOfH1` | `SignatureVolatility/Proposition311SharpnessOfH1.lean` |
+| `QuinticOUSignatureModel` | `SignatureVolatility/QuinticOUSignatureModel.lean` |
+| `ShuffleIdentity` | `SignatureVolatility/ShuffleIdentity.lean` |
+| `SignatureFiltrationEqBrownianFiltration` | `SignatureVolatility/SignatureFiltrationEqBrownianFiltration.lean` |
+| `SignatureHestonLevel2Model` | `SignatureVolatility/SignatureHestonLevel2Model.lean` |
+| `SignatureVolatilityModel.Sigma` | `SignatureVolatility/SignatureVolatilityModel/Sigma.lean` |
 
 ## By group
 
-### Top-level modules — 55 hole(s)
+### Top-level modules — 26 hole(s)
 
 | Status | Id | File |
 |---|---|---|
 | done | `AdmissibleGainsUnderP` | `SignatureVolatility/AdmissibleGainsUnderP.lean` |
-| blocked | `BanachAlgebraConcatBound` | `SignatureVolatility/BanachAlgebraConcatBound.lean` |
-| blocked | `BlackScholesModel` | `SignatureVolatility/BlackScholesModel.lean` |
-| blocked | `ChenIdentity` | `SignatureVolatility/ChenIdentity.lean` |
-| blocked | `ClassicalRiccatiSolution` | `SignatureVolatility/ClassicalRiccatiSolution.lean` |
+| done | `BanachAlgebraConcatBound` | `SignatureVolatility/BanachAlgebraConcatBound.lean` |
+| open | `BlackScholesModel` | `SignatureVolatility/BlackScholesModel.lean` |
+| done | `ChenIdentity` | `SignatureVolatility/ChenIdentity.lean` |
+| open | `ClassicalRiccatiSolution` | `SignatureVolatility/ClassicalRiccatiSolution.lean` |
 | blocked | `Corollary36SigmaWellDefined` | `SignatureVolatility/Corollary36SigmaWellDefined.lean` |
-| blocked | `DualPairing` | `SignatureVolatility/DualPairing.lean` |
-| blocked | `DualPairingLeNormWDualMulNormW` | `SignatureVolatility/DualPairingLeNormWDualMulNormW.lean` |
-| blocked | `FirstOrderBrownianVolModel` | `SignatureVolatility/FirstOrderBrownianVolModel.lean` |
+| done | `DualPairing` | `SignatureVolatility/DualPairing.lean` |
+| done | `DualPairingLeNormWDualMulNormW` | `SignatureVolatility/DualPairingLeNormWDualMulNormW.lean` |
+| open | `FirstOrderBrownianVolModel` | `SignatureVolatility/FirstOrderBrownianVolModel.lean` |
 | blocked | `GKWDecompositionSetup` | `SignatureVolatility/GKWDecompositionSetup.lean` |
 | done | `GeneratedFiltration` | `SignatureVolatility/GeneratedFiltration.lean` |
-| blocked | `HypH1` | `SignatureVolatility/HypH1.lean` |
-| blocked | `HypH1OfIsFinitelySupported` | `SignatureVolatility/HypH1OfIsFinitelySupported.lean` |
+| done | `HypH1` | `SignatureVolatility/HypH1.lean` |
+| done | `HypH1OfIsFinitelySupported` | `SignatureVolatility/HypH1OfIsFinitelySupported.lean` |
 | done | `HypH2` | `SignatureVolatility/HypH2.lean` |
-| blocked | `HypH3` | `SignatureVolatility/HypH3.lean` |
+| done | `HypH3` | `SignatureVolatility/HypH3.lean` |
 | done | `IndexedFiltration` | `SignatureVolatility/IndexedFiltration.lean` |
-| blocked | `InfiniteGeometricSignatureModel` | `SignatureVolatility/InfiniteGeometricSignatureModel.lean` |
+| open | `InfiniteGeometricSignatureModel` | `SignatureVolatility/InfiniteGeometricSignatureModel.lean` |
 | done | `IsSpecialSemimartingale` | `SignatureVolatility/IsSpecialSemimartingale.lean` |
-| blocked | `ItoCalculusKit` | `SignatureVolatility/ItoCalculusKit.lean` |
-| blocked | `Lemma32SignatureInTw` | `SignatureVolatility/Lemma32SignatureInTw.lean` |
+| open | `ItoCalculusKit` | `SignatureVolatility/ItoCalculusKit.lean` |
+| open | `Lemma32SignatureInTw` | `SignatureVolatility/Lemma32SignatureInTw.lean` |
 | blocked | `Lemma61GramPosDef` | `SignatureVolatility/Lemma61GramPosDef.lean` |
 | done | `Letter` | `SignatureVolatility/Letter.lean` |
-| blocked | `MemL2w` | `SignatureVolatility/MemL2w.lean` |
-| blocked | `MemL2wInv` | `SignatureVolatility/MemL2wInv.lean` |
-| blocked | `MemL2wInvOfMemTw` | `SignatureVolatility/MemL2wInvOfMemTw.lean` |
-| blocked | `MemTw` | `SignatureVolatility/MemTw.lean` |
-| blocked | `MemTwDual` | `SignatureVolatility/MemTwDual.lean` |
-| blocked | `MemTwDualOfMemL2w` | `SignatureVolatility/MemTwDualOfMemL2w.lean` |
+| done | `MemL2w` | `SignatureVolatility/MemL2w.lean` |
+| done | `MemL2wInv` | `SignatureVolatility/MemL2wInv.lean` |
+| done | `MemL2wInvOfMemTw` | `SignatureVolatility/MemL2wInvOfMemTw.lean` |
+| done | `MemTw` | `SignatureVolatility/MemTw.lean` |
+| done | `MemTwDual` | `SignatureVolatility/MemTwDual.lean` |
+| done | `MemTwDualOfMemL2w` | `SignatureVolatility/MemTwDualOfMemL2w.lean` |
 | done | `NflvrOfMartingaleMeasure` | `SignatureVolatility/NflvrOfMartingaleMeasure.lean` |
-| blocked | `Norm2w` | `SignatureVolatility/Norm2w.lean` |
-| blocked | `Norm2wInv` | `SignatureVolatility/Norm2wInv.lean` |
-| blocked | `NormW` | `SignatureVolatility/NormW.lean` |
-| blocked | `NormWDual` | `SignatureVolatility/NormWDual.lean` |
+| done | `Norm2w` | `SignatureVolatility/Norm2w.lean` |
+| done | `Norm2wInv` | `SignatureVolatility/Norm2wInv.lean` |
+| done | `NormW` | `SignatureVolatility/NormW.lean` |
+| done | `NormWDual` | `SignatureVolatility/NormWDual.lean` |
 | done | `Preliminaries` | `SignatureVolatility/Preliminaries.lean` |
-| blocked | `PriceFiltration` | `SignatureVolatility/PriceFiltration.lean` |
-| blocked | `PriceFiltrationSignatureSpace` | `SignatureVolatility/PriceFiltrationSignatureSpace.lean` |
-| blocked | `ProjGt` | `SignatureVolatility/ProjGt.lean` |
-| blocked | `ProjLe` | `SignatureVolatility/ProjLe.lean` |
-| blocked | `ProlongedBrownianSetup` | `SignatureVolatility/ProlongedBrownianSetup.lean` |
-| blocked | `Proposition311SharpnessOfH1` | `SignatureVolatility/Proposition311SharpnessOfH1.lean` |
+| done | `PriceFiltration` | `SignatureVolatility/PriceFiltration.lean` |
+| done | `PriceFiltrationSignatureSpace` | `SignatureVolatility/PriceFiltrationSignatureSpace.lean` |
+| open | `ProjGt` | `SignatureVolatility/ProjGt.lean` |
+| done | `ProjLe` | `SignatureVolatility/ProjLe.lean` |
+| done | `ProlongedBrownianSetup` | `SignatureVolatility/ProlongedBrownianSetup.lean` |
+| open | `Proposition311SharpnessOfH1` | `SignatureVolatility/Proposition311SharpnessOfH1.lean` |
 | blocked | `Proposition65NormalEquations` | `SignatureVolatility/Proposition65NormalEquations.lean` |
 | done | `PureBrownianWord` | `SignatureVolatility/PureBrownianWord.lean` |
-| blocked | `QuinticOUSignatureModel` | `SignatureVolatility/QuinticOUSignatureModel.lean` |
+| open | `QuinticOUSignatureModel` | `SignatureVolatility/QuinticOUSignatureModel.lean` |
 | blocked | `Remark219BlackScholesRiccati` | `SignatureVolatility/Remark219BlackScholesRiccati.lean` |
-| blocked | `RiccatiOpBounded` | `SignatureVolatility/RiccatiOpBounded.lean` |
-| blocked | `RightShift` | `SignatureVolatility/RightShift.lean` |
+| done | `RiccatiOpBounded` | `SignatureVolatility/RiccatiOpBounded.lean` |
+| done | `RightShift` | `SignatureVolatility/RightShift.lean` |
 | done | `SatisfiesNFLVR` | `SignatureVolatility/SatisfiesNFLVR.lean` |
 | blocked | `Section71BlackScholesCompleteness` | `SignatureVolatility/Section71BlackScholesCompleteness.lean` |
-| blocked | `ShuffleFinite` | `SignatureVolatility/ShuffleFinite.lean` |
-| blocked | `ShuffleIdentity` | `SignatureVolatility/ShuffleIdentity.lean` |
-| blocked | `SignatureFiltrationEqBrownianFiltration` | `SignatureVolatility/SignatureFiltrationEqBrownianFiltration.lean` |
-| blocked | `SignatureHestonLevel2Model` | `SignatureVolatility/SignatureHestonLevel2Model.lean` |
+| done | `ShuffleFinite` | `SignatureVolatility/ShuffleFinite.lean` |
+| open | `ShuffleIdentity` | `SignatureVolatility/ShuffleIdentity.lean` |
+| open | `SignatureFiltrationEqBrownianFiltration` | `SignatureVolatility/SignatureFiltrationEqBrownianFiltration.lean` |
+| open | `SignatureHestonLevel2Model` | `SignatureVolatility/SignatureHestonLevel2Model.lean` |
 | blocked | `SignaturePriceSolution` | `SignatureVolatility/SignaturePriceSolution.lean` |
 | blocked | `SignatureRiccatiKit` | `SignatureVolatility/SignatureRiccatiKit.lean` |
-| blocked | `SignatureVolatilityModel` | `SignatureVolatility/SignatureVolatilityModel.lean` |
+| done | `SignatureVolatilityModel` | `SignatureVolatility/SignatureVolatilityModel.lean` |
 | done | `SmoothIteratedIntegral` | `SignatureVolatility/SmoothIteratedIntegral.lean` |
-| blocked | `SmoothSignature` | `SignatureVolatility/SmoothSignature.lean` |
-| blocked | `StratonovichHalfLaplacian` | `SignatureVolatility/StratonovichHalfLaplacian.lean` |
-| blocked | `SuperfactorialFunctional` | `SignatureVolatility/SuperfactorialFunctional.lean` |
+| done | `SmoothSignature` | `SignatureVolatility/SmoothSignature.lean` |
+| done | `StratonovichHalfLaplacian` | `SignatureVolatility/StratonovichHalfLaplacian.lean` |
+| done | `SuperfactorialFunctional` | `SignatureVolatility/SuperfactorialFunctional.lean` |
 | blocked | `TailNorm2wInvLeRatioMulNormW` | `SignatureVolatility/TailNorm2wInvLeRatioMulNormW.lean` |
 | blocked | `TheoremA` | `SignatureVolatility/TheoremA.lean` |
 | blocked | `TheoremB` | `SignatureVolatility/TheoremB.lean` |
 | blocked | `TheoremC` | `SignatureVolatility/TheoremC.lean` |
 | blocked | `TheoremD` | `SignatureVolatility/TheoremD.lean` |
-| blocked | `Tw` | `SignatureVolatility/Tw.lean` |
+| done | `Tw` | `SignatureVolatility/Tw.lean` |
 | done | `Weight` | `SignatureVolatility/Weight.lean` |
 | blocked | `WeightedTruncationEstimates` | `SignatureVolatility/WeightedTruncationEstimates.lean` |
 | done | `Word` | `SignatureVolatility/Word.lean` |
 | done | `WordsOfLength` | `SignatureVolatility/WordsOfLength.lean` |
 
-### ExtTensorAlgebra — 13 hole(s)
+### ExtTensorAlgebra — 0 hole(s)
 
 | Status | Id | File |
 |---|---|---|
-| blocked | `ExtTensorAlgebra.Antipode` | `SignatureVolatility/ExtTensorAlgebra/Antipode.lean` |
-| blocked | `ExtTensorAlgebra.BasisWord` | `SignatureVolatility/ExtTensorAlgebra/BasisWord.lean` |
-| blocked | `ExtTensorAlgebra.Concat` | `SignatureVolatility/ExtTensorAlgebra/Concat.lean` |
-| blocked | `ExtTensorAlgebra.Coord` | `SignatureVolatility/ExtTensorAlgebra/Coord.lean` |
-| blocked | `ExtTensorAlgebra.EvalShuffleBasis` | `SignatureVolatility/ExtTensorAlgebra/EvalShuffleBasis.lean` |
-| open | `ExtTensorAlgebra.ExtTensorAlgebra` | `SignatureVolatility/ExtTensorAlgebra/ExtTensorAlgebra.lean` |
-| blocked | `ExtTensorAlgebra.FreeTensorAlgebra` | `SignatureVolatility/ExtTensorAlgebra/FreeTensorAlgebra.lean` |
-| blocked | `ExtTensorAlgebra.IsFinitelySupported` | `SignatureVolatility/ExtTensorAlgebra/IsFinitelySupported.lean` |
-| blocked | `ExtTensorAlgebra.LevelInner` | `SignatureVolatility/ExtTensorAlgebra/LevelInner.lean` |
-| blocked | `ExtTensorAlgebra.LevelNorm` | `SignatureVolatility/ExtTensorAlgebra/LevelNorm.lean` |
-| blocked | `ExtTensorAlgebra.LevelNormSq` | `SignatureVolatility/ExtTensorAlgebra/LevelNormSq.lean` |
-| blocked | `ExtTensorAlgebra.ShuffleBasis` | `SignatureVolatility/ExtTensorAlgebra/ShuffleBasis.lean` |
-| open | `ExtTensorAlgebra.ShuffleWords` | `SignatureVolatility/ExtTensorAlgebra/ShuffleWords.lean` |
+| done | `ExtTensorAlgebra.Antipode` | `SignatureVolatility/ExtTensorAlgebra/Antipode.lean` |
+| done | `ExtTensorAlgebra.BasisWord` | `SignatureVolatility/ExtTensorAlgebra/BasisWord.lean` |
+| done | `ExtTensorAlgebra.Concat` | `SignatureVolatility/ExtTensorAlgebra/Concat.lean` |
+| done | `ExtTensorAlgebra.Coord` | `SignatureVolatility/ExtTensorAlgebra/Coord.lean` |
+| done | `ExtTensorAlgebra.EvalShuffleBasis` | `SignatureVolatility/ExtTensorAlgebra/EvalShuffleBasis.lean` |
+| done | `ExtTensorAlgebra.ExtTensorAlgebra` | `SignatureVolatility/ExtTensorAlgebra/ExtTensorAlgebra.lean` |
+| done | `ExtTensorAlgebra.FreeTensorAlgebra` | `SignatureVolatility/ExtTensorAlgebra/FreeTensorAlgebra.lean` |
+| done | `ExtTensorAlgebra.IsFinitelySupported` | `SignatureVolatility/ExtTensorAlgebra/IsFinitelySupported.lean` |
+| done | `ExtTensorAlgebra.LevelInner` | `SignatureVolatility/ExtTensorAlgebra/LevelInner.lean` |
+| done | `ExtTensorAlgebra.LevelNorm` | `SignatureVolatility/ExtTensorAlgebra/LevelNorm.lean` |
+| done | `ExtTensorAlgebra.LevelNormSq` | `SignatureVolatility/ExtTensorAlgebra/LevelNormSq.lean` |
+| done | `ExtTensorAlgebra.ShuffleBasis` | `SignatureVolatility/ExtTensorAlgebra/ShuffleBasis.lean` |
+| done | `ExtTensorAlgebra.ShuffleWords` | `SignatureVolatility/ExtTensorAlgebra/ShuffleWords.lean` |
 
 ### Weight — 0 hole(s)
 
@@ -120,38 +132,32 @@ scripts/serve_holes.sh          # http://127.0.0.1:8766/holes.html
 | done | `Weight.ConstOne` | `SignatureVolatility/Weight/ConstOne.lean` |
 | done | `Weight.Geometric` | `SignatureVolatility/Weight/Geometric.lean` |
 
-### ProlongedBrownianSetup — 4 hole(s)
+### ProlongedBrownianSetup — 0 hole(s)
 
 | Status | Id | File |
 |---|---|---|
-| blocked | `ProlongedBrownianSetup.BrownianFiltration` | `SignatureVolatility/ProlongedBrownianSetup/BrownianFiltration.lean` |
-| blocked | `ProlongedBrownianSetup.SignatureFiltration` | `SignatureVolatility/ProlongedBrownianSetup/SignatureFiltration.lean` |
-| blocked | `ProlongedBrownianSetup.WAug` | `SignatureVolatility/ProlongedBrownianSetup/WAug.lean` |
-| blocked | `ProlongedBrownianSetup.WHat` | `SignatureVolatility/ProlongedBrownianSetup/WHat.lean` |
+| done | `ProlongedBrownianSetup.BrownianFiltration` | `SignatureVolatility/ProlongedBrownianSetup/BrownianFiltration.lean` |
+| done | `ProlongedBrownianSetup.SignatureFiltration` | `SignatureVolatility/ProlongedBrownianSetup/SignatureFiltration.lean` |
+| done | `ProlongedBrownianSetup.WAug` | `SignatureVolatility/ProlongedBrownianSetup/WAug.lean` |
+| done | `ProlongedBrownianSetup.WHat` | `SignatureVolatility/ProlongedBrownianSetup/WHat.lean` |
 
-### PriceFiltrationSignatureSpace — 5 hole(s)
+### PriceFiltrationSignatureSpace — 2 hole(s)
 
 | Status | Id | File |
 |---|---|---|
-| blocked | `PriceFiltrationSignatureSpace.AugmentedMarketSpan` | `SignatureVolatility/PriceFiltrationSignatureSpace/AugmentedMarketSpan.lean` |
+| done | `PriceFiltrationSignatureSpace.AugmentedMarketSpan` | `SignatureVolatility/PriceFiltrationSignatureSpace/AugmentedMarketSpan.lean` |
 | blocked | `PriceFiltrationSignatureSpace.CompletenessDepth` | `SignatureVolatility/PriceFiltrationSignatureSpace/CompletenessDepth.lean` |
-| blocked | `PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration` | `SignatureVolatility/PriceFiltrationSignatureSpace/IsCompleteOnPriceFiltration.lean` |
-| blocked | `PriceFiltrationSignatureSpace.VInfty` | `SignatureVolatility/PriceFiltrationSignatureSpace/VInfty.lean` |
-| blocked | `PriceFiltrationSignatureSpace.VSubspace` | `SignatureVolatility/PriceFiltrationSignatureSpace/VSubspace.lean` |
+| done | `PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration` | `SignatureVolatility/PriceFiltrationSignatureSpace/IsCompleteOnPriceFiltration.lean` |
+| done | `PriceFiltrationSignatureSpace.VInfty` | `SignatureVolatility/PriceFiltrationSignatureSpace/VInfty.lean` |
+| open | `PriceFiltrationSignatureSpace.VSubspace` | `SignatureVolatility/PriceFiltrationSignatureSpace/VSubspace.lean` |
 
 ### SignatureVolatilityModel — 1 hole(s)
 
 | Status | Id | File |
 |---|---|---|
-| blocked | `SignatureVolatilityModel.Sigma` | `SignatureVolatility/SignatureVolatilityModel/Sigma.lean` |
-
-### Root barrel — 1 hole(s)
-
-| Status | Id | File |
-|---|---|---|
-| blocked | `(root)` | `SignatureVolatility.lean` |
+| open | `SignatureVolatilityModel.Sigma` | `SignatureVolatility/SignatureVolatilityModel/Sigma.lean` |
 
 ## Dependency sketch
 
-Hard edges follow Lean `import SignatureVolatility…` (see `holes-edges.txt`). Open [`holes.html`](holes.html) for the interactive board.
+Direct import-deps: `holes-edges.txt`. Display graph uses transitive reduction. Open [`holes.html`](holes.html) for the interactive board.
 

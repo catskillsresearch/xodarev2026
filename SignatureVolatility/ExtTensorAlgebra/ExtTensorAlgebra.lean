@@ -1,12 +1,6 @@
 import SignatureVolatility.Letter
 import SignatureVolatility.Word
 
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
-
-noncomputable section
-
 namespace SignatureVolatility
 
 /-- **Definition 2.3 (Extended tensor algebra)**: `T((ℝ^d)) = ∏_{n ≥ 0} (ℝ^d)^{⊗ n}`,

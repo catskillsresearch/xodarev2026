@@ -2,12 +2,6 @@ import SignatureVolatility.ExtTensorAlgebra.LevelNormSq
 import SignatureVolatility.ExtTensorAlgebra.Concat
 import SignatureVolatility.WordsOfLength
 import SignatureVolatility.Preliminaries
-import SignatureVolatility.Letter
-import SignatureVolatility.Word
-
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
 
 noncomputable section
 

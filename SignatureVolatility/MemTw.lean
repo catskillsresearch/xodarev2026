@@ -3,9 +3,6 @@ import SignatureVolatility.ExtTensorAlgebra.ExtTensorAlgebra
 import SignatureVolatility.ExtTensorAlgebra.LevelNorm
 
 
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
-
 noncomputable section
 
 namespace SignatureVolatility

@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-21T02:18:06Z",
-  "sorryCount": 79,
+  "updated": "2026-11-21T02:40:53Z",
+  "sorryCount": 29,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -9,22 +9,14 @@
   "notes": [
     "File-level board: one node per SignatureVolatility .lean module.",
     "All modules start as unverified TBD (Gemini dump not yet checked).",
-    "Hard edge B\u2192A: A imports B \u2014 A cannot be done while B is unfinished.",
+    "Hard edge B\u2192A: A imports B (direct, submodule files only; barrel omitted).",
+    "Drawn edges are transitively reduced; blocking still uses all direct imports.",
     "Mark a module verified by adding its id to VERIFIED in scripts/build_holes.py.",
     "Blue = done. Green = open. Grey = blocked.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.ShuffleWords."
+    "Open tips: BlackScholesModel, ClassicalRiccatiSolution, FirstOrderBrownianVolModel, InfiniteGeometricSignatureModel, ItoCalculusKit, Lemma32SignatureInTw, PriceFiltrationSignatureSpace.VSubspace, ProjGt, Proposition311SharpnessOfH1, QuinticOUSignatureModel, ShuffleIdentity, SignatureFiltrationEqBrownianFiltration, SignatureHestonLevel2Model, SignatureVolatilityModel.Sigma."
   ],
   "nodes": [
-    {
-      "id": "(root)",
-      "label": "(root)",
-      "section": 99,
-      "file": "SignatureVolatility.lean",
-      "status": "blocked",
-      "blocker": "needs BanachAlgebraConcatBound, BlackScholesModel, ChenIdentity, ClassicalRiccatiSolution, Corollary36SigmaWellDefined, DualPairing, DualPairingLeNormWDualMulNormW, ExtTensorAlgebra.Antipode (+70 more)",
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
-    },
     {
       "id": "AdmissibleGainsUnderP",
       "label": "AdmissibleGainsUnderP",
@@ -39,8 +31,8 @@
       "label": "BanachAlgebraConcatBound",
       "section": 1,
       "file": "SignatureVolatility/BanachAlgebraConcatBound.lean",
-      "status": "blocked",
-      "blocker": "needs MemTw, NormW, ExtTensorAlgebra.Concat, ExtTensorAlgebra.LevelNorm",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -48,8 +40,8 @@
       "label": "BlackScholesModel",
       "section": 1,
       "file": "SignatureVolatility/BlackScholesModel.lean",
-      "status": "blocked",
-      "blocker": "needs SignatureVolatilityModel, ExtTensorAlgebra.BasisWord, HypH1OfIsFinitelySupported",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -57,8 +49,8 @@
       "label": "ChenIdentity",
       "section": 1,
       "file": "SignatureVolatility/ChenIdentity.lean",
-      "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup, ExtTensorAlgebra.Concat",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -66,8 +58,8 @@
       "label": "ClassicalRiccatiSolution",
       "section": 1,
       "file": "SignatureVolatility/ClassicalRiccatiSolution.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, RiccatiOpBounded, MemTw, NormW",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -76,7 +68,7 @@
       "section": 1,
       "file": "SignatureVolatility/Corollary36SigmaWellDefined.lean",
       "status": "blocked",
-      "blocker": "needs SignatureVolatilityModel, SignatureVolatilityModel.Sigma, ProlongedBrownianSetup, Norm2w, NormW, Lemma32SignatureInTw, MemTwDualOfMemL2w",
+      "blocker": "needs SignatureVolatilityModel.Sigma, Lemma32SignatureInTw",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -84,8 +76,8 @@
       "label": "DualPairing",
       "section": 1,
       "file": "SignatureVolatility/DualPairing.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelInner",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -93,8 +85,8 @@
       "label": "DualPairingLeNormWDualMulNormW",
       "section": 1,
       "file": "SignatureVolatility/DualPairingLeNormWDualMulNormW.lean",
-      "status": "blocked",
-      "blocker": "needs DualPairing, NormWDual, NormW, MemTwDual, MemTw, ExtTensorAlgebra.LevelInner, ExtTensorAlgebra.LevelNorm",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -102,8 +94,8 @@
       "label": "ExtTensorAlgebra.Antipode",
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/Antipode.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.BasisWord",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -111,8 +103,8 @@
       "label": "ExtTensorAlgebra.BasisWord",
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/BasisWord.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.IsFinitelySupported",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -120,8 +112,8 @@
       "label": "ExtTensorAlgebra.Concat",
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/Concat.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.BasisWord",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -129,8 +121,8 @@
       "label": "ExtTensorAlgebra.Coord",
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/Coord.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -138,8 +130,8 @@
       "label": "ExtTensorAlgebra.EvalShuffleBasis",
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/EvalShuffleBasis.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ShuffleWords, ExtTensorAlgebra.ExtTensorAlgebra",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -147,7 +139,7 @@
       "label": "ExtTensorAlgebra.ExtTensorAlgebra",
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/ExtTensorAlgebra.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -156,8 +148,8 @@
       "label": "ExtTensorAlgebra.FreeTensorAlgebra",
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/FreeTensorAlgebra.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.IsFinitelySupported",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -165,8 +157,8 @@
       "label": "ExtTensorAlgebra.IsFinitelySupported",
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/IsFinitelySupported.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -174,8 +166,8 @@
       "label": "ExtTensorAlgebra.LevelInner",
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/LevelInner.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -183,8 +175,8 @@
       "label": "ExtTensorAlgebra.LevelNorm",
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/LevelNorm.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.LevelNormSq, ExtTensorAlgebra.Concat",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -192,8 +184,8 @@
       "label": "ExtTensorAlgebra.LevelNormSq",
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/LevelNormSq.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -201,8 +193,8 @@
       "label": "ExtTensorAlgebra.ShuffleBasis",
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/ShuffleBasis.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ShuffleWords, ExtTensorAlgebra.ExtTensorAlgebra",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -210,7 +202,7 @@
       "label": "ExtTensorAlgebra.ShuffleWords",
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/ShuffleWords.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -219,8 +211,8 @@
       "label": "FirstOrderBrownianVolModel",
       "section": 1,
       "file": "SignatureVolatility/FirstOrderBrownianVolModel.lean",
-      "status": "blocked",
-      "blocker": "needs SignatureVolatilityModel, ExtTensorAlgebra.BasisWord, HypH1OfIsFinitelySupported",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -229,7 +221,7 @@
       "section": 1,
       "file": "SignatureVolatility/GKWDecompositionSetup.lean",
       "status": "blocked",
-      "blocker": "needs PriceFiltrationSignatureSpace, PriceFiltrationSignatureSpace.VSubspace, ProjLe, MemL2wInv, Norm2wInv",
+      "blocker": "needs PriceFiltrationSignatureSpace.VSubspace",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -246,8 +238,8 @@
       "label": "HypH1",
       "section": 1,
       "file": "SignatureVolatility/HypH1.lean",
-      "status": "blocked",
-      "blocker": "needs MemL2w, ExtTensorAlgebra.ExtTensorAlgebra",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -255,8 +247,8 @@
       "label": "HypH1OfIsFinitelySupported",
       "section": 1,
       "file": "SignatureVolatility/HypH1OfIsFinitelySupported.lean",
-      "status": "blocked",
-      "blocker": "needs HypH1, ExtTensorAlgebra.IsFinitelySupported, MemL2w, ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -273,8 +265,8 @@
       "label": "HypH3",
       "section": 1,
       "file": "SignatureVolatility/HypH3.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -291,8 +283,8 @@
       "label": "InfiniteGeometricSignatureModel",
       "section": 1,
       "file": "SignatureVolatility/InfiniteGeometricSignatureModel.lean",
-      "status": "blocked",
-      "blocker": "needs SignatureVolatilityModel, MemL2w, ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -309,8 +301,8 @@
       "label": "ItoCalculusKit",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit.lean",
-      "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup, ExtTensorAlgebra.ExtTensorAlgebra, DualPairing, Norm2w, HypH1, ProlongedBrownianSetup.WHat, ProlongedBrownianSetup.SignatureFiltration",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -318,8 +310,8 @@
       "label": "Lemma32SignatureInTw",
       "section": 1,
       "file": "SignatureVolatility/Lemma32SignatureInTw.lean",
-      "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup, MemTw, NormW, ProlongedBrownianSetup.WHat",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -345,8 +337,8 @@
       "label": "MemL2w",
       "section": 1,
       "file": "SignatureVolatility/MemL2w.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -354,8 +346,8 @@
       "label": "MemL2wInv",
       "section": 1,
       "file": "SignatureVolatility/MemL2wInv.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -363,8 +355,8 @@
       "label": "MemL2wInvOfMemTw",
       "section": 1,
       "file": "SignatureVolatility/MemL2wInvOfMemTw.lean",
-      "status": "blocked",
-      "blocker": "needs MemL2wInv, MemTw, Norm2wInv, NormW, ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -372,8 +364,8 @@
       "label": "MemTw",
       "section": 1,
       "file": "SignatureVolatility/MemTw.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNorm",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -381,8 +373,8 @@
       "label": "MemTwDual",
       "section": 1,
       "file": "SignatureVolatility/MemTwDual.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNorm",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -390,8 +382,8 @@
       "label": "MemTwDualOfMemL2w",
       "section": 1,
       "file": "SignatureVolatility/MemTwDualOfMemL2w.lean",
-      "status": "blocked",
-      "blocker": "needs MemTwDual, MemL2w, NormWDual, ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq, Norm2w",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -408,8 +400,8 @@
       "label": "Norm2w",
       "section": 1,
       "file": "SignatureVolatility/Norm2w.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -417,8 +409,8 @@
       "label": "Norm2wInv",
       "section": 1,
       "file": "SignatureVolatility/Norm2wInv.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -426,8 +418,8 @@
       "label": "NormW",
       "section": 1,
       "file": "SignatureVolatility/NormW.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNorm",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -435,8 +427,8 @@
       "label": "NormWDual",
       "section": 1,
       "file": "SignatureVolatility/NormWDual.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNorm, MemTwDual",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -453,8 +445,8 @@
       "label": "PriceFiltration",
       "section": 1,
       "file": "SignatureVolatility/PriceFiltration.lean",
-      "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -462,8 +454,8 @@
       "label": "PriceFiltrationSignatureSpace",
       "section": 1,
       "file": "SignatureVolatility/PriceFiltrationSignatureSpace.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -471,8 +463,8 @@
       "label": "PriceFiltrationSignatureSpace.AugmentedMarketSpan",
       "section": 5,
       "file": "SignatureVolatility/PriceFiltrationSignatureSpace/AugmentedMarketSpan.lean",
-      "status": "blocked",
-      "blocker": "needs PriceFiltrationSignatureSpace",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -481,7 +473,7 @@
       "section": 5,
       "file": "SignatureVolatility/PriceFiltrationSignatureSpace/CompletenessDepth.lean",
       "status": "blocked",
-      "blocker": "needs PriceFiltrationSignatureSpace, PriceFiltrationSignatureSpace.VInfty, PriceFiltrationSignatureSpace.VSubspace",
+      "blocker": "needs PriceFiltrationSignatureSpace.VSubspace",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -489,8 +481,8 @@
       "label": "PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration",
       "section": 5,
       "file": "SignatureVolatility/PriceFiltrationSignatureSpace/IsCompleteOnPriceFiltration.lean",
-      "status": "blocked",
-      "blocker": "needs PriceFiltrationSignatureSpace, PriceFiltrationSignatureSpace.AugmentedMarketSpan",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -498,8 +490,8 @@
       "label": "PriceFiltrationSignatureSpace.VInfty",
       "section": 5,
       "file": "SignatureVolatility/PriceFiltrationSignatureSpace/VInfty.lean",
-      "status": "blocked",
-      "blocker": "needs PriceFiltrationSignatureSpace",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -507,8 +499,8 @@
       "label": "PriceFiltrationSignatureSpace.VSubspace",
       "section": 5,
       "file": "SignatureVolatility/PriceFiltrationSignatureSpace/VSubspace.lean",
-      "status": "blocked",
-      "blocker": "needs PriceFiltrationSignatureSpace",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -516,8 +508,8 @@
       "label": "ProjGt",
       "section": 1,
       "file": "SignatureVolatility/ProjGt.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq, ProjLe",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -525,8 +517,8 @@
       "label": "ProjLe",
       "section": 1,
       "file": "SignatureVolatility/ProjLe.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -534,8 +526,8 @@
       "label": "ProlongedBrownianSetup",
       "section": 1,
       "file": "SignatureVolatility/ProlongedBrownianSetup.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.Concat, ExtTensorAlgebra.EvalShuffleBasis, ExtTensorAlgebra.LevelNorm",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -543,8 +535,8 @@
       "label": "ProlongedBrownianSetup.BrownianFiltration",
       "section": 4,
       "file": "SignatureVolatility/ProlongedBrownianSetup/BrownianFiltration.lean",
-      "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -552,8 +544,8 @@
       "label": "ProlongedBrownianSetup.SignatureFiltration",
       "section": 4,
       "file": "SignatureVolatility/ProlongedBrownianSetup/SignatureFiltration.lean",
-      "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup, ProlongedBrownianSetup.WHat, PriceFiltration",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -561,8 +553,8 @@
       "label": "ProlongedBrownianSetup.WAug",
       "section": 4,
       "file": "SignatureVolatility/ProlongedBrownianSetup/WAug.lean",
-      "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -570,8 +562,8 @@
       "label": "ProlongedBrownianSetup.WHat",
       "section": 4,
       "file": "SignatureVolatility/ProlongedBrownianSetup/WHat.lean",
-      "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -579,8 +571,8 @@
       "label": "Proposition311SharpnessOfH1",
       "section": 1,
       "file": "SignatureVolatility/Proposition311SharpnessOfH1.lean",
-      "status": "blocked",
-      "blocker": "needs HypH1, SuperfactorialFunctional, ExtTensorAlgebra.ExtTensorAlgebra",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -606,8 +598,8 @@
       "label": "QuinticOUSignatureModel",
       "section": 1,
       "file": "SignatureVolatility/QuinticOUSignatureModel.lean",
-      "status": "blocked",
-      "blocker": "needs SignatureVolatilityModel, HypH1OfIsFinitelySupported",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -624,8 +616,8 @@
       "label": "RiccatiOpBounded",
       "section": 1,
       "file": "SignatureVolatility/RiccatiOpBounded.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, RightShift, StratonovichHalfLaplacian, ShuffleFinite",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -633,8 +625,8 @@
       "label": "RightShift",
       "section": 1,
       "file": "SignatureVolatility/RightShift.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -652,7 +644,7 @@
       "section": 1,
       "file": "SignatureVolatility/Section71BlackScholesCompleteness.lean",
       "status": "blocked",
-      "blocker": "needs PriceFiltrationSignatureSpace, PriceFiltrationSignatureSpace.CompletenessDepth, PriceFiltrationSignatureSpace.VInfty, PriceFiltrationSignatureSpace.VSubspace",
+      "blocker": "needs PriceFiltrationSignatureSpace.CompletenessDepth, PriceFiltrationSignatureSpace.VSubspace",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -660,8 +652,8 @@
       "label": "ShuffleFinite",
       "section": 1,
       "file": "SignatureVolatility/ShuffleFinite.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.ShuffleBasis",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -669,8 +661,8 @@
       "label": "ShuffleIdentity",
       "section": 1,
       "file": "SignatureVolatility/ShuffleIdentity.lean",
-      "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup, ProlongedBrownianSetup.WHat, ExtTensorAlgebra.EvalShuffleBasis",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -678,8 +670,8 @@
       "label": "SignatureFiltrationEqBrownianFiltration",
       "section": 1,
       "file": "SignatureVolatility/SignatureFiltrationEqBrownianFiltration.lean",
-      "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup, ProlongedBrownianSetup.WHat, ProlongedBrownianSetup.BrownianFiltration, ProlongedBrownianSetup.SignatureFiltration",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -687,8 +679,8 @@
       "label": "SignatureHestonLevel2Model",
       "section": 1,
       "file": "SignatureVolatility/SignatureHestonLevel2Model.lean",
-      "status": "blocked",
-      "blocker": "needs SignatureVolatilityModel, ExtTensorAlgebra.BasisWord, HypH1OfIsFinitelySupported",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -697,7 +689,7 @@
       "section": 1,
       "file": "SignatureVolatility/SignaturePriceSolution.lean",
       "status": "blocked",
-      "blocker": "needs SignatureVolatilityModel, ProlongedBrownianSetup, ItoCalculusKit, ProlongedBrownianSetup.SignatureFiltration",
+      "blocker": "needs ItoCalculusKit",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -714,8 +706,8 @@
       "label": "SignatureVolatilityModel",
       "section": 1,
       "file": "SignatureVolatility/SignatureVolatilityModel.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, HypH1, HypH3",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -723,8 +715,8 @@
       "label": "SignatureVolatilityModel.Sigma",
       "section": 6,
       "file": "SignatureVolatility/SignatureVolatilityModel/Sigma.lean",
-      "status": "blocked",
-      "blocker": "needs SignatureVolatilityModel, ProlongedBrownianSetup, ProlongedBrownianSetup.WHat, DualPairing, ExtTensorAlgebra.LevelInner",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -741,8 +733,8 @@
       "label": "SmoothSignature",
       "section": 1,
       "file": "SignatureVolatility/SmoothSignature.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -750,8 +742,8 @@
       "label": "StratonovichHalfLaplacian",
       "section": 1,
       "file": "SignatureVolatility/StratonovichHalfLaplacian.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -759,8 +751,8 @@
       "label": "SuperfactorialFunctional",
       "section": 1,
       "file": "SignatureVolatility/SuperfactorialFunctional.lean",
-      "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -769,7 +761,7 @@
       "section": 1,
       "file": "SignatureVolatility/TailNorm2wInvLeRatioMulNormW.lean",
       "status": "blocked",
-      "blocker": "needs MemTw, NormW, Norm2wInv, MemL2wInv, MemL2wInvOfMemTw, ProjGt, ExtTensorAlgebra.LevelNorm",
+      "blocker": "needs ProjGt",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -778,7 +770,7 @@
       "section": 1,
       "file": "SignatureVolatility/TheoremA.lean",
       "status": "blocked",
-      "blocker": "needs SignatureVolatilityModel, SignaturePriceSolution, ProlongedBrownianSetup, ItoCalculusKit",
+      "blocker": "needs SignaturePriceSolution, ItoCalculusKit",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -787,7 +779,7 @@
       "section": 1,
       "file": "SignatureVolatility/TheoremB.lean",
       "status": "blocked",
-      "blocker": "needs SignatureVolatilityModel, SignatureRiccatiKit, ProlongedBrownianSetup",
+      "blocker": "needs SignatureRiccatiKit",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -796,7 +788,7 @@
       "section": 1,
       "file": "SignatureVolatility/TheoremC.lean",
       "status": "blocked",
-      "blocker": "needs PriceFiltrationSignatureSpace, PriceFiltrationSignatureSpace.VSubspace, PriceFiltrationSignatureSpace.VInfty, PriceFiltrationSignatureSpace.CompletenessDepth, PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration",
+      "blocker": "needs PriceFiltrationSignatureSpace.VSubspace, PriceFiltrationSignatureSpace.CompletenessDepth",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -805,7 +797,7 @@
       "section": 1,
       "file": "SignatureVolatility/TheoremD.lean",
       "status": "blocked",
-      "blocker": "needs GKWDecompositionSetup, PriceFiltrationSignatureSpace, PriceFiltrationSignatureSpace.VSubspace, PriceFiltrationSignatureSpace.CompletenessDepth",
+      "blocker": "needs GKWDecompositionSetup, PriceFiltrationSignatureSpace.VSubspace, PriceFiltrationSignatureSpace.CompletenessDepth",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -813,8 +805,8 @@
       "label": "Tw",
       "section": 1,
       "file": "SignatureVolatility/Tw.lean",
-      "status": "blocked",
-      "blocker": "needs MemTw",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -850,7 +842,7 @@
       "section": 1,
       "file": "SignatureVolatility/WeightedTruncationEstimates.lean",
       "status": "blocked",
-      "blocker": "needs DualPairing, Norm2w, Norm2wInv, MemL2w, MemL2wInv, ProjGt, ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq (+1 more)",
+      "blocker": "needs ProjGt",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -874,476 +866,6 @@
   ],
   "edges": [
     {
-      "from": "AdmissibleGainsUnderP",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "BanachAlgebraConcatBound",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "BlackScholesModel",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ChenIdentity",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ClassicalRiccatiSolution",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "Corollary36SigmaWellDefined",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "DualPairing",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "DualPairingLeNormWDualMulNormW",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.Antipode",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.BasisWord",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.Concat",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.Coord",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.EvalShuffleBasis",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.FreeTensorAlgebra",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.IsFinitelySupported",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.LevelInner",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.LevelNorm",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.LevelNormSq",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.ShuffleBasis",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.ShuffleWords",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "FirstOrderBrownianVolModel",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "GKWDecompositionSetup",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "GeneratedFiltration",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "HypH1",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "HypH1OfIsFinitelySupported",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "HypH2",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "HypH3",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "IndexedFiltration",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "InfiniteGeometricSignatureModel",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "IsSpecialSemimartingale",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ItoCalculusKit",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "Lemma32SignatureInTw",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "Lemma61GramPosDef",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "Letter",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "MemL2w",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "MemL2wInv",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "MemL2wInvOfMemTw",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "MemTw",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "MemTwDual",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "MemTwDualOfMemL2w",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "NflvrOfMartingaleMeasure",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "Norm2w",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "Norm2wInv",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "NormW",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "NormWDual",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "Preliminaries",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltration",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace.AugmentedMarketSpan",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace.CompletenessDepth",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace.VInfty",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace.VSubspace",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ProjGt",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ProjLe",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ProlongedBrownianSetup.BrownianFiltration",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ProlongedBrownianSetup.SignatureFiltration",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ProlongedBrownianSetup.WAug",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ProlongedBrownianSetup.WHat",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ProlongedBrownianSetup",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "Proposition311SharpnessOfH1",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "Proposition65NormalEquations",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "PureBrownianWord",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "QuinticOUSignatureModel",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "Remark219BlackScholesRiccati",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "RiccatiOpBounded",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "RightShift",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "SatisfiesNFLVR",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "Section71BlackScholesCompleteness",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ShuffleFinite",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "ShuffleIdentity",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "SignatureFiltrationEqBrownianFiltration",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "SignatureHestonLevel2Model",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "SignaturePriceSolution",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "SignatureRiccatiKit",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "SignatureVolatilityModel.Sigma",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "SignatureVolatilityModel",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "SmoothIteratedIntegral",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "SmoothSignature",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "StratonovichHalfLaplacian",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "SuperfactorialFunctional",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "TailNorm2wInvLeRatioMulNormW",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "TheoremA",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "TheoremB",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "TheoremC",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "TheoremD",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "Tw",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "Weight.ConstOne",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "Weight.Geometric",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "Weight",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "WeightedTruncationEstimates",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "Word",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
-      "from": "WordsOfLength",
-      "to": "(root)",
-      "kind": "hard"
-    },
-    {
       "from": "MemTw",
       "to": "BanachAlgebraConcatBound",
       "kind": "hard"
@@ -1354,37 +876,7 @@
       "kind": "hard"
     },
     {
-      "from": "Weight",
-      "to": "BanachAlgebraConcatBound",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.Concat",
-      "to": "BanachAlgebraConcatBound",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.LevelNorm",
-      "to": "BanachAlgebraConcatBound",
-      "kind": "hard"
-    },
-    {
-      "from": "Preliminaries",
-      "to": "BanachAlgebraConcatBound",
-      "kind": "hard"
-    },
-    {
       "from": "SignatureVolatilityModel",
-      "to": "BlackScholesModel",
-      "kind": "hard"
-    },
-    {
-      "from": "HypH2",
-      "to": "BlackScholesModel",
-      "kind": "hard"
-    },
-    {
-      "from": "Weight.ConstOne",
       "to": "BlackScholesModel",
       "kind": "hard"
     },
@@ -1404,21 +896,6 @@
       "kind": "hard"
     },
     {
-      "from": "ExtTensorAlgebra.Concat",
-      "to": "ChenIdentity",
-      "kind": "hard"
-    },
-    {
-      "from": "Weight",
-      "to": "ClassicalRiccatiSolution",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
-      "to": "ClassicalRiccatiSolution",
-      "kind": "hard"
-    },
-    {
       "from": "RiccatiOpBounded",
       "to": "ClassicalRiccatiSolution",
       "kind": "hard"
@@ -1434,27 +911,7 @@
       "kind": "hard"
     },
     {
-      "from": "SignatureVolatilityModel",
-      "to": "Corollary36SigmaWellDefined",
-      "kind": "hard"
-    },
-    {
       "from": "SignatureVolatilityModel.Sigma",
-      "to": "Corollary36SigmaWellDefined",
-      "kind": "hard"
-    },
-    {
-      "from": "ProlongedBrownianSetup",
-      "to": "Corollary36SigmaWellDefined",
-      "kind": "hard"
-    },
-    {
-      "from": "Norm2w",
-      "to": "Corollary36SigmaWellDefined",
-      "kind": "hard"
-    },
-    {
-      "from": "NormW",
       "to": "Corollary36SigmaWellDefined",
       "kind": "hard"
     },
@@ -1466,11 +923,6 @@
     {
       "from": "MemTwDualOfMemL2w",
       "to": "Corollary36SigmaWellDefined",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
-      "to": "DualPairing",
       "kind": "hard"
     },
     {
@@ -1494,53 +946,13 @@
       "kind": "hard"
     },
     {
-      "from": "MemTwDual",
-      "to": "DualPairingLeNormWDualMulNormW",
-      "kind": "hard"
-    },
-    {
       "from": "MemTw",
       "to": "DualPairingLeNormWDualMulNormW",
       "kind": "hard"
     },
     {
-      "from": "ExtTensorAlgebra.LevelInner",
-      "to": "DualPairingLeNormWDualMulNormW",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.LevelNorm",
-      "to": "DualPairingLeNormWDualMulNormW",
-      "kind": "hard"
-    },
-    {
-      "from": "Preliminaries",
-      "to": "DualPairingLeNormWDualMulNormW",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
-      "to": "ExtTensorAlgebra.Antipode",
-      "kind": "hard"
-    },
-    {
       "from": "ExtTensorAlgebra.BasisWord",
       "to": "ExtTensorAlgebra.Antipode",
-      "kind": "hard"
-    },
-    {
-      "from": "Letter",
-      "to": "ExtTensorAlgebra.Antipode",
-      "kind": "hard"
-    },
-    {
-      "from": "Word",
-      "to": "ExtTensorAlgebra.Antipode",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
-      "to": "ExtTensorAlgebra.BasisWord",
       "kind": "hard"
     },
     {
@@ -1549,47 +961,12 @@
       "kind": "hard"
     },
     {
-      "from": "Letter",
-      "to": "ExtTensorAlgebra.BasisWord",
-      "kind": "hard"
-    },
-    {
-      "from": "Word",
-      "to": "ExtTensorAlgebra.BasisWord",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
-      "to": "ExtTensorAlgebra.Concat",
-      "kind": "hard"
-    },
-    {
       "from": "ExtTensorAlgebra.BasisWord",
       "to": "ExtTensorAlgebra.Concat",
       "kind": "hard"
     },
     {
-      "from": "Letter",
-      "to": "ExtTensorAlgebra.Concat",
-      "kind": "hard"
-    },
-    {
-      "from": "Word",
-      "to": "ExtTensorAlgebra.Concat",
-      "kind": "hard"
-    },
-    {
       "from": "ExtTensorAlgebra.ExtTensorAlgebra",
-      "to": "ExtTensorAlgebra.Coord",
-      "kind": "hard"
-    },
-    {
-      "from": "Letter",
-      "to": "ExtTensorAlgebra.Coord",
-      "kind": "hard"
-    },
-    {
-      "from": "Word",
       "to": "ExtTensorAlgebra.Coord",
       "kind": "hard"
     },
@@ -1601,11 +978,6 @@
     {
       "from": "ExtTensorAlgebra.ExtTensorAlgebra",
       "to": "ExtTensorAlgebra.EvalShuffleBasis",
-      "kind": "hard"
-    },
-    {
-      "from": "Letter",
-      "to": "ExtTensorAlgebra.ExtTensorAlgebra",
       "kind": "hard"
     },
     {
@@ -1624,32 +996,7 @@
       "kind": "hard"
     },
     {
-      "from": "Letter",
-      "to": "ExtTensorAlgebra.IsFinitelySupported",
-      "kind": "hard"
-    },
-    {
-      "from": "Word",
-      "to": "ExtTensorAlgebra.IsFinitelySupported",
-      "kind": "hard"
-    },
-    {
       "from": "ExtTensorAlgebra.LevelNorm",
-      "to": "ExtTensorAlgebra.LevelInner",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.LevelNormSq",
-      "to": "ExtTensorAlgebra.LevelInner",
-      "kind": "hard"
-    },
-    {
-      "from": "WordsOfLength",
-      "to": "ExtTensorAlgebra.LevelInner",
-      "kind": "hard"
-    },
-    {
-      "from": "Preliminaries",
       "to": "ExtTensorAlgebra.LevelInner",
       "kind": "hard"
     },
@@ -1664,42 +1011,12 @@
       "kind": "hard"
     },
     {
-      "from": "WordsOfLength",
-      "to": "ExtTensorAlgebra.LevelNorm",
-      "kind": "hard"
-    },
-    {
-      "from": "Preliminaries",
-      "to": "ExtTensorAlgebra.LevelNorm",
-      "kind": "hard"
-    },
-    {
-      "from": "Letter",
-      "to": "ExtTensorAlgebra.LevelNorm",
-      "kind": "hard"
-    },
-    {
-      "from": "Word",
-      "to": "ExtTensorAlgebra.LevelNorm",
-      "kind": "hard"
-    },
-    {
       "from": "ExtTensorAlgebra.ExtTensorAlgebra",
       "to": "ExtTensorAlgebra.LevelNormSq",
       "kind": "hard"
     },
     {
       "from": "WordsOfLength",
-      "to": "ExtTensorAlgebra.LevelNormSq",
-      "kind": "hard"
-    },
-    {
-      "from": "Letter",
-      "to": "ExtTensorAlgebra.LevelNormSq",
-      "kind": "hard"
-    },
-    {
-      "from": "Word",
       "to": "ExtTensorAlgebra.LevelNormSq",
       "kind": "hard"
     },
@@ -1714,27 +1031,12 @@
       "kind": "hard"
     },
     {
-      "from": "Letter",
-      "to": "ExtTensorAlgebra.ShuffleWords",
-      "kind": "hard"
-    },
-    {
       "from": "Word",
       "to": "ExtTensorAlgebra.ShuffleWords",
       "kind": "hard"
     },
     {
       "from": "SignatureVolatilityModel",
-      "to": "FirstOrderBrownianVolModel",
-      "kind": "hard"
-    },
-    {
-      "from": "HypH2",
-      "to": "FirstOrderBrownianVolModel",
-      "kind": "hard"
-    },
-    {
-      "from": "Weight.ConstOne",
       "to": "FirstOrderBrownianVolModel",
       "kind": "hard"
     },
@@ -1746,16 +1048,6 @@
     {
       "from": "HypH1OfIsFinitelySupported",
       "to": "FirstOrderBrownianVolModel",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace",
-      "to": "GKWDecompositionSetup",
-      "kind": "hard"
-    },
-    {
-      "from": "Weight",
-      "to": "GKWDecompositionSetup",
       "kind": "hard"
     },
     {
@@ -1789,16 +1081,6 @@
       "kind": "hard"
     },
     {
-      "from": "Weight",
-      "to": "HypH1",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
-      "to": "HypH1",
-      "kind": "hard"
-    },
-    {
       "from": "HypH1",
       "to": "HypH1OfIsFinitelySupported",
       "kind": "hard"
@@ -1806,31 +1088,6 @@
     {
       "from": "ExtTensorAlgebra.IsFinitelySupported",
       "to": "HypH1OfIsFinitelySupported",
-      "kind": "hard"
-    },
-    {
-      "from": "Weight",
-      "to": "HypH1OfIsFinitelySupported",
-      "kind": "hard"
-    },
-    {
-      "from": "MemL2w",
-      "to": "HypH1OfIsFinitelySupported",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
-      "to": "HypH1OfIsFinitelySupported",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.LevelNormSq",
-      "to": "HypH1OfIsFinitelySupported",
-      "kind": "hard"
-    },
-    {
-      "from": "Weight",
-      "to": "HypH2",
       "kind": "hard"
     },
     {
@@ -1854,48 +1111,13 @@
       "kind": "hard"
     },
     {
-      "from": "HypH2",
-      "to": "InfiniteGeometricSignatureModel",
-      "kind": "hard"
-    },
-    {
-      "from": "Weight.Geometric",
-      "to": "InfiniteGeometricSignatureModel",
-      "kind": "hard"
-    },
-    {
-      "from": "MemL2w",
-      "to": "InfiniteGeometricSignatureModel",
-      "kind": "hard"
-    },
-    {
       "from": "ExtTensorAlgebra.LevelNorm",
-      "to": "InfiniteGeometricSignatureModel",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.LevelNormSq",
       "to": "InfiniteGeometricSignatureModel",
       "kind": "hard"
     },
     {
       "from": "IndexedFiltration",
       "to": "IsSpecialSemimartingale",
-      "kind": "hard"
-    },
-    {
-      "from": "ProlongedBrownianSetup",
-      "to": "ItoCalculusKit",
-      "kind": "hard"
-    },
-    {
-      "from": "Weight",
-      "to": "ItoCalculusKit",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
-      "to": "ItoCalculusKit",
       "kind": "hard"
     },
     {
@@ -1919,18 +1141,8 @@
       "kind": "hard"
     },
     {
-      "from": "ProlongedBrownianSetup.WHat",
-      "to": "ItoCalculusKit",
-      "kind": "hard"
-    },
-    {
       "from": "ProlongedBrownianSetup.SignatureFiltration",
       "to": "ItoCalculusKit",
-      "kind": "hard"
-    },
-    {
-      "from": "ProlongedBrownianSetup",
-      "to": "Lemma32SignatureInTw",
       "kind": "hard"
     },
     {
@@ -1940,11 +1152,6 @@
     },
     {
       "from": "NormW",
-      "to": "Lemma32SignatureInTw",
-      "kind": "hard"
-    },
-    {
-      "from": "Weight",
       "to": "Lemma32SignatureInTw",
       "kind": "hard"
     },
@@ -1969,22 +1176,12 @@
       "kind": "hard"
     },
     {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
-      "to": "MemL2w",
-      "kind": "hard"
-    },
-    {
       "from": "ExtTensorAlgebra.LevelNormSq",
       "to": "MemL2w",
       "kind": "hard"
     },
     {
       "from": "Weight",
-      "to": "MemL2wInv",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
       "to": "MemL2wInv",
       "kind": "hard"
     },
@@ -2015,31 +1212,6 @@
     },
     {
       "from": "Weight",
-      "to": "MemL2wInvOfMemTw",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.LevelNorm",
-      "to": "MemL2wInvOfMemTw",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.LevelNormSq",
-      "to": "MemL2wInvOfMemTw",
-      "kind": "hard"
-    },
-    {
-      "from": "Preliminaries",
-      "to": "MemL2wInvOfMemTw",
-      "kind": "hard"
-    },
-    {
-      "from": "Weight",
-      "to": "MemTw",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
       "to": "MemTw",
       "kind": "hard"
     },
@@ -2054,18 +1226,8 @@
       "kind": "hard"
     },
     {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
-      "to": "MemTwDual",
-      "kind": "hard"
-    },
-    {
       "from": "ExtTensorAlgebra.LevelNorm",
       "to": "MemTwDual",
-      "kind": "hard"
-    },
-    {
-      "from": "MemTwDual",
-      "to": "MemTwDualOfMemL2w",
       "kind": "hard"
     },
     {
@@ -2075,21 +1237,6 @@
     },
     {
       "from": "NormWDual",
-      "to": "MemTwDualOfMemL2w",
-      "kind": "hard"
-    },
-    {
-      "from": "Weight",
-      "to": "MemTwDualOfMemL2w",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.LevelNorm",
-      "to": "MemTwDualOfMemL2w",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.LevelNormSq",
       "to": "MemTwDualOfMemL2w",
       "kind": "hard"
     },
@@ -2114,22 +1261,12 @@
       "kind": "hard"
     },
     {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
-      "to": "Norm2w",
-      "kind": "hard"
-    },
-    {
       "from": "ExtTensorAlgebra.LevelNormSq",
       "to": "Norm2w",
       "kind": "hard"
     },
     {
       "from": "Weight",
-      "to": "Norm2wInv",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
       "to": "Norm2wInv",
       "kind": "hard"
     },
@@ -2144,28 +1281,8 @@
       "kind": "hard"
     },
     {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
-      "to": "NormW",
-      "kind": "hard"
-    },
-    {
       "from": "ExtTensorAlgebra.LevelNorm",
       "to": "NormW",
-      "kind": "hard"
-    },
-    {
-      "from": "Weight",
-      "to": "NormWDual",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
-      "to": "NormWDual",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.LevelNorm",
-      "to": "NormWDual",
       "kind": "hard"
     },
     {
@@ -2179,18 +1296,8 @@
       "kind": "hard"
     },
     {
-      "from": "IndexedFiltration",
-      "to": "PriceFiltration",
-      "kind": "hard"
-    },
-    {
       "from": "PriceFiltrationSignatureSpace",
       "to": "PriceFiltrationSignatureSpace.AugmentedMarketSpan",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace",
-      "to": "PriceFiltrationSignatureSpace.CompletenessDepth",
       "kind": "hard"
     },
     {
@@ -2201,11 +1308,6 @@
     {
       "from": "PriceFiltrationSignatureSpace.VSubspace",
       "to": "PriceFiltrationSignatureSpace.CompletenessDepth",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace",
-      "to": "PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration",
       "kind": "hard"
     },
     {
@@ -2229,32 +1331,12 @@
       "kind": "hard"
     },
     {
-      "from": "Word",
-      "to": "PriceFiltrationSignatureSpace.VSubspace",
-      "kind": "hard"
-    },
-    {
-      "from": "Word",
-      "to": "PriceFiltrationSignatureSpace",
-      "kind": "hard"
-    },
-    {
       "from": "ExtTensorAlgebra.ExtTensorAlgebra",
       "to": "PriceFiltrationSignatureSpace",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
-      "to": "ProjGt",
       "kind": "hard"
     },
     {
       "from": "ExtTensorAlgebra.LevelNorm",
-      "to": "ProjGt",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.LevelNormSq",
       "to": "ProjGt",
       "kind": "hard"
     },
@@ -2264,62 +1346,17 @@
       "kind": "hard"
     },
     {
-      "from": "Letter",
-      "to": "ProjGt",
-      "kind": "hard"
-    },
-    {
-      "from": "Word",
-      "to": "ProjGt",
-      "kind": "hard"
-    },
-    {
       "from": "ExtTensorAlgebra.ExtTensorAlgebra",
       "to": "ProjLe",
       "kind": "hard"
     },
     {
-      "from": "Letter",
-      "to": "ProjLe",
-      "kind": "hard"
-    },
-    {
-      "from": "Word",
-      "to": "ProjLe",
-      "kind": "hard"
-    },
-    {
       "from": "ProlongedBrownianSetup",
       "to": "ProlongedBrownianSetup.BrownianFiltration",
-      "kind": "hard"
-    },
-    {
-      "from": "GeneratedFiltration",
-      "to": "ProlongedBrownianSetup.BrownianFiltration",
-      "kind": "hard"
-    },
-    {
-      "from": "IndexedFiltration",
-      "to": "ProlongedBrownianSetup.BrownianFiltration",
-      "kind": "hard"
-    },
-    {
-      "from": "ProlongedBrownianSetup",
-      "to": "ProlongedBrownianSetup.SignatureFiltration",
       "kind": "hard"
     },
     {
       "from": "ProlongedBrownianSetup.WHat",
-      "to": "ProlongedBrownianSetup.SignatureFiltration",
-      "kind": "hard"
-    },
-    {
-      "from": "GeneratedFiltration",
-      "to": "ProlongedBrownianSetup.SignatureFiltration",
-      "kind": "hard"
-    },
-    {
-      "from": "IndexedFiltration",
       "to": "ProlongedBrownianSetup.SignatureFiltration",
       "kind": "hard"
     },
@@ -2339,16 +1376,6 @@
       "kind": "hard"
     },
     {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
-      "to": "ProlongedBrownianSetup",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.Concat",
-      "to": "ProlongedBrownianSetup",
-      "kind": "hard"
-    },
-    {
       "from": "ExtTensorAlgebra.EvalShuffleBasis",
       "to": "ProlongedBrownianSetup",
       "kind": "hard"
@@ -2364,27 +1391,7 @@
       "kind": "hard"
     },
     {
-      "from": "IndexedFiltration",
-      "to": "ProlongedBrownianSetup",
-      "kind": "hard"
-    },
-    {
-      "from": "Letter",
-      "to": "ProlongedBrownianSetup",
-      "kind": "hard"
-    },
-    {
-      "from": "Word",
-      "to": "ProlongedBrownianSetup",
-      "kind": "hard"
-    },
-    {
       "from": "HypH1",
-      "to": "Proposition311SharpnessOfH1",
-      "kind": "hard"
-    },
-    {
-      "from": "Weight",
       "to": "Proposition311SharpnessOfH1",
       "kind": "hard"
     },
@@ -2394,18 +1401,8 @@
       "kind": "hard"
     },
     {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
-      "to": "Proposition311SharpnessOfH1",
-      "kind": "hard"
-    },
-    {
       "from": "GKWDecompositionSetup",
       "to": "Proposition65NormalEquations",
-      "kind": "hard"
-    },
-    {
-      "from": "Letter",
-      "to": "PureBrownianWord",
       "kind": "hard"
     },
     {
@@ -2415,16 +1412,6 @@
     },
     {
       "from": "SignatureVolatilityModel",
-      "to": "QuinticOUSignatureModel",
-      "kind": "hard"
-    },
-    {
-      "from": "HypH2",
-      "to": "QuinticOUSignatureModel",
-      "kind": "hard"
-    },
-    {
-      "from": "Weight.ConstOne",
       "to": "QuinticOUSignatureModel",
       "kind": "hard"
     },
@@ -2440,16 +1427,6 @@
     },
     {
       "from": "Weight",
-      "to": "Remark219BlackScholesRiccati",
-      "kind": "hard"
-    },
-    {
-      "from": "Weight",
-      "to": "RiccatiOpBounded",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
       "to": "RiccatiOpBounded",
       "kind": "hard"
     },
@@ -2474,48 +1451,8 @@
       "kind": "hard"
     },
     {
-      "from": "Letter",
-      "to": "RightShift",
-      "kind": "hard"
-    },
-    {
-      "from": "Word",
-      "to": "RightShift",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace",
-      "to": "Section71BlackScholesCompleteness",
-      "kind": "hard"
-    },
-    {
       "from": "PriceFiltrationSignatureSpace.CompletenessDepth",
       "to": "Section71BlackScholesCompleteness",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace.VInfty",
-      "to": "Section71BlackScholesCompleteness",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace.VSubspace",
-      "to": "Section71BlackScholesCompleteness",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
-      "to": "ShuffleFinite",
-      "kind": "hard"
-    },
-    {
-      "from": "Letter",
-      "to": "ShuffleFinite",
-      "kind": "hard"
-    },
-    {
-      "from": "Word",
-      "to": "ShuffleFinite",
       "kind": "hard"
     },
     {
@@ -2529,38 +1466,8 @@
       "kind": "hard"
     },
     {
-      "from": "ProlongedBrownianSetup",
-      "to": "ShuffleIdentity",
-      "kind": "hard"
-    },
-    {
       "from": "ProlongedBrownianSetup.WHat",
       "to": "ShuffleIdentity",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.EvalShuffleBasis",
-      "to": "ShuffleIdentity",
-      "kind": "hard"
-    },
-    {
-      "from": "Letter",
-      "to": "ShuffleIdentity",
-      "kind": "hard"
-    },
-    {
-      "from": "Word",
-      "to": "ShuffleIdentity",
-      "kind": "hard"
-    },
-    {
-      "from": "ProlongedBrownianSetup",
-      "to": "SignatureFiltrationEqBrownianFiltration",
-      "kind": "hard"
-    },
-    {
-      "from": "ProlongedBrownianSetup.WHat",
-      "to": "SignatureFiltrationEqBrownianFiltration",
       "kind": "hard"
     },
     {
@@ -2575,16 +1482,6 @@
     },
     {
       "from": "SignatureVolatilityModel",
-      "to": "SignatureHestonLevel2Model",
-      "kind": "hard"
-    },
-    {
-      "from": "HypH2",
-      "to": "SignatureHestonLevel2Model",
-      "kind": "hard"
-    },
-    {
-      "from": "Weight.ConstOne",
       "to": "SignatureHestonLevel2Model",
       "kind": "hard"
     },
@@ -2604,17 +1501,7 @@
       "kind": "hard"
     },
     {
-      "from": "ProlongedBrownianSetup",
-      "to": "SignaturePriceSolution",
-      "kind": "hard"
-    },
-    {
       "from": "ItoCalculusKit",
-      "to": "SignaturePriceSolution",
-      "kind": "hard"
-    },
-    {
-      "from": "ProlongedBrownianSetup.SignatureFiltration",
       "to": "SignaturePriceSolution",
       "kind": "hard"
     },
@@ -2624,17 +1511,7 @@
       "kind": "hard"
     },
     {
-      "from": "Weight",
-      "to": "SignatureRiccatiKit",
-      "kind": "hard"
-    },
-    {
       "from": "SignatureVolatilityModel",
-      "to": "SignatureVolatilityModel.Sigma",
-      "kind": "hard"
-    },
-    {
-      "from": "ProlongedBrownianSetup",
       "to": "SignatureVolatilityModel.Sigma",
       "kind": "hard"
     },
@@ -2646,21 +1523,6 @@
     {
       "from": "DualPairing",
       "to": "SignatureVolatilityModel.Sigma",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.LevelInner",
-      "to": "SignatureVolatilityModel.Sigma",
-      "kind": "hard"
-    },
-    {
-      "from": "Weight",
-      "to": "SignatureVolatilityModel",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
-      "to": "SignatureVolatilityModel",
       "kind": "hard"
     },
     {
@@ -2676,11 +1538,6 @@
     {
       "from": "HypH3",
       "to": "SignatureVolatilityModel",
-      "kind": "hard"
-    },
-    {
-      "from": "Letter",
-      "to": "SmoothIteratedIntegral",
       "kind": "hard"
     },
     {
@@ -2704,11 +1561,6 @@
       "kind": "hard"
     },
     {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
-      "to": "SuperfactorialFunctional",
-      "kind": "hard"
-    },
-    {
       "from": "ExtTensorAlgebra.LevelNormSq",
       "to": "SuperfactorialFunctional",
       "kind": "hard"
@@ -2716,26 +1568,6 @@
     {
       "from": "PureBrownianWord",
       "to": "SuperfactorialFunctional",
-      "kind": "hard"
-    },
-    {
-      "from": "MemTw",
-      "to": "TailNorm2wInvLeRatioMulNormW",
-      "kind": "hard"
-    },
-    {
-      "from": "NormW",
-      "to": "TailNorm2wInvLeRatioMulNormW",
-      "kind": "hard"
-    },
-    {
-      "from": "Norm2wInv",
-      "to": "TailNorm2wInvLeRatioMulNormW",
-      "kind": "hard"
-    },
-    {
-      "from": "MemL2wInv",
-      "to": "TailNorm2wInvLeRatioMulNormW",
       "kind": "hard"
     },
     {
@@ -2749,32 +1581,7 @@
       "kind": "hard"
     },
     {
-      "from": "Weight",
-      "to": "TailNorm2wInvLeRatioMulNormW",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.LevelNorm",
-      "to": "TailNorm2wInvLeRatioMulNormW",
-      "kind": "hard"
-    },
-    {
-      "from": "SignatureVolatilityModel",
-      "to": "TheoremA",
-      "kind": "hard"
-    },
-    {
       "from": "SignaturePriceSolution",
-      "to": "TheoremA",
-      "kind": "hard"
-    },
-    {
-      "from": "ProlongedBrownianSetup",
-      "to": "TheoremA",
-      "kind": "hard"
-    },
-    {
-      "from": "ItoCalculusKit",
       "to": "TheoremA",
       "kind": "hard"
     },
@@ -2804,21 +1611,6 @@
       "kind": "hard"
     },
     {
-      "from": "PriceFiltrationSignatureSpace",
-      "to": "TheoremC",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace.VSubspace",
-      "to": "TheoremC",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace.VInfty",
-      "to": "TheoremC",
-      "kind": "hard"
-    },
-    {
       "from": "PriceFiltrationSignatureSpace.CompletenessDepth",
       "to": "TheoremC",
       "kind": "hard"
@@ -2830,16 +1622,6 @@
     },
     {
       "from": "GKWDecompositionSetup",
-      "to": "TheoremD",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace",
-      "to": "TheoremD",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace.VSubspace",
       "to": "TheoremD",
       "kind": "hard"
     },
@@ -2894,38 +1676,8 @@
       "kind": "hard"
     },
     {
-      "from": "ExtTensorAlgebra.LevelNorm",
-      "to": "WeightedTruncationEstimates",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.LevelNormSq",
-      "to": "WeightedTruncationEstimates",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.LevelInner",
-      "to": "WeightedTruncationEstimates",
-      "kind": "hard"
-    },
-    {
-      "from": "Weight",
-      "to": "WeightedTruncationEstimates",
-      "kind": "hard"
-    },
-    {
-      "from": "Preliminaries",
-      "to": "WeightedTruncationEstimates",
-      "kind": "hard"
-    },
-    {
       "from": "Letter",
       "to": "Word",
-      "kind": "hard"
-    },
-    {
-      "from": "Letter",
-      "to": "WordsOfLength",
       "kind": "hard"
     },
     {

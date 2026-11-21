@@ -3,8 +3,12 @@
 """Build holes-graph.json and HOLES.md for the SignatureVolatility proof-hole board.
 
 File-level board: every SignatureVolatility module is a hole. All modules start as
-unverified TBD (Gemini dump / unverified formalization). Hard edges follow Lean
-imports: A imports B ⇒ hard edge B→A (A cannot be done while B is unfinished).
+unverified TBD (Gemini dump / unverified formalization).
+
+Hard edges come from direct `import SignatureVolatility…` in each submodule file
+only (the root barrel `SignatureVolatility.lean` is excluded — it imports everything
+and would clutter the board). Blocking uses those direct imports; the drawn graph
+applies transitive reduction so implied edges are not duplicated.
 
 Override verification later by adding module ids to VERIFIED.
 """
@@ -30,16 +34,65 @@ IMPORT_RE = re.compile(r"^import\s+(SignatureVolatility(?:\.\S+)?)")
 # marked done once all hard predecessors are done. Empty ⇒ everything TBD.
 VERIFIED: set[str] = {
     "AdmissibleGainsUnderP",
+    "BanachAlgebraConcatBound",
+    "ChenIdentity",
+    "DualPairing",
+    "DualPairingLeNormWDualMulNormW",
+    "ExtTensorAlgebra.Antipode",
+    "ExtTensorAlgebra.BasisWord",
+    "ExtTensorAlgebra.Concat",
+    "ExtTensorAlgebra.Coord",
+    "ExtTensorAlgebra.EvalShuffleBasis",
+    "ExtTensorAlgebra.ExtTensorAlgebra",
+    "ExtTensorAlgebra.FreeTensorAlgebra",
+    "ExtTensorAlgebra.IsFinitelySupported",
+    "ExtTensorAlgebra.LevelInner",
+    "ExtTensorAlgebra.LevelNorm",
+    "ExtTensorAlgebra.LevelNormSq",
+    "ExtTensorAlgebra.ShuffleBasis",
+    "ExtTensorAlgebra.ShuffleWords",
     "GeneratedFiltration",
+    "HypH1",
+    "HypH1OfIsFinitelySupported",
     "HypH2",
+    "HypH3",
     "IndexedFiltration",
     "IsSpecialSemimartingale",
     "Letter",
+    "MemL2w",
+    "MemL2wInv",
+    "MemL2wInvOfMemTw",
+    "MemTw",
+    "MemTwDual",
+    "MemTwDualOfMemL2w",
     "NflvrOfMartingaleMeasure",
+    "Norm2w",
+    "Norm2wInv",
+    "NormW",
+    "NormWDual",
     "Preliminaries",
+    "PriceFiltration",
+    "PriceFiltrationSignatureSpace",
+    "PriceFiltrationSignatureSpace.AugmentedMarketSpan",
+    "PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration",
+    "PriceFiltrationSignatureSpace.VInfty",
+    "ProjLe",
+    "ProlongedBrownianSetup",
+    "ProlongedBrownianSetup.BrownianFiltration",
+    "ProlongedBrownianSetup.SignatureFiltration",
+    "ProlongedBrownianSetup.WAug",
+    "ProlongedBrownianSetup.WHat",
     "PureBrownianWord",
+    "RiccatiOpBounded",
+    "RightShift",
     "SatisfiesNFLVR",
+    "ShuffleFinite",
+    "SignatureVolatilityModel",
     "SmoothIteratedIntegral",
+    "SmoothSignature",
+    "StratonovichHalfLaplacian",
+    "SuperfactorialFunctional",
+    "Tw",
     "Word",
     "WordsOfLength",
     "Weight",
@@ -63,9 +116,36 @@ def file_to_mod(path: Path) -> str:
     return f"SignatureVolatility.{rel}"
 
 
+def transitive_reduction(edges: list[tuple[str, str]]) -> list[tuple[str, str]]:
+    """Drop edges implied by other import-deps (same reachability, cleaner graph)."""
+    if not edges:
+        return []
+    adj: dict[str, set[str]] = defaultdict(set)
+    for a, b in edges:
+        adj[a].add(b)
+
+    def reachable(start: str, goal: str, skip: tuple[str, str]) -> bool:
+        stack = [start]
+        seen = {start}
+        while stack:
+            u = stack.pop()
+            for v in adj.get(u, ()):
+                if (u, v) == skip:
+                    continue
+                if v == goal:
+                    return True
+                if v not in seen:
+                    seen.add(v)
+                    stack.append(v)
+        return False
+
+    return [(a, b) for a, b in edges if not reachable(a, b, (a, b))]
+
+
 def discover() -> tuple[dict[str, dict], list[tuple[str, str]]]:
     """Return nodes meta by short id, and hard edges (dep → importer)."""
-    files = [ROOT / "SignatureVolatility.lean"] + sorted(LEAN_ROOT.rglob("*.lean"))
+    # Omit SignatureVolatility.lean: it imports every submodule and only adds noise.
+    files = sorted(LEAN_ROOT.rglob("*.lean"))
     mod_to_file: dict[str, str] = {}
     imports: list[tuple[str, str]] = []  # (importer_mod, dep_mod)
 
@@ -142,6 +222,7 @@ def discover() -> tuple[dict[str, dict], list[tuple[str, str]]]:
 
 def build() -> dict:
     nodes_meta, hard_edges = discover()
+    display_edges = transitive_reduction(hard_edges)
 
     hard_preds: dict[str, list[str]] = {nid: [] for nid in nodes_meta}
     for frm, to in hard_edges:
@@ -197,7 +278,7 @@ def build() -> dict:
 
     edges = [
         {"from": frm, "to": to, "kind": "hard"}
-        for frm, to in hard_edges
+        for frm, to in display_edges
         if frm in nodes_meta and to in nodes_meta
     ]
 
@@ -215,7 +296,8 @@ def build() -> dict:
         "notes": [
             "File-level board: one node per SignatureVolatility .lean module.",
             "All modules start as unverified TBD (Gemini dump not yet checked).",
-            "Hard edge B→A: A imports B — A cannot be done while B is unfinished.",
+            "Hard edge B→A: A imports B (direct, submodule files only; barrel omitted).",
+            "Drawn edges are transitively reduced; blocking still uses all direct imports.",
             "Mark a module verified by adding its id to VERIFIED in scripts/build_holes.py.",
             "Blue = done. Green = open. Grey = blocked.",
             "Regenerate with: python3 scripts/build_holes.py",
@@ -289,7 +371,7 @@ def write_md(data: dict) -> None:
     lines += [
         "## Dependency sketch",
         "",
-        "Hard edges follow Lean `import SignatureVolatility…` (see `holes-edges.txt`). "
+        "Direct import-deps: `holes-edges.txt`. Display graph uses transitive reduction. "
         "Open [`holes.html`](holes.html) for the interactive board.",
         "",
     ]
@@ -314,11 +396,14 @@ def embed_html(data: dict) -> None:
 
 
 def main() -> None:
+    _, direct_edges = discover()
     data = build()
     OUT_JSON.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
     write_md(data)
     OUT_EDGES.write_text(
-        "\n".join(f"{e['from']} -{e['kind']}-> {e['to']}" for e in data["edges"]) + "\n",
+        "# Direct import SignatureVolatility deps (for blocking / build order)\n"
+        + "\n".join(f"{frm} -hard-> {to}" for frm, to in sorted(direct_edges))
+        + "\n",
         encoding="utf-8",
     )
     embed_html(data)
