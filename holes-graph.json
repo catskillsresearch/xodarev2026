@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-21T18:07:53Z",
-  "sorryCount": 15,
+  "updated": "2026-11-21T18:42:44Z",
+  "sorryCount": 12,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, SignatureRiccatiKit.OfSetup, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done. Green = open. Grey = blocked.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: ProlongedBrownianSetup.ItoWordIntegralConsLong."
+    "Open tips: ProlongedBrownianSetup.Sig2Strat."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -767,12 +767,23 @@
       "paperKitGoal": false
     },
     {
+      "id": "ProlongedBrownianSetup.ItoIntegralProcess",
+      "label": "ProlongedBrownianSetup.ItoIntegralProcess",
+      "section": 4,
+      "file": "SignatureVolatility/ProlongedBrownianSetup/ItoIntegralProcess.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
       "id": "ProlongedBrownianSetup.ItoWordIntegral",
       "label": "ProlongedBrownianSetup.ItoWordIntegral",
       "section": 4,
       "file": "SignatureVolatility/ProlongedBrownianSetup/ItoWordIntegral.lean",
-      "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup.ItoWordIntegralConsLong",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -782,10 +793,10 @@
       "label": "ProlongedBrownianSetup.ItoWordIntegralConsLong",
       "section": 4,
       "file": "SignatureVolatility/ProlongedBrownianSetup/ItoWordIntegralConsLong.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
-      "hasSorry": true,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -826,8 +837,8 @@
       "label": "ProlongedBrownianSetup.Sig2Strat",
       "section": 4,
       "file": "SignatureVolatility/ProlongedBrownianSetup/Sig2Strat.lean",
-      "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup.StratonovichItoConversion",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
       "hasSorry": true,
       "paperKitGoal": false
@@ -881,10 +892,10 @@
       "label": "ProlongedBrownianSetup.StratonovichItoConversion",
       "section": 4,
       "file": "SignatureVolatility/ProlongedBrownianSetup/StratonovichItoConversion.lean",
-      "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup.ItoWordIntegral",
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
-      "hasSorry": true,
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -1927,6 +1938,11 @@
       "kind": "hard"
     },
     {
+      "from": "ProlongedBrownianSetup.ItoIntegralAgainstBM",
+      "to": "ProlongedBrownianSetup.ItoIntegralProcess",
+      "kind": "hard"
+    },
+    {
       "from": "ProlongedBrownianSetup.ItoWordIntegralConsLong",
       "to": "ProlongedBrownianSetup.ItoWordIntegral",
       "kind": "hard"
@@ -1937,7 +1953,7 @@
       "kind": "hard"
     },
     {
-      "from": "ProlongedBrownianSetup.ItoIntegralAgainstBM",
+      "from": "ProlongedBrownianSetup.ItoIntegralProcess",
       "to": "ProlongedBrownianSetup.ItoWordIntegralConsLong",
       "kind": "hard"
     },
@@ -2043,6 +2059,11 @@
     },
     {
       "from": "ProlongedBrownianSetup.ItoWordIntegral",
+      "to": "ProlongedBrownianSetup.StratonovichItoConversion",
+      "kind": "hard"
+    },
+    {
+      "from": "WordsOfLength",
       "to": "ProlongedBrownianSetup.StratonovichItoConversion",
       "kind": "hard"
     },

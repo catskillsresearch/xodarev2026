@@ -18,23 +18,19 @@ namespace SignatureVolatility
 # Word-indexed Itô iterated integrals of the prolonged path `(t, W)`
 
 Local-hole-free packer: level ≤1 from `ItoWordIntegralLe1`, length-2 from `ItoWordIntegralLe2`,
-longer words from `ItoWordIntegralConsLong`.
+longer words from `ItoWordIntegralConsLong` with previous process `H u = itoWordIntegral … I`.
 -/
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}
-
-/-- Recursive Itô step: integrate previous word coordinate against letter `j` of `wAug`. -/
-def itoWordIntegral_cons (B : MultiBrownian Ω P d) (j : Fin (d + 1)) (I : Word (d + 1))
-    (s t : ℝ) (ω : Ω) : ℝ :=
-  if h : I.length = 1 then itoWordIntegral_le2 B j I h s t ω
-  else itoWordIntegral_cons_long B j I s t ω
 
 /-- Word-indexed Itô iterated integral of `wAug` over `[s,t]`. -/
 def itoWordIntegral (B : MultiBrownian Ω P d) (s t : ℝ) (ω : Ω) : Word (d + 1) → ℝ
   | [] => 1
   | j :: I =>
     if I = [] then itoWordIntegral_le1 B s t ω [j]
-    else itoWordIntegral_cons B j I s t ω
+    else if h : I.length = 1 then itoWordIntegral_le2 B j I h s t ω
+    else
+      itoWordIntegral_cons_long B j (fun u ω' => itoWordIntegral B s u ω' I) s t ω
 
 lemma itoWordIntegral_empty (B : MultiBrownian Ω P d) (s t : ℝ) (ω : Ω) :
     itoWordIntegral B s t ω [] = 1 := rfl
@@ -48,14 +44,6 @@ lemma itoWordIntegral_space (B : MultiBrownian Ω P d) (s t : ℝ) (ω : Ω) (i 
       MultiBrownian.W B t ω i - MultiBrownian.W B s ω i := by
   simp [itoWordIntegral, itoWordIntegral_le1_space]
 
-lemma measurable_itoWordIntegral_cons (B : MultiBrownian Ω P d) (j : Fin (d + 1))
-    (I : Word (d + 1)) (s t : ℝ) :
-    Measurable (fun ω => itoWordIntegral_cons B j I s t ω) := by
-  classical
-  by_cases h : I.length = 1
-  · simpa [itoWordIntegral_cons, h] using measurable_itoWordIntegral_le2 B j I h s t
-  · simpa [itoWordIntegral_cons, h] using measurable_itoWordIntegral_cons_long B j I s t
-
 lemma measurable_itoWordIntegral (B : MultiBrownian Ω P d) (s t : ℝ) (I : Word (d + 1)) :
     Measurable (fun ω => itoWordIntegral B s t ω I) := by
   match I with
@@ -64,8 +52,13 @@ lemma measurable_itoWordIntegral (B : MultiBrownian Ω P d) (s t : ℝ) (I : Wor
     by_cases hI : I' = []
     · subst hI
       simpa [itoWordIntegral] using measurable_itoWordIntegral_le1 B s t [j]
-    · simp only [itoWordIntegral, hI, ↓reduceIte]
-      exact measurable_itoWordIntegral_cons B j I' s t
+    · by_cases hlen : I'.length = 1
+      · simp only [itoWordIntegral, hI, ↓reduceIte, hlen, ↓reduceDIte]
+        exact measurable_itoWordIntegral_le2 B j I' hlen s t
+      · simp only [itoWordIntegral, hI, ↓reduceIte, hlen, ↓reduceDIte]
+        exact measurable_itoWordIntegral_cons_long B j
+          (fun u ω' => itoWordIntegral B s u ω' I')
+          (fun u => measurable_itoWordIntegral B s u I') s t
 
 /-- Package Itô word coordinates as an element of the extended tensor algebra. -/
 def itoSig2 (B : MultiBrownian Ω P d) (s t : ℝ) (ω : Ω) : ExtTensorAlgebra (d + 1) :=

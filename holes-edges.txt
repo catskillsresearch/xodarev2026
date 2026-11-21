@@ -273,8 +273,9 @@ ProlongedBrownianSetup -hard-> SignatureVolatilityModel.Sigma
 ProlongedBrownianSetup -hard-> TheoremAOfBrownianSetupItoKit
 ProlongedBrownianSetup -hard-> TheoremBOfSetupItoRiccatiKit
 ProlongedBrownianSetup.BrownianFiltration -hard-> SignatureFiltrationEqBrownianFiltration
-ProlongedBrownianSetup.ItoIntegralAgainstBM -hard-> ProlongedBrownianSetup.ItoWordIntegralConsLong
+ProlongedBrownianSetup.ItoIntegralAgainstBM -hard-> ProlongedBrownianSetup.ItoIntegralProcess
 ProlongedBrownianSetup.ItoIntegralAgainstBM -hard-> ProlongedBrownianSetup.ItoWordIntegralLe2
+ProlongedBrownianSetup.ItoIntegralProcess -hard-> ProlongedBrownianSetup.ItoWordIntegralConsLong
 ProlongedBrownianSetup.ItoWordIntegral -hard-> ProlongedBrownianSetup.StratonovichItoConversion
 ProlongedBrownianSetup.ItoWordIntegralConsLong -hard-> ProlongedBrownianSetup.ItoWordIntegral
 ProlongedBrownianSetup.ItoWordIntegralLe1 -hard-> ProlongedBrownianSetup.ItoWordIntegral
@@ -392,7 +393,6 @@ Word -hard-> ExtTensorAlgebra.ShuffleWords
 Word -hard-> PriceFiltrationSignatureSpace
 Word -hard-> PriceFiltrationSignatureSpace.VSubspace
 Word -hard-> ProlongedBrownianSetup.ItoWordIntegralLe1
-Word -hard-> ProlongedBrownianSetup.StratonovichItoConversion
 Word -hard-> PureBrownianWord
 Word -hard-> QuinticOUSignatureModel
 Word -hard-> Section71BlackScholesCompleteness
@@ -407,6 +407,7 @@ WordsOfLength -hard-> ExtTensorAlgebra.LevelNorm
 WordsOfLength -hard-> ExtTensorAlgebra.LevelNormSq
 WordsOfLength -hard-> PriceFiltrationSignatureSpace.VSubspace
 WordsOfLength -hard-> ProjGt
+WordsOfLength -hard-> ProlongedBrownianSetup.StratonovichItoConversion
 WordsOfLength -hard-> Remark219BlackScholesRiccati
 WordsOfLength -hard-> ShuffleFinite
 WordsOfLength -hard-> SuperfactorialFunctional

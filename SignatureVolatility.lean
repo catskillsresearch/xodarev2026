@@ -58,6 +58,7 @@ public import SignatureVolatility.ProjGt
 public import SignatureVolatility.ProjLe
 public import SignatureVolatility.ProlongedBrownianSetup.BrownianFiltration
 public import SignatureVolatility.ProlongedBrownianSetup.ItoIntegralAgainstBM
+public import SignatureVolatility.ProlongedBrownianSetup.ItoIntegralProcess
 public import SignatureVolatility.ProlongedBrownianSetup.ItoWordIntegral
 public import SignatureVolatility.ProlongedBrownianSetup.ItoWordIntegralConsLong
 public import SignatureVolatility.ProlongedBrownianSetup.ItoWordIntegralLe1
