@@ -1,0 +1,1 @@
+**Definition** (`W_aug`). W aug is defined by `Fin.cases t (fun i => setup.W t ω i)`.

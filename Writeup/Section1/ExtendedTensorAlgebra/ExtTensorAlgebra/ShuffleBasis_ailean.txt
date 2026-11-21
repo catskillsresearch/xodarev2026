@@ -1,0 +1,1 @@
+**Definition** (`shuffleBasis`). shuffle Basis is defined by `⟨fun K => ((shuffleWords I J).map fun L => if K = L then (1 : ℝ) else 0).sum⟩`.

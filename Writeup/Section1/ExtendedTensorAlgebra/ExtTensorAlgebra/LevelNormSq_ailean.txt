@@ -1,0 +1,6 @@
+**Definition** (`ExtTensorAlgebra.levelNormSq`). For $a$ in `ExtTensorAlgebra d` and $n \in \mathbb{N}$, the squared degree-$n$ norm `levelNormSq a n` is defined as the finite sum of squared coefficients over words of length $n$:
+$$\mathrm{levelNormSq}(a, n) = \sum_{I \in \mathrm{wordsOfLength}(d, n)} (a.\mathrm{coeff}\, I)^2.$$
+
+**Lemma** (`ExtTensorAlgebra.levelNormSq.nonneg`). For any $a$ in `ExtTensorAlgebra d` and $n \in \mathbb{N}$, $0 \le \mathrm{levelNormSq}(a, n)$ (`0 ≤ levelNormSq a n`).
+
+Proof. This is a direct application of `Finset.sum_nonneg`, since each summand $(a.\mathrm{coeff}\, I)^2$ is nonnegative by `sq_nonneg`.

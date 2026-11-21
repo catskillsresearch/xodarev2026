@@ -1,0 +1,1 @@
+**Definition** (`geometric`). geometric is defined by `r ^ n`.

@@ -1,0 +1,1 @@
+**Definition** (`projLe`). proj Le is defined by `⟨fun I => if I.length ≤ N then a.coeff I else 0⟩`.

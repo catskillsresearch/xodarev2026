@@ -1,0 +1,33 @@
+**Definition** (`ExtTensorAlgebra.levelNorm`). For $a$ in `ExtTensorAlgebra d` and $n \in \mathbb{N}$, the degree-$n$ Euclidean norm `levelNorm a n` is defined as $\sqrt{\mathrm{levelNormSq}(a, n)}$ (`Real.sqrt (levelNormSq a n)`).
+
+**Lemma** (`ExtTensorAlgebra.levelNorm.nonneg`). For any $a$ in `ExtTensorAlgebra d` and $n \in \mathbb{N}$, $0 \le \mathrm{levelNorm}(a, n)$ (`0 ≤ levelNorm a n`).
+
+Proof. This follows immediately from nonnegativity of the real square root (`Real.sqrt_nonneg`).
+
+**Lemma** (`ExtTensorAlgebra.levelNorm.sq`). For any $a$ in `ExtTensorAlgebra d` and $n \in \mathbb{N}$, $\mathrm{levelNorm}(a, n)^2 = \mathrm{levelNormSq}(a, n)$ (`(levelNorm a n) ^ 2 = levelNormSq a n`).
+
+Proof. This follows directly from `Real.sq_sqrt` applied to `ExtTensorAlgebra.levelNormSq.nonneg a n`.
+
+**Lemma** (`ExtTensorAlgebra.levelNorm.add_le`). For any $a, b$ in `ExtTensorAlgebra d` and $n \in \mathbb{N}$,
+$$\mathrm{levelNorm}(a + b, n) \le \mathrm{levelNorm}(a, n) + \mathrm{levelNorm}(b, n).$$
+
+Proof. This is a direct application of `sqrt_sum_add_sq_le` on the finite set `wordsOfLength d n` to the coefficient functions `a.coeff` and `b.coeff`.
+
+**Lemma** (`ExtTensorAlgebra.levelNorm.sub_eq_neg`). For any $a, b$ in `ExtTensorAlgebra d` and $n \in \mathbb{N}$,
+$$\mathrm{levelNorm}(a - b, n) = \mathrm{levelNorm}(b - a, n).$$
+
+Proof. Unfolding `levelNorm` and `levelNormSq`, it suffices by congruence under `Real.sqrt` and `Finset.sum_congr` to check equality term by term over $I \in \mathrm{wordsOfLength}(d, n)$, where `(a.coeff I - b.coeff I) ^ 2 = (b.coeff I - a.coeff I) ^ 2` holds as a polynomial identity (`ring`).
+
+**Lemma** (`ExtTensorAlgebra.levelNorm.smul`). For any $c \in \mathbb{R}$, $a$ in `ExtTensorAlgebra d`, and $n \in \mathbb{N}$,
+$$\mathrm{levelNorm}(c \cdot a, n) = |c|\, \mathrm{levelNorm}(a, n).$$
+
+Proof. Unfolding `levelNorm` and `levelNormSq`, factoring $c^2$ out of the sum via `Finset.mul_sum` and `Finset.sum_congr` (using $(c \cdot a.\mathrm{coeff}(I))^2 = c^2 a.\mathrm{coeff}(I)^2$ by `ring`) gives $\sum_{I \in \mathrm{wordsOfLength}(d, n)} (c \cdot a.\mathrm{coeff}(I))^2 = c^2 \sum_{I \in \mathrm{wordsOfLength}(d, n)} a.\mathrm{coeff}(I)^2$. Taking square roots, splitting the product via `Real.sqrt_mul` (using `sq_nonneg c`), and rewriting $\sqrt{c^2} = |c|$ via `Real.sqrt_sq_eq_abs` yields the identity.
+
+**Lemma** (`ExtTensorAlgebra.levelNorm.concat_le`). For any $a, b$ in `ExtTensorAlgebra d` and $n \in \mathbb{N}$,
+$$\mathrm{levelNorm}(a \otimes b, n) \le \sum_{k \in \mathrm{range}(n + 1)} \mathrm{levelNorm}(a, k)\, \mathrm{levelNorm}(b, n - k).$$
+
+Proof. Unfolding `levelNormSq` and `concat`, every $I \in \mathrm{wordsOfLength}(d, n)$ has `I.length = n` by `wordsOfLength.mem`, so `Finset.sum_congr` rewrites `levelNormSq (a ⊗ₜ b) n` as
+$$\sum_{I \in \mathrm{wordsOfLength}(d, n)} \left(\sum_{k \in \mathrm{range}(n + 1)} a.\mathrm{coeff}(I.\mathrm{take}\, k)\, b.\mathrm{coeff}(I.\mathrm{drop}\, k)\right)^2.$$
+Unfolding `levelNorm` and applying the finite-sum Minkowski inequality `sqrt_sum_finset_sum_sq_le` over `wordsOfLength d n` and `Finset.range (n + 1)` bounds `levelNorm (a ⊗ₜ b) n` by
+$$\sum_{k \in \mathrm{range}(n + 1)} \sqrt{\sum_{I \in \mathrm{wordsOfLength}(d, n)} \bigl(a.\mathrm{coeff}(I.\mathrm{take}\, k)\, b.\mathrm{coeff}(I.\mathrm{drop}\, k)\bigr)^2}.$$
+For each $k \in \mathrm{range}(n + 1)$, we have $k \le n$ (`Nat.lt_succ_iff` and `Finset.mem_range`), so `wordsOfLength.take_drop_sq` factors the sum over $I$ into $(\sum_{J \in \mathrm{wordsOfLength}(d, k)} a.\mathrm{coeff}(J)^2)(\sum_{K \in \mathrm{wordsOfLength}(d, n - k)} b.\mathrm{coeff}(K)^2)$, and `Real.sqrt_mul` (using nonnegativity of the sum of squares via `Finset.sum_nonneg` and `sq_nonneg`) splits the square root of that product into `levelNorm a k * levelNorm b (n - k)`.

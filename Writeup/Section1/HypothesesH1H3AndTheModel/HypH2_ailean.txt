@@ -1,0 +1,13 @@
+**Structure** (`HypH2`). An *admissible weight* under *Hypothesis H2* is a weight $w$ together with a real constant $C_w$ that has these properties:
+
+- The quasi-submultiplicativity constant satisfies $1 \le C_w$.
+- Across all tensor degrees $m, n \in \mathbb{N}$, the weight obeys the quasi-submultiplicative bound $w(m + n) \le C_w\, w(m)\, w(n)$.
+- For every radius $R > 0$, the weighted exponential series $\sum_{n=0}^{\infty} w(n)\, \frac{R^n}{n!}$ is summable, expressing subfactorial growth of $w(n)$.
+
+**Lemma** (`subfactorial_nonneg`). If `hw : HypH2 w` holds and `R : ℝ` satisfies `0 ≤ R`, then `n ↦ w n * (R ^ n / (n.factorial : ℝ))` is summable.
+
+Proof. Split `0 ≤ R` into `R = 0` or `0 < R`. When `0 < R`, apply `hw.subfactorial R` directly. When `R = 0`, every term `w n * (0 ^ n / (n.factorial : ℝ))` is nonnegative and bounded above by `w n * (1 ^ n / (n.factorial : ℝ))` because `0 ^ n ≤ 1 ^ n`, `w n > 0`, and `(n.factorial : ℝ) ≥ 0`; summability follows by comparison (`Summable.of_nonneg_of_le`) against `hw.subfactorial 1 zero_lt_one`.
+
+**Definition** (`geometric_admissible`). For $r \ge 1$, we define the *admissibility witness for the geometric weight* $w(n) = r^n$ (`geometric_admissible`) as the *Hypothesis H2* instance with constant $C_w = 1$, using the power law $r^{m+n} = r^m r^n$ for submultiplicativity and the summability of $\sum_{n=0}^{\infty} (rR)^n / n!$ for every $R > 0$.
+
+**Definition** (`constOne_admissible`). We define the *admissibility witness for the unit weight* $w(n) = 1$ (`constOne_admissible`) as the *Hypothesis H2* instance with constant $C_w = 1$, for which submultiplicativity holds trivially and subfactorial summability reduces directly to the convergence of $\sum_{n=0}^{\infty} R^n / n!$ for every $R > 0$.

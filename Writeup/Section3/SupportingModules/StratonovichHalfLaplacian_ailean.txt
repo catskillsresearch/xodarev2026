@@ -1,0 +1,5 @@
+**Definition** (`stratonovichHalfLaplacian`). We define the *Stratonovich half-Laplacian* $\Delta^{\mathrm{St}} u$ of a formal series $u$ to be the series whose coefficient on a word $I$ is
+$$
+\tfrac{1}{2} \sum_{i=1}^{d} u\bigl(I{+}{+}[i,i]\bigr),
+$$
+that is, half the sum of the coefficients of $u$ on the words obtained by appending the letter $i$ twice to $I$ (Lean: `(1/2) * ∑ i, u.coeff (I ++ [i.succ, i.succ])`).

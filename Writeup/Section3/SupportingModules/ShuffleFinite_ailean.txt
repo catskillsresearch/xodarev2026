@@ -1,0 +1,5 @@
+**Definition** (`shuffleFinite`). For formal series $a$, $b$ and a degree bound $N$, we define the *finite shuffle product* $\mathrm{shuffleFinite}(a,b,N)$ to be the series whose coefficient on a word $K$ is
+$$
+\sum_{m\le N}\sum_{n\le N}\sum_{|I|=m}\sum_{|J|=n} a_I\, b_J\, \langle e_K,\, e_I \mathbin{\texttt{⬝}} e_J\rangle,
+$$
+using the shuffle-basis expansion of the shuffle product in the extended tensor algebra (Lean: nested sums over `wordsOfLength` of the product of coefficients against `(shuffleBasis I J).coeff K`).

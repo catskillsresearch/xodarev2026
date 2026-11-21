@@ -1,0 +1,1 @@
+**Definition** (`W_hat`). W hat is defined by `setup.sig2 0 t ω`.

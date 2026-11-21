@@ -1,0 +1,15 @@
+# Extended tensor algebra
+
+- [Extended tensor algebra `ExtTensorAlgebra`](ExtendedTensorAlgebra/ExtTensorAlgebra/ExtTensorAlgebra.md)
+- [Coordinate / level projections](ExtendedTensorAlgebra/ExtTensorAlgebra/Coord.md)
+- [Concatenation product](ExtendedTensorAlgebra/ExtTensorAlgebra/Concat.md)
+- [Finite support / free tensor algebra](ExtendedTensorAlgebra/ExtTensorAlgebra/IsFinitelySupported.md)
+- [Free tensor algebra abbrev](ExtendedTensorAlgebra/ExtTensorAlgebra/FreeTensorAlgebra.md)
+- [Basis words `e_I`](ExtendedTensorAlgebra/ExtTensorAlgebra/BasisWord.md)
+- [Level norms and squares](ExtendedTensorAlgebra/ExtTensorAlgebra/LevelNorm.md)
+- [LevelNormSq](ExtendedTensorAlgebra/ExtTensorAlgebra/LevelNormSq.md)
+- [LevelInner](ExtendedTensorAlgebra/ExtTensorAlgebra/LevelInner.md)
+- [Shuffle words / shuffle basis / eval](ExtendedTensorAlgebra/ExtTensorAlgebra/ShuffleWords.md)
+- [ShuffleBasis](ExtendedTensorAlgebra/ExtTensorAlgebra/ShuffleBasis.md)
+- [EvalShuffleBasis](ExtendedTensorAlgebra/ExtTensorAlgebra/EvalShuffleBasis.md)
+- [Antipode](ExtendedTensorAlgebra/ExtTensorAlgebra/Antipode.md)

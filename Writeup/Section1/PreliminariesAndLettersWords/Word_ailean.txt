@@ -1,0 +1,1 @@
+**Abbreviation** (`Word`). A word on alphabet size `d` is a list of letters `List (Letter d)`.

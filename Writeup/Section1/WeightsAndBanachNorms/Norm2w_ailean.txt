@@ -1,0 +1,6 @@
+**Definition** (`norm2w`). Given a weight $w$ (`w : Weight`) and $\ell$ in `ExtTensorAlgebra d`, the weighted $\ell^2$ norm `norm2w w ℓ` is defined by
+$$\mathrm{norm2w}(w, \ell) = \sqrt{\sum'_{n : \mathbb{N}} \frac{\mathrm{levelNormSq}(\ell, n)}{w(n)^2}}.$$
+
+**Lemma** (`norm2w.nonneg`). For any weight $w$ (`w : Weight`) and $\ell$ in `ExtTensorAlgebra d`, $0 \le \mathrm{norm2w}(w, \ell)$ (`0 ≤ norm2w w ℓ`).
+
+Proof. This follows immediately from nonnegativity of the real square root (`Real.sqrt_nonneg`).

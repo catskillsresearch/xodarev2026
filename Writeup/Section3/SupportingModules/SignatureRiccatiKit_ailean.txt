@@ -1,0 +1,7 @@
+**Structure** (`SignatureRiccatiKit`). A *signature Riccati kit* for a `SignatureVolatilityModel` on a prolonged Brownian setup has these properties:
+
+- Every finite signature coordinate $t \mapsto \langle e_I, \widehat W_t\rangle$ is a special semimartingale on $[0,T]$ (for each word $I$).
+- There is a global Riccati vector field $R_{\mathrm{op}}$ on $T_w$ extending the bounded finite-dimensional operator from $\mathcal D_{\mathrm{fin}}$.
+- *Affine–Riccati duality* (Theorem 4.2(4)): for $u_0 \in \mathcal D_{\mathrm{fin}}$, classical solvability of the Riccati ODE with data $u_0$ is equivalent to the exponential-affine conditional representation
+  $\mathbb E\big[\exp\langle u_0, \widehat W_T\rangle \mid \mathcal F^{\widehat W}_t\big] = \exp\langle \psi(T-t), \widehat W_t\rangle$
+  with integrability of $\exp\langle u_0, \widehat W_T\rangle$ at each $t \in [0,T]$.

@@ -1,0 +1,12 @@
+**Definition** (`replicableStarProjection`). Given a real inner-product space $H_S$, a submodule $K \subseteq H_S$ endowed with an orthogonal projection, and $X \in H_S$, we define the orthogonal projection of $X$ onto $K$ to be $K.\mathrm{starProjection}\,X$.
+
+**Lemma** (`replicable_hasOrthProj_of_closed`). In a complete inner-product space, every closed submodule admits an orthogonal projection.
+
+Proof. The coe submodule `↥K` is complete because `K` is closed, so `CompleteSpace ↥K` holds. Orthogonal projection data for `K` is then obtained by typeclass inference.
+
+**Structure** (`GKWDecompositionSetup`). Fix a complete Hilbert space $H_S \simeq L^2(\mathcal F^S_T,\mathbb Q)$, signature depth $d$, weight $w$, and a price-filtration signature space $PFS$. A *GKW decomposition setup* has these properties:
+
+- There is a closed subspace $\mathcal H_0 \subseteq H_S$ of dynamically replicable payoffs—formally the span of the constant $1$ and of dynamic self-financing gains $\{\int_0^T H_s\,dS_s\}$—assumed closed via the Itô / martingale isometry into $L^2(S)$.
+- $\mathcal H_0$ carries an orthogonal projection, and every $X \in H_S$ splits under that projection as a constant expectation part plus a dynamic stochastic-integral part, with the two summands given by bounded linear maps $H_S \to H_S$ whose values lie in the replicable subspace.
+- There is a linear map from formal signature series $b \in T((\mathbb R^{d+1}))$ to payoffs in $H_S$, additive on series, such that each depth-$N$ truncation $\mathrm{proj}^{\le N}(b)$ evaluates to an element of the depth-$N$ signature subspace $\mathcal V^{(N)}_S$ of $PFS$.
+- That evaluation map is controlled in $L^2$: for some $C_{\mathrm{sig}} \ge 0$ and every $b$ in the inverse-weighted square-summable class, $\|\mathrm{eval}(b)\|_{H_S} \le C_{\mathrm{sig}}\,\|b\|_{2,w^{-1}}$.

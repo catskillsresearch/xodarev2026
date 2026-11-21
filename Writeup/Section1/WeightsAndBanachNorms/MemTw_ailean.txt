@@ -1,0 +1,1 @@
+**Definition** (`MemTw`). An extended tensor `a : ExtTensorAlgebra d` lies in the weighted space `MemTw w` when the series `∑ n, w n * a.levelNorm n` is summable.

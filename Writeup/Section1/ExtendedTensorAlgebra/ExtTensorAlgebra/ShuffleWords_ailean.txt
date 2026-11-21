@@ -1,0 +1,1 @@
+**Definition** (`shuffleWords`). shuffle Words (`def shuffleWords {d : ℕ} : Word d → Word d → List (Word d) | [], J => [J] | i :: I, [] => [i :: I] | i :: I, j :: J => (shuffleWords I (j :: J)).map (i :: ·) ++ (shuffleWords (i :: I) J).map (j :: ·) `).

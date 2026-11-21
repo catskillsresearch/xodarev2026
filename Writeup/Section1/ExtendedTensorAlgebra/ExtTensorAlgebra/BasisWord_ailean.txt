@@ -1,0 +1,5 @@
+**Definition** (`ExtTensorAlgebra.basisWord`). For a word $I$ in `Word d`, the canonical word basis element `basisWord I` in `ExtTensorAlgebra d` has coefficient $1$ at $J = I$ and $0$ at all $J \ne I$ (`fun J => if J = I then 1 else 0`).
+
+**Lemma** (`ExtTensorAlgebra.basisWord.isFinitelySupported`). For every word $I$ in `Word d`, `basisWord I` is finitely supported (`IsFinitelySupported (basisWord I)`).
+
+Proof. Take $N = I.\mathrm{length}$ as the degree bound in `IsFinitelySupported`: for any word $J$ with $I.\mathrm{length} < J.\mathrm{length}$, equality $J = I$ is impossible by irreflexivity of $<$ (`lt_irrefl`), so $J \ne I$ and unfolding `basisWord` gives `(basisWord I).coeff J = 0`.

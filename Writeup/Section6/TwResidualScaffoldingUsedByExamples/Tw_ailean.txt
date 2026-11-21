@@ -1,0 +1,1 @@
+**Abbreviation** (`Tw`). We write $T_w(d)$ (or $T_w$ when $d$ and $w$ are fixed) for the subtype of formal series $a$ in the extended tensor algebra at depth $d$ that belong to the weighted Banach space $\mathrm{MemTw}\,w$.

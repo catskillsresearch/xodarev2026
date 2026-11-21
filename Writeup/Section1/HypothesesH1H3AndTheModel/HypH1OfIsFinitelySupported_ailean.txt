@@ -1,0 +1,3 @@
+**Lemma** (`hypH1_of_isFinitelySupported`). For any weight `w : Weight` and any finitely supported linear functional `ℓ : ExtTensorAlgebra (d + 1)` (`ExtTensorAlgebra.IsFinitelySupported ℓ`), hypothesis H1 holds (`HypH1 w ℓ`).
+
+Proof. Extract a cutoff degree `N : ℕ` from `hfin` such that `ℓ.coeff I = 0` whenever `N < I.length`. To establish `HypH1 w ℓ` (summability of `n ↦ ℓ.levelNormSq n / (w n)^2`), apply `summable_of_ne_finset_zero` relative to `Finset.range (N + 1)`. For any `n ∉ Finset.range (N + 1)`, we have `N < n`; every word `I ∈ wordsOfLength (d + 1) n` has `I.length = n > N` by `wordsOfLength.mem`, so `ℓ.coeff I = 0`, making `ℓ.levelNormSq n = 0` (`Finset.sum_eq_zero`) and hence `ℓ.levelNormSq n / (w n)^2 = 0`.

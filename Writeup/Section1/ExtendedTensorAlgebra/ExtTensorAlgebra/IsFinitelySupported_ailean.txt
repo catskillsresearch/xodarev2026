@@ -1,0 +1,1 @@
+**Definition** (`IsFinitelySupported`). Is Finitely Supported is defined by `∃ N : ℕ, ∀ I : Word d, N < I.length → a.coeff I = 0`.

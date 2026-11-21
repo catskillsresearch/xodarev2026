@@ -1,0 +1,1 @@
+**Definition** (`rightShift`). Given a letter $k$ and a formal series $u$, we define the *right shift* $\mathrm{rightShift}(k,u)$ to be the series whose coefficient on word $I$ is the coefficient of the extended word $I \mathbin{\texttt{++}} [k]$ in $u$.

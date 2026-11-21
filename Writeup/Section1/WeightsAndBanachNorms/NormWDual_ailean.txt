@@ -1,0 +1,11 @@
+**Definition** (`normWDual`). Given a weight $w$ (`w : Weight`) and $\ell$ in `ExtTensorAlgebra d`, the dual $w$-weighted supremum norm `normWDual w ℓ` is defined as the conditional supremum over $n \in \mathbb{N}$:
+$$\mathrm{normWDual}(w, \ell) = \sup_{n : \mathbb{N}} \frac{\mathrm{levelNorm}(\ell, n)}{w(n)}.$$
+
+**Lemma** (`normWDual.levelNorm_div_le`). If `hℓ : MemTwDual w ℓ` holds, then for every $n \in \mathbb{N}$,
+$$\frac{\mathrm{levelNorm}(\ell, n)}{w(n)} \le \mathrm{normWDual}(w, \ell).$$
+
+Proof. This is a direct application of `le_ciSup` using the boundedness-above hypothesis `hℓ` (`MemTwDual w ℓ`) at index $n$.
+
+**Lemma** (`normWDual.nonneg`). If `hℓ : MemTwDual w ℓ` holds, then $0 \le \mathrm{normWDual}(w, \ell)$ (`0 ≤ normWDual w ℓ`).
+
+Proof. By transitivity (`le_trans`), `div_nonneg` applied to `ExtTensorAlgebra.levelNorm.nonneg ℓ 0` and `(w.pos 0).le` gives $0 \le \mathrm{levelNorm}(\ell, 0) / w(0)$, which is bounded above by `normWDual w ℓ` via `normWDual.levelNorm_div_le w hℓ 0`.

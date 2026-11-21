@@ -18,3 +18,13 @@ sources/pages/
 sources/ocr_*.log
 .venv-ocr
 .cache
+
+# Writeup PDF pipeline intermediates (keep SignatureVolatility.pdf)
+arxiv.md
+arxiv.tex
+arxiv.pdf
+arxiv_with_code.md
+arxiv.*
+lean-listings/
+view.pdf
+figures/

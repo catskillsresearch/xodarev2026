@@ -1,0 +1,13 @@
+**Definition** (`V_subspace`). For a `PriceFiltrationSignatureSpace` $PFS$ and depth $N \in \mathbb N$, we define the *depth-$N$ signature subspace* $\mathcal V^{(N)}_S$ to be the linear span of projected coordinates $Y_I$ for all words $I$ with $|I| \le N$.
+
+**Lemma** (`mono`). If $M \le N$, then $\mathcal V^{(M)}_S \subseteq \mathcal V^{(N)}_S$.
+
+Proof. Use `Submodule.span_mono` on the generating sets. Any element of the smaller span arises as `PFS.Y I` with `I.length ≤ M`; lengthening the bound to `N` via `hI.trans hMN` shows the same generator lies in the larger spanning set.
+
+**Lemma** (`finiteDimensional`). For every `N`, `PFS.V_subspace N` is finite-dimensional over `ℝ`.
+
+Proof. Work classically. Let `S_words` be the finite set obtained by bunioning, over `k ∈ range (N + 1)`, the finset `wordsOfLength (d + 1) k`. Prove equality of the abstract generating set with `(S_words.image PFS.Y : Set H_S)` by extensionality: membership on the left means some word of length at most `N`; embed its length into `range (N + 1)` and use `wordsOfLength.mem` for the forward direction, and reverse by extracting length from a range witness and `Nat.le_of_lt_succ`. Rewrite `V_subspace` using this equality and apply `FiniteDimensional.span_of_finite` to the finset’s finite carrier.
+
+**Lemma** (`topologicalClosure_eq`). The topological closure of `PFS.V_subspace N` equals `PFS.V_subspace N`.
+
+Proof. Obtain `hfin := finiteDimensional PFS N`, promote it to an instance, and invoke `Submodule.topologicalClosure_eq_self` for finite-dimensional submodules: a finite-dimensional subspace is already closed.

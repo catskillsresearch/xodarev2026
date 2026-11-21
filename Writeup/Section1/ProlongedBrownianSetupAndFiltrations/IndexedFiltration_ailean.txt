@@ -1,0 +1,5 @@
+**Structure** (`IndexedFiltration`). An *indexed filtration* $(\mathcal F_t)_{t \in \mathbb{R}}$ on a measurable space $(\Omega, \mathcal F)$ has these properties:
+
+- It assigns to each time $t \in \mathbb{R}$ a $\sigma$-algebra $\mathcal F_t$ on $\Omega$.
+- It is nondecreasing in time: whenever $s \le t$ in $\mathbb{R}$, $\mathcal F_s \le \mathcal F_t$.
+- Every $\mathcal F_t$ is a sub-$\sigma$-algebra of the ambient measurable structure $\mathcal F$, so $\mathcal F_t \le \mathcal F$ for all $t \in \mathbb{R}$.

@@ -1,0 +1,8 @@
+**Theorem** (`lemma_6_1_gram_pos_def`). Let `H` be a real inner product space, `m : ℕ`, vectors `v : Fin m → H` linearly independent over `ℝ`, and coefficients `c : Fin m → ℝ` with `c ≠ 0`. Then the Gram quadratic form is strictly positive:
+$$
+0 < \sum_{i,j} c_i\, c_j\, \langle v_i, v_j\rangle.
+$$
+
+Proof. The double sum equals `‖∑_i c_i • v_i‖²` by expanding the real inner product of that sum with itself: `real_inner_self_eq_norm_sq` and bilinearity of `inner` under `sum_inner`, inner-linearity in each index (`inner_sum`, `real_inner_smul_left`, `real_inner_smul_right`), and a ring calculation identifying each summand.
+
+With this identification, strict positivity follows from strict positivity of a nonzero norm squared. If `∑_i c_i • v_i = 0`, then linear independence of the `v_i` forces `c = 0` via `Fintype.linearIndependent_iff`, contradicting `hc`. Hence the sum of scaled vectors is nonzero, its norm is positive, and its square is positive.

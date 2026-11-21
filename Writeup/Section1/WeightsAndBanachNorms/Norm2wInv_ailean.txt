@@ -1,0 +1,6 @@
+**Definition** (`norm2wInv`). Given a weight $w$ (`w : Weight`) and $a$ in `ExtTensorAlgebra d`, the inverse-weighted $\ell^2$ norm `norm2wInv w a` is defined by
+$$\mathrm{norm2wInv}(w, a) = \sqrt{\sum'_{n : \mathbb{N}} w(n)^2\, \mathrm{levelNormSq}(a, n)}.$$
+
+**Lemma** (`norm2wInv.nonneg`). For any weight $w$ (`w : Weight`) and $a$ in `ExtTensorAlgebra d`, $0 \le \mathrm{norm2wInv}(w, a)$ (`0 ≤ norm2wInv w a`).
+
+Proof. This follows immediately from nonnegativity of the real square root (`Real.sqrt_nonneg`).

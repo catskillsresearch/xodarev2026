@@ -1,0 +1,7 @@
+**Structure** (`PriceFiltrationSignatureSpace`). Fix a complete real Hilbert space $H_S$ interpreted as $L^2(\mathcal F^S_T,\mathbb Q)$ at signature depth $d$. A *price-filtration signature space* has these properties:
+
+- The constant payoff $1$ is represented by a distinguished vector in $H_S$.
+- Dynamic self-financing gains $\{\int_0^T H_s\,dS_s : H \text{ admissible}\}$ form a linear subspace of $H_S$.
+- For each word $I$, the projected signature coordinate $Y_I = \mathbb E_{\mathbb Q}[\langle e_I,\widehat W_T\rangle \mid \mathcal F^S_T]$ lies in $H_S$.
+- For each strike $K > 0$, the European call payoff $(S_T-K)^+$ is an element of $H_S$.
+- *Davis–Obłój bridge (Appendix C):* whenever strikes $\mathcal K \subset (0,\infty)$ are dense, the full signature span $\mathcal V^{(\infty)}_S = \overline{\mathrm{span}\{Y_I\}}$ already equals $H_S$ if and only if, for every finite depth $N$, augmented trading—dynamic gains plus calls at $K \in \mathcal K$ plus all $Y_I$ with $|I| \le N$—has dense span in $H_S$ precisely when the depth-$N$ signature subspace $\mathcal V^{(N)}_S$ already has the same topological closure as $\mathcal V^{(\infty)}_S$.

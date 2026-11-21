@@ -1,0 +1,46 @@
+**Lemma** (`finset_sum_mul_sq_le`). For any type $\alpha$, finite set $s$ (`s : Finset α`), and functions $f, g : \alpha \to \mathbb{R}$,
+$$\left(\sum_{i \in s} f(i) g(i)\right)^2 \le \left(\sum_{i \in s} f(i)^2\right)\left(\sum_{i \in s} g(i)^2\right).$$
+
+Proof. This is a direct application of `Finset.sum_mul_sq_le_sq_mul_sq` to `s`, `f`, and `g`.
+
+**Lemma** (`abs_finset_sum_mul_le_sqrt`). For any type $\alpha$, finite set $s$ (`s : Finset α`), and functions $f, g : \alpha \to \mathbb{R}$,
+$$\left|\sum_{i \in s} f(i) g(i)\right| \le \sqrt{\sum_{i \in s} f(i)^2}\,\sqrt{\sum_{i \in s} g(i)^2}.$$
+
+Proof. Since squares are nonnegative (`sq_nonneg`), `Finset.sum_nonneg` shows $\sum_{i \in s} f(i)^2 \ge 0$. Rewriting the right-hand product of square roots as a single square root via `Real.sqrt_mul` and rewriting the left-hand absolute value as the square root of its square via `Real.sqrt_sq_eq_abs`, the inequality follows from monotony of the square root (`Real.sqrt_le_sqrt`) applied to `finset_sum_mul_sq_le s f g`.
+
+**Lemma** (`sqrt_sum_add_sq_le`). For any type $\alpha$, finite set $s$ (`s : Finset α`), and functions $f, g : \alpha \to \mathbb{R}$,
+$$\sqrt{\sum_{i \in s} (f(i) + g(i))^2} \le \sqrt{\sum_{i \in s} f(i)^2} + \sqrt{\sum_{i \in s} g(i)^2}.$$
+
+Proof. Both square roots on the right-hand side are nonnegative (`Real.sqrt_nonneg`), and both sums of squares $\sum_{i \in s} f(i)^2$ and $\sum_{i \in s} g(i)^2$ are nonnegative (`Finset.sum_nonneg` with `sq_nonneg`). Combining $\sum_{i \in s} f(i) g(i) \le |\sum_{i \in s} f(i) g(i)|$ (`le_abs_self`) with `abs_finset_sum_mul_le_sqrt s f g` bounds the cross term by $\sqrt{\sum_{i \in s} f(i)^2}\,\sqrt{\sum_{i \in s} g(i)^2}$. Expanding $(f(i) + g(i))^2 = f(i)^2 + 2 f(i) g(i) + g(i)^2$ pointwise and distributing the finite sum (`Finset.sum_add_distrib`, `Finset.mul_sum`), then rewriting $\sum_{i \in s} f(i)^2$ and $\sum_{i \in s} g(i)^2$ as the squares of their square roots via `Real.sq_sqrt` and substituting the cross-term bound, yields
+$$\sum_{i \in s} (f(i) + g(i))^2 \le \left(\sqrt{\sum_{i \in s} f(i)^2} + \sqrt{\sum_{i \in s} g(i)^2}\right)^2$$
+after factoring the right-hand quadratic expression. Taking square roots on both sides with `Real.sqrt_le_sqrt` and simplifying the right-hand side via `Real.sqrt_sq` (using `add_nonneg` on the two nonnegative square roots) gives the desired inequality.
+
+**Lemma** (`sqrt_sum_finset_sum_sq_le`). For types $\alpha$ and $\beta$ with decidable equality on $\beta$, finite sets $s$ (`s : Finset α`) and $t$ (`t : Finset β`), and $F : \beta \to \alpha \to \mathbb{R}$,
+$$\sqrt{\sum_{i \in s} \left(\sum_{k \in t} F(k, i)\right)^2} \le \sum_{k \in t} \sqrt{\sum_{i \in s} F(k, i)^2}.$$
+
+Proof. Proceed by finite-set induction on $t$ (`Finset.induction_on`). For $t = \emptyset$, both sides simplify to $0$. For the insertion step `insert b t` with $b \notin t$, rewrite the inner sum at each $i \in s$ as $F(b, i) + \sum_{k \in t} F(k, i)$ using `Finset.sum_insert` and `Finset.sum_congr`, and likewise split the outer sum on the right-hand side with `Finset.sum_insert`. Applying the binary Minkowski inequality `sqrt_sum_add_sq_le` to $F(b, \cdot)$ and $i \mapsto \sum_{k \in t} F(k, i)$, and then bounding the second term via the induction hypothesis (`add_le_add_left`), yields the inequality for `insert b t`.
+
+**Lemma** (`sum_sq_le_sq_sum`). For a type $\alpha$ with decidable equality, a finite set $s$ (`s : Finset α`), and $f : \alpha \to \mathbb{R}$ satisfying $0 \le f(i)$ for all $i \in s$,
+$$\sum_{i \in s} f(i)^2 \le \left(\sum_{i \in s} f(i)\right)^2.$$
+
+Proof. Proceed by finite-set induction on $s$ (`Finset.induction_on`). The empty case holds by simplification. For `insert a s` with $a \notin s$, rewrite the sums on both sides via `Finset.sum_insert`. From the nonnegativity hypothesis on `insert a s`, one obtains $0 \le f(a)$ (`Finset.mem_insert_self`), $0 \le \sum_{i \in s} f(i)$ (`Finset.sum_nonneg` and `Finset.mem_insert_of_mem`), the induction hypothesis $\sum_{i \in s} f(i)^2 \le (\sum_{i \in s} f(i))^2$, and hence $0 \le 2 f(a) \sum_{i \in s} f(i)$. Combining these with nonlinear arithmetic (`nlinarith`) gives $f(a)^2 + \sum_{i \in s} f(i)^2 \le (f(a) + \sum_{i \in s} f(i))^2$.
+
+**Lemma** (`cauchy_range_sum_le`). For $N \in \mathbb{N}$ and sequences $u, v : \mathbb{N} \to \mathbb{R}$ satisfying $0 \le u(k)$ for all $k$ and $0 \le v(j)$ for all $j$,
+$$\sum_{n \in \mathrm{range}(N)} \sum_{k \in \mathrm{range}(n + 1)} u(k) v(n - k) \le \left(\sum_{k \in \mathrm{range}(N)} u(k)\right)\left(\sum_{j \in \mathrm{range}(N)} v(j)\right).$$
+
+Proof. Define $g(k, n) = u(k) v(n - k)$ if $k \le n$ and $0$ otherwise. For each $n < N$, we have $n + 1 \le N$, and since $g(k, n)$ vanishes when $\neg(k \le n)$, `Finset.sum_subset` (along `Finset.range_mono`) identifies $\sum_{k \in \mathrm{range}(n + 1)} u(k) v(n - k)$ with $\sum_{k \in \mathrm{range}(N)} g(k, n)$. Interchanging the two sums over `Finset.range N` via `Finset.sum_comm` and distributing the right-hand product over $k$ via `Finset.sum_mul`, it suffices by `Finset.sum_le_sum` to show $\sum_{n \in \mathrm{range}(N)} g(k, n) \le u(k) \sum_{j \in \mathrm{range}(N)} v(j)$ for each $k < N$. Writing $N = k + (N - k)$ (`Nat.add_sub_of_le`) and splitting the sum over $n$ via `Finset.sum_range_add`, the initial segment $\sum_{x \in \mathrm{range}(k)} g(k, x)$ vanishes by `Finset.sum_eq_zero` because $x < k$ implies $\neg(k \le x)$, while the shifted tail $\sum_{x \in \mathrm{range}(N - k)} g(k, k + x)$ equals $u(k) \sum_{x \in \mathrm{range}(N - k)} v(x)$ after factoring out $u(k)$ (`Finset.mul_sum`). Since $N - k \le N$ (`Nat.sub_le`) and $v$ is nonnegative, `Finset.sum_le_sum_of_subset_of_nonneg` bounds $\sum_{x \in \mathrm{range}(N - k)} v(x)$ by $\sum_{j \in \mathrm{range}(N)} v(j)$, and multiplying on the left by $u(k) \ge 0$ (`mul_le_mul_of_nonneg_left`) concludes the proof.
+
+**Lemma** (`abs_tsum_le_of_summable_abs`). For $f : \mathbb{N} \to \mathbb{R}$, if $n \mapsto |f(n)|$ is summable (`Summable (fun n => |f n|)`), then
+$$\left|\sum'_{n} f(n)\right| \le \sum'_{n} |f(n)|.$$
+
+Proof. Absolute summability implies summability of $f$ (`Summable.of_abs`). Consequently, the partial sums satisfy $|\sum_{n \in \mathrm{range}(N)} f(n)| \to |\sum'_n f(n)|$ as $N \to \infty$ (`HasSum.tendsto_sum_nat` composed with continuity of $|\cdot|$), while $\sum_{n \in \mathrm{range}(N)} |f(n)| \to \sum'_n |f(n)|$ (`HasSum.tendsto_sum_nat`). Since $|\sum_{n \in \mathrm{range}(N)} f(n)| \le \sum_{n \in \mathrm{range}(N)} |f(n)|$ holds for every $N$ by the finite triangle inequality `Finset.abs_sum_le_sum_abs`, passing to the limit via `le_of_tendsto_of_tendsto` yields the inequality.
+
+**Lemma** (`gronwall_zero_of_continuousOn`). Let $f : \mathbb{R} \to \mathbb{R}$ and $T, K \in \mathbb{R}$ satisfy $0 \le T$, $0 \le K$, `ContinuousOn f (Icc 0 T)`, $0 \le f(t)$ for all $t \in [0, T]$, and
+$$f(t) \le K \int_0^t f(s)\,ds \qquad \text{for all } t \in [0, T].$$
+Then $f(t) = 0$ for all $t \in [0, T]$.
+
+Proof. Because $[0, T]$ (`Icc 0 T`) is compact (`isCompact_Icc`) and nonempty (`nonempty_Icc`, from $0 \le T$), the continuous function $f$ attains a maximum at some $t_{\max} \in [0, T]$ (`IsCompact.exists_isMaxOn`). Setting $B = \max(f(t_{\max}), 0)$, we have $B \ge 0$ and $f(t) \le B$ on $[0, T]$. By induction on $n \in \mathbb{N}$, one proves $f(t) \le B \frac{(Kt)^n}{n!}$ for all $t \in [0, T]$: the base case $n = 0$ reduces directly to $f(t) \le B$; for the step $n \to n + 1$ at $t \in [0, T]$ (so $0 \le t$ and $[0, t] \subseteq [0, T]$ via `Icc_subset_Icc_right`), both $f$ and $g(s) = \frac{B K^n}{n!} s^n$ are continuous on $[0, t]$ and hence interval-integrable on $[0, t]$ (`ContinuousOn.intervalIntegrable_of_Icc`), and the induction hypothesis gives $f(s) \le g(s)$ on $[0, t]$. Monotonicity of the interval integral (`intervalIntegral.integral_mono_on`) gives $\int_0^t f(s)\,ds \le \int_0^t g(s)\,ds$, and evaluating $\int_0^t g(s)\,ds = \frac{B K^n}{n!} \frac{t^{n+1}}{n+1}$ via `intervalIntegral.integral_const_mul` and `integral_pow`, then substituting into $f(t) \le K \int_0^t f(s)\,ds$ using $K \ge 0$ (`mul_le_mul_of_nonneg_left`) and rewriting $(n + 1)! = (n + 1) n!$ (`Nat.factorial_succ`), yields $f(t) \le B \frac{(Kt)^{n+1}}{(n+1)!}$. Finally, for any fixed $t \in [0, T]$, summability of the exponential series (`Real.summable_pow_div_factorial (K * t)`) implies $\frac{(Kt)^n}{n!} \to 0$ as $n \to \infty$ (`Summable.tendsto_atTop_zero`), so $B \frac{(Kt)^n}{n!} \to 0$. Comparing the constant sequence $f(t)$ with this upper bound via `le_of_tendsto_of_tendsto` gives $f(t) \le 0$, which combined with $0 \le f(t)$ (`le_antisymm`) forces $f(t) = 0$.
+
+**Lemma** (`not_top_le_coe`). For every $n \in \mathbb{N}$, the inequality $(\top : \mathbb{N}_\infty) \le (n : \mathbb{N}_\infty)$ is false.
+
+Proof. This follows immediately from `not_le_of_gt` applied to the strict inequality `(n : ℕ∞) < ⊤` (`WithTop.coe_lt_top n`).

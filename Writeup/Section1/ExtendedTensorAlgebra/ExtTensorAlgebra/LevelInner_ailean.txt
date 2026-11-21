@@ -1,0 +1,7 @@
+**Definition** (`ExtTensorAlgebra.levelInner`). For $\ell, a$ in `ExtTensorAlgebra d` and $n \in \mathbb{N}$, the degree-$n$ inner product `levelInner ℓ a n` is defined as the finite sum over words of length $n$:
+$$\mathrm{levelInner}(\ell, a, n) = \sum_{I \in \mathrm{wordsOfLength}(d, n)} \ell.\mathrm{coeff}(I)\, a.\mathrm{coeff}(I).$$
+
+**Lemma** (`ExtTensorAlgebra.levelInner.abs_le`). For any $\ell, a$ in `ExtTensorAlgebra d` and $n \in \mathbb{N}$,
+$$|\mathrm{levelInner}(\ell, a, n)| \le \mathrm{levelNorm}(\ell, n)\, \mathrm{levelNorm}(a, n).$$
+
+Proof. This is a direct application of the finite Cauchy–Schwarz inequality `abs_finset_sum_mul_le_sqrt` over `wordsOfLength d n` to `ℓ.coeff` and `a.coeff`.

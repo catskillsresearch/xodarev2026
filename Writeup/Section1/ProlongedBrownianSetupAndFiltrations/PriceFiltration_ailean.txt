@@ -1,0 +1,1 @@
+**Definition** (`priceFiltration`). price Filtration is defined by `generatedFiltration (fun t (_ : Unit) ω => S t ω) (fun t _ => hS_meas t)`.

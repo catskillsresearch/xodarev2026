@@ -1,0 +1,1 @@
+**Definition** (`coord`). coord is defined by `a.coeff I`.

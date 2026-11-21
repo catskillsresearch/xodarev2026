@@ -1,0 +1,1 @@
+**Definition** (`constOne`). const One is defined by `1`.

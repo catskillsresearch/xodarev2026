@@ -1,0 +1,8 @@
+**Structure** (`ItoCalculusKit`). An *Itô calculus kit* on a prolonged Brownian setup $(\Omega,\mathbb P)$ with signature filtration over horizon $T$ has these properties:
+
+- A stochastic integral operator on integrands $H$ producing an adapted process (notationally `itoInt`), pathwise zero at $t=0$, measurable in $(t,\omega)$, and adapted to the signature filtration on $[0,t]$.
+- A quadratic-variation functional for those integrands, likewise starting at zero and adapted to the signature filtration.
+- The Doléans–Dade exponential $\mathcal E(\int \sigma\,dW)$, given explicitly as $\exp\big(\int \sigma\,dW - \tfrac12 \langle\int \sigma\rangle\big)$.
+- A linear SDE identity: the Doléans exponential path solves $S_t = S_0 + \int_0^t S_s \sigma_s\,dW_s$ whenever the volatility is square-integrable on $[0,T]$.
+- A stopped $L^2$ localisation principle: two exponential solutions driven by the same signature volatility pairing and sharing the same linear Itô dynamics must agree if their common squared-growth majorant vanishes.
+- A Novikov/Doob package under hypotheses H1–H2: the Doléans exponential price built from the model volatility is a true signature-filtration martingale on $[0,T]$, uniformly dominated in $L^2$, with square-integrable volatility.

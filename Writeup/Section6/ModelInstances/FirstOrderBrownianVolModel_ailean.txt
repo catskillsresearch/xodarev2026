@@ -1,0 +1,7 @@
+**Definition** (`firstOrderWord`). We take the *first-order word* to be $[1]$ in the alphabet of order two (time letter $0$, space letter $1$).
+
+**Definition** (`firstOrderBrownianVolModel`). We define the *first-order Brownian volatility model* with parameters $T > 0$, $s_0 > 0$, constant volatility $\sigma_0 \neq 0$, and first-order correction $\alpha$ to be the one-dimensional `SignatureVolatilityModel` with constant weight, initial price $s_0$, and volatility series
+$$
+\ell = \sigma_0\, e_{\emptyset} + \alpha\, e_{[1]},
+$$
+i.e. loadings on the empty word and on the single time-space hop, with H1 from support in degrees $\le 1$ and H3 from $\sigma_0 \neq 0$.

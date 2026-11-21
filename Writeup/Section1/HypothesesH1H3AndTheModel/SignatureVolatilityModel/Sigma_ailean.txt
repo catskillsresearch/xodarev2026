@@ -1,0 +1,1 @@
+**Definition** (`sigma`). sigma is defined by `dualPairing M.ℓ (setup.W_hat t ω)`.

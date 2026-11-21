@@ -1,0 +1,13 @@
+**Definition** (`projGt`). For `N : ℕ` and `a : ExtTensorAlgebra d`, the high-degree tail projection `projGt N a : ExtTensorAlgebra d` retains coefficients strictly above level `N` and zeroes all others: `(projGt N a).coeff I = a.coeff I` if `N < I.length`, and `0` otherwise.
+
+**Lemma** (`add_projLe`). For every `N : ℕ` and `a : ExtTensorAlgebra d`, the low-degree truncation and high-degree tail sum back to the original element: `projLe N a + projGt N a = a`.
+
+Proof. Check equality coordinatewise on each word `I`. Unfolding the addition of coefficients gives `(if I.length ≤ N then a.coeff I else 0) + (if N < I.length then a.coeff I else 0)`, and splitting on whether `I.length ≤ N` or `N < I.length` leaves exactly one active branch equal to `a.coeff I` and the other equal to `0`.
+
+**Lemma** (`levelNormSq`). For `N, n : ℕ` and `a : ExtTensorAlgebra d`, the squared level norm of the tail satisfies `(projGt N a).levelNormSq n = a.levelNormSq n` if `N < n`, and `0` otherwise.
+
+Proof. Unfold `ExtTensorAlgebra.levelNormSq` and `projGt`, and split on whether `N < n`. Every word `I ∈ wordsOfLength d n` has `I.length = n` by `wordsOfLength.mem`: when `N < n`, the condition `N < I.length` holds for every summand so the finite sum coincides termwise with `a.levelNormSq n`; when `¬ N < n`, `N < I.length` fails for every summand so each squared coefficient vanishes and the sum is zero.
+
+**Lemma** (`levelNorm`). For `N, n : ℕ` and `a : ExtTensorAlgebra d`, `(projGt N a).levelNorm n = a.levelNorm n` if `N < n`, and `0` otherwise.
+
+Proof. Unfold `ExtTensorAlgebra.levelNorm` as the square root of `levelNormSq`, rewrite with `projGt.levelNormSq`, and split on `N < n`, using `Real.sqrt 0 = 0` on the zero branch.

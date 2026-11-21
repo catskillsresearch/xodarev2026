@@ -1,0 +1,3 @@
+**Theorem** (`chen_identity`). Given `setup : ProlongedBrownianSetup Ω ℙ d T`, times `s, t : ℝ` satisfying `0 ≤ s`, `s ≤ t`, and `t ≤ T`, and a sample point `ω : Ω`, the two-parameter prolonged signature satisfies Chen's multiplicative identity `setup.sig2 0 t ω = setup.sig2 0 s ω ⊗ₜ setup.sig2 s t ω`.
+
+Proof. This follows directly from the structure field `setup.stratonovich_chen hs hst ht ω`.

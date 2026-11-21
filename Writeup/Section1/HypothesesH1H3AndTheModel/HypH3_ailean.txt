@@ -1,0 +1,3 @@
+**Structure** (`HypH3`). *Hypothesis H3* for a positive dimension $d > 0$ and a coefficient series $\ell$ in the $(d + 1)$-letter extended tensor algebra has these properties:
+
+- The series $\ell$ is nonzero ($\ell \ne 0$) as an element of the extended tensor algebra.

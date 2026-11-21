@@ -1,0 +1,1 @@
+**Definition** (`AdmissibleGainsUnderP`). We define the set of *admissible terminal gains* under $\mathbb P$ to be those random variables $G : \Omega \to \mathbb R$ that are integrable with respect to $\mathbb P$ and have nonpositive mean: $\mathbb E^{\mathbb P}[G] \le 0$.

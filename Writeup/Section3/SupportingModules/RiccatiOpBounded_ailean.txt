@@ -1,0 +1,5 @@
+**Definition** (`riccatiOpBounded`). For a support bound $N \in \mathbb N$ and a formal series $u$ on the extended tensor algebra at depth $d$, we define the *bounded Riccati operator* $R^{(N)}_{\mathrm{op}}(u)$ to be the sum of
+
+- the time shift $\mathrm{rightShift}\,0\,u$,
+- the Stratonovich half-Laplacian $\Delta^{\mathrm{St}} u$, and
+- half the sum over spatial letters $i = 1,\ldots,d$ of the finite shuffle product of the $i$-shifts of $u$ with itself, truncated at degree $N$.

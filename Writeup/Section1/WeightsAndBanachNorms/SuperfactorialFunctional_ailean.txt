@@ -1,0 +1,5 @@
+**Definition** (`superfactorialFunctional`). For `α : ℝ`, `superfactorialFunctional α : ExtTensorAlgebra 2` is the formal series whose coefficient on a word `I : Word 2` equals `(I.length.factorial : ℝ) * α ^ I.length` when `I = pureBrownianWord I.length` and `0` on all other words.
+
+**Lemma** (`levelNormSq`). For every `α : ℝ` and `n : ℕ`, `(superfactorialFunctional α).levelNormSq n = ((n.factorial : ℝ) * α ^ n) ^ 2`.
+
+Proof. Unfold `ExtTensorAlgebra.levelNormSq` and `superfactorialFunctional`. Since `pureBrownianWord n` is `List.replicate n ((0 : Fin 1).succ)`, its length is `n`, so `pureBrownianWord n ∈ wordsOfLength 2 n` by `wordsOfLength.mem`. Collapse the sum over `wordsOfLength 2 n` to the single element `pureBrownianWord n` via `Finset.sum_eq_single`: any other word `I ∈ wordsOfLength 2 n` has `I.length = n` and `I ≠ pureBrownianWord n`, making its `if`-coefficient vanish, while on `pureBrownianWord n` itself the length is `n` and the squared coefficient evaluates to `((n.factorial : ℝ) * α ^ n) ^ 2`.

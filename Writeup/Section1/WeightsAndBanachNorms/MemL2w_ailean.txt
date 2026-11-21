@@ -1,0 +1,1 @@
+**Definition** (`MemL2w`). Mem L2w is defined by `Summable (fun n : ℕ => ℓ.levelNormSq n / (w n) ^ 2)`.

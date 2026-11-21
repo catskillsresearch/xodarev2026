@@ -1,0 +1,1 @@
+**Definition** (`generatedFiltration`). generated Filtration is defined by `⨆ (s : {s : ℝ // 0 ≤ s ∧ s ≤ t}) (i : ι),`.

@@ -1,0 +1,1 @@
+**Definition** (`MemTwDual`). Mem Tw Dual is defined by `BddAbove (Set.range fun n : ℕ => ℓ.levelNorm n / w n)`.

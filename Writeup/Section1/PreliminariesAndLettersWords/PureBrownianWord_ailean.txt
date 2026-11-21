@@ -1,0 +1,1 @@
+**Definition** (`pureBrownianWord`). pure Brownian Word is defined by `List.replicate n ((0 : Fin 1).succ)`.

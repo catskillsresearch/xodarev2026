@@ -1,0 +1,1 @@
+**Definition** (`evalShuffleBasis`). eval Shuffle Basis is defined by `((shuffleWords I J).map fun K => X.coeff K).sum`.

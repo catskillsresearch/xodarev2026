@@ -1,0 +1,6 @@
+**Definition** (`normW`). Given a weight $w$ (`w : Weight`) and $a$ in `ExtTensorAlgebra d`, the $w$-weighted $\ell^1$-type norm `normW w a` is defined by the topological sum
+$$\mathrm{normW}(w, a) = \sum'_{n : \mathbb{N}} w(n)\, \mathrm{levelNorm}(a, n).$$
+
+**Lemma** (`normW.nonneg`). For any weight $w$ (`w : Weight`) and $a$ in `ExtTensorAlgebra d`, $0 \le \mathrm{normW}(w, a)$ (`0 ≤ normW w a`).
+
+Proof. This follows directly from `tsum_nonneg`, since each term $w(n)\, \mathrm{levelNorm}(a, n)$ is a product of nonnegative numbers (`mul_nonneg` applied to `(w.pos n).le` and `ExtTensorAlgebra.levelNorm.nonneg a n`).

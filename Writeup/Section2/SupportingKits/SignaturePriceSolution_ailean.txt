@@ -1,0 +1,8 @@
+**Structure** (`SignaturePriceSolution`). A *signature price solution* for a `SignatureVolatilityModel` on a prolonged Brownian setup, equipped with an `ItoCalculusKit`, is a strictly positive adapted price process $S$ on $[0,T]$ with these properties:
+
+- $S_0 = s_0$ almost surely and $S_t > 0$ for every $t$ and $\omega$.
+- $S$ is measurable and adapted to the signature filtration on $[0,t]$ for each $t$.
+- $S$ admits the Doléans representation $S_t = s_0 \exp\big(\int_0^t \sigma\,dW - \tfrac12 \langle\sigma\rangle_t\big)$ for the model volatility $\sigma$ furnished by the kit.
+- $S$ solves the linear Itô SDE $S_t = s_0 + \int_0^t S_s \sigma_s\,dW_s$ for all $t \in [0,T]$ (almost surely).
+- There is an integrable $L^2$ envelope: a measurable $S_{\mathrm{sup}}$ with $|S_t| \le S_{\mathrm{sup}}$ on $[0,T]$ and $\mathbb E[S_{\mathrm{sup}}^2] < \infty$.
+- $S$ is a true martingale for the signature filtration on $[0,T]$: integrable at each time and $\mathbb E[S_t \mid \mathcal F^{\widehat W}_s] = S_s$ almost surely when $0 \le s \le t \le T$.

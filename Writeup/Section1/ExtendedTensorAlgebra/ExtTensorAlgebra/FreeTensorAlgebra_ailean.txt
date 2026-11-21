@@ -1,0 +1,1 @@
+**Abbreviation** (`FreeTensorAlgebra`). Free Tensor Algebra is the abbreviation `{a : ExtTensorAlgebra d // IsFinitelySupported a}`.

@@ -1,0 +1,7 @@
+**Structure** (`SignatureVolatilityModel`). A *signature volatility model* has these properties:
+
+- It specifies a positive Brownian dimension $d \in \mathbb{N}$ ($d > 0$), a strictly positive terminal horizon $T > 0$, and a strictly positive initial asset price $s_0 > 0$.
+- It carries an admissible weight $w$ together with a linear functional represented by a formal series $\ell \in T((\mathbb{R}^{d+1}))$ over the $(d+1)$-letter time-augmented alphabet.
+- Hypothesis (H1) holds: $\ell$ belongs to the weighted Hilbert space $\ell^2_w$, meaning $\sum_{n=0}^{\infty} \|\ell_n\|^2 / w(n)^2 < \infty$.
+- Hypothesis (H2) holds: there exists $C_w \ge 1$ such that $w(m + n) \le C_w w(m) w(n)$ for all $m, n \in \mathbb{N}$, and $\sum_{n=0}^{\infty} w(n) R^n / n! < \infty$ for every $R > 0$.
+- Hypothesis (H3) holds: the volatility coefficient series is nonzero, $\ell \ne 0$.

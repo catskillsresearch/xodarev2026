@@ -1,0 +1,1 @@
+**Definition** (`brownianFiltration`). brownian Filtration is defined by `generatedFiltration (fun u i ω => setup.W u ω i) setup.W_meas`.

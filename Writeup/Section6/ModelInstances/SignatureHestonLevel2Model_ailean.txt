@@ -1,0 +1,11 @@
+**Definition** (`hestonL0`). We write $I_0 := [0]$ for the level-zero basis word in the three-letter Heston alphabet (time, price, variance).
+
+**Definition** (`hestonL1`). We write $I_1 := [2]$ for the level-one basis word.
+
+**Definition** (`hestonL2`). We write $I_2 := [2,0]$ for the level-two basis word.
+
+**Definition** (`signatureHestonLevel2Model`). We define the *Heston level-2 signature volatility model* with parameters $T > 0$, $s_0 > 0$, $v_0 \neq 0$, mean-reversion rate $\kappa$, long-run variance $\theta$, and volatility-of-volatility $\xi$ to be the two-dimensional `SignatureVolatilityModel` with constant weight and volatility series
+$$
+\ell = v_0\, e_{\emptyset} + (\kappa\theta)\, e_{I_0} + \xi\, e_{I_1} - (\kappa\xi)\, e_{I_2},
+$$
+supported on words of length at most $2$, with H1 from that support and H3 from $v_0 \neq 0$ via the empty-word coefficient.

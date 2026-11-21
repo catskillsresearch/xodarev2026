@@ -1,0 +1,1 @@
+**Definition** (`smoothSignature`). smooth Signature is defined by `⟨fun I => smoothIteratedIntegral X' s I t⟩`.

@@ -1,0 +1,3 @@
+**Theorem** (`shuffle_identity`). Given `setup : ProlongedBrownianSetup Ω ℙ d T`, a time `t : ℝ` with `0 ≤ t` and `t ≤ T`, words `I, J : Word (d + 1)`, and a sample point `ω : Ω`, the product of signature coordinates satisfies `(setup.W_hat t ω).coeff I * (setup.W_hat t ω).coeff J = ExtTensorAlgebra.evalShuffleBasis I J (setup.W_hat t ω)`.
+
+Proof. Since `setup.W_hat t ω` is definitionally `setup.sig2 0 t ω`, this is a direct application of `setup.stratonovich_shuffle ht0 htT I J ω`.

@@ -1,0 +1,10 @@
+**Definition** (`ExtTensorAlgebra.antipode`). For $a$ in `ExtTensorAlgebra d`, `antipode a` is the element of `ExtTensorAlgebra d` whose coefficient at each word $I$ (`I : Word d`) is $(-1)^{I.\mathrm{length}}\, a.\mathrm{coeff}(I.\mathrm{reverse})$.
+
+**Lemma** (`ExtTensorAlgebra.antipode.basisWord`). For any word $I$ in `Word d`,
+$$\mathrm{antipode}(\mathrm{basisWord}(I)) = (-1)^{I.\mathrm{length}} \cdot \mathrm{basisWord}(I.\mathrm{reverse}).$$
+
+Proof. By extensionality on `ExtTensorAlgebra d`, fix a word $J$ and unfold `antipode` and `basisWord` so the goal becomes $(-1)^{J.\mathrm{length}} \mathbf{1}_{J.\mathrm{reverse} = I} = (-1)^{I.\mathrm{length}} \mathbf{1}_{J = I.\mathrm{reverse}}$. Splitting by cases on $J = I.\mathrm{reverse}$: if $J = I.\mathrm{reverse}$, substituting $J$ simplifies both sides (`List.reverse_reverse` and `List.length_reverse`); if $J \ne I.\mathrm{reverse}$, then also $J.\mathrm{reverse} \ne I$ (since $J.\mathrm{reverse} = I$ would imply $J = I.\mathrm{reverse}$ via `List.reverse_reverse`), so both sides evaluate to $0$.
+
+**Lemma** (`ExtTensorAlgebra.antipode.involutive`). For any $a$ in `ExtTensorAlgebra d`, `antipode (antipode a) = a`.
+
+Proof. By extensionality at each word $I$, unfolding `antipode` twice and simplifying `(I.reverse).length = I.length` (`List.length_reverse`) and `(I.reverse).reverse = I` (`List.reverse_reverse`) reduces the coefficient to $(-1)^{I.\mathrm{length}} \bigl((-1)^{I.\mathrm{length}} a.\mathrm{coeff}(I)\bigr)$; reassociating the product (`mul_assoc`), combining the powers into $((-1) \cdot (-1))^{I.\mathrm{length}}$ (`mul_pow`), and evaluating $(-1) \cdot (-1) = 1$ (`norm_num`) yields $a.\mathrm{coeff}(I)$.

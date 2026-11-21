@@ -1,0 +1,6 @@
+**Structure** (`ClassicalRiccatiSolution`). A *classical Riccati solution* on $[0,T]$ for a vector field $R_{\mathrm{op}}$ on the extended tensor algebra, with initial condition $u_0$ in the weighted Banach space $T_w$, consists of a trajectory $\psi : [0,T] \to T_w$ with these properties:
+
+- At every $t \in [0,T]$, the value $\psi(t)$ lies in $T_w$ (membership in the weighted signature space).
+- There is a uniform bound $M \ge 0$ on the weighted norm $\|\psi(t)\|_w$ for $t \in [0,T]$.
+- The initial condition holds: $\psi(0) = u_0$.
+- For each word $I$, the coefficient $\psi(t)_I$ equals the initial coefficient plus the time integral on $[0,t]$ of the coefficient $(R_{\mathrm{op}}\psi(s))_I$, with continuous dependence on $s$ along $[0,T]$.

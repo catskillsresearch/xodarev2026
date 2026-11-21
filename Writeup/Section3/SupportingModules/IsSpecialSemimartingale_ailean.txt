@@ -1,0 +1,6 @@
+**Structure** (`IsSpecialSemimartingale`). A *special semimartingale* decomposition of a real process $X$ on $[0,T]$ relative to a filtered probability space $(\Omega,\mathcal F,(\mathcal F_t),\mathbb P)$ has these properties:
+
+- $X$ splits as $X_t = X_0 + M_t + A_t$ for all $t \in [0,T]$, with a martingale part $M$ and a compensator $A$ of finite variation.
+- The martingale part is a true martingale: for $0 \le s \le t \le T$, each $M_t$ is integrable and $\mathbb E^{\mathbb P}[M_t \mid \mathcal F_s] = M_s$ almost surely.
+- The terminal martingale value $M_T$ is square-integrable.
+- The compensator is dominated in variation by a single integrable random variable: $|A_t| \le V$ for all $t \in [0,T]$ for some integrable $V$.

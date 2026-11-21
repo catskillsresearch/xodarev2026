@@ -1,0 +1,4 @@
+**Structure** (`ExtTensorAlgebra`). An element of the *extended tensor algebra* $T((\mathbb{R}^d)) = \prod_{n \ge 0} (\mathbb{R}^d)^{\otimes n}$ over a $d$-letter alphabet has these properties:
+
+- It assigns a real coefficient $a_I \in \mathbb{R}$ (`coeff`) to each finite word $I$ in the $d$-letter alphabet, with two formal series equal if and only if they have the same coefficient at every word.
+- Zero, addition, negation, subtraction, and real scalar multiplication act componentwise on word coefficients, endowing the extended tensor algebra with the structure of an abelian group and a real vector space.
