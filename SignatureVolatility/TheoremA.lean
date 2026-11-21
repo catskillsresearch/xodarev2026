@@ -1,13 +1,14 @@
-import SignatureVolatility.SignatureVolatilityModel
-import SignatureVolatility.SignaturePriceSolution
-import SignatureVolatility.ProlongedBrownianSetup
 import SignatureVolatility.ItoCalculusKit
-
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
+import SignatureVolatility.Preliminaries
+import SignatureVolatility.ProlongedBrownianSetup
+import SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration
+import SignatureVolatility.SignaturePriceSolution
+import SignatureVolatility.SignatureVolatilityModel
+import SignatureVolatility.SignatureVolatilityModel.Sigma
 
 noncomputable section
+
+open MeasureTheory Set
 
 namespace SignatureVolatility
 
@@ -18,11 +19,12 @@ theorem theorem_A {Ω : Type*} [MeasurableSpace Ω]
     ∃ (sol : SignaturePriceSolution M setup ito),
       ∀ (S_tilde : ℝ → Ω → ℝ),
         (∀ t ∈ Icc 0 M.T, ∀ᵐ ω ∂ℙ,
-          S_tilde t ω = M.s₀ + ito.itoInt (fun s ω' => S_tilde s ω' * M.sigma setup s ω') t ω) →
+          S_tilde t ω = M.s₀ + ito.itoInt (fun s ω' => S_tilde s ω' *
+              SignatureVolatilityModel.sigma M setup s ω') t ω) →
         ∀ᵐ ω ∂ℙ, ∀ t ∈ Icc 0 M.T, S_tilde t ω = sol.S t ω := by
   obtain ⟨hmart, hsup, hquad⟩ :=
     ito.novikov_doob_l2_martingale M.w M.h2 M.ℓ M.h1 M.s₀ M.hs₀
-  let σ : ℝ → Ω → ℝ := M.sigma setup
+  let σ : ℝ → Ω → ℝ := SignatureVolatilityModel.sigma M setup
   let S : ℝ → Ω → ℝ := fun t ω => M.s₀ * ito.doleansExp σ t ω
   have hS_zero : ∀ ω, S 0 ω = M.s₀ := by
     intro ω
@@ -57,7 +59,8 @@ theorem theorem_A {Ω : Type*} [MeasurableSpace Ω]
       S_meas := hS_meas
       S_adapted := hS_adapt
       S_strictly_pos := hS_pos
-      doleans_repr := fun t ω => by simp [S, ito.doleansExp_def]
+      doleans_repr := fun t ω => by
+        simpa [S, ito.doleansExp_def, σ] using rfl
       solves_sde := hsde
       sup_l2_integrable := hsup
       is_martingale := hmart }

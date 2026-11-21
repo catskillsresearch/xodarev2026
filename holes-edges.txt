@@ -1,12 +1,16 @@
 # Direct import SignatureVolatility deps (for blocking / build order)
 AdmissibleGainsUnderP -hard-> NflvrOfMartingaleMeasure
+AdmissibleGainsUnderP -hard-> TheoremB
 ClassicalRiccatiSolution -hard-> Remark219BlackScholesRiccati
 ClassicalRiccatiSolution -hard-> SignatureRiccatiKit
+ClassicalRiccatiSolution -hard-> TheoremB
 DualPairing -hard-> DualPairingLeNormWDualMulNormW
 DualPairing -hard-> ItoCalculusKit
 DualPairing -hard-> SignatureRiccatiKit
 DualPairing -hard-> SignatureVolatilityModel.Sigma
+DualPairing -hard-> TheoremB
 DualPairing -hard-> WeightedTruncationEstimates
+DualPairingLeNormWDualMulNormW -hard-> Corollary36SigmaWellDefined
 ExtTensorAlgebra.BasisWord -hard-> BlackScholesModel
 ExtTensorAlgebra.BasisWord -hard-> ExtTensorAlgebra.Antipode
 ExtTensorAlgebra.BasisWord -hard-> ExtTensorAlgebra.Concat
@@ -54,6 +58,7 @@ ExtTensorAlgebra.ExtTensorAlgebra -hard-> SmoothSignature
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> StratonovichHalfLaplacian
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> SuperfactorialFunctional
 ExtTensorAlgebra.FreeTensorAlgebra -hard-> SignatureRiccatiKit
+ExtTensorAlgebra.FreeTensorAlgebra -hard-> TheoremB
 ExtTensorAlgebra.IsFinitelySupported -hard-> ExtTensorAlgebra.BasisWord
 ExtTensorAlgebra.IsFinitelySupported -hard-> ExtTensorAlgebra.FreeTensorAlgebra
 ExtTensorAlgebra.IsFinitelySupported -hard-> HypH1OfIsFinitelySupported
@@ -125,6 +130,7 @@ IsSpecialSemimartingale -hard-> SignatureRiccatiKit
 IsSpecialSemimartingale -hard-> TheoremB
 ItoCalculusKit -hard-> SignaturePriceSolution
 ItoCalculusKit -hard-> TheoremA
+ItoCalculusKit -hard-> TheoremB
 Lemma32SignatureInTw -hard-> Corollary36SigmaWellDefined
 Letter -hard-> ExtTensorAlgebra.ExtTensorAlgebra
 Letter -hard-> ExtTensorAlgebra.ShuffleWords
@@ -154,6 +160,7 @@ MemTwDual -hard-> DualPairingLeNormWDualMulNormW
 MemTwDual -hard-> MemTwDualOfMemL2w
 MemTwDual -hard-> NormWDual
 MemTwDualOfMemL2w -hard-> Corollary36SigmaWellDefined
+NflvrOfMartingaleMeasure -hard-> TheoremB
 Norm2w -hard-> Corollary36SigmaWellDefined
 Norm2w -hard-> ItoCalculusKit
 Norm2w -hard-> MemTwDualOfMemL2w
@@ -179,6 +186,7 @@ Preliminaries -hard-> Lemma61GramPosDef
 Preliminaries -hard-> MemL2wInvOfMemTw
 Preliminaries -hard-> Proposition65NormalEquations
 Preliminaries -hard-> Remark219BlackScholesRiccati
+Preliminaries -hard-> TheoremA
 Preliminaries -hard-> WeightedTruncationEstimates
 Preliminaries -hard-> WordsOfLength
 PriceFiltration -hard-> ProlongedBrownianSetup.SignatureFiltration
@@ -229,6 +237,9 @@ ProlongedBrownianSetup.SignatureFiltration -hard-> ItoCalculusKit
 ProlongedBrownianSetup.SignatureFiltration -hard-> SignatureFiltrationEqBrownianFiltration
 ProlongedBrownianSetup.SignatureFiltration -hard-> SignaturePriceSolution
 ProlongedBrownianSetup.SignatureFiltration -hard-> SignatureRiccatiKit
+ProlongedBrownianSetup.SignatureFiltration -hard-> TheoremA
+ProlongedBrownianSetup.SignatureFiltration -hard-> TheoremB
+ProlongedBrownianSetup.WHat -hard-> Corollary36SigmaWellDefined
 ProlongedBrownianSetup.WHat -hard-> ItoCalculusKit
 ProlongedBrownianSetup.WHat -hard-> Lemma32SignatureInTw
 ProlongedBrownianSetup.WHat -hard-> ProlongedBrownianSetup.SignatureFiltration
@@ -237,6 +248,7 @@ ProlongedBrownianSetup.WHat -hard-> SignatureFiltrationEqBrownianFiltration
 ProlongedBrownianSetup.WHat -hard-> SignaturePriceSolution
 ProlongedBrownianSetup.WHat -hard-> SignatureRiccatiKit
 ProlongedBrownianSetup.WHat -hard-> SignatureVolatilityModel.Sigma
+ProlongedBrownianSetup.WHat -hard-> TheoremB
 PureBrownianWord -hard-> SuperfactorialFunctional
 RiccatiOpBounded -hard-> ClassicalRiccatiSolution
 RiccatiOpBounded -hard-> Remark219BlackScholesRiccati
@@ -247,6 +259,7 @@ SatisfiesNFLVR -hard-> TheoremB
 ShuffleFinite -hard-> Remark219BlackScholesRiccati
 ShuffleFinite -hard-> RiccatiOpBounded
 SignaturePriceSolution -hard-> TheoremA
+SignaturePriceSolution -hard-> TheoremB
 SignatureRiccatiKit -hard-> TheoremB
 SignatureVolatilityModel -hard-> BlackScholesModel
 SignatureVolatilityModel -hard-> Corollary36SigmaWellDefined
@@ -261,10 +274,12 @@ SignatureVolatilityModel -hard-> TheoremA
 SignatureVolatilityModel -hard-> TheoremB
 SignatureVolatilityModel.Sigma -hard-> Corollary36SigmaWellDefined
 SignatureVolatilityModel.Sigma -hard-> SignaturePriceSolution
+SignatureVolatilityModel.Sigma -hard-> TheoremA
 SmoothIteratedIntegral -hard-> SmoothSignature
 StratonovichHalfLaplacian -hard-> Remark219BlackScholesRiccati
 StratonovichHalfLaplacian -hard-> RiccatiOpBounded
 SuperfactorialFunctional -hard-> Proposition311SharpnessOfH1
+TheoremA -hard-> TheoremB
 Weight -hard-> BanachAlgebraConcatBound
 Weight -hard-> ClassicalRiccatiSolution
 Weight -hard-> GKWDecompositionSetup
@@ -310,6 +325,7 @@ Word -hard-> ShuffleIdentity
 Word -hard-> SignatureHestonLevel2Model
 Word -hard-> SignatureRiccatiKit
 Word -hard-> SmoothIteratedIntegral
+Word -hard-> TheoremB
 Word -hard-> WordsOfLength
 WordsOfLength -hard-> ExtTensorAlgebra.LevelInner
 WordsOfLength -hard-> ExtTensorAlgebra.LevelNorm

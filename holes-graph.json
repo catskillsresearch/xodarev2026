@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-21T03:28:08Z",
-  "sorryCount": 5,
+  "updated": "2026-11-21T03:33:07Z",
+  "sorryCount": 2,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -14,7 +14,7 @@
     "Mark a module verified by adding its id to VERIFIED in scripts/build_holes.py.",
     "Blue = done. Green = open. Grey = blocked.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: Corollary36SigmaWellDefined, TheoremA, TheoremB, TheoremC, TheoremD."
+    "Open tips: TheoremC, TheoremD."
   ],
   "nodes": [
     {
@@ -67,7 +67,7 @@
       "label": "Corollary36SigmaWellDefined",
       "section": 1,
       "file": "SignatureVolatility/Corollary36SigmaWellDefined.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -769,7 +769,7 @@
       "label": "TheoremA",
       "section": 1,
       "file": "SignatureVolatility/TheoremA.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -778,7 +778,7 @@
       "label": "TheoremB",
       "section": 1,
       "file": "SignatureVolatility/TheoremB.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -911,7 +911,7 @@
       "kind": "hard"
     },
     {
-      "from": "SignatureVolatilityModel.Sigma",
+      "from": "DualPairingLeNormWDualMulNormW",
       "to": "Corollary36SigmaWellDefined",
       "kind": "hard"
     },
@@ -922,6 +922,11 @@
     },
     {
       "from": "MemTwDualOfMemL2w",
+      "to": "Corollary36SigmaWellDefined",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureVolatilityModel.Sigma",
       "to": "Corollary36SigmaWellDefined",
       "kind": "hard"
     },
@@ -1616,12 +1621,17 @@
       "kind": "hard"
     },
     {
+      "from": "NflvrOfMartingaleMeasure",
+      "to": "TheoremB",
+      "kind": "hard"
+    },
+    {
       "from": "SignatureRiccatiKit",
       "to": "TheoremB",
       "kind": "hard"
     },
     {
-      "from": "SatisfiesNFLVR",
+      "from": "TheoremA",
       "to": "TheoremB",
       "kind": "hard"
     },
