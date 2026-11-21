@@ -58,6 +58,7 @@ ExtTensorAlgebra.ExtTensorAlgebra -hard-> ProjGt
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> ProjLe
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> ProlongedBrownianSetup
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> ProlongedBrownianSetup.ItoWordIntegral
+ExtTensorAlgebra.ExtTensorAlgebra -hard-> ProlongedBrownianSetup.ItoWordIntegralLe1
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> RiccatiOpBounded
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> RightShift
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> ShuffleFinite
@@ -272,8 +273,16 @@ ProlongedBrownianSetup -hard-> SignatureVolatilityModel.Sigma
 ProlongedBrownianSetup -hard-> TheoremAOfBrownianSetupItoKit
 ProlongedBrownianSetup -hard-> TheoremBOfSetupItoRiccatiKit
 ProlongedBrownianSetup.BrownianFiltration -hard-> SignatureFiltrationEqBrownianFiltration
+ProlongedBrownianSetup.ItoIntegralAgainstBM -hard-> ProlongedBrownianSetup.ItoWordIntegralConsLong
+ProlongedBrownianSetup.ItoIntegralAgainstBM -hard-> ProlongedBrownianSetup.ItoWordIntegralLe2
 ProlongedBrownianSetup.ItoWordIntegral -hard-> ProlongedBrownianSetup.StratonovichItoConversion
-ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.ItoWordIntegral
+ProlongedBrownianSetup.ItoWordIntegralConsLong -hard-> ProlongedBrownianSetup.ItoWordIntegral
+ProlongedBrownianSetup.ItoWordIntegralLe1 -hard-> ProlongedBrownianSetup.ItoWordIntegral
+ProlongedBrownianSetup.ItoWordIntegralLe1 -hard-> ProlongedBrownianSetup.ItoWordIntegralConsLong
+ProlongedBrownianSetup.ItoWordIntegralLe1 -hard-> ProlongedBrownianSetup.ItoWordIntegralLe2
+ProlongedBrownianSetup.ItoWordIntegralLe2 -hard-> ProlongedBrownianSetup.ItoWordIntegral
+ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.ItoIntegralAgainstBM
+ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.ItoWordIntegralLe1
 ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.SignatureOfBM
 ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.StratonovichOfBM
 ProlongedBrownianSetup.Sig2Strat -hard-> ProlongedBrownianSetup.Sig2StratChenShuffle
@@ -339,6 +348,7 @@ TheoremAOfBrownianSetupItoKit -hard-> TheoremBOfSetupItoRiccatiKit
 TheoremBOfSetupItoRiccatiKit -hard-> TheoremB
 TheoremCOfMarketKit -hard-> TheoremC
 TheoremDOfMarketKit -hard-> TheoremD
+TimeReindex -hard-> ProlongedBrownianSetup.ItoIntegralAgainstBM
 TimeReindex -hard-> ProlongedBrownianSetup.OfBrownian
 Weight -hard-> BanachAlgebraConcatBound
 Weight -hard-> ClassicalRiccatiSolution
@@ -381,7 +391,7 @@ Word -hard-> ExtTensorAlgebra.ExtTensorAlgebra
 Word -hard-> ExtTensorAlgebra.ShuffleWords
 Word -hard-> PriceFiltrationSignatureSpace
 Word -hard-> PriceFiltrationSignatureSpace.VSubspace
-Word -hard-> ProlongedBrownianSetup.ItoWordIntegral
+Word -hard-> ProlongedBrownianSetup.ItoWordIntegralLe1
 Word -hard-> ProlongedBrownianSetup.StratonovichItoConversion
 Word -hard-> PureBrownianWord
 Word -hard-> QuinticOUSignatureModel
