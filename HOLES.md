@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. **Everything is unverified TBD** until listed in `VERIFIED` in `scripts/build_holes.py`.
 
-**Updated:** 2026-11-21T03:33:07Z
-**Holes:** 2 open+blocked · 2 open · 0 blocked · 92 done.
+**Updated:** 2026-11-21T03:40:21Z
+**Holes:** 1 open+blocked · 1 open · 0 blocked · 93 done.
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
 
@@ -16,12 +16,11 @@ scripts/serve_holes.sh          # http://127.0.0.1:8766/holes.html
 
 | Id | File |
 |---|---|
-| `TheoremC` | `SignatureVolatility/TheoremC.lean` |
 | `TheoremD` | `SignatureVolatility/TheoremD.lean` |
 
 ## By group
 
-### Top-level modules — 2 hole(s)
+### Top-level modules — 1 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -87,7 +86,7 @@ scripts/serve_holes.sh          # http://127.0.0.1:8766/holes.html
 | done | `TailNorm2wInvLeRatioMulNormW` | `SignatureVolatility/TailNorm2wInvLeRatioMulNormW.lean` |
 | done | `TheoremA` | `SignatureVolatility/TheoremA.lean` |
 | done | `TheoremB` | `SignatureVolatility/TheoremB.lean` |
-| open | `TheoremC` | `SignatureVolatility/TheoremC.lean` |
+| done | `TheoremC` | `SignatureVolatility/TheoremC.lean` |
 | open | `TheoremD` | `SignatureVolatility/TheoremD.lean` |
 | done | `Tw` | `SignatureVolatility/Tw.lean` |
 | done | `Weight` | `SignatureVolatility/Weight.lean` |

@@ -1,14 +1,14 @@
+import SignatureVolatility.Preliminaries
 import SignatureVolatility.PriceFiltrationSignatureSpace
-import SignatureVolatility.PriceFiltrationSignatureSpace.VSubspace
-import SignatureVolatility.PriceFiltrationSignatureSpace.VInfty
+import SignatureVolatility.PriceFiltrationSignatureSpace.AugmentedMarketSpan
 import SignatureVolatility.PriceFiltrationSignatureSpace.CompletenessDepth
 import SignatureVolatility.PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration
-
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
+import SignatureVolatility.PriceFiltrationSignatureSpace.VInfty
+import SignatureVolatility.PriceFiltrationSignatureSpace.VSubspace
 
 noncomputable section
+
+open Set
 
 namespace SignatureVolatility
 
@@ -16,12 +16,9 @@ theorem theorem_C {H_S : Type*} [NormedAddCommGroup H_S] [InnerProductSpace ℝ 
     [CompleteSpace H_S] {d : ℕ}
     (PFS : PriceFiltrationSignatureSpace H_S d)
     {𝒦₁ 𝒦₂ : Set ℝ} (h𝒦₁ : Ioi (0 : ℝ) ⊆ closure 𝒦₁) (h𝒦₂ : Ioi (0 : ℝ) ⊆ closure 𝒦₂) :
-    -- (1) Equivalence between augmented completeness at level `N` and `(N : ℕ∞) ≥ N^*_S`:
     (∀ N : ℕ,
       PFS.IsCompleteOnPriceFiltration 𝒦₁ N ↔ PFS.completenessDepth ≤ (N : ℕ∞)) ∧
-    -- (2) Minimality: no level `M < N^*_S` completes the price filtration:
     (∀ M : ℕ, (M : ℕ∞) < PFS.completenessDepth → ¬ PFS.IsCompleteOnPriceFiltration 𝒦₁ M) ∧
-    -- (3) Strike-set independence (Proposition 5.4):
     (∀ N : ℕ,
       PFS.IsCompleteOnPriceFiltration 𝒦₁ N ↔ PFS.IsCompleteOnPriceFiltration 𝒦₂ N) := by
   obtain ⟨hVtop₁, hbridge₁⟩ := PFS.davis_obloj_bridge 𝒦₁ h𝒦₁
@@ -34,9 +31,11 @@ theorem theorem_C {H_S : Type*} [NormedAddCommGroup H_S] [InnerProductSpace ℝ 
       PriceFiltrationSignatureSpace.completenessDepth
     rw [hbridge₁ N]
     constructor
-    · intro hN
+    · -- Completeness ⇒ depth ≤ N: N itself belongs to the defining set of the infimum.
+      intro hN
       exact csInf_le (OrderBot.bddBelow _) ⟨N, rfl, hN⟩
-    · intro hle
+    · -- depth ≤ N ⇒ completeness: take a realizing level n₀ ≤ N and use monotonicity.
+      intro hle
       let S_good : Set ℕ∞ :=
         {(K : ℕ∞) | ∃ n : ℕ, K = (n : ℕ∞) ∧ (PFS.V_subspace n).topologicalClosure = PFS.V_infty}
       have hne : S_good.Nonempty := by
@@ -45,21 +44,24 @@ theorem theorem_C {H_S : Type*} [NormedAddCommGroup H_S] [InnerProductSpace ℝ 
         change sInf S_good ≤ (N : ℕ∞) at hle
         rw [hempty, sInf_empty] at hle
         exact not_top_le_coe N hle
-      have hmem : sInf S_good ∈ S_good := Nat.WithTop.sInf_mem hne -- Wait: check `csInf_mem` on `ℕ∞`!
-      -- On `ℕ∞ = WithTop ℕ`, `WellFoundedLT ℕ∞` gives `csInf_mem hne` directly!
       rcases csInf_mem hne with ⟨n₀, hn₀_eq, hn₀_cl⟩
-      have hn₀_le : n₀ ≤ N := by
-        exact WithTop.coe_le_coe.mp (hn₀_eq ▸ hle)
+      have hn₀_le : n₀ ≤ N :=
+        WithTop.coe_le_coe.mp (show (n₀ : ℕ∞) ≤ (N : ℕ∞) from hn₀_eq ▸ hle)
+      -- Goal after `hbridge₁`: cl(𝒱_N) = cl(𝒱_∞). Use Davis–Obłój `hVtop₁`: cl(𝒱_∞) = ⊤.
       apply le_antisymm
-      · rw [PriceFiltrationSignatureSpace.V_infty, hVtop₁]
+      · -- cl(𝒱_N) ≤ cl(𝒱_∞) = ⊤
+        change (PFS.V_subspace N).topologicalClosure ≤ PFS.V_infty
+        rw [show PFS.V_infty = ⊤ from hVtop₁]
         exact le_top
-      · rw [← hn₀_cl]
-        exact Submodule.topologicalClosure_mono (PriceFiltrationSignatureSpace.V_subspace.mono PFS hn₀_le)
+      · -- cl(𝒱_∞) ≤ cl(𝒱_N): n₀ realizes depth and 𝒱_{n₀} ⊆ 𝒱_N
+        change PFS.V_infty ≤ (PFS.V_subspace N).topologicalClosure
+        rw [← hn₀_cl]
+        exact Submodule.topologicalClosure_mono
+          (PriceFiltrationSignatureSpace.V_subspace.mono PFS hn₀_le)
   refine ⟨hchar, fun M hlt hcomp => not_le_of_gt hlt ((hchar M).mp hcomp), fun N => ?_⟩
+  -- Strike-set independence: both bridges reduce to the same density of 𝒱_N in 𝒱_∞.
   unfold PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration
     PriceFiltrationSignatureSpace.augmentedMarketSpan
   rw [hbridge₁ N, hbridge₂ N]
-
-/-! ## Section 6: Galtchouk–Kunita–Watanabe Hedging-Error Decomposition (Theorem D) -/
 
 end SignatureVolatility

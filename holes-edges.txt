@@ -187,6 +187,7 @@ Preliminaries -hard-> MemL2wInvOfMemTw
 Preliminaries -hard-> Proposition65NormalEquations
 Preliminaries -hard-> Remark219BlackScholesRiccati
 Preliminaries -hard-> TheoremA
+Preliminaries -hard-> TheoremC
 Preliminaries -hard-> WeightedTruncationEstimates
 Preliminaries -hard-> WordsOfLength
 PriceFiltration -hard-> ProlongedBrownianSetup.SignatureFiltration
@@ -200,6 +201,7 @@ PriceFiltrationSignatureSpace -hard-> Section71BlackScholesCompleteness
 PriceFiltrationSignatureSpace -hard-> TheoremC
 PriceFiltrationSignatureSpace -hard-> TheoremD
 PriceFiltrationSignatureSpace.AugmentedMarketSpan -hard-> PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration
+PriceFiltrationSignatureSpace.AugmentedMarketSpan -hard-> TheoremC
 PriceFiltrationSignatureSpace.CompletenessDepth -hard-> Section71BlackScholesCompleteness
 PriceFiltrationSignatureSpace.CompletenessDepth -hard-> TheoremC
 PriceFiltrationSignatureSpace.CompletenessDepth -hard-> TheoremD

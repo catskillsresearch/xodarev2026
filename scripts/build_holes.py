@@ -118,6 +118,7 @@ VERIFIED: set[str] = {
     "TailNorm2wInvLeRatioMulNormW",
     "TheoremA",
     "TheoremB",
+    "TheoremC",
     "Tw",
     "Word",
     "WordsOfLength",

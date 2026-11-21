@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-21T03:33:07Z",
-  "sorryCount": 2,
+  "updated": "2026-11-21T03:40:21Z",
+  "sorryCount": 1,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -14,7 +14,7 @@
     "Mark a module verified by adding its id to VERIFIED in scripts/build_holes.py.",
     "Blue = done. Green = open. Grey = blocked.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: TheoremC, TheoremD."
+    "Open tips: TheoremD."
   ],
   "nodes": [
     {
@@ -787,7 +787,7 @@
       "label": "TheoremC",
       "section": 1,
       "file": "SignatureVolatility/TheoremC.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },

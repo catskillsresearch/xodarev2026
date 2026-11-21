@@ -175,4 +175,7 @@ lemma gronwall_zero_of_continuousOn {f : ℝ → ℝ} {T K : ℝ}
       htend (Eventually.of_forall fun n => hiter n t ht)
   exact le_antisymm hle0 (hnonneg t ht)
 
+lemma not_top_le_coe (n : ℕ) (h : (⊤ : ℕ∞) ≤ (n : ℕ∞)) : False :=
+  not_le_of_gt (WithTop.coe_lt_top n) h
+
 end SignatureVolatility
