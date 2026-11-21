@@ -1,10 +1,5 @@
 import SignatureVolatility.IndexedFiltration
-
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
-
-noncomputable section
+open MeasureTheory Set
 
 namespace SignatureVolatility
 

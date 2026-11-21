@@ -31,11 +31,20 @@ IMPORT_RE = re.compile(r"^import\s+(SignatureVolatility(?:\.\S+)?)")
 VERIFIED: set[str] = {
     "AdmissibleGainsUnderP",
     "GeneratedFiltration",
+    "HypH2",
     "IndexedFiltration",
+    "IsSpecialSemimartingale",
     "Letter",
     "NflvrOfMartingaleMeasure",
     "Preliminaries",
+    "PureBrownianWord",
     "SatisfiesNFLVR",
+    "SmoothIteratedIntegral",
+    "Word",
+    "WordsOfLength",
+    "Weight",
+    "Weight.ConstOne",
+    "Weight.Geometric",
 }
 
 

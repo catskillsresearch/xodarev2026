@@ -2,11 +2,6 @@ import SignatureVolatility.Letter
 import SignatureVolatility.Word
 import SignatureVolatility.Preliminaries
 
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
-
-noncomputable section
-
 namespace SignatureVolatility
 
 def wordsOfLength (d : ℕ) : ℕ → Finset (Word d)
@@ -23,7 +18,7 @@ lemma mem {d : ℕ} : ∀ {n : ℕ} {I : Word d}, I ∈ wordsOfLength d n ↔ I.
   | n + 1, [] => by simp [wordsOfLength]
   | n + 1, i :: I => by
     simp only [wordsOfLength, Finset.mem_biUnion, Finset.mem_univ, true_and, Finset.mem_map,
-      Function.Embedding.coeFn_mk, List.length_cons, Nat.add_right_cancel_iff]
+      List.length_cons, Nat.add_right_cancel_iff]
     constructor
     · rintro ⟨a, J, hJ, hcons⟩
       cases hcons

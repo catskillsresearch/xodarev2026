@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-21T01:58:34Z",
-  "sorryCount": 88,
+  "updated": "2026-11-21T02:18:06Z",
+  "sorryCount": 79,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -13,7 +13,7 @@
     "Mark a module verified by adding its id to VERIFIED in scripts/build_holes.py.",
     "Blue = done. Green = open. Grey = blocked.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: IsSpecialSemimartingale, Weight, Word."
+    "Open tips: ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.ShuffleWords."
   ],
   "nodes": [
     {
@@ -22,7 +22,7 @@
       "section": 99,
       "file": "SignatureVolatility.lean",
       "status": "blocked",
-      "blocker": "needs BanachAlgebraConcatBound, BlackScholesModel, ChenIdentity, ClassicalRiccatiSolution, Corollary36SigmaWellDefined, DualPairing, DualPairingLeNormWDualMulNormW, ExtTensorAlgebra.Antipode (+79 more)",
+      "blocker": "needs BanachAlgebraConcatBound, BlackScholesModel, ChenIdentity, ClassicalRiccatiSolution, Corollary36SigmaWellDefined, DualPairing, DualPairingLeNormWDualMulNormW, ExtTensorAlgebra.Antipode (+70 more)",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -40,7 +40,7 @@
       "section": 1,
       "file": "SignatureVolatility/BanachAlgebraConcatBound.lean",
       "status": "blocked",
-      "blocker": "needs MemTw, NormW, Weight, ExtTensorAlgebra.Concat, ExtTensorAlgebra.LevelNorm",
+      "blocker": "needs MemTw, NormW, ExtTensorAlgebra.Concat, ExtTensorAlgebra.LevelNorm",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -49,7 +49,7 @@
       "section": 1,
       "file": "SignatureVolatility/BlackScholesModel.lean",
       "status": "blocked",
-      "blocker": "needs SignatureVolatilityModel, HypH2, Weight.ConstOne, ExtTensorAlgebra.BasisWord, HypH1OfIsFinitelySupported",
+      "blocker": "needs SignatureVolatilityModel, ExtTensorAlgebra.BasisWord, HypH1OfIsFinitelySupported",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -67,7 +67,7 @@
       "section": 1,
       "file": "SignatureVolatility/ClassicalRiccatiSolution.lean",
       "status": "blocked",
-      "blocker": "needs Weight, ExtTensorAlgebra.ExtTensorAlgebra, RiccatiOpBounded, MemTw, NormW",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, RiccatiOpBounded, MemTw, NormW",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -103,7 +103,7 @@
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/Antipode.lean",
       "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.BasisWord, Word",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.BasisWord",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -112,7 +112,7 @@
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/BasisWord.lean",
       "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.IsFinitelySupported, Word",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.IsFinitelySupported",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -121,7 +121,7 @@
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/Concat.lean",
       "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.BasisWord, Word",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.BasisWord",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -130,7 +130,7 @@
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/Coord.lean",
       "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, Word",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -147,8 +147,8 @@
       "label": "ExtTensorAlgebra.ExtTensorAlgebra",
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/ExtTensorAlgebra.lean",
-      "status": "blocked",
-      "blocker": "needs Word",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -166,7 +166,7 @@
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/IsFinitelySupported.lean",
       "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, Word",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -175,7 +175,7 @@
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/LevelInner.lean",
       "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq, WordsOfLength",
+      "blocker": "needs ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -184,7 +184,7 @@
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/LevelNorm.lean",
       "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.LevelNormSq, ExtTensorAlgebra.Concat, WordsOfLength, Word",
+      "blocker": "needs ExtTensorAlgebra.LevelNormSq, ExtTensorAlgebra.Concat",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -193,7 +193,7 @@
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/LevelNormSq.lean",
       "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, WordsOfLength, Word",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -210,8 +210,8 @@
       "label": "ExtTensorAlgebra.ShuffleWords",
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/ShuffleWords.lean",
-      "status": "blocked",
-      "blocker": "needs Word",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -220,7 +220,7 @@
       "section": 1,
       "file": "SignatureVolatility/FirstOrderBrownianVolModel.lean",
       "status": "blocked",
-      "blocker": "needs SignatureVolatilityModel, HypH2, Weight.ConstOne, ExtTensorAlgebra.BasisWord, HypH1OfIsFinitelySupported",
+      "blocker": "needs SignatureVolatilityModel, ExtTensorAlgebra.BasisWord, HypH1OfIsFinitelySupported",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -229,7 +229,7 @@
       "section": 1,
       "file": "SignatureVolatility/GKWDecompositionSetup.lean",
       "status": "blocked",
-      "blocker": "needs PriceFiltrationSignatureSpace, Weight, PriceFiltrationSignatureSpace.VSubspace, ProjLe, MemL2wInv, Norm2wInv",
+      "blocker": "needs PriceFiltrationSignatureSpace, PriceFiltrationSignatureSpace.VSubspace, ProjLe, MemL2wInv, Norm2wInv",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -247,7 +247,7 @@
       "section": 1,
       "file": "SignatureVolatility/HypH1.lean",
       "status": "blocked",
-      "blocker": "needs MemL2w, Weight, ExtTensorAlgebra.ExtTensorAlgebra",
+      "blocker": "needs MemL2w, ExtTensorAlgebra.ExtTensorAlgebra",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -256,7 +256,7 @@
       "section": 1,
       "file": "SignatureVolatility/HypH1OfIsFinitelySupported.lean",
       "status": "blocked",
-      "blocker": "needs HypH1, ExtTensorAlgebra.IsFinitelySupported, Weight, MemL2w, ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq",
+      "blocker": "needs HypH1, ExtTensorAlgebra.IsFinitelySupported, MemL2w, ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -264,8 +264,8 @@
       "label": "HypH2",
       "section": 1,
       "file": "SignatureVolatility/HypH2.lean",
-      "status": "blocked",
-      "blocker": "needs Weight, Weight.ConstOne, Weight.Geometric",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -292,7 +292,7 @@
       "section": 1,
       "file": "SignatureVolatility/InfiniteGeometricSignatureModel.lean",
       "status": "blocked",
-      "blocker": "needs SignatureVolatilityModel, HypH2, Weight.Geometric, MemL2w, ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq",
+      "blocker": "needs SignatureVolatilityModel, MemL2w, ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -300,7 +300,7 @@
       "label": "IsSpecialSemimartingale",
       "section": 1,
       "file": "SignatureVolatility/IsSpecialSemimartingale.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -310,7 +310,7 @@
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit.lean",
       "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup, Weight, ExtTensorAlgebra.ExtTensorAlgebra, DualPairing, Norm2w, HypH1, HypH2, ProlongedBrownianSetup.WHat (+1 more)",
+      "blocker": "needs ProlongedBrownianSetup, ExtTensorAlgebra.ExtTensorAlgebra, DualPairing, Norm2w, HypH1, ProlongedBrownianSetup.WHat, ProlongedBrownianSetup.SignatureFiltration",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -319,7 +319,7 @@
       "section": 1,
       "file": "SignatureVolatility/Lemma32SignatureInTw.lean",
       "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup, MemTw, NormW, Weight, HypH2, ProlongedBrownianSetup.WHat",
+      "blocker": "needs ProlongedBrownianSetup, MemTw, NormW, ProlongedBrownianSetup.WHat",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -346,7 +346,7 @@
       "section": 1,
       "file": "SignatureVolatility/MemL2w.lean",
       "status": "blocked",
-      "blocker": "needs Weight, ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -355,7 +355,7 @@
       "section": 1,
       "file": "SignatureVolatility/MemL2wInv.lean",
       "status": "blocked",
-      "blocker": "needs Weight, ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -364,7 +364,7 @@
       "section": 1,
       "file": "SignatureVolatility/MemL2wInvOfMemTw.lean",
       "status": "blocked",
-      "blocker": "needs MemL2wInv, MemTw, Norm2wInv, NormW, Weight, ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq",
+      "blocker": "needs MemL2wInv, MemTw, Norm2wInv, NormW, ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -373,7 +373,7 @@
       "section": 1,
       "file": "SignatureVolatility/MemTw.lean",
       "status": "blocked",
-      "blocker": "needs Weight, ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNorm",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNorm",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -382,7 +382,7 @@
       "section": 1,
       "file": "SignatureVolatility/MemTwDual.lean",
       "status": "blocked",
-      "blocker": "needs Weight, ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNorm",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNorm",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -391,7 +391,7 @@
       "section": 1,
       "file": "SignatureVolatility/MemTwDualOfMemL2w.lean",
       "status": "blocked",
-      "blocker": "needs MemTwDual, MemL2w, NormWDual, Weight, ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq, Norm2w",
+      "blocker": "needs MemTwDual, MemL2w, NormWDual, ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq, Norm2w",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -409,7 +409,7 @@
       "section": 1,
       "file": "SignatureVolatility/Norm2w.lean",
       "status": "blocked",
-      "blocker": "needs Weight, ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -418,7 +418,7 @@
       "section": 1,
       "file": "SignatureVolatility/Norm2wInv.lean",
       "status": "blocked",
-      "blocker": "needs Weight, ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -427,7 +427,7 @@
       "section": 1,
       "file": "SignatureVolatility/NormW.lean",
       "status": "blocked",
-      "blocker": "needs Weight, ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNorm",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNorm",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -436,7 +436,7 @@
       "section": 1,
       "file": "SignatureVolatility/NormWDual.lean",
       "status": "blocked",
-      "blocker": "needs Weight, ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNorm, MemTwDual",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNorm, MemTwDual",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -463,7 +463,7 @@
       "section": 1,
       "file": "SignatureVolatility/PriceFiltrationSignatureSpace.lean",
       "status": "blocked",
-      "blocker": "needs Word, ExtTensorAlgebra.ExtTensorAlgebra",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -508,7 +508,7 @@
       "section": 5,
       "file": "SignatureVolatility/PriceFiltrationSignatureSpace/VSubspace.lean",
       "status": "blocked",
-      "blocker": "needs PriceFiltrationSignatureSpace, WordsOfLength, Word",
+      "blocker": "needs PriceFiltrationSignatureSpace",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -517,7 +517,7 @@
       "section": 1,
       "file": "SignatureVolatility/ProjGt.lean",
       "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq, ProjLe, Word",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq, ProjLe",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -526,7 +526,7 @@
       "section": 1,
       "file": "SignatureVolatility/ProjLe.lean",
       "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, Word",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -535,7 +535,7 @@
       "section": 1,
       "file": "SignatureVolatility/ProlongedBrownianSetup.lean",
       "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.Concat, ExtTensorAlgebra.EvalShuffleBasis, ExtTensorAlgebra.LevelNorm, Word",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.Concat, ExtTensorAlgebra.EvalShuffleBasis, ExtTensorAlgebra.LevelNorm",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -580,7 +580,7 @@
       "section": 1,
       "file": "SignatureVolatility/Proposition311SharpnessOfH1.lean",
       "status": "blocked",
-      "blocker": "needs HypH1, Weight, SuperfactorialFunctional, ExtTensorAlgebra.ExtTensorAlgebra",
+      "blocker": "needs HypH1, SuperfactorialFunctional, ExtTensorAlgebra.ExtTensorAlgebra",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -597,8 +597,8 @@
       "label": "PureBrownianWord",
       "section": 1,
       "file": "SignatureVolatility/PureBrownianWord.lean",
-      "status": "blocked",
-      "blocker": "needs Word",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -607,7 +607,7 @@
       "section": 1,
       "file": "SignatureVolatility/QuinticOUSignatureModel.lean",
       "status": "blocked",
-      "blocker": "needs SignatureVolatilityModel, HypH2, Weight.ConstOne, HypH1OfIsFinitelySupported",
+      "blocker": "needs SignatureVolatilityModel, HypH1OfIsFinitelySupported",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -616,7 +616,7 @@
       "section": 1,
       "file": "SignatureVolatility/Remark219BlackScholesRiccati.lean",
       "status": "blocked",
-      "blocker": "needs ClassicalRiccatiSolution, Weight",
+      "blocker": "needs ClassicalRiccatiSolution",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -625,7 +625,7 @@
       "section": 1,
       "file": "SignatureVolatility/RiccatiOpBounded.lean",
       "status": "blocked",
-      "blocker": "needs Weight, ExtTensorAlgebra.ExtTensorAlgebra, RightShift, StratonovichHalfLaplacian, ShuffleFinite",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, RightShift, StratonovichHalfLaplacian, ShuffleFinite",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -634,7 +634,7 @@
       "section": 1,
       "file": "SignatureVolatility/RightShift.lean",
       "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, Word",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -661,7 +661,7 @@
       "section": 1,
       "file": "SignatureVolatility/ShuffleFinite.lean",
       "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, Word, WordsOfLength, ExtTensorAlgebra.ShuffleBasis",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.ShuffleBasis",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -670,7 +670,7 @@
       "section": 1,
       "file": "SignatureVolatility/ShuffleIdentity.lean",
       "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup, ProlongedBrownianSetup.WHat, ExtTensorAlgebra.EvalShuffleBasis, Word",
+      "blocker": "needs ProlongedBrownianSetup, ProlongedBrownianSetup.WHat, ExtTensorAlgebra.EvalShuffleBasis",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -688,7 +688,7 @@
       "section": 1,
       "file": "SignatureVolatility/SignatureHestonLevel2Model.lean",
       "status": "blocked",
-      "blocker": "needs SignatureVolatilityModel, HypH2, Weight.ConstOne, ExtTensorAlgebra.BasisWord, HypH1OfIsFinitelySupported",
+      "blocker": "needs SignatureVolatilityModel, ExtTensorAlgebra.BasisWord, HypH1OfIsFinitelySupported",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -706,7 +706,7 @@
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit.lean",
       "status": "blocked",
-      "blocker": "needs ClassicalRiccatiSolution, Weight",
+      "blocker": "needs ClassicalRiccatiSolution",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -715,7 +715,7 @@
       "section": 1,
       "file": "SignatureVolatility/SignatureVolatilityModel.lean",
       "status": "blocked",
-      "blocker": "needs Weight, ExtTensorAlgebra.ExtTensorAlgebra, HypH1, HypH2, HypH3",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, HypH1, HypH3",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -732,8 +732,8 @@
       "label": "SmoothIteratedIntegral",
       "section": 1,
       "file": "SignatureVolatility/SmoothIteratedIntegral.lean",
-      "status": "blocked",
-      "blocker": "needs Word",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -742,7 +742,7 @@
       "section": 1,
       "file": "SignatureVolatility/SmoothSignature.lean",
       "status": "blocked",
-      "blocker": "needs SmoothIteratedIntegral, ExtTensorAlgebra.ExtTensorAlgebra",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -760,7 +760,7 @@
       "section": 1,
       "file": "SignatureVolatility/SuperfactorialFunctional.lean",
       "status": "blocked",
-      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq, PureBrownianWord",
+      "blocker": "needs ExtTensorAlgebra.ExtTensorAlgebra, ExtTensorAlgebra.LevelNormSq",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -769,7 +769,7 @@
       "section": 1,
       "file": "SignatureVolatility/TailNorm2wInvLeRatioMulNormW.lean",
       "status": "blocked",
-      "blocker": "needs MemTw, NormW, Norm2wInv, MemL2wInv, MemL2wInvOfMemTw, ProjGt, Weight, ExtTensorAlgebra.LevelNorm",
+      "blocker": "needs MemTw, NormW, Norm2wInv, MemL2wInv, MemL2wInvOfMemTw, ProjGt, ExtTensorAlgebra.LevelNorm",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -787,7 +787,7 @@
       "section": 1,
       "file": "SignatureVolatility/TheoremB.lean",
       "status": "blocked",
-      "blocker": "needs SignatureVolatilityModel, SignatureRiccatiKit, IsSpecialSemimartingale, ProlongedBrownianSetup",
+      "blocker": "needs SignatureVolatilityModel, SignatureRiccatiKit, ProlongedBrownianSetup",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -822,7 +822,7 @@
       "label": "Weight",
       "section": 1,
       "file": "SignatureVolatility/Weight.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -831,8 +831,8 @@
       "label": "Weight.ConstOne",
       "section": 3,
       "file": "SignatureVolatility/Weight/ConstOne.lean",
-      "status": "blocked",
-      "blocker": "needs Weight",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -840,8 +840,8 @@
       "label": "Weight.Geometric",
       "section": 3,
       "file": "SignatureVolatility/Weight/Geometric.lean",
-      "status": "blocked",
-      "blocker": "needs Weight",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -850,7 +850,7 @@
       "section": 1,
       "file": "SignatureVolatility/WeightedTruncationEstimates.lean",
       "status": "blocked",
-      "blocker": "needs DualPairing, Norm2w, Norm2wInv, MemL2w, MemL2wInv, ProjGt, ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq (+2 more)",
+      "blocker": "needs DualPairing, Norm2w, Norm2wInv, MemL2w, MemL2wInv, ProjGt, ExtTensorAlgebra.LevelNorm, ExtTensorAlgebra.LevelNormSq (+1 more)",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
@@ -858,7 +858,7 @@
       "label": "Word",
       "section": 1,
       "file": "SignatureVolatility/Word.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
@@ -867,8 +867,8 @@
       "label": "WordsOfLength",
       "section": 1,
       "file": "SignatureVolatility/WordsOfLength.lean",
-      "status": "blocked",
-      "blocker": "needs Word",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     }
   ],

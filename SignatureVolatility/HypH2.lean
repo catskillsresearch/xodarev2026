@@ -2,12 +2,6 @@ import SignatureVolatility.Weight
 import SignatureVolatility.Weight.ConstOne
 import SignatureVolatility.Weight.Geometric
 
-
-open scoped BigOperators Classical ENNReal NNReal RealInnerProductSpace
-open MeasureTheory Filter Topology Set
-
-noncomputable section
-
 namespace SignatureVolatility
 
 structure HypH2 (w : Weight) where
