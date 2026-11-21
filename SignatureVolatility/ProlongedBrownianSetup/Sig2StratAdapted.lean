@@ -84,7 +84,7 @@ lemma measurable_lebIntegral_wnnIncrement_pathFiltration (B : MultiBrownian Ω P
   have hf : ∀ n, StronglyMeasurable[(pathFiltration B).σAlg T]
       (fun ω => lebRiemann_wnnIncr B i s t n ω) := fun n =>
     (measurable_lebRiemann_wnnIncr_pathFiltration B i hs hst htT n).stronglyMeasurable
-  letI : MeasurableSpace Ω := (pathFiltration B).σAlg T
+  let : MeasurableSpace Ω := (pathFiltration B).σAlg T
   exact (StronglyMeasurable.limUnder hf).measurable
 
 lemma measurable_itoIntegral_timeIntegrand_pathFiltration (B : MultiBrownian Ω P d) {T : ℝ}
@@ -132,7 +132,7 @@ lemma measurable_itoIntegral_wnnIncrement_cross_pathFiltration (B : MultiBrownia
   have hf : ∀ n, StronglyMeasurable[(pathFiltration B).σAlg T]
       (fun ω => itoRiemann_wnnIncr B i k s t n ω) := fun n =>
     (measurable_itoRiemann_wnnIncr_pathFiltration B i k hs hst htT n).stronglyMeasurable
-  letI : MeasurableSpace Ω := (pathFiltration B).σAlg T
+  let : MeasurableSpace Ω := (pathFiltration B).σAlg T
   exact (StronglyMeasurable.limUnder hf).measurable
 
 lemma measurable_itoIntegral_wnnIncrement_pathFiltration (B : MultiBrownian Ω P d) {T : ℝ}
@@ -168,7 +168,7 @@ lemma measurable_lebIntegral_process_pathFiltration (B : MultiBrownian Ω P d) {
   have hf : ∀ n, StronglyMeasurable[(pathFiltration B).σAlg T]
       (fun ω => lebRiemann_process H s t n ω) := fun n =>
     (measurable_lebRiemann_process_pathFiltration B H hH hs hst htT n).stronglyMeasurable
-  letI : MeasurableSpace Ω := (pathFiltration B).σAlg T
+  let : MeasurableSpace Ω := (pathFiltration B).σAlg T
   exact (StronglyMeasurable.limUnder hf).measurable
 
 lemma measurable_itoRiemann_process_pathFiltration (B : MultiBrownian Ω P d) {T : ℝ}
@@ -202,7 +202,7 @@ lemma measurable_itoIntegral_process_pathFiltration (B : MultiBrownian Ω P d) {
   have hf : ∀ n, StronglyMeasurable[(pathFiltration B).σAlg T]
       (fun ω => itoRiemann_process B k H s t n ω) := fun n =>
     (measurable_itoRiemann_process_pathFiltration B k H hH hs hst htT n).stronglyMeasurable
-  letI : MeasurableSpace Ω := (pathFiltration B).σAlg T
+  let : MeasurableSpace Ω := (pathFiltration B).σAlg T
   exact (StronglyMeasurable.limUnder hf).measurable
 
 lemma measurable_itoWordIntegral_le1_pathFiltration (B : MultiBrownian Ω P d) {T : ℝ}
