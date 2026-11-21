@@ -122,6 +122,7 @@ VERIFIED: set[str] = {
     "ProlongedBrownianSetup.OfBrownian",
     "ProlongedBrownianSetup.SignatureOfBM",
     "ProlongedBrownianSetup.SignatureFiltration",
+    "ProlongedBrownianSetup.StratonovichOfBM",
     "ProlongedBrownianSetup.WAug",
     "ProlongedBrownianSetup.WHat",
     "PureBrownianWord",

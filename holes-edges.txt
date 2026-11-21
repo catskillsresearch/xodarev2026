@@ -23,9 +23,11 @@ ExtTensorAlgebra.Concat -hard-> ChenIdentity
 ExtTensorAlgebra.Concat -hard-> ExtTensorAlgebra.ConcatAssoc
 ExtTensorAlgebra.Concat -hard-> ExtTensorAlgebra.LevelNorm
 ExtTensorAlgebra.Concat -hard-> ProlongedBrownianSetup
+ExtTensorAlgebra.Concat -hard-> ProlongedBrownianSetup.Sig2StratChenShuffle
 ExtTensorAlgebra.ConcatAssoc -hard-> ExtTensorAlgebra.TensorExp
 ExtTensorAlgebra.EvalShuffleBasis -hard-> ExtTensorAlgebra.TensorExpShuffle
 ExtTensorAlgebra.EvalShuffleBasis -hard-> ProlongedBrownianSetup
+ExtTensorAlgebra.EvalShuffleBasis -hard-> ProlongedBrownianSetup.Sig2StratChenShuffle
 ExtTensorAlgebra.EvalShuffleBasis -hard-> ShuffleIdentity
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> ClassicalRiccatiSolution
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> DualPairing
@@ -55,6 +57,7 @@ ExtTensorAlgebra.ExtTensorAlgebra -hard-> PriceFiltrationSignatureSpace
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> ProjGt
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> ProjLe
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> ProlongedBrownianSetup
+ExtTensorAlgebra.ExtTensorAlgebra -hard-> ProlongedBrownianSetup.ItoWordIntegral
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> RiccatiOpBounded
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> RightShift
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> ShuffleFinite
@@ -84,6 +87,7 @@ ExtTensorAlgebra.LevelNorm -hard-> NormW
 ExtTensorAlgebra.LevelNorm -hard-> NormWDual
 ExtTensorAlgebra.LevelNorm -hard-> ProjGt
 ExtTensorAlgebra.LevelNorm -hard-> ProlongedBrownianSetup
+ExtTensorAlgebra.LevelNorm -hard-> ProlongedBrownianSetup.Sig2StratMoments
 ExtTensorAlgebra.LevelNorm -hard-> TailNorm2wInvLeRatioMulNormW
 ExtTensorAlgebra.LevelNorm -hard-> WeightedTruncationEstimates
 ExtTensorAlgebra.LevelNormSq -hard-> ExtTensorAlgebra.LevelInner
@@ -115,6 +119,7 @@ GKWDecompositionSetup -hard-> TheoremDOfMarketKit
 GKWDecompositionSetup.OfPFS -hard-> TheoremD
 GeneratedFiltration -hard-> ProlongedBrownianSetup
 GeneratedFiltration -hard-> ProlongedBrownianSetup.BrownianFiltration
+GeneratedFiltration -hard-> ProlongedBrownianSetup.Sig2Strat
 GeneratedFiltration -hard-> ProlongedBrownianSetup.SignatureFiltration
 HypH1 -hard-> HypH1OfIsFinitelySupported
 HypH1 -hard-> ItoCalculusKit
@@ -267,14 +272,22 @@ ProlongedBrownianSetup -hard-> SignatureVolatilityModel.Sigma
 ProlongedBrownianSetup -hard-> TheoremAOfBrownianSetupItoKit
 ProlongedBrownianSetup -hard-> TheoremBOfSetupItoRiccatiKit
 ProlongedBrownianSetup.BrownianFiltration -hard-> SignatureFiltrationEqBrownianFiltration
+ProlongedBrownianSetup.ItoWordIntegral -hard-> ProlongedBrownianSetup.StratonovichItoConversion
+ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.ItoWordIntegral
 ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.SignatureOfBM
 ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.StratonovichOfBM
+ProlongedBrownianSetup.Sig2Strat -hard-> ProlongedBrownianSetup.Sig2StratChenShuffle
+ProlongedBrownianSetup.Sig2Strat -hard-> ProlongedBrownianSetup.Sig2StratMoments
+ProlongedBrownianSetup.Sig2Strat -hard-> ProlongedBrownianSetup.StratonovichOfBM
+ProlongedBrownianSetup.Sig2StratChenShuffle -hard-> ProlongedBrownianSetup.StratonovichOfBM
+ProlongedBrownianSetup.Sig2StratMoments -hard-> ProlongedBrownianSetup.StratonovichOfBM
 ProlongedBrownianSetup.SignatureFiltration -hard-> ItoCalculusKit
 ProlongedBrownianSetup.SignatureFiltration -hard-> SignatureFiltrationEqBrownianFiltration
 ProlongedBrownianSetup.SignatureFiltration -hard-> SignaturePriceSolution
 ProlongedBrownianSetup.SignatureFiltration -hard-> SignatureRiccatiKit
 ProlongedBrownianSetup.SignatureFiltration -hard-> TheoremAOfBrownianSetupItoKit
 ProlongedBrownianSetup.SignatureFiltration -hard-> TheoremBOfSetupItoRiccatiKit
+ProlongedBrownianSetup.StratonovichItoConversion -hard-> ProlongedBrownianSetup.Sig2Strat
 ProlongedBrownianSetup.StratonovichOfBM -hard-> ItoCalculusKit.OfMathFin
 ProlongedBrownianSetup.WHat -hard-> Corollary36SigmaWellDefined
 ProlongedBrownianSetup.WHat -hard-> ItoCalculusKit
@@ -368,6 +381,8 @@ Word -hard-> ExtTensorAlgebra.ExtTensorAlgebra
 Word -hard-> ExtTensorAlgebra.ShuffleWords
 Word -hard-> PriceFiltrationSignatureSpace
 Word -hard-> PriceFiltrationSignatureSpace.VSubspace
+Word -hard-> ProlongedBrownianSetup.ItoWordIntegral
+Word -hard-> ProlongedBrownianSetup.StratonovichItoConversion
 Word -hard-> PureBrownianWord
 Word -hard-> QuinticOUSignatureModel
 Word -hard-> Section71BlackScholesCompleteness
