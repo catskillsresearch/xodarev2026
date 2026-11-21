@@ -86,7 +86,6 @@ ExtTensorAlgebra.LevelNorm -hard-> NormW
 ExtTensorAlgebra.LevelNorm -hard-> NormWDual
 ExtTensorAlgebra.LevelNorm -hard-> ProjGt
 ExtTensorAlgebra.LevelNorm -hard-> ProlongedBrownianSetup
-ExtTensorAlgebra.LevelNorm -hard-> ProlongedBrownianSetup.Sig2StratMoments
 ExtTensorAlgebra.LevelNorm -hard-> TailNorm2wInvLeRatioMulNormW
 ExtTensorAlgebra.LevelNorm -hard-> WeightedTruncationEstimates
 ExtTensorAlgebra.LevelNormSq -hard-> ExtTensorAlgebra.LevelInner

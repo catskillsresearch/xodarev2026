@@ -130,6 +130,7 @@ VERIFIED: set[str] = {
     "ProlongedBrownianSetup.Sig2StratAdapted",
     "ProlongedBrownianSetup.Sig2StratChenShuffle",
     "ProlongedBrownianSetup.Sig2StratDyadic",
+    "ProlongedBrownianSetup.Sig2StratMoments",
     "ProlongedBrownianSetup.SignatureOfBM",
     "ProlongedBrownianSetup.SignatureFiltration",
     "ProlongedBrownianSetup.StratonovichItoConversion",

@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-21T19:55:48Z",
-  "sorryCount": 10,
+  "updated": "2026-11-21T20:02:22Z",
+  "sorryCount": 8,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, SignatureRiccatiKit.OfSetup, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done. Green = open. Grey = blocked.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: ProlongedBrownianSetup.Sig2StratMoments."
+    "Open tips: ItoCalculusKit.OfMathFin."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -452,8 +452,8 @@
       "label": "ItoCalculusKit.OfMathFin",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/OfMathFin.lean",
-      "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup.StratonovichOfBM",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap). Paper kit / theorem goal.",
       "hasSorry": true,
       "paperKitGoal": true
@@ -881,10 +881,10 @@
       "label": "ProlongedBrownianSetup.Sig2StratMoments",
       "section": 4,
       "file": "SignatureVolatility/ProlongedBrownianSetup/Sig2StratMoments.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
-      "hasSorry": true,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -925,8 +925,8 @@
       "label": "ProlongedBrownianSetup.StratonovichOfBM",
       "section": 4,
       "file": "SignatureVolatility/ProlongedBrownianSetup/StratonovichOfBM.lean",
-      "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup.Sig2StratMoments",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Paper kit / theorem goal.",
       "hasSorry": false,
       "paperKitGoal": true

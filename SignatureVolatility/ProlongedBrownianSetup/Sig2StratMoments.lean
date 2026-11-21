@@ -1,6 +1,5 @@
 module
 
-public import SignatureVolatility.ExtTensorAlgebra.LevelNorm
 public import SignatureVolatility.ProlongedBrownianSetup.Sig2Strat
 
 
@@ -15,11 +14,9 @@ namespace SignatureVolatility
 /-!
 # Appendix A / Proposition `prop:signature-moment` for `sig2Strat`
 
-Factorial decay of Brownian Stratonovich iterated integrals against geometric weights
-`w_n ≤ r^n`, supplying `ProlongedBrownianSetup.factorial_moment_control`.
-
-**Status: HOLE.** Needs word-level `L^p` bounds
-`(𝔼|⟨e_I, 𝒲_t⟩|^p)^{1/p} ≲ C^{|I|} / ((|I|/2)!)^{1/2}` (Friz–Victoir / Friz–Hairer).
+Geometric-weight factorial moment control for `sig2Strat` (`w_n ≤ r^n`), supplying
+`ProlongedBrownianSetup.factorial_moment_control`. Reduces to the chordal
+`sig2OfBrownian_geometric_moment_control` because `sig2Strat := sig2OfBrownian`.
 -/
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}
@@ -31,7 +28,8 @@ lemma sig2Strat_factorial_moment_control (B : MultiBrownian Ω P d) {T : ℝ} (_
     ⦃t : ℝ⦄ (_ht0 : 0 ≤ t) (_htT : t ≤ T) :
     (∀ ω, Summable (fun n : ℕ => w_fn n * (sig2Strat B 0 t ω).levelNorm n)) ∧
       Integrable (fun ω => (∑' n : ℕ, w_fn n * (sig2Strat B 0 t ω).levelNorm n) ^ p) P := by
-  -- Appendix A factorial decay ⇒ geometric weights summable; Minkowski for `L^p`.
-  sorry
+  obtain ⟨r, hwr⟩ := _hgeom
+  simpa [sig2Strat] using
+    sig2OfBrownian_geometric_moment_control B (zero_le_one.trans _hp) _hw0 hwr t
 
 end SignatureVolatility
