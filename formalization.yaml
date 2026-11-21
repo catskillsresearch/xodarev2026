@@ -129,6 +129,7 @@ automation:
     - Cursor Grok 4.7
     - Cursor Composer
     - Google Gemini
+    - Claude Fable 2
     framework: Cursor
     role: >-
       Primary agents for Lean 4 / Mathlib formalization, lake build repair,

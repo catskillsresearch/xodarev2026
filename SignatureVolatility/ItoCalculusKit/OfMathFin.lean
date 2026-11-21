@@ -18,9 +18,9 @@ namespace SignatureVolatility
 # Paper-strength `ItoCalculusKit` from MathFin (Phase 2)
 
 **Status: ASSEMBLED.** Process fields from the dyadic limUnder bridge (`MathFinBridge` /
-`ItoQuadDoleans`). Analytic obligations `doleans_sde`, `stopped_l2_localisation`, and
-`novikov_doob_l2_martingale` are packaged as named axioms in the sibling modules, to be
-discharged by MathFin localized Itô / SDE uniqueness / Novikov under `HypH3`.
+`ItoQuadDoleans`). `doleans_sde` is proved for `d = 0`; the `0 < d` leaf is
+`kit_doleans_sde_of_driver`. Analytic obligations `stopped_l2_localisation` and
+`novikov_doob_l2_martingale` remain named axioms.
 -/
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}

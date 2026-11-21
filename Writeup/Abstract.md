@@ -4,4 +4,4 @@ Xodarev gives four structural theorems for signature volatility models on the we
 
 This formalization checks the paper’s definitions and main theorems in Lean 4 / Mathlib. The Lean library `SignatureVolatility` follows the paper’s theorem chain. All **94** file-level modules on the holes board are verified, with **no `sorry`** in the inventory (`sorryCount = 0`). The board is the file-level dependency graph under [`SignatureVolatility/`](../SignatureVolatility/); regenerate with `python3 scripts/build_holes.py` and view [`holes.html`](../holes.html).
 
-Source paper: Xodarev [@xodarev2026] (arXiv:2605.17142v1). AI assistance is acknowledged at the end with model cards for Google Gemini Carbon, Composer 2.5, and Cursor Auto.
+Source paper: Xodarev [@xodarev2026] (arXiv:2605.17142v1). AI assistance is acknowledged at the end with model cards for Google Gemini Carbon, Composer 2.5, Claude Fable 2, and Cursor Auto.
