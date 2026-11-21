@@ -1,0 +1,24 @@
+import StochLean.Probability.Process.Semimartingale.SemanticRegression
+
+#print axioms StochLean.TimePartition.Refines.mesh_le
+#print axioms StochLean.TimePartition.midpointRefinement
+#print axioms StochLean.TimePartition.midpointRefinement_point_even
+#print axioms StochLean.TimePartition.midpointRefinement_point_odd
+#print axioms StochLean.TimePartition.midpointRefinement_refines
+#print axioms StochLean.TimePartition.quadraticVariationSum_midpointRefinement
+#print axioms StochLean.TimePartition.exists_midpointRefinement
+#print axioms StochLean.TimePartition.exists_iterated_midpointRefinement
+#print axioms StochLean.TimePartition.exists_refinement_quadraticVariationSum_lt
+#print axioms StochLean.TimePartition.commonRefinement
+#print axioms StochLean.TimePartition.commonRefinement_range
+#print axioms StochLean.TimePartition.commonRefinement_refines_left
+#print axioms StochLean.TimePartition.commonRefinement_refines_right
+#print axioms StochLean.exists_nested_zeroQuadraticVariation_partitions
+#print axioms StochLean.LocallyFinitePartition.adjoinFinset
+#print axioms StochLean.LocallyFinitePartition.adjoinFinset_mesh_le
+#print axioms StochLean.LocallyFinitePartition.adjoinFinset_restrict_range
+#print axioms StochLean.exists_admissible_zeroQuadraticVariation
+#print axioms ProbabilityTheory.exists_continuous_partition_dependent_quadraticVariation
+#print axioms ProbabilityTheory.IsBrownianReal.not_ae_forall_admissible_quadraticVariation
+#print axioms StochLean.SemimartingaleRegression.admissible_zero_qv_zero_horizon
+#print axioms StochLean.SemimartingaleRegression.partition_dependent_endpoint_sets

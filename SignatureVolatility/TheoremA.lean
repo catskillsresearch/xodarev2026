@@ -1,5 +1,6 @@
 module
 
+public import SignatureVolatility.HypH3
 public import SignatureVolatility.ItoCalculusKit
 public import SignatureVolatility.Preliminaries
 public import SignatureVolatility.ProlongedBrownianSetup
@@ -17,18 +18,20 @@ open MeasureTheory Set
 
 namespace SignatureVolatility
 
+/-- Theorem A: unique signature-price solution up to modification, under H3 on `σ`. -/
 theorem theorem_A {Ω : Type*} [MeasurableSpace Ω]
     {ℙ : Measure Ω} [IsProbabilityMeasure ℙ]
     (M : SignatureVolatilityModel) (setup : ProlongedBrownianSetup Ω ℙ M.d M.T)
-    (ito : ItoCalculusKit Ω ℙ M.d M.T setup) :
+    (ito : ItoCalculusKit Ω ℙ M.d M.T setup)
+    (h3 : HypH3 ℙ M.T (SignatureVolatilityModel.sigma M setup)) :
     ∃ (sol : SignaturePriceSolution M setup ito),
       ∀ (S_tilde : ℝ → Ω → ℝ),
         (∀ t ∈ Icc 0 M.T, ∀ᵐ ω ∂ℙ,
           S_tilde t ω = M.s₀ + ito.itoInt (fun s ω' => S_tilde s ω' *
               SignatureVolatilityModel.sigma M setup s ω') t ω) →
-        ∀ᵐ ω ∂ℙ, ∀ t ∈ Icc 0 M.T, S_tilde t ω = sol.S t ω := by
+        ∀ t ∈ Icc 0 M.T, ∀ᵐ ω ∂ℙ, S_tilde t ω = sol.S t ω := by
   obtain ⟨hmart, hsup, hquad⟩ :=
-    ito.novikov_doob_l2_martingale M.w M.h2 M.ℓ M.h1 M.s₀ M.hs₀
+    ito.novikov_doob_l2_martingale M.w M.h2 M.ℓ M.h1 M.s₀ M.hs₀ h3
   let σ : ℝ → Ω → ℝ := SignatureVolatilityModel.sigma M setup
   let S : ℝ → Ω → ℝ := fun t ω => M.s₀ * ito.doleansExp σ t ω
   have hS_zero : ∀ ω, S 0 ω = M.s₀ := by

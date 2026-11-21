@@ -1,0 +1,53 @@
+# Dependency pins
+
+brownian-motion
+  path:   vendor/brownian-motion
+  source: copied from ../lyasoff2016/vendor/brownian-motion (2026-11-21)
+  upstream: https://github.com/RemyDegenne/brownian-motion.git
+  upstream_commit (lyasoff SOURCES): 497e5e2a60450796f75ab920e6c33addae4d644d
+  note: >-
+    Use lyasoff2016’s path copy, not raw upstream: unfinished decls were
+    removed from the Lyasoff build closure. Slim tree excludes .git / .lake /
+    verso build products. Full `lake build BrownianMotion` fails on ClassD
+    (refs to removed OptionalSampling / LocalMartingale decls); import
+    concrete modules only, same as lyasoff2016.
+
+kolmogorov_extension4
+  url:    https://github.com/RemyDegenne/kolmogorov_extension4.git
+  commit: c20f168ed693537c78111ffeabc2ab5f384e35d6
+  note:   Transitive via brownian-motion lakefile (same as lyasoff2016)
+
+formal-mathfin
+  path:   vendor/formal-mathfin
+  url:    https://github.com/formal-applied-math/formal-mathfin.git
+  commit: c47908ea18274b16c5b26edd206ec073470c4a26
+  toolchain: leanprover/lean4:v4.35.0
+  note: >-
+    Same commit as lyasoff2016’s Lake Git pin; vendored as a path dep.
+    Slim copy excludes .git / .lake / .github / docker / benchmarks.
+
+Stochastic-Process-lean-lib
+  path:   vendor/Stochastic-Process-lean-lib
+  url:    https://github.com/FredericaBernkastel1/Stochastic-Process-lean-lib.git
+  rev:    main @ clone 2026-11-21 (depth 1)
+  toolchain: leanprover/lean4:v4.33.0
+  note: >-
+    Parked only — not a Lake require. Candidate for Novikov / semimartingale
+    if MathFin is insufficient; needs toolchain alignment before wiring.
+
+LeanRoughPaths
+  path:   vendor/LeanRoughPaths
+  url:    https://github.com/daniil-shmelev/LeanRoughPaths.git
+  rev:    main @ clone 2026-11-21 (depth 1)
+  toolchain: leanprover/lean4:v4.35.0-rc3
+  note: >-
+    Parked only — not a Lake require. Candidate for signature / shuffle /
+    Hopf word algebra; needs toolchain alignment before wiring.
+
+mathlib
+  url:    https://github.com/leanprover-community/mathlib4
+  commit: e91b128082cc221d6432a6a5aadcd3243af8e76c
+  toolchain: leanprover/lean4:v4.35.0
+  note: >-
+    Prefer Mathlib’s Probability/BrownianMotion predicates where they already
+    cover IsBrownianReal / IsPreBrownianReal; path BM supplies the rest.

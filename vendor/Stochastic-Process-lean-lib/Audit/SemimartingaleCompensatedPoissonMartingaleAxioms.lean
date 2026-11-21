@@ -1,0 +1,16 @@
+import StochLean.Probability.Process.Semimartingale.SemanticRegression
+
+#print axioms ProbabilityTheory.integral_natCast_poisson
+#print axioms ProbabilityTheory.HasLaw.integral_natCast_poissonMeasure
+#print axioms ProbabilityTheory.IsPoissonProcess.integrable_real
+#print axioms ProbabilityTheory.IsPoissonProcess.integral_real
+#print axioms ProbabilityTheory.IsPoissonProcess.integrable_real_increment
+#print axioms ProbabilityTheory.IsPoissonProcess.integral_real_increment
+#print axioms ProbabilityTheory.IsPoissonProcess.condExp_real_increment_of_indep_past
+#print axioms ProbabilityTheory.IsPoissonProcess.martingale_compensated_of_indep_past
+#print axioms ProbabilityTheory.IsPoissonProcess.hasCadlagPaths_compensated
+#print axioms ProbabilityTheory.IsPoissonProcess.isLocalMartingale_compensated_of_indep_past
+#print axioms ProbabilityTheory.IsPoissonProcess.hasFiniteVariationPaths_compensated
+#print axioms ProbabilityTheory.IsPoissonProcess.isSemimartingale_compensated
+#print axioms StochLean.SemimartingaleRegression.poisson_mean_zero_rate
+#print axioms StochLean.SemimartingaleRegression.poisson_real_increment_mean_reverse

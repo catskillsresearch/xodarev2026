@@ -1,0 +1,9 @@
+import StochLean.Probability.Process.Semimartingale.SemanticRegression
+
+#print axioms MeasureTheory.upcrossingsBefore_comp_le
+#print axioms StochLean.TimePartition.upcrossingsBefore_le_of_range_subset
+#print axioms StochLean.TimePartition.Refines.upcrossingsBefore_le
+#print axioms StochLean.TimePartition.upcrossingsBefore_eq_of_range_eq
+#print axioms StochLean.SemimartingaleRegression.upcrossing_embedding_requires_strict_cutoff
+#print axioms StochLean.SemimartingaleRegression.upcrossing_repeated_samples_have_same_count
+#print axioms StochLean.SemimartingaleRegression.upcrossing_common_refinement_controls_both

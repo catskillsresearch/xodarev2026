@@ -1,0 +1,13 @@
+import StochLean.Probability.Process.Semimartingale.SemanticRegression
+
+#print axioms StochLean.pathStieltjesIncrementIntegral_indicator_Ioc
+#print axioms StochLean.pathStieltjesIncrementIntegral_finsetSum
+#print axioms StochLean.integrableOn_variationStieltjes_finite_step
+#print axioms StochLean.pathStieltjesIntegral_finite_step
+#print axioms ProbabilityTheory.SimplePredictableRep.integrableOn_variationStieltjes
+#print axioms ProbabilityTheory.SimplePredictableRep.finiteVariationIntegral_eq
+#print axioms ProbabilityTheory.SimplePredictableRep.finiteVariationIntegral_terminal
+#print axioms ProbabilityTheory.IsSimplePredictable.finiteVariationIntegral_eq
+#print axioms ProbabilityTheory.IsSimplePredictable.integrableOn_variationStieltjes
+#print axioms StochLean.SemimartingaleRegression.stieltjes_repeated_endpoint_zero
+#print axioms StochLean.SemimartingaleRegression.stieltjes_future_interval_zero

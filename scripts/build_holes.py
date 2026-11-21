@@ -28,7 +28,9 @@ HTML_EMBED_MARKER = "/*HOLES_GRAPH_JSON*/"
 OUT_MD = ROOT / "HOLES.md"
 OUT_EDGES = ROOT / "holes-edges.txt"
 
-IMPORT_RE = re.compile(r"^import\s+(SignatureVolatility(?:\.\S+)?)")
+IMPORT_RE = re.compile(
+    r"^(?:public\s+)?(?:meta\s+)?import\s+(?:all\s+)?(SignatureVolatility(?:\.\S+)?)"
+)
 
 # Module ids (short paths) that have been human-verified / sorry-free and may be
 # marked done once all hard predecessors are done. Empty ⇒ everything TBD.
@@ -44,6 +46,7 @@ VERIFIED: set[str] = {
     "ExtTensorAlgebra.Antipode",
     "ExtTensorAlgebra.BasisWord",
     "ExtTensorAlgebra.Concat",
+    "ExtTensorAlgebra.ConcatAssoc",
     "ExtTensorAlgebra.Coord",
     "ExtTensorAlgebra.EvalShuffleBasis",
     "FirstOrderBrownianVolModel",
@@ -55,6 +58,10 @@ VERIFIED: set[str] = {
     "ExtTensorAlgebra.LevelNormSq",
     "ExtTensorAlgebra.ShuffleBasis",
     "ExtTensorAlgebra.ShuffleWords",
+    "ExtTensorAlgebra.TensorExp",
+    "ExtTensorAlgebra.TensorExpLevelNorm",
+    "ExtTensorAlgebra.TensorExpNeg",
+    "ExtTensorAlgebra.TensorExpShuffle",
     "GeneratedFiltration",
     "GKWDecompositionSetup",
     "HypH1",
@@ -67,6 +74,7 @@ VERIFIED: set[str] = {
     "Lemma61GramPosDef",
     "IsSpecialSemimartingale",
     "ItoCalculusKit",
+    "ItoCalculusKit.OfMathFin",
     "Letter",
     "MemL2w",
     "MemL2wInv",
@@ -93,6 +101,8 @@ VERIFIED: set[str] = {
     "ProjLe",
     "ProlongedBrownianSetup",
     "ProlongedBrownianSetup.BrownianFiltration",
+    "ProlongedBrownianSetup.OfBrownian",
+    "ProlongedBrownianSetup.SignatureOfBM",
     "ProlongedBrownianSetup.SignatureFiltration",
     "ProlongedBrownianSetup.WAug",
     "ProlongedBrownianSetup.WHat",
@@ -120,6 +130,7 @@ VERIFIED: set[str] = {
     "TheoremB",
     "TheoremC",
     "TheoremD",
+    "TimeReindex",
     "Tw",
     "Word",
     "WordsOfLength",

@@ -1,0 +1,26 @@
+import StochLean.Probability.Process.Semimartingale.SemanticRegression
+
+#print axioms ProbabilityTheory.StoppingTimePartition.splitAt_refines
+#print axioms ProbabilityTheory.StoppingTimePartition.splitAt_contains
+#print axioms ProbabilityTheory.StoppingTimePartition.exists_common_refinement
+#print axioms ProbabilityTheory.FiniteStoppingTime.measurable_indicator_le_stopping
+#print axioms ProbabilityTheory.FiniteStoppingTime.measurable_right_interval_coefficient
+#print axioms ProbabilityTheory.SimplePredictableRep.toProcess_repartition
+#print axioms ProbabilityTheory.SimplePredictableRep.integral_repartition
+#print axioms ProbabilityTheory.SimplePredictableRep.exists_common_partition
+#print axioms ProbabilityTheory.SimplePredictableRep.toProcess_combine
+#print axioms ProbabilityTheory.SimplePredictableRep.integral_combine_add
+#print axioms ProbabilityTheory.SimplePredictableRep.toProcess_scale
+#print axioms ProbabilityTheory.SimplePredictableRep.integral_scale
+#print axioms ProbabilityTheory.IsSimplePredictable.map₂
+#print axioms ProbabilityTheory.IsSimplePredictable.add
+#print axioms ProbabilityTheory.IsSimplePredictable.mul
+#print axioms ProbabilityTheory.IsSimplePredictable.neg
+#print axioms ProbabilityTheory.IsSimplePredictable.sub
+#print axioms ProbabilityTheory.IsSimplePredictable.elementaryIntegral_add
+#print axioms ProbabilityTheory.IsSimplePredictable.elementaryIntegral_smul
+#print axioms ProbabilityTheory.IsSimplePredictable.elementaryIntegral_add_integrator
+#print axioms ProbabilityTheory.IsSimplePredictable.elementaryIntegral_smul_integrator
+#print axioms StochLean.SemimartingaleRegression.simple_add_distinct_horizons
+#print axioms StochLean.SemimartingaleRegression.simple_product_initial
+#print axioms StochLean.SemimartingaleRegression.simple_zero_split_preserves_process

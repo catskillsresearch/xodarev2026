@@ -1,0 +1,15 @@
+import StochLean.Probability.Process.Semimartingale.SemanticRegression
+
+#print axioms StochLean.continuousWithinAt_integral_Iic_right
+#print axioms StochLean.tendsto_integral_Iic_left
+#print axioms StochLean.isCadlagPath_integral_Ioc
+#print axioms StochLean.integral_Ioc_sub_leftLim
+#print axioms StochLean.eVariationOn_add_le
+#print axioms StochLean.locallyBoundedVariationOn_sub
+#print axioms StochLean.locallyBoundedVariationOn_integral_Ioc
+#print axioms StochLean.isCadlagPath_pathStieltjesIntegral
+#print axioms StochLean.locallyBoundedVariationOn_pathStieltjesIntegral
+#print axioms ProbabilityTheory.hasCadlagPaths_finiteVariationIntegral
+#print axioms ProbabilityTheory.hasFiniteVariationPaths_finiteVariationIntegral
+#print axioms ProbabilityTheory.isSemimartingale_finiteVariationIntegral
+#print axioms StochLean.SemimartingaleRegression.atomic_primitive_jump_at_one

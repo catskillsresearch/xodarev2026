@@ -1,0 +1,14 @@
+import StochLean.Probability.Process.Semimartingale.SemanticRegression
+
+#print axioms MeasureTheory.ae_eq_condExp_iSup_of_closing_limit
+#print axioms MeasureTheory.Martingale.tendsto_terminalProjection_of_integrable_closing
+#print axioms MeasureTheory.Filtration.withTerminal
+#print axioms MeasureTheory.Filtration.withTerminal_coe
+#print axioms MeasureTheory.Filtration.withTerminal_top
+#print axioms MeasureTheory.IsStoppingTime.measurableSpace_top
+#print axioms MeasureTheory.Martingale.withTerminal_of_integrable_closing
+#print axioms MeasureTheory.Martingale.integrable_closing_of_withTerminal
+#print axioms MeasureTheory.Martingale.uniformIntegrable_iff_exists_martingale_withTerminal
+#print axioms StochLean.SemimartingaleRegression.arbitrary_closing_variable_not_terminal
+#print axioms StochLean.SemimartingaleRegression.terminal_projection_recovers_measurable_closing
+#print axioms StochLean.SemimartingaleRegression.extended_constant_preserves_random_initial

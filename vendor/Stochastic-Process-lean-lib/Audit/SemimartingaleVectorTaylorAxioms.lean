@@ -1,0 +1,18 @@
+import StochLean.Probability.Process.Semimartingale.SemanticRegression
+
+#print axioms StochLean.deriv_line_eq_fderiv
+#print axioms StochLean.second_deriv_line_eq_fderiv
+#print axioms StochLean.exists_frechet_second_deriv_remainder
+#print axioms StochLean.norm_frechet_second_order_remainder_le
+#print axioms StochLean.frechetSecondOrderRemainder_self
+#print axioms StochLean.frechetTaylorErrorCoefficient_self
+#print axioms StochLean.frechetTaylorErrorCoefficient_mul_norm_sq
+#print axioms StochLean.exists_norm_frechetTaylorErrorCoefficient_le
+#print axioms StochLean.tendsto_frechetTaylorErrorCoefficient_of_contDiff
+#print axioms StochLean.continuous_frechetTaylorErrorCoefficient_of_contDiff
+#print axioms StochLean.exists_pair_diagonal_modulus_on_compact
+#print axioms ProbabilityTheory.IsCadlagPath.exists_same_side_oscillation_neighborhood
+#print axioms ProbabilityTheory.IsCadlagPath.exists_finite_separators_oscillation
+#print axioms StochLean.exists_finite_separators_pair_diagonal
+#print axioms StochLean.SemimartingaleRegression.vector_taylor_error_diagonal
+#print axioms StochLean.SemimartingaleRegression.vector_cubic_jump_error

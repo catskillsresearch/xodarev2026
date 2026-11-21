@@ -1,0 +1,10 @@
+import StochLean.Probability.Process.Semimartingale.SemanticRegression
+
+#print axioms MeasureTheory.Filtration.natural_comp_eq_comap
+#print axioms MeasureTheory.Martingale.comp_measurePreserving
+#print axioms ProbabilityTheory.singleJumpCount_compensator_domain
+#print axioms ProbabilityTheory.predictableCompensator_singleJumpCount_eq_stopped_hazard
+#print axioms ProbabilityTheory.uniformIntegrable_singleJump_sub_hazard_unrestricted
+#print axioms ProbabilityTheory.martingale_singleJump_sub_hazard_map
+#print axioms ProbabilityTheory.singleJumpCount_compensator_domain_map
+#print axioms ProbabilityTheory.predictableCompensator_singleJumpCount_eq_stopped_hazard_map

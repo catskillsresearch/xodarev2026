@@ -1,0 +1,11 @@
+import StochLean.Probability.Process.Semimartingale.SemanticRegression
+
+#print axioms TendstoUniformlyOn.tendsto_limit_values
+#print axioms ProbabilityTheory.tendsto_leftLimitProcess_of_uniformlyOn
+#print axioms ProbabilityTheory.tendsto_jumpProcess_of_uniformlyOn
+#print axioms ProbabilityTheory.IsCadlagPath.tendsto_min_const_nhdsLT
+#print axioms ProbabilityTheory.SimplePredictableRep.jumpProcess_integralProcess
+#print axioms ProbabilityTheory.IsSimplePredictable.jumpProcess_elementaryIntegralProcess
+#print axioms ProbabilityTheory.IsSemimartingale.jumpProcess_stochasticIntegral
+#print axioms StochLean.SemimartingaleRegression.elementary_jump_at_right_endpoint
+#print axioms StochLean.SemimartingaleRegression.general_integral_jump_zero

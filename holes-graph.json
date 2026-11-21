@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-21T03:45:50Z",
+  "updated": "2026-11-21T16:18:30Z",
   "sorryCount": 0,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -117,6 +117,15 @@
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
+      "id": "ExtTensorAlgebra.ConcatAssoc",
+      "label": "ExtTensorAlgebra.ConcatAssoc",
+      "section": 2,
+      "file": "SignatureVolatility/ExtTensorAlgebra/ConcatAssoc.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
+    },
+    {
       "id": "ExtTensorAlgebra.Coord",
       "label": "ExtTensorAlgebra.Coord",
       "section": 2,
@@ -202,6 +211,42 @@
       "label": "ExtTensorAlgebra.ShuffleWords",
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/ShuffleWords.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
+    },
+    {
+      "id": "ExtTensorAlgebra.TensorExp",
+      "label": "ExtTensorAlgebra.TensorExp",
+      "section": 2,
+      "file": "SignatureVolatility/ExtTensorAlgebra/TensorExp.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
+    },
+    {
+      "id": "ExtTensorAlgebra.TensorExpLevelNorm",
+      "label": "ExtTensorAlgebra.TensorExpLevelNorm",
+      "section": 2,
+      "file": "SignatureVolatility/ExtTensorAlgebra/TensorExpLevelNorm.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
+    },
+    {
+      "id": "ExtTensorAlgebra.TensorExpNeg",
+      "label": "ExtTensorAlgebra.TensorExpNeg",
+      "section": 2,
+      "file": "SignatureVolatility/ExtTensorAlgebra/TensorExpNeg.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
+    },
+    {
+      "id": "ExtTensorAlgebra.TensorExpShuffle",
+      "label": "ExtTensorAlgebra.TensorExpShuffle",
+      "section": 2,
+      "file": "SignatureVolatility/ExtTensorAlgebra/TensorExpShuffle.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
@@ -301,6 +346,15 @@
       "label": "ItoCalculusKit",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
+    },
+    {
+      "id": "ItoCalculusKit.OfMathFin",
+      "label": "ItoCalculusKit.OfMathFin",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/OfMathFin.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
@@ -540,10 +594,28 @@
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
+      "id": "ProlongedBrownianSetup.OfBrownian",
+      "label": "ProlongedBrownianSetup.OfBrownian",
+      "section": 4,
+      "file": "SignatureVolatility/ProlongedBrownianSetup/OfBrownian.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
+    },
+    {
       "id": "ProlongedBrownianSetup.SignatureFiltration",
       "label": "ProlongedBrownianSetup.SignatureFiltration",
       "section": 4,
       "file": "SignatureVolatility/ProlongedBrownianSetup/SignatureFiltration.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
+    },
+    {
+      "id": "ProlongedBrownianSetup.SignatureOfBM",
+      "label": "ProlongedBrownianSetup.SignatureOfBM",
+      "section": 4,
+      "file": "SignatureVolatility/ProlongedBrownianSetup/SignatureOfBM.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
@@ -801,6 +873,15 @@
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
     },
     {
+      "id": "TimeReindex",
+      "label": "TimeReindex",
+      "section": 1,
+      "file": "SignatureVolatility/TimeReindex.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed."
+    },
+    {
       "id": "Tw",
       "label": "Tw",
       "section": 1,
@@ -971,6 +1052,11 @@
       "kind": "hard"
     },
     {
+      "from": "ExtTensorAlgebra.Concat",
+      "to": "ExtTensorAlgebra.ConcatAssoc",
+      "kind": "hard"
+    },
+    {
       "from": "ExtTensorAlgebra.ExtTensorAlgebra",
       "to": "ExtTensorAlgebra.Coord",
       "kind": "hard"
@@ -1038,6 +1124,36 @@
     {
       "from": "Word",
       "to": "ExtTensorAlgebra.ShuffleWords",
+      "kind": "hard"
+    },
+    {
+      "from": "ExtTensorAlgebra.ConcatAssoc",
+      "to": "ExtTensorAlgebra.TensorExp",
+      "kind": "hard"
+    },
+    {
+      "from": "ExtTensorAlgebra.LevelNorm",
+      "to": "ExtTensorAlgebra.TensorExpLevelNorm",
+      "kind": "hard"
+    },
+    {
+      "from": "ExtTensorAlgebra.TensorExp",
+      "to": "ExtTensorAlgebra.TensorExpLevelNorm",
+      "kind": "hard"
+    },
+    {
+      "from": "ExtTensorAlgebra.TensorExp",
+      "to": "ExtTensorAlgebra.TensorExpNeg",
+      "kind": "hard"
+    },
+    {
+      "from": "ExtTensorAlgebra.EvalShuffleBasis",
+      "to": "ExtTensorAlgebra.TensorExpShuffle",
+      "kind": "hard"
+    },
+    {
+      "from": "ExtTensorAlgebra.TensorExp",
+      "to": "ExtTensorAlgebra.TensorExpShuffle",
       "kind": "hard"
     },
     {
@@ -1126,6 +1242,21 @@
       "kind": "hard"
     },
     {
+      "from": "MemTwDualOfMemL2w",
+      "to": "ItoCalculusKit.OfMathFin",
+      "kind": "hard"
+    },
+    {
+      "from": "ProlongedBrownianSetup.SignatureOfBM",
+      "to": "ItoCalculusKit.OfMathFin",
+      "kind": "hard"
+    },
+    {
+      "from": "TheoremA",
+      "to": "ItoCalculusKit.OfMathFin",
+      "kind": "hard"
+    },
+    {
       "from": "DualPairing",
       "to": "ItoCalculusKit",
       "kind": "hard"
@@ -1137,6 +1268,11 @@
     },
     {
       "from": "HypH2",
+      "to": "ItoCalculusKit",
+      "kind": "hard"
+    },
+    {
+      "from": "HypH3",
       "to": "ItoCalculusKit",
       "kind": "hard"
     },
@@ -1361,6 +1497,11 @@
       "kind": "hard"
     },
     {
+      "from": "TimeReindex",
+      "to": "ProlongedBrownianSetup.OfBrownian",
+      "kind": "hard"
+    },
+    {
       "from": "ProlongedBrownianSetup.WHat",
       "to": "ProlongedBrownianSetup.SignatureFiltration",
       "kind": "hard"
@@ -1368,6 +1509,31 @@
     {
       "from": "PriceFiltration",
       "to": "ProlongedBrownianSetup.SignatureFiltration",
+      "kind": "hard"
+    },
+    {
+      "from": "ExtTensorAlgebra.TensorExpLevelNorm",
+      "to": "ProlongedBrownianSetup.SignatureOfBM",
+      "kind": "hard"
+    },
+    {
+      "from": "ExtTensorAlgebra.TensorExpNeg",
+      "to": "ProlongedBrownianSetup.SignatureOfBM",
+      "kind": "hard"
+    },
+    {
+      "from": "ExtTensorAlgebra.TensorExpShuffle",
+      "to": "ProlongedBrownianSetup.SignatureOfBM",
+      "kind": "hard"
+    },
+    {
+      "from": "ProlongedBrownianSetup",
+      "to": "ProlongedBrownianSetup.SignatureOfBM",
+      "kind": "hard"
+    },
+    {
+      "from": "ProlongedBrownianSetup.OfBrownian",
+      "to": "ProlongedBrownianSetup.SignatureOfBM",
       "kind": "hard"
     },
     {

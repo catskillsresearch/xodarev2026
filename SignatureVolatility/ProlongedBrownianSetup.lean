@@ -45,16 +45,15 @@ structure ProlongedBrownianSetup (Ω : Type*) [m₀ : MeasurableSpace Ω]
     ∀ (I J : Word (d + 1)) (ω : Ω),
       (sig2 0 t ω).coeff I * (sig2 0 t ω).coeff J =
         ExtTensorAlgebra.evalShuffleBasis I J (sig2 0 t ω)
-  /-- Appendix A Brownian signature factorial level-decay estimate: for each `p ≥ 1`, there exist
-  constants `C_p ≥ 0` and `R_p ≥ 0` controlling the `L^p`-norm of level-`n` signature norms by
-  `C_p * R_p^n / n!`, together with uniform `L^p` control of weighted sums. -/
-  factorial_moment_control : ∀ (p : ℝ), 1 ≤ p → ∃ (C_p R_p : ℝ), 0 ≤ C_p ∧ 0 ≤ R_p ∧
+  /-- Appendix A / paper Proposition 12 factorial level control: for each `p ≥ 1` and any
+  nonnegative weight sequence of at most geometric growth `w_n ≤ r^n` (as supplied by `HypH2`
+  via submultiplicativity), the weighted level series of `sig2 0 t` converges pathwise and
+  lies in `L^p`. Weaker all-radius `R^n/n!` summability is insufficient for Gaussian drivers. -/
+  factorial_moment_control : ∀ (p : ℝ), 1 ≤ p →
     ∀ (w_fn : ℕ → ℝ), (∀ n, 0 ≤ w_fn n) →
-      Summable (fun n : ℕ => w_fn n * (C_p * (R_p ^ n / (n.factorial : ℝ)))) →
+      (∃ r : ℝ, ∀ n, w_fn n ≤ r ^ n) →
       ∀ ⦃t : ℝ⦄, 0 ≤ t → t ≤ T →
         (∀ ω, Summable (fun n : ℕ => w_fn n * (sig2 0 t ω).levelNorm n)) ∧
-        Integrable (fun ω => (∑' n : ℕ, w_fn n * (sig2 0 t ω).levelNorm n) ^ p) ℙ ∧
-        (∫ ω, (∑' n : ℕ, w_fn n * (sig2 0 t ω).levelNorm n) ^ p ∂ℙ) ≤
-          (∑' n : ℕ, w_fn n * (C_p * (R_p ^ n / (n.factorial : ℝ)))) ^ p
+        Integrable (fun ω => (∑' n : ℕ, w_fn n * (sig2 0 t ω).levelNorm n) ^ p) ℙ
 
 end SignatureVolatility

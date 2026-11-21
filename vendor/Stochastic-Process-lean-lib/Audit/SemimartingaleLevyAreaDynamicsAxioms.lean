@@ -1,0 +1,8 @@
+import StochLean.Probability.Process.Semimartingale.SemanticRegression
+
+#print axioms ProbabilityTheory.IsSemimartingale.contDiff_clock_mul_eq_integrals
+#print axioms ProbabilityTheory.IsSemimartingale.contDiff_clock_mul_sq_add_sq_eq_integrals
+#print axioms ProbabilityTheory.IsSemimartingale.stochasticAreaExponent_re_eq_integrals
+#print axioms ProbabilityTheory.IsSemimartingale.stochasticArea_eq_integrals_of_continuous
+#print axioms StochLean.SemimartingaleRegression.levy_area_real_exponent_initial
+#print axioms StochLean.SemimartingaleRegression.levy_area_real_exponent_terminal

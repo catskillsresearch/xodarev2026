@@ -27,7 +27,9 @@ structure SignatureVolatilityModel where
   hs₀ : 0 < s₀
   h1 : HypH1 w ℓ
   h2 : HypH2 w
-  h3 : HypH3 hd ℓ
+  /-- Parameter nondegeneracy (`ℓ ≠ 0`). Analytic Novikov H3 on `ξ = ⟨ℓ,Ŵ⟩` is
+  a separate hypothesis when inhabiting `ItoCalculusKit`. -/
+  h3 : HypH3Param hd ℓ
 
 
 end SignatureVolatility

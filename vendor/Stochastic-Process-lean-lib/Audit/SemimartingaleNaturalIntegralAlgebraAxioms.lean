@@ -1,0 +1,19 @@
+import StochLean.Probability.Process.Semimartingale.SemanticRegression
+
+#print axioms ProbabilityTheory.IsLeftContinuousPath.measurable
+#print axioms ProbabilityTheory.IsCagladPath.measurable
+#print axioms ProbabilityTheory.HasIntegrableVariation.neg
+#print axioms ProbabilityTheory.HasIntegrableVariation.const_mul
+#print axioms ProbabilityTheory.HasIntegrableVariation.smul
+#print axioms ProbabilityTheory.HasIntegrableVariation.add_of_aemeasurable
+#print axioms ProbabilityTheory.HasIntegrableVariation.sub_of_aemeasurable
+#print axioms ProbabilityTheory.HasIntegrableVariation.add
+#print axioms ProbabilityTheory.HasIntegrableVariation.sub
+#print axioms ProbabilityTheory.IsNatural.const_mul
+#print axioms ProbabilityTheory.IsNatural.neg
+#print axioms ProbabilityTheory.IsNatural.add
+#print axioms ProbabilityTheory.IsNatural.sub
+#print axioms ProbabilityTheory.IsNatural.congr
+#print axioms ProbabilityTheory.IsSemimartingale.ae_eVariationOn_stochasticIntegral_le_of_finiteVariation
+#print axioms ProbabilityTheory.IsSemimartingale.hasIntegrableVariation_stochasticIntegral
+#print axioms ProbabilityTheory.IsSemimartingale.exists_integrable_terminal_stochasticIntegral_of_integrableVariation

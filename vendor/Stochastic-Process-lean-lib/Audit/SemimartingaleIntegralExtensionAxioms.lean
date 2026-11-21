@@ -1,0 +1,27 @@
+import StochLean.Probability.Process.Semimartingale.SemanticRegression
+
+#print axioms ProbabilityTheory.TendstoUCP.congr_left
+#print axioms ProbabilityTheory.TendstoUCP.congr_right
+#print axioms ProbabilityTheory.TendstoUCP.neg
+#print axioms ProbabilityTheory.TendstoUCP.add
+#print axioms ProbabilityTheory.TendstoUCP.sub
+#print axioms ProbabilityTheory.TendstoUCP.smul
+#print axioms ProbabilityTheory.tendstoUCP_zero_of_diagonal_deviation_bound
+#print axioms ProbabilityTheory.exists_diagonal_tendstoUCP_sub_zero
+#print axioms ProbabilityTheory.IsSemimartingale.exists_elementaryIntegralProcess_limit
+#print axioms ProbabilityTheory.IsSemimartingale.exists_stochasticIntegral
+#print axioms ProbabilityTheory.IsSemimartingale.stochasticIntegral
+#print axioms ProbabilityTheory.IsSemimartingale.adapted_stochasticIntegral
+#print axioms ProbabilityTheory.IsSemimartingale.isCadlagPath_stochasticIntegral
+#print axioms ProbabilityTheory.IsSemimartingale.hasCadlagPaths_stochasticIntegral
+#print axioms ProbabilityTheory.IsSemimartingale.tendstoUCP_stochasticIntegral_of_simple
+#print axioms ProbabilityTheory.IsSemimartingale.stochasticIntegral_indistinguishable_of_limit
+#print axioms ProbabilityTheory.IsSemimartingale.stochasticIntegral_indistinguishable_of_simple
+#print axioms ProbabilityTheory.IsSemimartingale.stochasticIntegral_proof_irrel
+#print axioms ProbabilityTheory.IsSemimartingale.stochasticIntegral_congr_integrand
+#print axioms ProbabilityTheory.IsSemimartingale.stochasticIntegral_add
+#print axioms ProbabilityTheory.IsSemimartingale.stochasticIntegral_smul
+#print axioms ProbabilityTheory.IsSemimartingale.tendstoUCP_stochasticIntegral
+#print axioms ProbabilityTheory.IsSemimartingale.stochasticIntegral_zero_ae
+#print axioms StochLean.SemimartingaleRegression.general_integral_closed_interval
+#print axioms StochLean.SemimartingaleRegression.general_integral_initial_spike

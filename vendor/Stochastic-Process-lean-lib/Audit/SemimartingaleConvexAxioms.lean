@@ -1,0 +1,8 @@
+import StochLean.Probability.Process.Semimartingale.SemanticRegression
+
+#print axioms MeasureTheory.Martingale.convex_comp
+#print axioms MeasureTheory.Submartingale.convex_monotone_comp
+#print axioms StochLean.SemimartingaleRegression.martingale_convex_transform_need_not_be_monotone
+#print axioms StochLean.SemimartingaleRegression.submartingale_convex_transform_requires_monotone
+#print axioms StochLean.SemimartingaleRegression.martingale_convex_transform_requires_integrability
+#print axioms StochLean.SemimartingaleRegression.submartingale_exponential_transform

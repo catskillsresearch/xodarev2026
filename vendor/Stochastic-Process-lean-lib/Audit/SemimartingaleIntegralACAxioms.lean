@@ -1,0 +1,7 @@
+import StochLean.Probability.Process.Semimartingale.SemanticRegression
+
+#print axioms MeasureTheory.Measure.AbsolutelyContinuous.tendsto_measure_zero
+#print axioms ProbabilityTheory.TendstoUCP.absolutelyContinuous
+#print axioms ProbabilityTheory.IsSemimartingale.stochasticIntegral_absolutelyContinuous
+#print axioms StochLean.SemimartingaleRegression.zero_target_measure_needs_completeness
+#print axioms StochLean.SemimartingaleRegression.general_integral_measure_change_initial

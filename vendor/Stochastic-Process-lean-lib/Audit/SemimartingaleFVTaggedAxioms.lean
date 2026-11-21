@@ -1,0 +1,18 @@
+import StochLean.Probability.Process.Semimartingale.SemanticRegression
+
+#print axioms StochLean.TimePartition.taggedStep_zero
+#print axioms StochLean.TimePartition.taggedStep_left
+#print axioms StochLean.TimePartition.taggedStep_eq_of_mem_cell
+#print axioms StochLean.TimePartition.dist_tag_of_mem_cell_le_mesh
+#print axioms StochLean.TimePartition.tendstoUniformlyOn_taggedStep
+#print axioms StochLean.stieltjesTaggedSum_terminal
+#print axioms StochLean.stieltjesTaggedSum_left
+#print axioms StochLean.integrableOn_variationStieltjes_taggedStep
+#print axioms StochLean.pathStieltjesIntegral_taggedStep
+#print axioms StochLean.tendstoUniformlyOn_stieltjesTaggedSum
+#print axioms StochLean.tendsto_stieltjesTaggedSum_terminal
+#print axioms StochLean.tendsto_stieltjesTaggedIncrementSum
+#print axioms ProbabilityTheory.ae_tendstoUniformlyOn_stieltjesTaggedSum
+#print axioms ProbabilityTheory.ae_tendsto_stieltjesTaggedIncrementSum
+#print axioms StochLean.SemimartingaleRegression.tagged_right_endpoint_sum
+#print axioms StochLean.SemimartingaleRegression.tagged_repeated_zero_cell

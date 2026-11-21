@@ -1,0 +1,9 @@
+import StochLean.Probability.Process.Semimartingale.JacodCountableExpansion
+
+#print axioms ProbabilityTheory.initialExpansion_le
+#print axioms ProbabilityTheory.exists_measurable_inter_eq_of_measurableSet_initialExpansion
+#print axioms ProbabilityTheory.exists_measurable_ae_eq_restrict_of_measurableSet_initialExpansion
+#print axioms ProbabilityTheory.initialExpansion_le_sup_nullSets_restrict
+#print axioms ProbabilityTheory.sum_restrict_countablePartition
+#print axioms ProbabilityTheory.partitionMeasurableSpace_finiteEventAtom
+#print axioms ProbabilityTheory.initialExpansion_finiteEvents_eq_atoms

@@ -1,0 +1,37 @@
+import StochLean.Probability.Process.Semimartingale.SemanticRegression
+
+#print axioms StochLean.levyAreaAlpha
+#print axioms StochLean.levyAreaBeta
+#print axioms StochLean.hasDerivAt_real_tanh
+#print axioms StochLean.contDiff_real_tanh
+#print axioms StochLean.hasDerivAt_levyAreaAlpha
+#print axioms StochLean.hasDerivAt_levyAreaBeta
+#print axioms StochLean.contDiff_levyAreaAlpha
+#print axioms StochLean.contDiff_levyAreaBeta
+#print axioms StochLean.levyAreaAlpha_terminal
+#print axioms StochLean.levyAreaBeta_terminal
+#print axioms StochLean.levyAreaAlpha_zero
+#print axioms StochLean.levyAreaBeta_zero
+#print axioms StochLean.levyAreaAlpha_nonneg
+#print axioms StochLean.levyAreaBeta_nonpos
+#print axioms StochLean.exp_levyAreaBeta
+#print axioms StochLean.levyArea_coefficient_square_sum
+#print axioms StochLean.norm_exp_levyAreaExponent_le_one
+#print axioms ProbabilityTheory.IsSemimartingale.stochasticArea
+#print axioms ProbabilityTheory.IsSemimartingale.stochasticArea_antisymm
+#print axioms ProbabilityTheory.IsSemimartingale.stochasticArea_self
+#print axioms ProbabilityTheory.IsSemimartingale.stochasticArea_zero_ae
+#print axioms ProbabilityTheory.IsSemimartingale.isSemimartingale_stochasticArea
+#print axioms ProbabilityTheory.IsSemimartingale.hasContinuousPaths_stochasticArea
+#print axioms ProbabilityTheory.IsContinuousLocalMartingale.isContinuousLocalMartingale_stochasticArea
+#print axioms ProbabilityTheory.IsSemimartingale.quadraticCovariation_stochasticArea_left
+#print axioms ProbabilityTheory.IsSemimartingale.continuousQuadraticCovariation_stochasticArea_left
+#print axioms ProbabilityTheory.IsSemimartingale.continuousQuadraticCovariation_stochasticArea_right
+#print axioms ProbabilityTheory.IsSemimartingale.continuousQuadraticVariation_stochasticArea
+#print axioms ProbabilityTheory.IsSemimartingale.quadraticCovariation_sub_left
+#print axioms ProbabilityTheory.IsSemimartingale.quadraticCovariation_sub_right
+#print axioms ProbabilityTheory.IsSemimartingale.continuousQuadraticCovariation_sub_left
+#print axioms ProbabilityTheory.IsSemimartingale.continuousQuadraticCovariation_sub_right
+#print axioms StochLean.SemimartingaleRegression.levy_area_initial_guard
+#print axioms StochLean.SemimartingaleRegression.levy_area_parameter_sign
+#print axioms StochLean.SemimartingaleRegression.levy_area_terminal_exponent

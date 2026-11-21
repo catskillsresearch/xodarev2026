@@ -1,4 +1,6 @@
 /.lake
+# Nested Lake build dirs under path deps (vendor/brownian-motion, etc.)
+**/.lake/
 /lake-packages
 /build
 *.olean

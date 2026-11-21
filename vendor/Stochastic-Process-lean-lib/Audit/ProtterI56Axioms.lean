@@ -1,0 +1,7 @@
+import StochLean.Analysis.PathVariation.NaiveIntegrationImpossible
+
+#print axioms StochLean.TimePartition.naiveLeftSumCLM_apply
+#print axioms StochLean.TimePartition.pVariationSum_one_le_norm_naiveLeftSumCLM
+#print axioms StochLean.boundedVariationOn_of_tendsto_naiveLeftSum
+#print axioms StochLean.protter_I_56_naiveIntegration_impossible
+#print axioms StochLean.exists_continuous_naiveLeftSum_not_tendsto_of_not_boundedVariation

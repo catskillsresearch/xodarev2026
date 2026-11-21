@@ -1,0 +1,597 @@
+"""Values gates — mechanical enforcement of the honesty contract over the
+LIBRARY sources and the generated audit artifacts (complementing
+``test_router.py``'s benchmark-level checks).
+
+1. ``test_mathfin_sources_free_of_forbidden_text`` — scout/search/interactive
+   tactics and trust-extending commands never land in committed ``MathFin/``
+   sources: scout-not-author, offline-loop, and kernel-only trust, enforced
+   textually (comments are stripped first, so prose may mention the words).
+2. ``test_full_entries_are_not_definitional_rfl`` — a ``full`` entry's cited
+   theorems (and the snippet's own declarations) must not be definitional
+   ``rfl`` / ``unfold; rfl``: that is the ``reduced_core`` pattern in
+   disguise. This is the entry-time version of the 2026-05-29 / 2026-06-03
+   audit demotions (newton-raphson, pp-thm-3.3.5, mc-thm-1.1.2).
+3. ``test_blueprint_spine_is_audited`` — every MathFin theorem on the curated
+   blueprint spine is axiom-guarded in ``MathFin/AxiomAudit.lean``: the spine
+   is curated prose + a generated dependency graph, the audit must be its
+   superset (headliners are, at minimum, axiom-pinned).
+4. ``test_axiom_audit_gen_is_fresh`` — ``MathFin/AxiomAuditGen.lean`` is
+   byte-identical to the generator's output (generated artifacts are never
+   hand-edited; regeneration is a no-op).
+6. ``test_contracts_cite_source`` / ``test_contracts_corpus_entries_cite_source``
+   — the ``MathFin/Contracts/`` tower's design is Bilokon's; every module
+   docstring and every ``mf-contract-*`` corpus entry must carry the credit
+   line, not just one or the other (the corpus ships in the HF dataset, so
+   the citation must travel with the claim).
+7. ``test_cited_theorems_are_axiom_pinned`` / ``test_benchmark_citations_resolve``
+   / ``test_library_wrapper_citations_are_pinned`` — every MathFin theorem a
+   non-wrapper benchmark proof cites is pinned by one of the two axiom audits,
+   with citations resolved by declaration (``open``, dot notation,
+   non-``MathFin`` namespaces); no identifier that could be such a citation is
+   left unresolved; and every upstream constant a ``library_wrapper`` entry
+   cites is listed in the generator's ``UPSTREAM_CITATIONS`` and pinned.
+8. ``test_module_docstrings_follow_the_doc_standard`` — every module docstring has
+   Mathlib's layout (``tools/verify/doc_standard.py``): a title first, standard sections
+   spelled the standard way, References and Tags last, every reference keyed to
+   ``docs/references.bib``, subject codes well formed. Section coverage is a ratchet count.
+"""
+
+import re
+from pathlib import Path
+
+from tools.verify import library
+from tools.verify.axiom_audit_gen import GEN_PATH, UPSTREAM_CITATIONS, generate
+from tools.verify.corpus import iter_entries
+from tools.verify.mathfin_index import (
+    assigned_constants,
+    cited_theorems,
+    declaration_index,
+    proof_words,
+    unresolved_short_names,
+)
+from tools.verify.mathfin_index import strip_comments as _strip_comments
+
+AUDIT_PATH = Path("MathFin/AxiomAudit.lean")
+BLUEPRINT_PATH = Path("MathFin/Blueprint.lean")
+REPO_ROOT = Path(__file__).resolve().parent.parent
+
+
+# --------------------------------------------------------------------------
+# 1. forbidden text in library sources
+# --------------------------------------------------------------------------
+
+# The Lean source trees `lake build` compiles: the library and its examples and tests.
+LEAN_SOURCE_DIRS = ("MathFin", "MathFinExamples", "MathFinTest")
+
+FORBIDDEN_PATTERNS = (
+    (re.compile(r"\bsorry\b"), "sorry"),
+    (re.compile(r"\badmit\b"), "admit"),
+    (re.compile(r"\bnative_decide\b"),
+     "native_decide extends the trusted base beyond the kernel"),
+    (re.compile(r"\bpolyrith\b"), "polyrith calls an external service"),
+    (re.compile(r"\bexact\?"), "exact? is an interactive-search leftover"),
+    (re.compile(r"\bapply\?"), "apply? is an interactive-search leftover"),
+    (re.compile(r"\brw\?"), "rw? is an interactive-search leftover"),
+    (re.compile(r"\bsimp\?"), "simp? is an interactive-search leftover"),
+    (re.compile(r"\bhammer\b"), "hammer output is a scout, not an author"),
+    (re.compile(r"#loogle"), "#loogle queries an external service"),
+    (re.compile(r"\bleansearch\b", re.IGNORECASE),
+     "leansearch queries an external service"),
+)
+
+# (path-as-str, token) pairs, each with a justification comment.
+FORBIDDEN_ALLOWLIST: set = set()
+
+
+def test_mathfin_sources_free_of_forbidden_text() -> None:
+    failures = []
+    paths = (p for d in LEAN_SOURCE_DIRS for p in sorted(Path(d).rglob("*.lean")))
+    for path in paths:
+        stripped = _strip_comments(path.read_text())
+        for pattern, why in FORBIDDEN_PATTERNS:
+            for m in pattern.finditer(stripped):
+                token = m.group()
+                if (str(path), token) in FORBIDDEN_ALLOWLIST:
+                    continue
+                line = stripped.count("\n", 0, m.start()) + 1
+                failures.append(f"{path}:{line}: `{token}` — {why}")
+    assert not failures, (
+        "forbidden text in library sources (allowlist with a justification "
+        "comment if genuinely deliberate):\n  " + "\n  ".join(failures)
+    )
+
+
+# --------------------------------------------------------------------------
+# 2. definitional-rfl tripwire for `full` entries
+# --------------------------------------------------------------------------
+
+DECL_RE = re.compile(
+    r"^(?:private\s+|protected\s+|noncomputable\s+)*(?:theorem|lemma)\s+"
+    r"([A-Za-z_][\w.']*)",
+    re.MULTILINE,
+)
+
+# The rfl class: a proof whose entire content is a definitional unfold.
+RFL_TAIL_RE = re.compile(
+    r"^(?:Iff\.)?rfl$|^by\s+(?:unfold\s+[\w.\s,]+;\s*)?rfl$"
+)
+
+# Entry ids allowed to cite an rfl-class declaration, each justified.
+# (Definition entries — id containing "-def-" — are skipped wholesale: the
+# documented definitional-`full` convention, see test_router.py's
+# DEFINITIONAL_FULL_ALLOWLIST.)
+DEFINITIONAL_RFL_ALLOWLIST: set = set()
+
+
+def _decl_tails(text: str):
+    """Yield ``(decl_name, proof_tail)`` for every column-0 theorem/lemma.
+
+    The block runs to the next column-0 non-space line; the proof tail is
+    whatever follows the LAST ``:=`` in the block (good enough to recognize
+    the rfl class: an `rfl` tail that terminates an inner `have` would not
+    strip to exactly `rfl`)."""
+    lines = text.splitlines()
+    starts = []  # (line_idx, name)
+    for idx, line in enumerate(lines):
+        m = DECL_RE.match(line)
+        if m:
+            starts.append((idx, m.group(1)))
+    for pos, (idx, name) in enumerate(starts):
+        end = len(lines)
+        for j in range(idx + 1, len(lines)):
+            if lines[j][:1] not in ("", " ", "\t"):
+                end = j
+                break
+        block = "\n".join(lines[idx:end])
+        cut = block.rfind(":=")
+        tail = block[cut + 2:].strip() if cut != -1 else ""
+        yield name, tail
+
+
+def _mathfin_decl_tail_index() -> dict:
+    index: dict = {}
+    for path in library.modules(aggregators=True):
+        text = _strip_comments(path.read_text())
+        for name, tail in _decl_tails(text):
+            index.setdefault(name.split(".")[-1], []).append((str(path), tail))
+    return index
+
+
+def test_full_entries_are_not_definitional_rfl() -> None:
+    index = _mathfin_decl_tail_index()
+    decls = declaration_index()
+    failures = []
+    for path, theorem in iter_entries():
+        if theorem.get("metadata", {}).get("formalization_status") != "full":
+            continue
+        tid = theorem["id"]
+        if "-def-" in tid or tid in DEFINITIONAL_RFL_ALLOWLIST:
+            continue
+        code = theorem.get("code", {}).get("lean", "")
+        # (a) the snippet's own declarations (the old mc-thm-1.1.2 shape)
+        for name, tail in _decl_tails(code):
+            if tail and RFL_TAIL_RE.match(tail):
+                failures.append(f"{tid} ({path.name}): snippet decl "
+                                f"`{name}` is rfl-class: `{tail}`")
+        # (b) the cited module theorems: whatever follows a `:=`, resolved by
+        # declaration so an unqualified or dot-notation citation is seen too
+        for full_name in sorted(assigned_constants(code, decls)):
+            short = full_name.split(".")[-1]
+            for fpath, tail in index.get(short, []):
+                if tail and RFL_TAIL_RE.match(tail):
+                    failures.append(f"{tid} ({path.name}): cites {full_name} "
+                                    f"({fpath}) whose proof is rfl-class: "
+                                    f"`{tail}`")
+    assert not failures, (
+        "`full` entries backed by definitional-rfl proofs (the reduced_core "
+        "pattern in disguise — demote, derive, or allowlist with a "
+        "justification):\n  " + "\n  ".join(failures)
+    )
+
+
+# --------------------------------------------------------------------------
+# 3. blueprint spine ⊆ axiom audit
+# --------------------------------------------------------------------------
+
+# Spine nodes tagged on upstream constants (Mathlib / BrownianMotion
+# namespaces) are out of audit scope by design.
+def _blueprint_tagged_names() -> list:
+    text = _strip_comments(BLUEPRINT_PATH.read_text())
+    lines = text.splitlines()
+    names = []
+    attr_count = 0
+    i = 0
+    name_line = re.compile(r"^\s+([A-Za-z_][\w.']*)\s*$")
+    while i < len(lines):
+        if "attribute [blueprint" in lines[i]:
+            attr_count += 1
+            # single-line form: `attribute [blueprint "x"] Name`
+            m = re.search(r"\]\s+([A-Za-z_][\w.']+)\s*$", lines[i])
+            if m:
+                names.append(m.group(1))
+                i += 1
+                continue
+            # multi-line form: name on the first identifier-only line after
+            # the line that closes the attribute (ends with `)]` or `]`).
+            j = i
+            while j < len(lines) and not lines[j].rstrip().endswith("]"):
+                j += 1
+            j += 1
+            while j < len(lines) and not lines[j].strip():
+                j += 1
+            m2 = name_line.match(lines[j]) if j < len(lines) else None
+            assert m2, (
+                f"could not parse blueprint attribute near "
+                f"{BLUEPRINT_PATH}:{i + 1}"
+            )
+            names.append(m2.group(1))
+            i = j + 1
+            continue
+        i += 1
+    assert len(names) == attr_count, (
+        "blueprint tag parser drift: "
+        f"{attr_count} attributes, {len(names)} names parsed"
+    )
+    return names
+
+
+def _audited_names() -> set:
+    return set(re.findall(r"#print axioms\s+([A-Za-z_][\w.']*)",
+                          AUDIT_PATH.read_text()))
+
+
+def test_blueprint_spine_is_audited() -> None:
+    audited = _audited_names()
+    missing = [
+        name for name in _blueprint_tagged_names()
+        if name.startswith("MathFin.") and name not in audited
+    ]
+    assert not missing, (
+        "blueprint spine nodes missing from the curated axiom audit "
+        "(every headliner must be axiom-pinned — add a #guard_msgs block to "
+        "MathFin/AxiomAudit.lean):\n  " + "\n  ".join(missing)
+    )
+
+
+# --------------------------------------------------------------------------
+# 4. generated exhaustive audit is fresh
+# --------------------------------------------------------------------------
+
+def test_axiom_audit_gen_is_fresh() -> None:
+    assert GEN_PATH.exists(), (
+        f"{GEN_PATH} is missing — run "
+        "`python3 -m tools.verify.axiom_audit_gen --write`"
+    )
+    assert GEN_PATH.read_text() == generate(), (
+        f"{GEN_PATH} is stale relative to the benchmark corpus — run "
+        "`python3 -m tools.verify.axiom_audit_gen --write` and commit the "
+        "result (generated artifacts are never hand-edited)"
+    )
+
+
+# --------------------------------------------------------------------------
+# 5. the values review (the judgment lenses) actually happens
+# --------------------------------------------------------------------------
+
+# The eight judgment lenses (docs/values-review.md) cannot be checked by a
+# machine — but "nobody looked" can. A recorded multi-agent review must
+# cover the corpus to within one session's growth. A verdict header is a
+# dated `## ` heading carrying a `corpus <N>` count anywhere on the line; the
+# optional `commit <sha>` provenance segment (absent on working-tree verdicts)
+# is NOT required. Anchoring the regex on a mandatory `commit <sha>` silently
+# dropped the seven most-recent reviews (corpus 295–302) and let the gate
+# track a stale corpus-292 line — a freshness gate fooled into reading the
+# wrong anchor (fixed 2026-06-29).
+VALUES_REVIEW_PATH = Path("docs/values-review.md")
+REVIEW_HEADER_RE = re.compile(
+    r"^## \d{4}-\d{2}-\d{2}\b.*?— corpus (\d+)",
+    re.MULTILINE,
+)
+REVIEW_SLACK_ENTRIES = 12
+# Since 2026-10-21 a review heading also records the module count ("— corpus 544, modules 610
+# —"): a batch of 42 modules arrived with 7 entries, so counting entries alone let most of a
+# batch go unreviewed.
+REVIEW_MODULES_RE = re.compile(
+    r"^## \d{4}-\d{2}-\d{2}\b.*?— corpus \d+, modules (\d+)",
+    re.MULTILINE,
+)
+REVIEW_SLACK_MODULES = 15
+
+
+def test_values_review_is_current() -> None:
+    text = VALUES_REVIEW_PATH.read_text()
+    reviewed_counts = [int(m.group(1)) for m in REVIEW_HEADER_RE.finditer(text)]
+    assert reviewed_counts, (
+        f"{VALUES_REVIEW_PATH} has no parseable verdict block — run the "
+        "values-review panel (see the protocol in that file) and record it"
+    )
+    corpus = sum(1 for _ in iter_entries())
+    newest = max(reviewed_counts)
+    assert corpus - newest <= REVIEW_SLACK_ENTRIES, (
+        f"the corpus has {corpus} entries but the latest recorded values "
+        f"review covered {newest} — more than {REVIEW_SLACK_ENTRIES} entries "
+        "of unreviewed growth. Run the multi-agent values review "
+        "(docs/values-review.md) and record the verdict before pushing more "
+        "proof content."
+    )
+    reviewed_modules = [int(m.group(1)) for m in REVIEW_MODULES_RE.finditer(text)]
+    if reviewed_modules:
+        modules = len(library.modules(aggregators=True))
+        newest_modules = max(reviewed_modules)
+        assert modules - newest_modules <= REVIEW_SLACK_MODULES, (
+            f"MathFin/ has {modules} modules but the latest recorded values review covered "
+            f"{newest_modules}, more than {REVIEW_SLACK_MODULES} modules of unreviewed growth. "
+            "Run the values review (docs/values-review.md) and record the verdict, with the "
+            "module count in its heading, before pushing more proof content."
+        )
+
+
+# --------------------------------------------------------------------------
+# The prose-vs-statement gate.
+#
+# Twice on 2026-08-07 a green build shipped prose that claimed more than the
+# Lean beneath it. Five corpus entries described the stochastic term as
+# `∫₀ᵀ f_x(s,B_s) dB_s` while their statements said only `∃ gfx` (#183), and
+# the README's landmark table rendered `ito_formula_unrestricted` as an
+# integral identity when the theorem proves only that a residual is a
+# continuous local martingale. Nobody wrote a false claim on purpose: the
+# prose described the theorem everyone had in mind and the statement quietly
+# said less.
+#
+# This catches the mechanical half of that class — an existential whose
+# witness the statement never pins down, while the prose writes the integral
+# that would pin it down. The judgment half (a description that overstates in
+# some other way) belongs to the values review, whose protocol now carries it
+# as a standing step.
+#
+# Deliberately narrow: it fires only on `∃`-statements, and only when the
+# prose writes an integral against a driver. A first draft accepted any `=ᵐ`
+# after the `∃` as evidence of identification and so passed `sc-thm-7.1.1`,
+# whose main identity is itself an `=ᵐ` — the check answered a different
+# question than the one asked. Match the witness by NAME.
+EXISTS_WITNESS_RE = re.compile(r"∃!?\s*([A-Za-z_][A-Za-z0-9_'’]*)\s*[:,]")
+# an integral against a driver: `∫ … dB`, `dB_s`, `dW`, `dX`, `dM`
+PROSE_CLAIMS_INTEGRAL_RE = re.compile(r"∫[^\n]{0,90}\bd[BWXM]\b|\bd[BWXM]_[a-z]\b")
+DOCSTRING_RE = re.compile(r"/--(.*?)-/", re.S)
+STATEMENT_START_RE = re.compile(r"\n(?:theorem|lemma)\s")
+
+# Entries whose prose names an integrand the statement does not pin down, with
+# the reason it is acceptable. Keep this empty unless there is a real reason.
+PROSE_STATEMENT_ALLOWLIST: dict[str, str] = {}
+
+
+def _headline_statement(code: str) -> str:
+    match = STATEMENT_START_RE.search(code)
+    statement = code[match.start():] if match else code
+    for marker in (":= by", ":=\n"):
+        index = statement.find(marker)
+        if index != -1:
+            return statement[:index]
+    return statement
+
+
+def test_prose_does_not_outrun_statement() -> None:
+    offenders = []
+    for _path, entry in iter_entries():
+        code = (entry.get("code") or {}).get("lean", "")
+        if not code:
+            continue
+        statement = _headline_statement(code)
+        witness = EXISTS_WITNESS_RE.search(statement)
+        if not witness:
+            continue
+        name = witness.group(1)
+        # the statement pins the witness down if it equates it to anything
+        identified = (
+            re.search(rf"(⇑\s*)?{re.escape(name)}\s*=", statement) is not None
+            or re.search(rf"=\s*{re.escape(name)}\b", statement) is not None
+            # a coerced witness, `(v : ℝ) = t - s`, is pinned down just as well
+            or re.search(rf"\(\s*{re.escape(name)}\s*:[^)]*\)\s*=", statement) is not None
+            or "∃!" in statement
+        )
+        if identified:
+            continue
+        doc = DOCSTRING_RE.search(code)
+        prose = (doc.group(1) if doc else "") + "\n" + (entry.get("description") or "")
+        if PROSE_CLAIMS_INTEGRAL_RE.search(prose) and entry["id"] not in PROSE_STATEMENT_ALLOWLIST:
+            offenders.append(entry["id"])
+    assert not offenders, (
+        "these entries write an integral against a driver in their prose while "
+        "their statement leaves the existential witness unnamed — either carry "
+        "the identification into the statement, or reword the prose to say what "
+        f"is actually proved: {sorted(offenders)}"
+    )
+
+
+# A reduced_core entry delivers less than the theorem it is named after — that
+# is what the status means — so its `description` has to say what it leaves
+# out. On 2026-09-18 none of the thirteen did: each stated the textbook theorem
+# while the Lean read the conclusion off a structure field or proved a first
+# case (sc-thm-9.1.8 named its status, in a paragraph that had gone stale).
+# `formalization_scope` carried the disclosure; the field that heads the HF
+# record did not. The 2026-08-07 sweep corrected fifteen textbook-framed
+# descriptions, none of them reduced_core — the status looked like disclosure
+# enough, and it does not ship as prose.
+SCOPE_DISCLOSURE_RE = re.compile(
+    r"\bnot\s+(?:\w+\s+)?(?:derived|delivered|proved|formali[sz]ed)\b",
+    re.IGNORECASE,
+)
+
+
+def test_reduced_core_description_discloses_scope() -> None:
+    offenders = [
+        entry["id"]
+        for _path, entry in iter_entries()
+        if entry.get("metadata", {}).get("formalization_status") == "reduced_core"
+        and not SCOPE_DISCLOSURE_RE.search(entry.get("description") or "")
+    ]
+    assert not offenders, (
+        "these reduced_core entries state their source theorem without saying "
+        "what the entry does not deliver — `description` ships in the HF "
+        "dataset, so the disclosure goes in that field (e.g. '… is not derived "
+        f"here'): {sorted(offenders)}"
+    )
+
+
+# --------------------------------------------------------------------------
+# 6. the contracts tower cites its source, in the Lean AND in the corpus
+#
+# Attribution that depends on remembering to write it is attribution that
+# gets dropped by the first refactor. The tower's design is Bilokon's
+# (working paper, 9 August 2026); the Lean is ours. A module that carries the
+# design without the credit line — or a published corpus entry that omits it
+# — is the exact failure these two gates exist to prevent.
+# --------------------------------------------------------------------------
+
+CONTRACTS_DIR = REPO_ROOT / "MathFin" / "Contracts"
+SOURCE_MARKERS = (
+    "Bilokon",
+    "The Contract Is Not the Model",
+    "github.com/thalesians/lean_contracts",
+    "Apache-2.0",
+    "No code is copied",
+)
+
+
+def test_contracts_cite_source() -> None:
+    # Every Contracts/ module credits the work it derives from. A reader of
+    # one file must not have to find the credit in a different one.
+    modules = sorted(CONTRACTS_DIR.glob("*.lean"))
+    assert modules, "no modules found under MathFin/Contracts/"
+    for path in modules:
+        text = path.read_text()
+        missing = [m for m in SOURCE_MARKERS if m not in text]
+        assert not missing, (
+            f"{path.relative_to(REPO_ROOT)} is missing its source attribution: "
+            f"{missing}. Every MathFin/Contracts/*.lean docstring must end with "
+            "the ## Source block (see the plan's Global Constraints and "
+            "docs/specs/2026-08-16-contracts-tower-design.md section 6)."
+        )
+
+
+def test_contracts_corpus_entries_cite_source() -> None:
+    # The citation ships with the claim in the HF dataset, not only in the Lean.
+    for _path, entry in iter_entries():
+        if not entry["id"].startswith("mf-contract-"):
+            continue
+        ref = entry.get("metadata", {}).get("reference", "")
+        assert "Bilokon" in ref, (
+            f"{entry['id']}: metadata.reference must name the source paper - "
+            "the corpus is published, so the credit must travel with the claim"
+        )
+
+
+# --------------------------------------------------------------------------
+# 7. every theorem a benchmark proof cites is axiom-pinned
+#
+# The generated audit claims to pin every MathFin theorem the corpus cites.
+# Until 2026-09-25 it found citations by the spelling `MathFin.…`, and five
+# theorems cited by `full` entries escaped both audit files: two cited through
+# `open ProbabilityTheory`, one through `open MathFin`, one by dot notation on
+# a hypothesis, and one declared by a MathFin file inside `namespace
+# MeasureTheory`. Citations are now resolved by declaration
+# (tools/verify/mathfin_index.py); these tests hold the claim to that.
+# --------------------------------------------------------------------------
+
+# The five, named here so that a regression in the resolver itself cannot
+# quietly drop them again.
+ESCAPED_2026_09_25 = (
+    "ProbabilityTheory.IsFilteredPreBrownian.squareSubTime_isMartingale",
+    "ProbabilityTheory.IsFilteredPreBrownian.waldExponential_isMartingale",
+    "MathFin.isStoppingTime_hittingAfter_of_open",
+    "MathFin.BivariateGaussianHyp.conditional_expectation_formula",
+    "MeasureTheory.maximal_ineq_Lp",
+)
+
+# (entry id, identifier) pairs the resolver cannot resolve, each checked by hand
+# not to be a MathFin citation.
+UNRESOLVED_ALLOWLIST: dict[tuple[str, str], str] = {
+    ("pp-prop-3.3.6", "P.mono"): "a field of the snippet's own structure `P`",
+    ("pp-thm-3.3.10", ".sub"): "Mathlib's `Measurable.sub`, by dot notation on a term",
+    ("mart-thm-2.6.7", "MeasureTheory.Martingale.integrable"): "Mathlib's `Martingale.integrable`, cited by full name",
+    ("dist-exp-memoryless", "congr"): "the `congr 1` tactic, not `IsFilteredPreBrownian.congr`",
+}
+
+
+def _pinned_names() -> set:
+    return {name for path in (AUDIT_PATH, GEN_PATH)
+            for name in re.findall(r"#print axioms\s+([A-Za-z_][\w.']*)",
+                                   path.read_text())}
+
+
+def test_cited_theorems_are_axiom_pinned() -> None:
+    pinned = _pinned_names()
+    index = declaration_index()
+    missing = [name for name in ESCAPED_2026_09_25 if name not in pinned]
+    for path, entry in iter_entries():
+        if entry.get("metadata", {}).get("formalization_status") == "library_wrapper":
+            continue
+        code = entry.get("code", {}).get("lean", "")
+        missing += [f"{entry['id']} ({path.name}) cites {name}"
+                    for name in sorted(cited_theorems(code, index))
+                    if name not in pinned]
+    assert not missing, (
+        "benchmark entries cite MathFin theorems that neither "
+        f"{AUDIT_PATH} nor {GEN_PATH} pins — regenerate with "
+        "`python3 -m tools.verify.axiom_audit_gen --write`, or fix the "
+        "resolver if it no longer finds the citation:\n  " + "\n  ".join(missing)
+    )
+
+
+def test_benchmark_citations_resolve() -> None:
+    # The pin above covers what the resolver resolves. An identifier it cannot
+    # resolve but that shares a name with a MathFin theorem is where a citation
+    # could still hide (on 2026-09-25, an `open` continued onto a second line).
+    index = declaration_index()
+    unresolved = [
+        f"{entry['id']} ({path.name}): {ident}"
+        for path, entry in iter_entries()
+        if entry.get("metadata", {}).get("formalization_status") != "library_wrapper"
+        for ident in sorted(unresolved_short_names(entry.get("code", {}).get("lean", ""), index))
+        if (entry["id"], ident) not in UNRESOLVED_ALLOWLIST
+    ]
+    assert not unresolved, (
+        "these identifiers share a name with a MathFin theorem but do not "
+        "resolve to one, so the axiom audit cannot tell whether they cite it — "
+        "cite by full name or give the binder a written type, or, if it is not "
+        "a MathFin citation, add it to UNRESOLVED_ALLOWLIST with the reason:\n  "
+        + "\n  ".join(unresolved)
+    )
+
+
+def test_library_wrapper_citations_are_pinned() -> None:
+    # A library_wrapper entry re-exports a Mathlib or BrownianMotion theorem and
+    # counts as delivered, and BrownianMotion at the current pin has `sorry`s. The
+    # upstream names are listed by hand in UPSTREAM_CITATIONS; this keeps the list
+    # in step with the corpus and with the generated audit.
+    wrappers = {
+        entry["id"]: entry.get("code", {}).get("lean", "")
+        for _path, entry in iter_entries()
+        if entry.get("metadata", {}).get("formalization_status") == "library_wrapper"
+    }
+    pinned = _pinned_names()
+    problems = [f"{entry_id}: no UPSTREAM_CITATIONS row"
+                for entry_id in sorted(wrappers.keys() - UPSTREAM_CITATIONS.keys())]
+    problems += [f"{entry_id}: has an UPSTREAM_CITATIONS row but is not a library_wrapper"
+                 for entry_id in sorted(UPSTREAM_CITATIONS.keys() - wrappers.keys())]
+    for entry_id, names in sorted(UPSTREAM_CITATIONS.items()):
+        words = proof_words(wrappers.get(entry_id, ""))
+        problems += [f"{entry_id}: {name} does not appear in its proof"
+                     for name in names if name.rsplit(".", 1)[-1] not in words]
+        problems += [f"{entry_id}: {name} is not pinned"
+                     for name in names if name not in pinned]
+    assert not problems, (
+        "UPSTREAM_CITATIONS in tools/verify/axiom_audit_gen.py is out of step "
+        "with the library_wrapper entries — list each upstream constant the "
+        "proof cites, fully qualified, then run "
+        "`python3 -m tools.verify.axiom_audit_gen --write`:\n  " + "\n  ".join(problems)
+    )
+
+
+def test_module_docstrings_follow_the_doc_standard() -> None:
+    from tools.verify import doc_standard
+
+    problems = doc_standard.all_problems()
+    assert not problems, (
+        "module docstrings off the doc standard (docs/specs/2026-11-05-library-practices-design.md"
+        " §4; `python3 -m tools.verify.doc_standard`):\n  " + "\n  ".join(problems))

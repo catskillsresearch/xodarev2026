@@ -1,0 +1,5 @@
+import StochLean.Probability.Process.Semimartingale.ClassicalLocalization
+
+#print axioms ProbabilityTheory.IsPreLocalizingSequence.exists_cadlag_limit_of_stopped_consistency
+#print axioms ProbabilityTheory.isClassicalSemimartingale_of_consistent_deterministic_decompositions
+#print axioms ProbabilityTheory.isClassicalSemimartingale_of_deterministic_stoppedProcess

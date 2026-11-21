@@ -19,8 +19,11 @@ ExtTensorAlgebra.BasisWord -hard-> Remark219BlackScholesRiccati
 ExtTensorAlgebra.BasisWord -hard-> SignatureHestonLevel2Model
 ExtTensorAlgebra.Concat -hard-> BanachAlgebraConcatBound
 ExtTensorAlgebra.Concat -hard-> ChenIdentity
+ExtTensorAlgebra.Concat -hard-> ExtTensorAlgebra.ConcatAssoc
 ExtTensorAlgebra.Concat -hard-> ExtTensorAlgebra.LevelNorm
 ExtTensorAlgebra.Concat -hard-> ProlongedBrownianSetup
+ExtTensorAlgebra.ConcatAssoc -hard-> ExtTensorAlgebra.TensorExp
+ExtTensorAlgebra.EvalShuffleBasis -hard-> ExtTensorAlgebra.TensorExpShuffle
 ExtTensorAlgebra.EvalShuffleBasis -hard-> ProlongedBrownianSetup
 ExtTensorAlgebra.EvalShuffleBasis -hard-> ShuffleIdentity
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> ClassicalRiccatiSolution
@@ -33,6 +36,7 @@ ExtTensorAlgebra.ExtTensorAlgebra -hard-> ExtTensorAlgebra.EvalShuffleBasis
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> ExtTensorAlgebra.IsFinitelySupported
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> ExtTensorAlgebra.LevelNormSq
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> ExtTensorAlgebra.ShuffleBasis
+ExtTensorAlgebra.ExtTensorAlgebra -hard-> ExtTensorAlgebra.TensorExp
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> GKWDecompositionSetup
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> HypH1
 ExtTensorAlgebra.ExtTensorAlgebra -hard-> HypH1OfIsFinitelySupported
@@ -69,6 +73,7 @@ ExtTensorAlgebra.LevelInner -hard-> WeightedTruncationEstimates
 ExtTensorAlgebra.LevelNorm -hard-> BanachAlgebraConcatBound
 ExtTensorAlgebra.LevelNorm -hard-> DualPairingLeNormWDualMulNormW
 ExtTensorAlgebra.LevelNorm -hard-> ExtTensorAlgebra.LevelInner
+ExtTensorAlgebra.LevelNorm -hard-> ExtTensorAlgebra.TensorExpLevelNorm
 ExtTensorAlgebra.LevelNorm -hard-> InfiniteGeometricSignatureModel
 ExtTensorAlgebra.LevelNorm -hard-> MemL2wInvOfMemTw
 ExtTensorAlgebra.LevelNorm -hard-> MemTw
@@ -98,6 +103,12 @@ ExtTensorAlgebra.ShuffleBasis -hard-> ShuffleFinite
 ExtTensorAlgebra.ShuffleWords -hard-> ExtTensorAlgebra.EvalShuffleBasis
 ExtTensorAlgebra.ShuffleWords -hard-> ExtTensorAlgebra.ShuffleBasis
 ExtTensorAlgebra.ShuffleWords -hard-> Remark219BlackScholesRiccati
+ExtTensorAlgebra.TensorExp -hard-> ExtTensorAlgebra.TensorExpLevelNorm
+ExtTensorAlgebra.TensorExp -hard-> ExtTensorAlgebra.TensorExpNeg
+ExtTensorAlgebra.TensorExp -hard-> ExtTensorAlgebra.TensorExpShuffle
+ExtTensorAlgebra.TensorExpLevelNorm -hard-> ProlongedBrownianSetup.SignatureOfBM
+ExtTensorAlgebra.TensorExpNeg -hard-> ProlongedBrownianSetup.SignatureOfBM
+ExtTensorAlgebra.TensorExpShuffle -hard-> ProlongedBrownianSetup.SignatureOfBM
 GKWDecompositionSetup -hard-> TheoremD
 GeneratedFiltration -hard-> ProlongedBrownianSetup
 GeneratedFiltration -hard-> ProlongedBrownianSetup.BrownianFiltration
@@ -119,7 +130,9 @@ HypH2 -hard-> Proposition311SharpnessOfH1
 HypH2 -hard-> QuinticOUSignatureModel
 HypH2 -hard-> SignatureHestonLevel2Model
 HypH2 -hard-> SignatureVolatilityModel
+HypH3 -hard-> ItoCalculusKit
 HypH3 -hard-> SignatureVolatilityModel
+HypH3 -hard-> TheoremA
 IndexedFiltration -hard-> GeneratedFiltration
 IndexedFiltration -hard-> IsSpecialSemimartingale
 IndexedFiltration -hard-> PriceFiltration
@@ -161,6 +174,7 @@ MemTwDual -hard-> DualPairingLeNormWDualMulNormW
 MemTwDual -hard-> MemTwDualOfMemL2w
 MemTwDual -hard-> NormWDual
 MemTwDualOfMemL2w -hard-> Corollary36SigmaWellDefined
+MemTwDualOfMemL2w -hard-> ItoCalculusKit.OfMathFin
 NflvrOfMartingaleMeasure -hard-> TheoremB
 Norm2w -hard-> Corollary36SigmaWellDefined
 Norm2w -hard-> ItoCalculusKit
@@ -231,6 +245,7 @@ ProlongedBrownianSetup -hard-> Lemma32SignatureInTw
 ProlongedBrownianSetup -hard-> PriceFiltration
 ProlongedBrownianSetup -hard-> ProlongedBrownianSetup.BrownianFiltration
 ProlongedBrownianSetup -hard-> ProlongedBrownianSetup.SignatureFiltration
+ProlongedBrownianSetup -hard-> ProlongedBrownianSetup.SignatureOfBM
 ProlongedBrownianSetup -hard-> ProlongedBrownianSetup.WAug
 ProlongedBrownianSetup -hard-> ProlongedBrownianSetup.WHat
 ProlongedBrownianSetup -hard-> ShuffleIdentity
@@ -241,12 +256,14 @@ ProlongedBrownianSetup -hard-> SignatureVolatilityModel.Sigma
 ProlongedBrownianSetup -hard-> TheoremA
 ProlongedBrownianSetup -hard-> TheoremB
 ProlongedBrownianSetup.BrownianFiltration -hard-> SignatureFiltrationEqBrownianFiltration
+ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.SignatureOfBM
 ProlongedBrownianSetup.SignatureFiltration -hard-> ItoCalculusKit
 ProlongedBrownianSetup.SignatureFiltration -hard-> SignatureFiltrationEqBrownianFiltration
 ProlongedBrownianSetup.SignatureFiltration -hard-> SignaturePriceSolution
 ProlongedBrownianSetup.SignatureFiltration -hard-> SignatureRiccatiKit
 ProlongedBrownianSetup.SignatureFiltration -hard-> TheoremA
 ProlongedBrownianSetup.SignatureFiltration -hard-> TheoremB
+ProlongedBrownianSetup.SignatureOfBM -hard-> ItoCalculusKit.OfMathFin
 ProlongedBrownianSetup.WHat -hard-> Corollary36SigmaWellDefined
 ProlongedBrownianSetup.WHat -hard-> ItoCalculusKit
 ProlongedBrownianSetup.WHat -hard-> Lemma32SignatureInTw
@@ -288,7 +305,9 @@ StratonovichHalfLaplacian -hard-> Remark219BlackScholesRiccati
 StratonovichHalfLaplacian -hard-> RiccatiOpBounded
 SuperfactorialFunctional -hard-> Proposition311SharpnessOfH1
 TailNorm2wInvLeRatioMulNormW -hard-> TheoremD
+TheoremA -hard-> ItoCalculusKit.OfMathFin
 TheoremA -hard-> TheoremB
+TimeReindex -hard-> ProlongedBrownianSetup.OfBrownian
 Weight -hard-> BanachAlgebraConcatBound
 Weight -hard-> ClassicalRiccatiSolution
 Weight -hard-> GKWDecompositionSetup

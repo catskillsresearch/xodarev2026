@@ -1,0 +1,41 @@
+import StochLean.Analysis.PathVariation.NaiveIntegrationImpossible
+import StochLean.Probability.Process.FiniteVariation.ProtterDensity
+import StochLean.Probability.Process.Measurability.ProgressiveStrict
+import StochLean.Probability.Process.Semimartingale.BichtelerDellacherie
+import StochLean.Probability.Process.Semimartingale.JacodCountableExpansion
+import StochLean.Probability.Process.Semimartingale.KlenkeBridge
+import StochLean.Probability.Process.Semimartingale.KlenkeExercise21103
+import StochLean.Probability.Process.Semimartingale.KlenkeStoppingMoments
+import StochLean.Probability.Process.Semimartingale.MeasureChange.AbsoluteContinuousGirsanov
+import StochLean.Probability.Process.Semimartingale.StochasticExponential.Novikov
+import StochLean.Probability.Process.Semimartingale.StochasticExponential.Uniqueness
+import StochLean.Probability.Process.Semimartingale.ZeroQuadraticVariationCounterexample
+import StochLean.Probability.Process.Stopping.MeyerFellerCore
+
+/-!
+Aggregate declaration-level audit for the SP-03 Semimartingale completion
+boundary.  A result listed here is part of the proved inventory; deliberately
+blocked or deferred source statements remain documented rather than printed as
+theorems that do not exist.
+-/
+
+#print axioms ProbabilityTheory.yan
+#print axioms ProbabilityTheory.isSemimartingale_iff_isClassicalSemimartingale
+#print axioms ProbabilityTheory.isLocalMartingale_sub_absoluteContinuousRawGirsanovCorrection_add_killingCompensator
+#print axioms ProbabilityTheory.IsContinuousLocalMartingale.isUIMartingale_stochasticExponential_of_kazamaki
+#print axioms ProbabilityTheory.IsContinuousLocalMartingale.isUIMartingale_stochasticExponential_of_novikov
+#print axioms ProbabilityTheory.IsSemimartingale.stochasticExponential_unique
+
+#print axioms ProbabilityTheory.IsContinuousLocalMartingale.klenkeSquareVariation_unique
+#print axioms ProbabilityTheory.IsContinuousLocalMartingale.klenkeCovariation_unique
+#print axioms ProbabilityTheory.IsContinuousLocalMartingale.klenke_21_75
+#print axioms ProbabilityTheory.IsContinuousLocalMartingale.klenke_21_76
+#print axioms ProbabilityTheory.BrownianReal.klenke_21_10_3_counterexample
+
+#print axioms StochLean.withDensity_stieltjesRNDensityENNReal_eq
+#print axioms ProbabilityTheory.measurable_adapted_protterDensity_of_rightContinuous
+#print axioms StochLean.protter_I_56_naiveIntegration_impossible
+#print axioms StochLean.ProgressiveStrict.diagonalSpike_exists_progressive_modification
+#print axioms ProbabilityTheory.initialExpansion_le_sup_nullSets_restrict
+#print axioms MeasureTheory.meyerFeller_jumpSplit_core
+#print axioms ProbabilityTheory.R36Counterexample.continuous_adapted_zeroQV_not_semimartingale

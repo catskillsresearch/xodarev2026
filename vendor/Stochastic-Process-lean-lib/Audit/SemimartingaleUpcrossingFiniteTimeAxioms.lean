@@ -1,0 +1,11 @@
+import StochLean.Probability.Process.Semimartingale.SemanticRegression
+
+#print axioms MeasureTheory.Submartingale.reindex
+#print axioms MeasureTheory.Supermartingale.reindex
+#print axioms MeasureTheory.Submartingale.measurable_upcrossings_partition
+#print axioms MeasureTheory.Submartingale.integrable_upcrossings_partition
+#print axioms MeasureTheory.Submartingale.mul_integral_upcrossings_partition_le
+#print axioms MeasureTheory.Submartingale.mul_integral_upcrossings_partition_le_firstMoment
+#print axioms StochLean.SemimartingaleRegression.upcrossing_terminal_sample_requires_successor
+#print axioms StochLean.SemimartingaleRegression.repeated_sampling_preserves_one_sided_martingales
+#print axioms StochLean.SemimartingaleRegression.upcrossing_partition_retains_mass_and_endpoint

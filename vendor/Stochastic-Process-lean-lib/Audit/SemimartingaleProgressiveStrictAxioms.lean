@@ -1,0 +1,9 @@
+import StochLean.Probability.Process.Measurability.ProgressiveStrict
+
+#print axioms StochLean.ProgressiveStrict.measurableSet_prod_eventually_constant_sections
+#print axioms StochLean.ProgressiveStrict.diagonalSpike_adapted
+#print axioms StochLean.ProgressiveStrict.diagonalSpike_isProductMeasurable
+#print axioms StochLean.ProgressiveStrict.not_measurable_diagonal_Iic_one
+#print axioms StochLean.ProgressiveStrict.diagonalSpike_not_progressive
+#print axioms StochLean.ProgressiveStrict.pointFiltration_progressive_lt_prod
+#print axioms StochLean.ProgressiveStrict.diagonalSpike_exists_progressive_modification

@@ -1,0 +1,8 @@
+import StochLean.Probability.Process.Semimartingale.SemanticRegression
+
+#print axioms MeasureTheory.Martingale.integrable_quadraticCovariation_and_integral_eq_of_integrableVariation
+#print axioms ProbabilityTheory.IsNatural.integrable_quadraticCovariation_and_integral_eq_zero
+#print axioms ProbabilityTheory.IsNatural.integrable_quadraticCovariation
+#print axioms ProbabilityTheory.IsNatural.integral_quadraticCovariation_eq_zero
+#print axioms ProbabilityTheory.IsNatural.ae_eq_zero_of_martingale
+#print axioms ProbabilityTheory.IsNatural.indistinguishable_zero_of_martingale

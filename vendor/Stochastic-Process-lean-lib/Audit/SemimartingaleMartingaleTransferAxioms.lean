@@ -1,0 +1,5 @@
+import StochLean.Probability.Process.Semimartingale.MeasureChange.MartingaleTransfer
+
+#print axioms MeasureTheory.Martingale.mul_densityProcess_of_equivalent
+#print axioms ProbabilityTheory.IsUIMartingale.mul_densityProcess_of_equivalent
+#print axioms ProbabilityTheory.IsLocalMartingale.mul_densityProcess_of_equivalent

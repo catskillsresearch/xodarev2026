@@ -141,7 +141,12 @@ structure HypH2 (w : Weight) where
   submult : ∀ m n : ℕ, w (m + n) ≤ C_w * w m * w n
   subfactorial : ∀ R : ℝ, 0 < R → Summable (fun n : ℕ => w n * (R ^ n / (n.factorial : ℝ)))
 
-structure HypH3 {d : ℕ} (hd : 0 < d) (ℓ : ExtTensorAlgebra (d + 1)) : Prop where
+def HypH3 {Ω : Type u_1} [MeasurableSpace Ω]
+    (P : Measure Ω) (T : ℝ) (ξ : ℝ → Ω → ℝ) : Prop :=
+  ∀ lam : ℝ, 0 < lam →
+    Integrable (fun ω => Real.exp (lam * ∫ s in (0 : ℝ)..T, (ξ s ω) ^ 2)) P
+
+structure HypH3Param {d : ℕ} (hd : 0 < d) (ℓ : ExtTensorAlgebra (d + 1)) : Prop where
   nonZero : ℓ ≠ 0
 
 structure SignatureVolatilityModel where
@@ -155,7 +160,7 @@ structure SignatureVolatilityModel where
   hs₀ : 0 < s₀
   h1 : HypH1 w ℓ
   h2 : HypH2 w
-  h3 : HypH3 hd ℓ
+  h3 : HypH3Param hd ℓ
 
 structure ProlongedBrownianSetup (Ω : Type u_1) [m₀ : MeasurableSpace Ω]
     (ℙ : Measure Ω) [IsProbabilityMeasure ℙ] (d : ℕ) (T : ℝ) where
@@ -186,17 +191,15 @@ structure ProlongedBrownianSetup (Ω : Type u_1) [m₀ : MeasurableSpace Ω]
     ∀ (I J : Word (d + 1)) (ω : Ω),
       (sig2 0 t ω).coeff I * (sig2 0 t ω).coeff J =
         ExtTensorAlgebra.evalShuffleBasis I J (sig2 0 t ω)
-  /-- Appendix A Brownian signature factorial level-decay estimate: for each `p ≥ 1`, there exist
-  constants `C_p ≥ 0` and `R_p ≥ 0` controlling the `L^p`-norm of level-`n` signature norms by
-  `C_p * R_p^n / n!`, together with uniform `L^p` control of weighted sums. -/
-  factorial_moment_control : ∀ (p : ℝ), 1 ≤ p → ∃ (C_p R_p : ℝ), 0 ≤ C_p ∧ 0 ≤ R_p ∧
+  /-- Appendix A / paper Proposition 12 factorial level control: for each `p ≥ 1` and any
+  nonnegative weight sequence of at most geometric growth `w_n ≤ r^n`, the weighted level
+  series of `sig2 0 t` converges pathwise and lies in `L^p`. -/
+  factorial_moment_control : ∀ (p : ℝ), 1 ≤ p →
     ∀ (w_fn : ℕ → ℝ), (∀ n, 0 ≤ w_fn n) →
-      Summable (fun n : ℕ => w_fn n * (C_p * (R_p ^ n / (n.factorial : ℝ)))) →
+      (∃ r : ℝ, ∀ n, w_fn n ≤ r ^ n) →
       ∀ ⦃t : ℝ⦄, 0 ≤ t → t ≤ T →
         (∀ ω, Summable (fun n : ℕ => w_fn n * (sig2 0 t ω).levelNorm n)) ∧
-        Integrable (fun ω => (∑' n : ℕ, w_fn n * (sig2 0 t ω).levelNorm n) ^ p) ℙ ∧
-        (∫ ω, (∑' n : ℕ, w_fn n * (sig2 0 t ω).levelNorm n) ^ p ∂ℙ) ≤
-          (∑' n : ℕ, w_fn n * (C_p * (R_p ^ n / (n.factorial : ℝ)))) ^ p
+        Integrable (fun ω => (∑' n : ℕ, w_fn n * (sig2 0 t ω).levelNorm n) ^ p) ℙ
 
 namespace ProlongedBrownianSetup
 
@@ -241,11 +244,13 @@ structure ItoCalculusKit (Ω : Type u_1) [m₀ : MeasurableSpace Ω]
       (∀ k, ∀ t ∈ Icc 0 T, 0 ≤ f k t) ∧
       (∀ k, ∀ t ∈ Icc 0 T,
         f k t ≤ ((k : ℝ) * norm2w w ℓ) ^ 2 * ∫ s in (0 : ℝ)..t, f k s) ∧
-      ((∀ k, ∀ t ∈ Icc 0 T, f k t = 0) → ∀ᵐ ω ∂ℙ, ∀ t ∈ Icc 0 T, S₁ t ω = S₂ t ω))
+      ((∀ k, ∀ t ∈ Icc 0 T, f k t = 0) →
+        ∀ t ∈ Icc 0 T, ∀ᵐ ω ∂ℙ, S₁ t ω = S₂ t ω))
   novikov_doob_l2_martingale : ∀ (w : Weight) (_hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1))
     (_hℓ : HypH1 w ℓ) (s₀ : ℝ) (_hs₀ : 0 < s₀),
     let σ : ℝ → Ω → ℝ := fun t ω => dualPairing ℓ (setup.W_hat t ω)
     let S : ℝ → Ω → ℝ := fun t ω => s₀ * doleansExp σ t ω
+    HypH3 ℙ T σ →
     (∀ ⦃s t : ℝ⦄, 0 ≤ s → s ≤ t → t ≤ T →
       Integrable (S t) ℙ ∧
       ℙ[S t | setup.signatureFiltration.σAlg s] =ᵐ[ℙ] S s) ∧

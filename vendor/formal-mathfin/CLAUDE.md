@@ -1,0 +1,586 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## What this repo is
+
+A Lean 4 library of formally verified mathematical-finance theorems, built on Mathlib
+and Degenne's BrownianMotion package. The Lean library is the artifact; the
+Python runner under `tools/verify/` is a CLI harness that drives
+`lean-interact` against benchmark JSONs. The library is self-sufficient: a
+plain `lake build` from the repo root is the canonical verification.
+
+## Commands
+
+Preferred runner is Docker. The image is hosted on GHCR
+(`ghcr.io/formal-applied-math/mathfin-verify`, public). Pull-first,
+build-fallback:
+
+```bash
+# First time on a machine — log in to GHCR with your gh OAuth token:
+TOKEN=$(grep -E '^[[:space:]]+oauth_token:' ~/.config/gh/hosts.yml | head -1 | awk '{print $2}')
+echo "$TOKEN" | docker login ghcr.io -u raphaelrrcoelho --password-stdin
+# (gh auth must include `read:packages` scope; refresh with
+#  `gh auth refresh -h github.com -s read:packages` if needed.)
+
+# Refresh the image to the latest published version:
+docker compose -f docker/docker-compose.yml pull verify
+
+# Run a benchmark:
+docker compose -f docker/docker-compose.yml run --rm verify benchmarks/<file>.json -v --config mathfin.toml --timeout 120
+
+# Rebuild the image: NEVER locally (see "Memory doctrine" below) — push to
+# main (publish-image.yml paths cover MathFin/lakefile/manifest/toolchain/
+# Dockerfile/pyproject) or trigger the workflow manually:
+gh workflow run publish-image.yml && sleep 5 && gh run watch
+# then refresh: docker compose -f docker/docker-compose.yml pull verify
+```
+
+The default compose command runs `benchmarks/cross_validated.json`:
+
+```bash
+docker compose -f docker/docker-compose.yml run --rm verify
+```
+
+Do NOT run `python -m tools.verify ...` against the host toolchain. Always go
+through the docker `verify` service so Mathlib/Lean versions are pinned and
+reproducible.
+
+`-v` enables debug logging. `--parallel` verifies all theorems concurrently
+(otherwise sequential per-theorem; intra-theorem dispatch is governed by the
+router).
+
+Install (only needed if running outside Docker):
+
+```bash
+pip install -e ".[all]"                        # adds lean-interact
+pip install -e ".[dev]"                        # pytest + pytest-asyncio
+```
+
+(Core needs only the Python standard library; the extras add lean-interact /
+pytest.)
+
+Fast regression checks (run inside the verify container so versions match):
+
+```bash
+docker compose -f docker/docker-compose.yml run --rm \
+    --entrypoint python3 verify -m pytest tests/test_router.py -q
+docker compose -f docker/docker-compose.yml run --rm \
+    --entrypoint python3 verify -m tools.verify.coverage_report
+```
+
+`tests/test_router.py` enforces Lean-only routing, Lean-only `code` keys (no
+dropped-backend residue), no `sorry`/`admit`, a declared
+formalization-faithfulness status for every benchmark theorem, and that every
+`module`-header Lean file carries `@[expose] public section` (without it the
+file's declarations are module-private — invisible to importers while the
+build stays green). `tests/test_ledger.py` enforces that every entry has a
+verification-ledger row and that ids are globally unique.
+`tests/test_values.py` enforces the values gates: no forbidden text in
+`MathFin/` sources (sorry/admit/native_decide/polyrith/`?`-suggestion
+tactics/hammer/loogle/leansearch — comments exempt, allowlist with
+justification), no `full` entry backed by a definitional-`rfl` proof (the
+reduced_core pattern in disguise; caught mf-kelly-n-periods-linearity on its
+first run), blueprint-spine ⊆ curated AxiomAudit, and byte-freshness of the
+GENERATED exhaustive audit `MathFin/AxiomAuditGen.lean` — after ANY
+benchmark edit regenerate it with
+`python3 -m tools.verify.axiom_audit_gen --write` (it pins every
+constant declared in `MathFin/` that a benchmark proof cites, resolved by
+declaration through `open`s and dot notation, plus the upstream constants each
+`library_wrapper` entry's proof cites, listed in `UPSTREAM_CITATIONS`; the curated
+`MathFin/AxiomAudit.lean` remains the storied headliner file).
+**Declaration index and ratchet** (`docs/specs/2026-11-05-library-practices-design.md`):
+`lake exe mathfin_index decl-index.json` (`MathFinTools/Index.lean`, run by `build.yml`,
+uploaded as the `decl-index` artifact) is the environment's own record of every MathFin
+declaration: statement and its hash, docstring, uses, attributes. `tools/verify/find.py`
+searches it, `decl_diff.py` diffs two of them (renames, changed statements — posted to each
+PR's run summary), `decl_index.py report` lists duplicate statements and Mathlib-shaped
+private lemmas. `ratchet.json` holds one baseline per debt count (heartbeat bumps,
+whole-`Mathlib` imports, long files, nolints, doc-section coverage, and the index's
+duplicates and Mathlib-shaped privates, the one-trunk counts of `tools/verify/trunk_reach.py`,
+whose table is `tools/verify/trunk.toml`, and chain reach: the per-mille of finance theorems beyond
+three statement hops of the spine, and the model families with no socket): `tests/test_ratchet.py` and `build.yml` fail when a
+count rises; `python3 -m tools.verify.ratchet update` lowers a baseline and never raises one.
+**One doc standard** (`tools/verify/doc_standard.py`, gated in `test_values`): every module
+docstring has Mathlib's layout — `# Title`, `## Main definitions` / `## Main results`,
+`## References` keyed to `docs/references.bib` (`* [Author, *Title*][Key], §2.3`), `## Tags`
+(search terms + JEL/MSC codes from the controlled vocabulary `docs/subjects.toml`; the HF
+dataset exports them as each entry's `subjects`). Missing sections are ratchet counts.
+**`MathFin/Init.lean`** is imported by every module (a module importing no library module
+imports it directly; `test_architecture`): it holds the library's attributes, so far the grind
+set `pricing` (`@[pricing =]` on parity and tree identities, `grind [pricing]`, pinned
+in `MathFinTest/Automation.lean`). Notation is `scoped` or `local`, never global
+(`test_notation_is_scoped`; `docs/design.md` §5). The docs site (`docs-site.yml`,
+`tools/verify/docs_site.py`) is generated from main's `decl-index`; import narrowing runs on a
+runner (`import-shake.yml`, dispatch-only, commits to the branch).
+**The blueprint and the issues are always connected** (`docs/blueprint.md`): every open
+math issue (`type:proof`, `type:research`, `open-problem`, `frontier`) carries a body line
+`Blueprint: <label>` naming the node it advances; a result not on the blueprint gets a
+frontier entry in `docs/blueprint_frontier.toml` first; a PR delivering a frontier node tags
+the declaration in `MathFin/Blueprint.lean` under the same label and deletes the entry.
+`python3 -m tools.verify.blueprint_issues check` (build.yml, blueprint-sync.yml) holds both
+directions. Every frontier node grows from the proved blueprint: its `uses` reach a Lean-tagged
+node (through other frontier nodes if need be), or its `ground` field says what Mathlib material
+it builds on; a `core` field lists the corpus entries that already prove part of it.
+A node is a landmark, a joint or a shared definition (design spec §5), never a waypoint: a tag
+removed from `MathFin/Blueprint.lean` because it folded into a landmark is recorded in
+`docs/blueprint_retired.toml`, so closed issues naming it stay valid and an open one is flagged.
+**The corpus sits on the map** (`tools/verify/program_tree.py`): an entry rests on a node when its
+proof's citations depend on the node's declaration. The program's central objects are nodes too
+(`def:quantile`, `def:emm`, `def:contract-value`, …), since most entries reach the library through
+them. The count of entries off the map is a ratchet (`corpus_off_blueprint`); the docs site draws
+the whole picture as the program tree (`tree.html`). A new area or object the corpus builds on gets
+a blueprint node. The proved blueprint is one tree: `program_tree.islands` lists the proved nodes no
+recorded edge ties to the component holding Brownian motion, and their count is a ratchet
+(`blueprint_islands`). A tagged node joins the tree through a shared object its proof uses or a
+bridge theorem that uses it, never through prose (2026-11-07: tagging objects and anchors left 34
+islands, among them the EMM and the whole risk cluster; one duplicate, `portfolioVariance`, kept
+Markowitz off the portfolio node).
+`tests/test_architecture.py` keeps the library one graph, layered: every module lives in a
+layer (`tools/verify/layers.py`), `Probability/` → `Contracts/` → `Pricing/` → the limbs
+`Models/`, `Risk/`, `Choice/`, `Insurance/`, `Markets/`, and imports point that way; a limb
+reaches another limb only through a declared edge (`layers.EDGES`, each with its reason), and
+the imports against the direction are the ratchet count `layer_violations`, held at 0. A join
+lives in the module that consumes it; there is no `Bridges/` (2026-11-08, the v2 move,
+`tools/verify/move_v2.py`). Every module imports a library module or is imported by one, and
+every module is imported by another or cited by a corpus entry. A module that connects to
+nothing gets a bridge (a proved theorem tying it to the library's objects), never a
+quarantine list (2026-10-21).
+`tests/test_attribution.py` enforces contributor credit from git history (see
+"Contributor attribution" below). CI
+(`build.yml`) runs pytest + `ledger status` BEFORE the Lean build — pushes
+with failing gates or stale ledger claims go red.
+
+**The final verification — values review** (`docs/values-review.md`): the
+eight judgment lenses (inspired math, Mathlib/Degenne coherence, zero slop,
+architectural ingenuity, first principles, idiomatic register, concept
+clarity, beautiful/elegant math) drive a multi-agent review panel at the
+close of any session that adds or changes proof content. It is an UPGRADE
+ENGINE, not a pass/fail gate: each lens is read as a gradient (current
+exemplar → the next concrete upgrade that raises its ceiling), and the
+review's output is a ranked backlog of value-aligned upgrades plus the
+upgrades executed that session — never an "8/8 PASS" (a green checkmark is
+how a disciplined library quietly settles into being a *fine* dump). Genuine
+slop uncovered is fixed in-session; larger upgrades become backlog items with
+owners. The judgment is human/agent; the CADENCE is machine-enforced:
+`test_values_review_is_current` fails once the corpus outgrows the last
+recorded review by more than 12 entries, or the library by more than 15 modules (the
+review heading records both: `— corpus N, modules M —`; a cadence threshold — did we refresh
+and act on the backlog — not a quality verdict).
+
+**The first step of any development, before a line is written: find what the library
+already has.** This applies to a theorem, a definition, a bridge, a refactor, a tool, a doc
+or an agent brief. Search three layers, in this order:
+
+1. The library's own program. Search the declaration index
+   (`python3 -m tools.verify.find forward measure`, `--mentions IsEMM`, `--used-by
+   MathFin.X`; the index is the `decl-index` artifact of main's latest `build` run), grep
+   `MathFin/`, read the module docstrings of the section it belongs to, and look for a
+   hypothesis bundle, framework or general lemma the new work should land in
+   (`IsExpQMartingale`, `riemannσ`, `sampledFiltration`, `statePricePricing`,
+   `Contract.value`, `numeraireMeasure`, …).
+2. BrownianMotion.
+3. Mathlib (`scripts/loogle.sh`, or grep the pinned sources).
+
+New work extends or instantiates what it finds. If the existing statement is too narrow,
+generalise it and make the old one an instance. Never build a parallel object beside it.
+A brief to an agent names the existing target it must land in.
+
+When a duplicate goes, every caller moves to the surviving name, benchmark snippets
+included. A snippet restates its own statement and only cites the library lemma in its
+proof, so the entry's claim does not change; it re-verifies. The README, the beginners'
+manual, `MathFinTest/` and `MathFinExamples/` move too. No alias of any kind is left
+behind, deprecated or not, because an alias keeps the duplicate it was meant to remove.
+The next release's notes list the renames.
+
+The cost of skipping this was measured. On 2026-10-29 a Lévy design reached for
+`charFun` while `IsExpQMartingale` already carried the argument for all four Girsanov
+variants. The audit that followed (#357–#364, #366–#368) found about 60 parallel
+developments:
+- the Riemann–Itô sum defined five times;
+- the American-put free-boundary problem written as three structures;
+- two forward measures;
+- a binomial tower built beside Mathlib's `Martingale` and the library's FTAP;
+- copies of Mathlib lemmas, one of them deprecated upstream.
+
+Each was a gate-green, sorry-free module that nobody had connected to the rest. The values
+review's coherence lens asks the same question after the fact; this step asks it first,
+when the answer is cheap.
+
+**The last step of every session, before anything is called done: read the
+prose against its own statement.** For every docstring, corpus `description`,
+and doc paragraph the session touched, ask whether it claims more than the
+Lean proves. This is the one failure the rest of the gates structurally
+cannot see — the build is green precisely because the statement is weaker
+than the prose. It has happened repeatedly and never on purpose: the prose
+describes the theorem the author had in mind and the statement quietly says
+less (2026-08-07: five corpus entries writing `∫₀ᵀ f_x(s,B_s) dB_s` over an
+`∃ gfx`; the README landmark table rendering a local-martingale theorem as an
+integral identity; four descriptions claiming a textbook result the entry
+narrows). `description` ships in the HF dataset, so it is an outward-facing
+claim. The mechanical slice is enforced by
+`test_values.py::test_prose_does_not_outrun_statement` and
+`::test_reduced_core_description_discloses_scope`; the rest is judgment
+and belongs to the values review's standing first pass
+(`docs/values-review.md`). Do it before the review's lenses, not after.
+
+**Benchmark `description` states what the entry PROVES**, not the textbook theorem
+it is named after. Where an entry delivers less than its source theorem, the
+description says so in the same field — it is published in the HF dataset
+(`tools/verify/hf_dataset.py`), so it is an outward-facing claim. The long-form
+per-entry disclosure is `metadata.formalization_scope`, published alongside it
+since 2026-08-07: exporting the claim while withholding the disclosure is what let
+15 of 36 textbook-framed descriptions drift into overstating.
+
+**Verification ledger** (`verification_ledger.json` + `tools/verify/ledger.py`):
+every benchmark entry's validity depends on exactly its snippet code, the
+transitive MathFin modules it imports, and the toolchain pins — the ledger
+records the input-hash each entry last verified under. After ANY `MathFin/`
+or benchmark edit:
+
+```bash
+python3 -m tools.verify.ledger status      # fresh/stale/missing (exit 1 if not all fresh)
+python3 -m tools.verify.ledger verify      # re-verify just the stale entries (daemon must be up)
+# local Lean slot taken? re-verify the stale rows on runners; the bot commits them to the branch
+gh workflow run ledger-sweep.yml --ref <branch> -f scope=stale
+```
+
+**The ledger is derived state, and merges it.** It is a flat `{id: row}` map, so
+git's default text merge combines two branches silently whenever they touch
+different regions — which on 2026-08-07 dropped a row during the #173 merge and
+put main red. `.gitattributes` routes it through `tools/verify/ledger_merge.py`,
+which unions disjoint verifications and DROPS any entry the two sides verified
+under different inputs so it re-verifies rather than asserting a verdict this
+tree never had. Two setup lines per clone, since git config is not versioned:
+
+```bash
+git config merge.mathfin-ledger.name "semantic merge for verification_ledger.json"
+git config merge.mathfin-ledger.driver "python3 tools/verify/ledger_merge.py %O %A %B %L %P"
+git config core.hooksPath .githooks   # pre-push: blocks a red ledger reaching main
+```
+
+Without them git falls back to the text merge, so `tests/test_ledger.py` stays the
+real safety net; the driver is what keeps it from firing. **main has no branch
+protection**, so a locally-created merge commit reaches it with no pre-merge CI —
+that is how #173 landed red. The `pre-push` hook covers that gap host-side in ~1s.
+
+Host-side, stdlib-only; the Lean work happens in the lean-repl daemon. This
+replaces blanket re-verification sweeps — only entries whose inputs changed
+ever re-run. Benchmark snippets that import a MathFin module do NOT
+`import Mathlib` (the module's `public import Mathlib` re-exports it);
+only pure-Mathlib wrapper snippets carry the blanket import.
+
+Delivery/status docs:
+- `docs/coverage.md`: per-theorem audit, safe claim wording, verification evidence, and remaining placeholders.
+- `docs/status.md`: scope, pillars, the rules that keep the library one graph, and the backlog (the issue tracker).
+- `docs/roadmap.md`: strategy (depth before breadth; how breadth is admitted); the phase log is `docs/archive/roadmap-history.md`.
+- `docs/bridges.md`: the 2026-05-22 audit of the old `Foundations/` layer against Mathlib and
+  BrownianMotion, and the bridges it led to (historical; the layers replaced the split).
+- `docs/patterns.md`: distilled Lean proof patterns from prior phases.
+- `docs/design.md`: principles for definitions and statements, including the
+  junk-value rule (a term called a price/expectation/probability carries the
+  conditions that make it one).
+- `docs/beginners-manual.md`: Lean + the library for mathematicians; its
+  exercises are checked in `MathFinTest/Manual.lean`.
+
+`MathFinExamples/` (worked demonstrations) and `MathFinTest/` (API checks:
+the README's Lean, the manual's exercises) are separate default-target
+`lean_lib`s that import only the umbrella `MathFin`; nothing in `MathFin/`
+imports them. They are bind-mounted in both compose services like
+`Challenge.lean`/`Solution.lean`, and `.github/workflows/downstream.yml`
+builds `MathFinTest/Readme.lean` weekly in a fresh project that `require`s
+the repo.
+
+Docker notes:
+- `docker/Dockerfile.verify` installs Lean (via elan), prebuilds the
+  `MathFin` library against pinned Mathlib + BrownianMotion via
+  `lake exe cache get && lake build`, then layers Python + the
+  `tools.verify` package.
+- Compose bind-mounts `tools/`, `benchmarks/`, `tests/`,
+  `mathfin.toml`, and the Lake project pieces at repo root
+  (`MathFin/`, `MathFin.lean`, `lakefile.lean`,
+  `lake-manifest.json`, `lean-toolchain`). The Lake bind mount is RW so
+  authoring `MathFin/*.lean` on host (VS Code + Lean LSP) propagates
+  without a rebuild. The olean store lives in the `lake_build_cache`
+  named volume, shared by `verify` and `lean-repl` (one Lake writer at a
+  time — never run a build in one while the other is up); any host-side
+  `.lake/` directory is unused and should not exist.
+- **Single-FILE bind mounts pin the inode** (`MathFin.lean`,
+  `lakefile.lean`, `lake-manifest.json`, `lean-toolchain`,
+  `mathfin.toml`): rename-based writes (Claude's Edit/Write tools, `sed
+  -i`, `mv`) replace the host inode, after which a RUNNING container
+  silently keeps the OLD content — while directory-mounted trees
+  (`MathFin/`, `benchmarks/`, …) stay fresh. Symptom (2026-06-06): new
+  modules built fine but the umbrella's import list was stale →
+  "unknown constant" in AxiomAudit for every new name. After editing
+  any single-file-mounted file, re-sync it into running containers
+  (`docker exec -i docker-lean-repl-1 sh -c 'cat > /app/MathFin.lean'
+  < MathFin.lean`) or restart the service. And never `| tail` a build
+  log you are diagnosing — the first error is the diagnostic one.
+- Both Lean services default to `cpuset 0-3` (4 Lake workers) and
+  `mem_limit 6g`: this host gives WSL ~10 GB (the Memory-doctrine cap) and uncapped Lean runs froze
+  the machine. A runaway elaboration OOM-kills the container (exit 137,
+  the backend respawns) instead of the host. Widen on bigger machines
+  via `VERIFY_CPUSET=0-7`.
+- `lean-interact`'s own cache is in the `lean_interact_cache` Docker volume.
+- If Docker build fails under Claude/Codex because it cannot write under
+  `~/.docker`, rerun the same `docker compose ...` command with elevated
+  permissions.
+
+## Contributor attribution
+
+A module a contributor adds names them on both header lines, `Copyright (c) YEAR <name>` and
+`Authors: <name>`. The copyright stays theirs (there is no CLA, and Apache-2.0 §4(c) keeps their
+notices), so a maintainer edit adds to `Authors:` and never replaces a name. Contributors often
+copy a neighbouring module's header, maintainer's name and all: fix the copyright line at merge,
+in a follow-up commit, and say so when thanking them. Any other mismatch (a port, co-authorship,
+a name you cannot place) goes to the maintainer; an agent does not settle it. (2026-10-14: #244
+merged eight modules whose headers named the maintainer. The review saw it and let it through;
+#247, from the contributor, put it right.)
+
+- Contributed work is merged with a merge commit, never squashed or rebased, so it stays on main
+  under its author's name.
+- Every commit author on main other than the maintainer and bots is listed under
+  `## Contributors` in `README.md`. Add a first-time contributor there at merge.
+- `tests/test_attribution.py` checks both header lines and the README list from git history,
+  with names canonicalized by `.mailmap`; `build.yml` checks out with `fetch-depth: 0` for it.
+- Commits are authored by the person the session works for, never by `Claude
+  <noreply@anthropic.com>`, the cloud container's default identity. GitHub ignores `.mailmap`,
+  so such a commit shows as Claude's on github.com. Before the first commit, set
+  `git config user.name` and `user.email` to the user's (the maintainer's are
+  `Raphael Coelho <raphaelrrcoelho@gmail.com>`). The maintainer's commits carry no
+  `Co-Authored-By: Claude` trailer either (their call, 2026-10-15), and neither do merge
+  commits, pull-request bodies or GitHub comments: none names `Claude <noreply@anthropic.com>`
+  (2026-10-21; earlier history is left as it is). A harness hook that asks to re-author commits
+  as Claude is overruled by this rule.
+- GitHub comments and pull-request bodies posted for the maintainer carry no "Generated by
+  Claude Code" footer, whatever the harness asks, and read in the maintainer's own voice:
+  short, lowercase, thanks first, positive in tone (their #244 comment is the model). The
+  disclosure of what is and is not proved stays exact; only the register changes (2026-10-21).
+
+## Memory doctrine — this box is a 10 GB client, not a build server
+
+Measured 2026-06-06: 15.7 GB host RAM, WSL capped at 10 GB (`.wslconfig`
+`memory=10GB`, `swap=4GB`, `autoMemoryReclaim=gradual` — already tuned; no
+local headroom lever remains). A Mathlib-loaded Lean environment is ~4–5 GB,
+so **two simultaneous Lean processes overcommit the host** — every OOM /
+container kill / historical PC freeze has been exactly that event.
+
+1. **One Lean-loaded process locally, ever.** The lean-repl daemon is the
+   default slot occupant. `verify` runs, `leanchecker`, and lake builds take
+   the slot only with the daemon DOWN (`docker compose down lean-repl`).
+   Never exec a second env-loading command into a container already serving
+   one (2026-06-06: a `leanchecker` exec OOM-killed the daemon's container).
+2. **Never `docker compose build` locally.** Image builds escape compose's
+   mem caps AND silently redo the full Mathlib layer (the local layer cache
+   does not contain the pulled GHCR image's intermediates). CI
+   `publish-image.yml` rebuilds on push to main (paths include `pyproject.toml`
+   — pip layer inputs are baked, unlike bind-mounted `tools/`); locally only
+   ever `docker compose pull verify`.
+3. **Full-environment batch work runs on GitHub runners** (4-core/16 GB —
+   more memory than this box): the `kernel-replay` (leanchecker) CI job,
+   image publishing, and corpus-scale `ledger verify --exec` sweeps.
+4. **Remote daemon is one flag away** when parallel heavy work is wanted:
+   the whole authoring loop speaks TCP to `127.0.0.1:7878`, so
+   `ssh -L 7878:localhost:7878 <bigger-box>` makes a remote daemon
+   transparent to `lean-check.sh` / `bench-check.sh` / the ledger.
+
+## Automation toolkit — and its values gate
+
+In-loop automation (all CPU-local, pin-respecting):
+- **`grind`** (in core): first call on algebraic equalities — incl. field
+  identities with `≠ 0` side conditions and commuted denominators — ℕ/cast
+  arithmetic, and goals linear in nonlinear atoms. NOT nonlinear real
+  inequalities (0/7 on the corpus sample; FRO Year-3 work-in-progress —
+  re-test each toolchain bump). Boundary + trials: docs/patterns.md.
+- **`nlinarith [certificates]`** stays the tool for nonlinear inequalities;
+  grind accepts the same certificates but does not search hypothesis
+  products.
+- **loogle** (`scripts/loogle.sh 'Real.sqrt (_ * _)'`): scriptable Mathlib
+  search (public instance tracks a NEWER Mathlib than the pin — confirm hits
+  via the daemon before building on them).
+- **`hammer`** (LeanHammer, when present): premise selection + external ATP
+  with NATIVE Aesop/Duper/Grind reconstruction — kernel-checked, axiom-clean.
+  PRIVACY: never use the default cloud selector; every file sets
+  `set_library_suggestions` to a local selector (sineQuaNon / MePo) or a
+  self-hosted `premiseSelection.apiBaseUrl`. Piloted 2026-06-06 (0/10
+  kernel-accepted, ~31 min/goal) — but that ran hammer one Lean version off its
+  target and the report blames the skew, so it is an **expired verdict, not a
+  settled one**. LeanHammer main has targeted our `v4.32.0` since 2026-07-14, so
+  the re-test is unblocked; `docs/hammer-pilot-2026-06-06.md` has the procedure
+  and names the three goals that decide it. Low priority: it is an
+  authoring-loop question, and hammer is not on the foundry's critical path.
+
+The gate (the repo contract applies unchanged to machine-found proofs):
+- Automation output is a **scout, not an author**. A goal closed by
+  `hammer`/`grind` is refactored to the *conceptually right* proof — the
+  certificate that shows why — before it merges. An opaque 20-premise
+  discharge is slop even when the kernel accepts it.
+- Search and premise tools exist to **find the idiomatic Mathlib/Degenne
+  lemma so we consume it** instead of reproving it (coherence-first,
+  anti-wrapper).
+- The blueprint (`MathFin/Blueprint.lean`, post-hoc `@[blueprint]` tags) is
+  the concept-clarity instrument: generated proof-term dependency graph +
+  honest prose. Regenerate via `lake exe blueprint_export` +
+  `tools/blueprint_render.py`; never hand-edit the generated block in
+  docs/blueprint.md.
+- `AxiomAudit.lean` (`#guard_msgs`-pinned axioms, enforced per-push by
+  `build.yml`) is the ENFORCED honesty floor: no `sorry`, axiom-clean.
+  `leanchecker` (the `kernel-replay.yml` CI job, monthly + on demand) replays
+  every content module through the kernel, below the elaborator, in six
+  parallel shards. From 2026-06-07 it could not finish (every module imported
+  Mathlib whole, ~14 GB per load, OOM in batch 1); since the imports were
+  narrowed (`whole_mathlib_imports` 0) it fits a 16 GB runner with >5 GB free.
+
+**Idiomatic register — the Mathlib house-style checklist** (full form +
+before/after in `docs/patterns.md` → "Mathlib house-style golf"): when polishing
+any proof to final form, apply the golf idioms a Mathlib/BrownianMotion
+maintainer holds code to (distilled from our PR #484 review). They are the
+zero-slop + idiomatic-register + coherence lenses made concrete, and apply to
+MathFin proofs, not just upstream BM:
+- bare proof TERM over `by exact` / `by exact_mod_cast` when the goal is defeq (a
+  stray `exact_mod_cast` masks an already-defeq coercion);
+- let Lean insert coercions (subtype→base, `WithTop`, `ℝ≥0→ℝ`, `⊥`/`⊤`) — never
+  hand-write `↑`;
+- bind ∀-vars in the `have` signature (`have h (v : T) : P v := …`), not `intro`;
+- fold `have h := e; simp at h; exact h` into `simpa … using e`;
+- no gratuitous `classical` (`LinearOrder` already gives `DecidableLE`);
+- `set x := e` WITHOUT `with hx` unless you rewrite by `hx` (unfold via `simp [x]`);
+- MINIMAL typeclass matching the callees (`SigmaFiniteFiltration`, not
+  `IsFiniteMeasure`, when that is all they need);
+- FEWER `have`s — surface the argument's shape with `suffices` / `show … from`,
+  mixing forward + backward reasoning (a long have-ladder hides the structure);
+- `↦` over `=>`; fold a trivial two-step `calc` (`… ≤ x := h; _ = y := heq`) into
+  `h.trans_eq heq` and drop the `calc`; replace a hand-rolled `𝓝 0` ε–δ with a
+  squeeze (`tendsto_of_tendsto_of_tendsto_of_le_of_le'`);
+- and the headline — LIFT the reusable abstraction: extract the bespoke core into
+  a general, Mathlib-worthy lemma and apply it, rather than tailoring the proof to
+  one call site.
+
+## Architecture
+
+Single Lean 4 verification backend, driven by a thin Python orchestrator.
+Each theorem in a benchmark JSON file carries a `code` map with a single
+`"lean"` key; the router maps the theorem's `domain` to the Lean backend.
+(The SymPy and Isabelle backends from the early hybrid era have been removed
+entirely.)
+
+**Dispatch flow** (`tools/verify/orchestrator.py`):
+1. `Router.route(domain)` returns a `RoutingDecision` (backend list + parallel flag) — always `[Backend.LEAN]`.
+2. The theorem's `"lean"` code is dispatched to the Lean backend.
+3. The routing/parallel scaffolding is retained from the hybrid era but degenerates to single-backend dispatch.
+4. `compute_overall_confidence` reports the Lean result's confidence.
+
+**Confidence tiers** (`tools/verify/models.py` + scoring in `confidence.py`):
+- L5 = Lean SUCCESS (no sorries)
+- L4 = Lean PARTIAL with ≤1 sorry; L3 = >1 sorry
+- L0 = nothing succeeded
+
+**Routing table** (`router.DEFAULT_ROUTING`) — Lean-only across all domains:
+- `martingales`, `stopping_times`, `brownian_motion`, `measure_theory`, `poisson_processes`, `stochastic_calculus`, `stochastic_differential_equations`, `mathematical_finance`, `markov_chains`, `ergodic_theory`, `central_limit_theorem`.
+- Every benchmark theorem's `code` map has a single `"lean"` key. Run `python3 -m pytest tests/test_router.py` after routing or benchmark-code edits.
+- Every benchmark theorem must declare `metadata.formalization_status`: `full`, `library_wrapper`, `reduced_core`, or `placeholder`. Delivery claims count only `full + library_wrapper`; see `docs/coverage.md`.
+- Do not tell a collaborator that all course theorems are formally proved. Run `python3 -m tools.verify.coverage_report` for the current `full / library_wrapper / reduced_core / placeholder` split.
+
+**Lean proofs live in `MathFin/<Layer>/…/<Module>.lean`, not in JSON
+strings**. The library is organized in layers under the repo-root `MathFin/`:
+`Probability/` (the roots: discrete and continuous martingales, Brownian and Itô calculus,
+jumps, Gaussian and other laws, dependence), `Contracts/` (the payoff language),
+`Pricing/` (the pricing functional: EMMs, the FTAPs, state prices, numéraires, replication,
+superhedging, contract value), and the limbs `Models/` (`BlackScholes/`, `Binomial/`,
+`Rates/`, `Credit/`, `Jumps/`, `StochVol/`, `LocalVol/`, `ModelFree/`, `Forwards/`, …),
+`Risk/`, `Choice/`, `Insurance/`, `Markets/`. The Lean backend uses `lean-interact.LocalProject`
+pointing at the repo root (configured via `mathfin.toml`
+`local_project = "."`). `lakefile.lean` + `lake-manifest.json` +
+`lean-toolchain` are authoritative for Mathlib/Lean versions and transitive
+deps. Non-trivial proofs (multi-step derivations, helper lemmas, structures)
+**must** live as real Lean files under `MathFin/<Layer>/` so they
+get the full `lake build` memory budget + incremental compilation + LSP
+authoring; benchmark snippets `import MathFin.<Layer>.<…>.<Module>` and
+re-export the named lemma in 5–25 lines. Trivial library wrappers
+(single-line `:= someLemma`) can stay inline in the JSON. To author a new
+proof: edit `MathFin/<Layer>/…/<Module>.lean` on host with VS Code +
+Lean LSP (`loogle`/`leansearch%`/`apply?` are transitively available
+via Mathlib's `LeanSearchClient`), `lake build` to validate, then update the
+benchmark JSON to import + reference.
+
+**Module-system rule**: `MathFin/` files use the Lean module system (`module`
+header + `public import`s) and **must** put `@[expose] public section` right
+after the module docstring. Without it every declaration is module-private:
+importers see nothing, `lake build` stays green, and only consumers (benchmark
+snippets) break. Enforced by
+`test_router.test_mathfin_module_files_expose_public_section`.
+
+**Fast authoring iteration via persistent REPL daemon (`docker compose
+service lean-repl`)**. The daemon (`tools/verify/lean_repl.py`) boots a
+`lean-interact` server pointing at the repo root once per session, paying
+the ~5-min Mathlib + BrownianMotion + MathFin olean-load cost a single
+time. It then listens on TCP `127.0.0.1:7878` and processes each "check this
+file" request in 5-30 sec — vs. 5-15 min for the `docker compose run --rm
+verify` cold path. This is the LSP-equivalent for non-editor authoring
+(Claude Code edits via the Edit tool, not VS Code).
+
+Workflow:
+```bash
+# one-time per session: bring up the daemon, wait for "READY" in its logs
+docker compose -f docker/docker-compose.yml up -d lean-repl
+docker compose -f docker/docker-compose.yml logs -f lean-repl | grep -m1 READY
+
+# per iteration: edit a .lean file, then check it via the wrapper
+./scripts/lean-check.sh MathFin/Probability/Brownian/BrownianMartingale.lean
+# Returns JSON: {"success": bool, "errors": [...], "warnings": [...], "sorry_count": N}
+
+# check a single benchmark snippet the same way (seconds, not a 5-min cold boot)
+./scripts/bench-check.sh benchmarks/martingales.json mart-thm-2.2.9
+
+# tear down at end of session
+docker compose -f docker/docker-compose.yml down lean-repl
+```
+
+`scripts/lean-check.sh` auto-detects whether the daemon is up (probes
+`127.0.0.1:7878`); falls back to `lake env lean <file>` inside a fresh
+`verify` container if not (slow but reliable, with live stdout — no
+`| tail` buffering). Daemon's TCP port is bound to localhost only (no
+external exposure).
+
+Caveats:
+- Daemon serializes requests through `LeanBackend._lock` (Lean isn't reentrant). Concurrent connections queue.
+- Daemon does not write `.olean`s for downstream imports; once a proof works in the daemon, run a final `lake build` (or restart the daemon) before relying on the oleans for cross-file imports.
+- If you bump Mathlib pin or the lakefile, restart the daemon to pick up new project state.
+- A red working tree does NOT block the daemon: if the startup `lake build`
+  fails, it logs the error loudly and serves anyway against the oleans that
+  did build (`lean-check` of the broken file works — it elaborates file
+  content, needing only its imports' oleans). Checking a file that *imports*
+  a broken module still fails (unknown-namespace cascades) until that module
+  builds; the canonical green gate stays the final `lake build`.
+
+For multi-iteration sessions, prefer keeping
+`Probability/Brownian/BrownianMartingale.lean`-class files small (one theorem + its
+private helpers per file) so Lean only re-elaborates the changed file.
+
+**Lean backend is lazily initialized**. `LeanBackend._ensure_server` defers
+the expensive Mathlib bootstrap to the first `verify()` call. It holds a
+`threading.Lock` since `lean-interact`'s server is not thread-safe — async
+`verify()` calls serialize through the lock.
+
+**Config** (`tools/verify/config.py`): TOML loader using stdlib `tomllib`
+(Python 3.11+). Searches `mathfin.toml` then `pyproject.toml`
+(`[tool.mathfin-verify]`). Defaults are baked into the dataclasses, so a
+missing file is fine.
+
+**Models** (`tools/verify/models.py`): `TheoremStatement` is a frozen
+dataclass; `metadata` is a mutable dict by reference. `code` is keyed by the
+`Backend` enum (just `Backend.LEAN`); `from_dict` does the conversion at load
+time.
+
+## Benchmark JSON shape
+
+Either a top-level list of theorem dicts, or
+`{"theorems": [...], "description": "...", "alignment_source": "..."}`. Each theorem
+requires `id`, `name`, `domain` (must match a `Domain` enum value), and a `code` map with
+a single `"lean"` key. Optional: `description`, `metadata`. The stochastic-processes files
+(`brownian_motion.json`, `martingales.json`, `stochastic_calculus.json`, …) follow the
+chapters of Saporito's textbook; the finance corpus is grouped by area (`no_arbitrage.json`,
+`black_scholes.json`, `interest_rates.json`, `credit.json`, `risk_measures.json`, …), with
+each entry's `reference` naming its source. A file's `alignment_source` is the source label
+`formalization.yaml` reports for it.
