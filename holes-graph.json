@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-21T23:30:46Z",
-  "sorryCount": 13,
+  "updated": "2026-11-21T23:49:52Z",
+  "sorryCount": 14,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -464,7 +464,7 @@
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/DoleansSDE.lean",
       "status": "blocked",
-      "blocker": "needs ItoCalculusKit.MathFinBridge",
+      "blocker": "needs ItoCalculusKit.KitRaw, ItoCalculusKit.MathFinBridge",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -487,6 +487,39 @@
       "file": "SignatureVolatility/ItoCalculusKit/ItoQuadDoleans.lean",
       "status": "blocked",
       "blocker": "needs ItoCalculusKit.MathFinBridge",
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.JointPast",
+      "label": "ItoCalculusKit.JointPast",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/JointPast.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.KitRaw",
+      "label": "ItoCalculusKit.KitRaw",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/KitRaw.lean",
+      "status": "blocked",
+      "blocker": "needs ItoCalculusKit.MathFinBridge",
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.MartingaleTransform",
+      "label": "ItoCalculusKit.MartingaleTransform",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/MartingaleTransform.lean",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -1813,7 +1846,7 @@
       "kind": "hard"
     },
     {
-      "from": "ItoCalculusKit.MathFinBridge",
+      "from": "ItoCalculusKit.KitRaw",
       "to": "ItoCalculusKit.DoleansSDE",
       "kind": "hard"
     },
@@ -1825,6 +1858,26 @@
     {
       "from": "ItoCalculusKit.MathFinBridge",
       "to": "ItoCalculusKit.ItoQuadDoleans",
+      "kind": "hard"
+    },
+    {
+      "from": "ProlongedBrownianSetup.Sig2StratAdapted",
+      "to": "ItoCalculusKit.JointPast",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.MathFinBridge",
+      "to": "ItoCalculusKit.KitRaw",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.BrownianQuadVarAS",
+      "to": "ItoCalculusKit.MartingaleTransform",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.JointPast",
+      "to": "ItoCalculusKit.MartingaleTransform",
       "kind": "hard"
     },
     {

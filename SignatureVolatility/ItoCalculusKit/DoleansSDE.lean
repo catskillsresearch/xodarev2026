@@ -5,6 +5,7 @@ public import SignatureVolatility.HypH1
 public import SignatureVolatility.HypH2
 public import SignatureVolatility.HypH3
 public import SignatureVolatility.ItoCalculusKit.BrownianQuadVarAS
+public import SignatureVolatility.ItoCalculusKit.KitRaw
 public import SignatureVolatility.ItoCalculusKit.MathFinBridge
 public import SignatureVolatility.ItoCalculusKit.PathwiseExpIto
 
@@ -36,8 +37,22 @@ Proved here (no axioms beyond Lean's standard three):
 * Pathwise continuity of the signature volatility (`continuousOn_sigma_of_brownian`), feeding the
   `ContinuousOn` hypothesis of the kit field.
 
+* **Signature volatility, quadratic-variation half** (every `ω`, under H1–H2 / H3):
+  `measurable_signatureSigma_path` (adaptedness), `kitQuadVarRaw_signatureSigma`
+  (`limUnder` Riemann sums of `σ²` equal `∫₀ᵗ σ²`), `integrable_kitQuadVarRaw_signatureSigma`,
+  and `kitDoleansExp_signatureSigma` (`Z_t = exp (limUnder ∑ σ ΔW - ½ ∫₀ᵗ σ²)` once the raw Itô
+  limit of `σ` is integrable).
+
 Still an axiom: `kit_doleans_sde_of_driver`, the SDE for `0 < d` and a **non-constant** signature
-volatility `σ = ⟨ℓ, Ŵ⟩` under H1–H3.
+volatility `σ = ⟨ℓ, Ŵ⟩` under H1–H3. By `kit_doleans_sde_of_raw` (`KitRaw`) it would follow from
+the integrability gate for `H = s₀ Z σ` and the a.s. identification of the raw limit
+`limUnder ∑ H ΔW = s₀ Z_t - s₀`. For `d ≥ 2` the integrand depends on non-driver coordinates, so
+`∫ σ dW⁰` is a Lévy-area-type object with no pathwise (Föllmer) formula; the missing input is
+almost-sure, full-sequence convergence of adapted Itô–Riemann sums. Its foundations are proved in
+`JointPast` (driver increments are independent of the joint past, from process-level
+`coordsIndep`) and `MartingaleTransform` (discrete Burkholder-type `L⁴` bound for adapted
+transforms); the `L⁴`-Cauchy construction of the limit, moment/regularity bounds for `σ` and
+`Z` (from H3), and the final Taylor assembly are not yet formalized.
 
 The SDE is **false** for arbitrary `σ : ℝ → Ω → ℝ`, because `kitItoInt` / `kitQuadVar` are
 `limUnder`s of left Riemann sums on the uniform grids `t·j/(n+1)`, gated by Bochner
@@ -552,6 +567,93 @@ theorem kit_doleans_sde_of_const_on {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0
   filter_upwards [kit_doleans_sde_const B hd c s₀ ht.1] with ω hω
   rw [hZ t ht, hint]
   exact hω
+
+/-! ## Signature volatility: adaptedness and the quadratic-variation half of the kit -/
+
+/-- The signature volatility `σ_t(ω) = ⟨ℓ, Ŵ_t(ω)⟩` of the Stratonovich setup over `B`. -/
+noncomputable abbrev signatureSigma {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T)
+    (ℓ : ExtTensorAlgebra (d + 1)) : ℝ → Ω → ℝ :=
+  fun t ω => dualPairing ℓ ((prolongedBrownianSetup_stratonovich_of_brownian B hT).W_hat t ω)
+
+/-- `σ_s = ⟨ℓ, Ŵ_s⟩` is adapted to the path filtration. -/
+lemma measurable_signatureSigma_path {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T)
+    (ℓ : ExtTensorAlgebra (d + 1)) (t : ℝ) (s : {s : ℝ // 0 ≤ s ∧ s ≤ t}) :
+    Measurable[(pathFiltration B).σAlg t] (signatureSigma B hT ℓ s.1) := by
+  have hc : ∀ I : Word (d + 1), Measurable[(pathFiltration B).σAlg t]
+      (fun ω => ((prolongedBrownianSetup_stratonovich_of_brownian B hT).W_hat s.1 ω).coeff I) :=
+    fun I => (prolongedBrownianSetup_stratonovich_of_brownian B hT).sig_adapted_to_W t s I
+  unfold signatureSigma
+  simp only [dualPairing, ExtTensorAlgebra.levelInner]
+  have hn : ∀ n : ℕ, Measurable[(pathFiltration B).σAlg t] (fun ω =>
+      ∑ I ∈ wordsOfLength (d + 1) n, ℓ.coeff I *
+        ((prolongedBrownianSetup_stratonovich_of_brownian B hT).W_hat s.1 ω).coeff I) :=
+    fun n => Finset.measurable_sum _ fun I _ => (hc I).const_mul _
+  let : MeasurableSpace Ω := (pathFiltration B).σAlg t
+  exact Measurable.tsum hn
+
+/-- **Raw quadratic variation of the signature volatility, pathwise for every `ω`**: the
+`limUnder` of left Riemann sums of `σ²` on the uniform grids is `∫₀ᵗ σ_s² ds` (H1–H2 give
+pathwise continuity of `σ`). -/
+lemma kitQuadVarRaw_signatureSigma {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0 < d) (hT : 0 < T)
+    (w : Weight) (hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1)) (hℓ : HypH1 w ℓ) {t : ℝ}
+    (ht : t ∈ Icc 0 T) (ω : Ω) :
+    kitQuadVarRaw B (signatureSigma B hT ℓ) t ω =
+      ∫ s in (0 : ℝ)..t, (signatureSigma B hT ℓ s ω) ^ 2 := by
+  have hcont : ContinuousOn (fun s => signatureSigma B hT ℓ s ω) (Icc 0 t) :=
+    (continuousOn_sigma_of_brownian B hT w hw ℓ hℓ ω).mono (Icc_subset_Icc_right ht.2)
+  have hlim := tendsto_lebRiemann_of_continuousOn ht.1 (hcont.pow 2)
+  have hRn : ∀ n, lebRiemann_process
+      (fun s ω' => forceMeasurableProcess (signatureSigma B hT ℓ) s ω' *
+        forceMeasurableProcess (signatureSigma B hT ℓ) s ω') 0 t n ω =
+      ∑ j ∈ Finset.range (n + 1),
+        (signatureSigma B hT ℓ ((j : ℝ) * (t / ((n : ℝ) + 1))) ω) ^ 2 * (t / ((n : ℝ) + 1)) := by
+    intro n
+    simp only [lebRiemann_process, zero_add, sub_zero, Nat.cast_add, Nat.cast_one]
+    refine Finset.sum_congr rfl fun j _ => ?_
+    have hj : 0 ≤ (j : ℝ) * (t / ((n : ℝ) + 1)) :=
+      mul_nonneg (Nat.cast_nonneg _) (div_nonneg ht.1 (by positivity))
+    rw [forceMeasurableProcess_eq_of_adapted B
+      (measurable_signatureSigma_path B hT ℓ _ ⟨_, hj, le_rfl⟩)]
+    ring
+  simp only [kitQuadVarRaw, hd, ↓reduceIte, lebIntegral_process, ht.1, ↓reduceDIte]
+  rw [funext hRn]
+  exact hlim.limUnder_eq
+
+/-- Under H3 the raw quadratic variation of the signature volatility is Bochner-integrable. -/
+lemma integrable_kitQuadVarRaw_signatureSigma {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0 < d)
+    (hT : 0 < T) (w : Weight) (hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1)) (hℓ : HypH1 w ℓ)
+    (h3 : HypH3 P T (signatureSigma B hT ℓ)) {t : ℝ} (ht : t ∈ Icc 0 T) :
+    Integrable (kitQuadVarRaw B (signatureSigma B hT ℓ) t) P := by
+  refine Integrable.mono' (h3 1 one_pos)
+    (measurable_kitQuadVarRaw B (signatureSigma B hT ℓ) t).aestronglyMeasurable
+    (ae_of_all _ fun ω => ?_)
+  have hcontT := (continuousOn_sigma_of_brownian B hT w hw ℓ hℓ ω).pow 2
+  rw [kitQuadVarRaw_signatureSigma B hd hT w hw ℓ hℓ ht ω, Real.norm_eq_abs,
+    abs_of_nonneg (intervalIntegral.integral_nonneg ht.1 fun s _ => sq_nonneg _), one_mul]
+  calc ∫ s in (0 : ℝ)..t, (signatureSigma B hT ℓ s ω) ^ 2
+      ≤ ∫ s in (0 : ℝ)..T, (signatureSigma B hT ℓ s ω) ^ 2 :=
+        intervalIntegral.integral_mono_interval le_rfl ht.1 ht.2
+          (ae_of_all _ fun s => sq_nonneg _) (hcontT.intervalIntegrable_of_Icc hT.le)
+    _ ≤ Real.exp (∫ s in (0 : ℝ)..T, (signatureSigma B hT ℓ s ω) ^ 2) :=
+        (lt_add_one _).le.trans (Real.add_one_le_exp _)
+
+/-- **Pathwise form of the kit Doléans exponential for the signature volatility** (every `ω`):
+once the raw Itô limit of `σ` is integrable, `condExp` is the identity on both raw limits and
+`Z_t = exp (limUnder ∑ σ ΔW - ½ ∫₀ᵗ σ²)`. -/
+lemma kitDoleansExp_signatureSigma {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0 < d) (hT : 0 < T)
+    (w : Weight) (hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1)) (hℓ : HypH1 w ℓ)
+    (h3 : HypH3 P T (signatureSigma B hT ℓ)) {t : ℝ} (ht : t ∈ Icc 0 T)
+    (hI : Integrable (kitItoIntRaw B (signatureSigma B hT ℓ) t) P) (ω : Ω) :
+    kitDoleansExp B (signatureSigma B hT ℓ) t ω =
+      Real.exp (kitItoIntRaw B (signatureSigma B hT ℓ) t ω -
+        (1 / 2 : ℝ) * ∫ s in (0 : ℝ)..t, (signatureSigma B hT ℓ s ω) ^ 2) := by
+  have hpair : kitPairIntegrable B (signatureSigma B hT ℓ) t :=
+    ⟨hI, integrable_kitQuadVarRaw_signatureSigma B hd hT w hw ℓ hℓ h3 ht⟩
+  have had : ∀ u, 0 ≤ u → u ≤ t →
+      Measurable[(pathFiltration B).σAlg t] (signatureSigma B hT ℓ u) :=
+    fun u h0 hu => measurable_signatureSigma_path B hT ℓ t ⟨u, h0, hu⟩
+  rw [kitDoleansExp_def, kitItoInt_eq_raw B ht.1 had hpair, kitQuadVar_eq_raw B ht.1 had hpair,
+    kitQuadVarRaw_signatureSigma B hd hT w hw ℓ hℓ ht ω]
 
 /-! ## The Doléans SDE -/
 

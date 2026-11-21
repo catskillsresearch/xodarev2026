@@ -18,6 +18,8 @@ full-sequence** convergence along the (non-nested) uniform grids of the `limUnde
 
 * `integral_sum_pow_four_le`: for independent, centred, `L⁴` variables with fourth moments
   bounded by `M`, `𝔼[(∑_{i ∈ s} X_i)⁴] ≤ 9 |s|² M`;
+* `integral_sum_pow_four_le_of_orthogonal`: the same order of bound for **martingale
+  differences** (no independence), `𝔼[(∑_{i<m} ξ_i)⁴] ≤ 16 (∑_{i<m} √𝔼[ξ_i⁴])²`;
 * `ae_tendsto_zero_of_summable_integral_pow_four`: summable fourth moments force almost-sure
   convergence to `0` (Borel–Cantelli in the form `∑ₙ Aₙ⁴ < ∞` a.s.).
 -/
@@ -120,6 +122,148 @@ theorem integral_sum_pow_four_le {ι : Type*} {X : ι → Ω → ℝ} (hind : iI
     have h4 := hM a
     push_cast
     nlinarith [mul_nonneg hk0 hM0]
+
+/-! ## Martingale differences: a discrete Burkholder-type fourth-moment bound -/
+
+private lemma abs_pow_mul_pow_le (a b : ℝ) {p q : ℕ} (h : p + q = 4) :
+    |a ^ p * b ^ q| ≤ a ^ 4 + b ^ 4 := by
+  rw [abs_mul, abs_pow, abs_pow]
+  have ha4 : |a| ^ 4 = a ^ 4 := by
+    rw [← abs_pow]; exact abs_of_nonneg (by positivity)
+  have hb4 : |b| ^ 4 = b ^ 4 := by
+    rw [← abs_pow]; exact abs_of_nonneg (by positivity)
+  have ha0 : 0 ≤ a ^ 4 := by positivity
+  have hb0 : 0 ≤ b ^ 4 := by positivity
+  rcases le_total |a| |b| with hab | hab
+  · calc |a| ^ p * |b| ^ q ≤ |b| ^ p * |b| ^ q := by gcongr
+      _ = |b| ^ 4 := by rw [← pow_add, h]
+      _ ≤ a ^ 4 + b ^ 4 := by rw [hb4]; linarith
+  · calc |a| ^ p * |b| ^ q ≤ |a| ^ p * |a| ^ q := by gcongr
+      _ = |a| ^ 4 := by rw [← pow_add, h]
+      _ ≤ a ^ 4 + b ^ 4 := by rw [ha4]; linarith
+
+omit [IsProbabilityMeasure P] in
+/-- Mixed fourth-order monomials of two `L⁴` variables are integrable. -/
+lemma integrable_pow_mul_pow_of_memLp_four [IsFiniteMeasure P] {f g : Ω → ℝ} (hf : MemLp f 4 P)
+    (hg : MemLp g 4 P) {p q : ℕ} (h : p + q = 4) :
+    Integrable (fun ω => f ω ^ p * g ω ^ q) P := by
+  have hf4 : Integrable (fun ω => ‖f ω‖ ^ 4) P := by
+    simpa using (hf.integrable_norm_pow' (p := 4))
+  have hg4 : Integrable (fun ω => ‖g ω‖ ^ 4) P := by
+    simpa using (hg.integrable_norm_pow' (p := 4))
+  refine Integrable.mono' (hf4.fun_add hg4)
+    ((hf.aestronglyMeasurable.pow p).mul (hg.aestronglyMeasurable.pow q))
+    (ae_of_all _ fun ω => ?_)
+  have h1 := abs_pow_mul_pow_le (f ω) (g ω) h
+  have e1 : ‖f ω‖ ^ 4 = f ω ^ 4 := by
+    rw [Real.norm_eq_abs, ← abs_pow]; exact abs_of_nonneg (by positivity)
+  have e2 : ‖g ω‖ ^ 4 = g ω ^ 4 := by
+    rw [Real.norm_eq_abs, ← abs_pow]; exact abs_of_nonneg (by positivity)
+  rw [e1, e2]
+  simpa [Real.norm_eq_abs] using h1
+
+/-- Cauchy–Schwarz for squares: `𝔼[f² g²] ≤ √𝔼[f⁴] √𝔼[g⁴]`. -/
+lemma integral_sq_mul_sq_le {f g : Ω → ℝ} (hf : MemLp f 4 P) (hg : MemLp g 4 P) :
+    ∫ ω, f ω ^ 2 * g ω ^ 2 ∂P ≤
+      Real.sqrt (∫ ω, f ω ^ 4 ∂P) * Real.sqrt (∫ ω, g ω ^ 4 ∂P) := by
+  have hf4 := integrable_pow_of_memLp_four hf (k := 4) le_rfl
+  have hg4 := integrable_pow_of_memLp_four hg (k := 4) le_rfl
+  have hfg := integrable_pow_mul_pow_of_memLp_four hf hg (p := 2) (q := 2) rfl
+  set a := ∫ ω, f ω ^ 4 ∂P with ha
+  set c := ∫ ω, g ω ^ 4 ∂P with hc
+  set I := ∫ ω, f ω ^ 2 * g ω ^ 2 ∂P with hI
+  have hquad : ∀ x : ℝ, 0 ≤ a * (x * x) + (-2 * I) * x + c := by
+    intro x
+    have h0 : 0 ≤ ∫ ω, (x * f ω ^ 2 - g ω ^ 2) ^ 2 ∂P := integral_nonneg fun ω => sq_nonneg _
+    have he : ∫ ω, (x * f ω ^ 2 - g ω ^ 2) ^ 2 ∂P = x ^ 2 * a + -(2 * x) * I + c := by
+      have h : (fun ω => (x * f ω ^ 2 - g ω ^ 2) ^ 2) = fun ω =>
+          x ^ 2 * f ω ^ 4 + -(2 * x) * (f ω ^ 2 * g ω ^ 2) + g ω ^ 4 := by
+        funext ω; ring
+      rw [h, integral_add ((hf4.const_mul _).fun_add (hfg.const_mul _)) hg4,
+        integral_add (hf4.const_mul _) (hfg.const_mul _), integral_const_mul, integral_const_mul]
+    linarith
+  have hd := discrim_le_zero hquad
+  have hI2 : I ^ 2 ≤ a * c := by
+    unfold discrim at hd
+    nlinarith
+  have ha0 : 0 ≤ a := integral_nonneg fun ω => by positivity
+  calc I ≤ |I| := le_abs_self _
+    _ ≤ Real.sqrt (a * c) := Real.abs_le_sqrt hI2
+    _ = Real.sqrt a * Real.sqrt c := Real.sqrt_mul ha0 c
+
+/-- **Fourth moment of a sum of martingale differences** (discrete Burkholder-type bound).
+If each `ξ m` is orthogonal to the cube of the preceding partial sum — as for martingale
+differences, `𝔼[M_m³ ξ_m] = 𝔼[M_m³ 𝔼[ξ_m | 𝓕_m]] = 0` — then
+`𝔼[(∑_{i<m} ξ_i)⁴] ≤ 16 (∑_{i<m} √𝔼[ξ_i⁴])²`. No independence is assumed. -/
+theorem integral_sum_pow_four_le_of_orthogonal {ξ : ℕ → Ω → ℝ} (m : ℕ)
+    (hLp : ∀ i < m, MemLp (ξ i) 4 P)
+    (horth : ∀ j < m, ∫ ω, (∑ i ∈ Finset.range j, ξ i ω) ^ 3 * ξ j ω ^ 1 ∂P = 0) :
+    ∫ ω, (∑ i ∈ Finset.range m, ξ i ω) ^ 4 ∂P ≤
+      16 * (∑ i ∈ Finset.range m, Real.sqrt (∫ ω, ξ i ω ^ 4 ∂P)) ^ 2 := by
+  induction m with
+  | zero => simp
+  | succ m ih =>
+    set M : Ω → ℝ := fun ω => ∑ i ∈ Finset.range m, ξ i ω with hM
+    set X : Ω → ℝ := ξ m with hX
+    set S : ℝ := ∑ i ∈ Finset.range m, Real.sqrt (∫ ω, ξ i ω ^ 4 ∂P) with hS
+    have hS0 : 0 ≤ S := Finset.sum_nonneg fun i _ => Real.sqrt_nonneg _
+    have hMLp : MemLp M 4 P := by
+      have h := memLp_finsetSum' (p := 4) (μ := P) (Finset.range m) fun i hi =>
+        hLp i (Nat.lt_succ_of_lt (Finset.mem_range.mp hi))
+      have hfun : (∑ j ∈ Finset.range m, ξ j) = M := by funext ω; simp [M]
+      rwa [hfun] at h
+    have hXLp : MemLp X 4 P := hLp m (Nat.lt_succ_self m)
+    have ih' := ih (fun i hi => hLp i (Nat.lt_succ_of_lt hi))
+      (fun j hj => horth j (Nat.lt_succ_of_lt hj))
+    have I40 := integrable_pow_mul_pow_of_memLp_four hMLp hXLp (p := 4) (q := 0) rfl
+    have I31 := (integrable_pow_mul_pow_of_memLp_four hMLp hXLp (p := 3) (q := 1) rfl).const_mul 4
+    have I22 := (integrable_pow_mul_pow_of_memLp_four hMLp hXLp (p := 2) (q := 2) rfl).const_mul 6
+    have I13 := (integrable_pow_mul_pow_of_memLp_four hMLp hXLp (p := 1) (q := 3) rfl).const_mul 4
+    have I04 := integrable_pow_mul_pow_of_memLp_four hMLp hXLp (p := 0) (q := 4) rfl
+    have hexp : (fun ω => (∑ i ∈ Finset.range (m + 1), ξ i ω) ^ 4) = fun ω =>
+        M ω ^ 4 * X ω ^ 0 + 4 * (M ω ^ 3 * X ω ^ 1) + 6 * (M ω ^ 2 * X ω ^ 2) +
+          4 * (M ω ^ 1 * X ω ^ 3) + M ω ^ 0 * X ω ^ 4 := by
+      funext ω
+      rw [Finset.sum_range_succ]
+      simp only [M, X]
+      ring
+    set a := ∫ ω, M ω ^ 4 ∂P with ha
+    set c := ∫ ω, X ω ^ 4 ∂P with hc
+    have ha0 : 0 ≤ a := integral_nonneg fun ω => by positivity
+    have hc0 : 0 ≤ c := integral_nonneg fun ω => by positivity
+    have h22 := integral_sq_mul_sq_le hMLp hXLp
+    have h13 : ∫ ω, M ω ^ 1 * X ω ^ 3 ∂P ≤
+        (∫ ω, M ω ^ 2 * X ω ^ 2 ∂P + ∫ ω, M ω ^ 0 * X ω ^ 4 ∂P) / 2 := by
+      have hJ := integrable_pow_mul_pow_of_memLp_four hMLp hXLp (p := 2) (q := 2) rfl
+      rw [← integral_add hJ I04, ← integral_div]
+      refine integral_mono (integrable_pow_mul_pow_of_memLp_four hMLp hXLp (p := 1) (q := 3) rfl)
+        ((hJ.fun_add I04).div_const 2) fun ω => ?_
+      simp only
+      nlinarith [sq_nonneg (M ω * X ω - X ω ^ 2)]
+    have h40 : ∫ ω, M ω ^ 4 * X ω ^ 0 ∂P = a := by simp [ha]
+    have h04 : ∫ ω, M ω ^ 0 * X ω ^ 4 ∂P = c := by simp [hc]
+    have hsa : Real.sqrt a ≤ 4 * S := by
+      have : a ≤ (4 * S) ^ 2 := by rw [ha]; calc _ ≤ 16 * S ^ 2 := ih'
+        _ = (4 * S) ^ 2 := by ring
+      exact Real.sqrt_le_iff.mpr ⟨by positivity, this⟩
+    have hsa0 := Real.sqrt_nonneg a
+    have hsc0 := Real.sqrt_nonneg c
+    have hasq : Real.sqrt a ^ 2 = a := Real.sq_sqrt ha0
+    have hcsq : Real.sqrt c ^ 2 = c := Real.sq_sqrt hc0
+    rw [hexp, integral_add ((((I40.fun_add I31).fun_add I22).fun_add I13)) I04,
+      integral_add ((I40.fun_add I31).fun_add I22) I13, integral_add (I40.fun_add I31) I22,
+      integral_add I40 I31, integral_const_mul, integral_const_mul, integral_const_mul,
+      horth m (Nat.lt_succ_self m), h40, h04, Finset.sum_range_succ]
+    rw [h04] at h13
+    -- `a + 8 √a √c + 3 c ≤ (√a + 4 √c)² ≤ 16 (S + √c)²`
+    have hstep : a + 4 * 0 + 6 * ∫ ω, M ω ^ 2 * X ω ^ 2 ∂P + 4 * ∫ ω, M ω ^ 1 * X ω ^ 3 ∂P + c ≤
+        (Real.sqrt a + 4 * Real.sqrt c) ^ 2 := by
+      nlinarith [mul_nonneg hsa0 hsc0]
+    refine hstep.trans ?_
+    have : Real.sqrt a + 4 * Real.sqrt c ≤ 4 * (S + Real.sqrt c) := by linarith
+    calc (Real.sqrt a + 4 * Real.sqrt c) ^ 2 ≤ (4 * (S + Real.sqrt c)) ^ 2 :=
+          pow_le_pow_left₀ (by positivity) this 2
+      _ = 16 * (S + Real.sqrt c) ^ 2 := by ring
 
 omit [IsProbabilityMeasure P] in
 /-- **Summable fourth moments ⇒ almost-sure convergence to zero.** -/

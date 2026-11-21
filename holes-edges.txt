@@ -163,11 +163,15 @@ ItoCalculusKit -hard-> SignaturePriceSolution
 ItoCalculusKit -hard-> TheoremAOfBrownianSetupItoKit
 ItoCalculusKit -hard-> TheoremBOfSetupItoRiccatiKit
 ItoCalculusKit.BrownianQuadVarAS -hard-> ItoCalculusKit.DoleansSDE
+ItoCalculusKit.BrownianQuadVarAS -hard-> ItoCalculusKit.MartingaleTransform
 ItoCalculusKit.DoleansSDE -hard-> ItoCalculusKit.OfMathFin
 ItoCalculusKit.FourthMoment -hard-> ItoCalculusKit.BrownianQuadVarAS
 ItoCalculusKit.ItoQuadDoleans -hard-> ItoCalculusKit.OfMathFin
+ItoCalculusKit.JointPast -hard-> ItoCalculusKit.MartingaleTransform
+ItoCalculusKit.KitRaw -hard-> ItoCalculusKit.DoleansSDE
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.DoleansSDE
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.ItoQuadDoleans
+ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.KitRaw
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.NovikovDoob
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.StoppedL2
 ItoCalculusKit.NovikovDoob -hard-> ItoCalculusKit.OfMathFin
@@ -320,6 +324,7 @@ ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.StratonovichOfB
 ProlongedBrownianSetup.Sig2Strat -hard-> ProlongedBrownianSetup.Sig2StratChenShuffle
 ProlongedBrownianSetup.Sig2Strat -hard-> ProlongedBrownianSetup.Sig2StratMoments
 ProlongedBrownianSetup.Sig2Strat -hard-> ProlongedBrownianSetup.StratonovichOfBM
+ProlongedBrownianSetup.Sig2StratAdapted -hard-> ItoCalculusKit.JointPast
 ProlongedBrownianSetup.Sig2StratAdapted -hard-> ItoCalculusKit.MathFinBridge
 ProlongedBrownianSetup.Sig2StratChenShuffle -hard-> ProlongedBrownianSetup.StratonovichOfBM
 ProlongedBrownianSetup.Sig2StratDyadic -hard-> ProlongedBrownianSetup.Sig2StratChenShuffle
