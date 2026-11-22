@@ -1,21 +1,11 @@
 module
 
-public import SignatureVolatility.DualPairing
-public import SignatureVolatility.HypH1
-public import SignatureVolatility.HypH2
-public import SignatureVolatility.HypH3
-public import SignatureVolatility.ItoCalculusKit.BrownianQuadVarAS
-public import SignatureVolatility.ItoCalculusKit.ConstVol
-public import SignatureVolatility.ItoCalculusKit.KitRaw
-public import SignatureVolatility.ItoCalculusKit.MathFinBridge
-public import SignatureVolatility.ItoCalculusKit.PathwiseExpIto
-public import SignatureVolatility.ItoCalculusKit.DoleansSigma
+public import SignatureVolatility.ItoCalculusKit.DoleansQV
 
 
 @[expose] public section
 
-open MeasureTheory ProbabilityTheory Filter Topology Set
-open scoped NNReal
+open MeasureTheory Filter Topology Set
 
 namespace SignatureVolatility
 
@@ -45,7 +35,7 @@ Proved here (no axioms beyond Lean's standard three):
   and `kitDoleansExp_signatureSigma` (`Z_t = exp (limUnder ∑ σ ΔW - ½ ∫₀ᵗ σ²)` once the raw Itô
   limit of `σ` is integrable).
 
-Still an axiom: `kit_doleans_sde_of_driver`, the SDE for `0 < d` and a **non-constant** signature
+Proved via `kit_doleans_sde_of_raw` (`DoleansIdentify`, `DoleansQV`): `kit_doleans_sde_of_driver`, the SDE for `0 < d` and a **non-constant** signature
 volatility `σ = ⟨ℓ, Ŵ⟩` under H1–H3. By `kit_doleans_sde_of_raw` (`KitRaw`) it would follow from
 the integrability gate for `H = s₀ Z σ` and the a.s. identification of the raw limit
 `limUnder ∑ H ΔW = s₀ Z_t - s₀`. For `d ≥ 2` the integrand depends on non-driver coordinates, so
@@ -341,7 +331,7 @@ theorem kit_doleans_sde_of_const_on {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0
 
 /-! ## The Doléans SDE -/
 
-/-- **Remaining analytic gap (single axiom).** Doléans SDE for a positive-dimensional driver and a
+/-- **Doléans SDE for the non-constant signature volatility** (proved). Doléans SDE for a positive-dimensional driver and a
 **non-constant** signature volatility `σ = ⟨ℓ, Ŵ⟩` (an analytic function of `(t, W_t)` for the
 chordal lift) under H1–H3. The constant case (`σ ≡ c` on `[0, T] × Ω`, Black–Scholes) is
 *proved* in `kit_doleans_sde_of_const_on` and excluded here. Analytic content still to be
@@ -356,7 +346,7 @@ formalized for non-constant `σ`:
 3. Bochner integrability of the raw Itô / quadratic-variation limits of `s₀ Z σ` (moments of `Z`
    from H3), so that `kitPairIntegrable` holds and `condExp` acts as the identity. -/
 theorem kit_doleans_sde_of_driver {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0 < d) (hT : 0 < T)
-    (w : Weight) (_hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1)) (_hℓ : HypH1 w ℓ) (s₀ : ℝ) :
+    (w : Weight) (hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1)) (hℓ : HypH1 w ℓ) (s₀ : ℝ) :
     let setup := prolongedBrownianSetup_stratonovich_of_brownian B hT
     let σ : ℝ → Ω → ℝ := fun t ω => dualPairing ℓ (setup.W_hat t ω)
     (¬ ∃ c : ℝ, ∀ s ∈ Icc 0 T, ∀ ω, σ s ω = c) →
@@ -366,7 +356,11 @@ theorem kit_doleans_sde_of_driver {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0 <
     ∀ t ∈ Icc 0 T, ∀ᵐ ω ∂P,
       s₀ * kitDoleansExp B σ t ω =
         s₀ + kitItoInt B (fun s ω' => (s₀ * kitDoleansExp B σ s ω') * σ s ω') t ω := by
-  sorry
+  intro setup σ _hconst h3 _hquad _hcont t ht
+  exact kit_doleans_sde_of_raw B (signatureSigma B hT ℓ) s₀ ht.1
+    ⟨integrable_kitItoIntRaw_doleans B hd hT hw hℓ h3 ht s₀,
+      integrable_kitQuadVarRaw_doleans B hd hT hw hℓ h3 ht s₀⟩
+    (kitItoIntRaw_doleans_ae B hd hT hw hℓ h3 ht s₀)
 
 /-- Doléans SDE for the signature volatility under H1–H3, pathwise square-integrability and
 pathwise continuity of `σ`. Proved for `d = 0` and for constant `σ`; the non-constant case with a

@@ -8,7 +8,6 @@ ClassicalRiccatiSolution -hard-> TheoremBOfSetupItoRiccatiKit
 DualPairing -hard-> DualPairingLeNormWDualMulNormW
 DualPairing -hard-> ExtTensorAlgebra.TensorExpLipschitz
 DualPairing -hard-> ItoCalculusKit
-DualPairing -hard-> ItoCalculusKit.DoleansSDE
 DualPairing -hard-> ItoCalculusKit.NovikovDoob
 DualPairing -hard-> ItoCalculusKit.SigmaContinuity
 DualPairing -hard-> ItoCalculusKit.StoppedL2
@@ -130,7 +129,6 @@ GeneratedFiltration -hard-> ProlongedBrownianSetup.Sig2StratAdapted
 GeneratedFiltration -hard-> ProlongedBrownianSetup.SignatureFiltration
 HypH1 -hard-> HypH1OfIsFinitelySupported
 HypH1 -hard-> ItoCalculusKit
-HypH1 -hard-> ItoCalculusKit.DoleansSDE
 HypH1 -hard-> ItoCalculusKit.NovikovDoob
 HypH1 -hard-> ItoCalculusKit.SigmaContinuity
 HypH1 -hard-> Proposition311SharpnessOfH1
@@ -143,7 +141,6 @@ HypH2 -hard-> BlackScholesModel
 HypH2 -hard-> FirstOrderBrownianVolModel
 HypH2 -hard-> InfiniteGeometricSignatureModel
 HypH2 -hard-> ItoCalculusKit
-HypH2 -hard-> ItoCalculusKit.DoleansSDE
 HypH2 -hard-> ItoCalculusKit.NovikovDoob
 HypH2 -hard-> ItoCalculusKit.SigmaContinuity
 HypH2 -hard-> Lemma32SignatureInTw
@@ -153,7 +150,6 @@ HypH2 -hard-> SignatureHestonLevel2Model
 HypH2 -hard-> SignatureVolatilityModel
 HypH3 -hard-> ItoCalculusKit
 HypH3 -hard-> ItoCalculusKit.DoleansMoments
-HypH3 -hard-> ItoCalculusKit.DoleansSDE
 HypH3 -hard-> ItoCalculusKit.NovikovDoob
 HypH3 -hard-> SignatureVolatilityModel
 HypH3 -hard-> TheoremAOfBrownianSetupItoKit
@@ -169,19 +165,17 @@ ItoCalculusKit -hard-> ItoCalculusKit.OfMathFin
 ItoCalculusKit -hard-> SignaturePriceSolution
 ItoCalculusKit -hard-> TheoremAOfBrownianSetupItoKit
 ItoCalculusKit -hard-> TheoremBOfSetupItoRiccatiKit
-ItoCalculusKit.BrownianQuadVarAS -hard-> ItoCalculusKit.DoleansSDE
 ItoCalculusKit.BrownianQuadVarAS -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.BrownianQuadVarAS -hard-> ItoCalculusKit.MartingaleTransform
-ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.DoleansSDE
 ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.DoleansSigma
 ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.DoleansErrorPathwise -hard-> ItoCalculusKit.DoleansInputs
 ItoCalculusKit.DoleansIdentify -hard-> ItoCalculusKit.KolmogorovIto
 ItoCalculusKit.DoleansInputs -hard-> ItoCalculusKit.DoleansIdentify
 ItoCalculusKit.DoleansMoments -hard-> ItoCalculusKit.DoleansSigma
+ItoCalculusKit.DoleansQV -hard-> ItoCalculusKit.DoleansSDE
 ItoCalculusKit.DoleansSDE -hard-> ItoCalculusKit.OfMathFin
 ItoCalculusKit.DoleansSigma -hard-> ItoCalculusKit.DoleansInputs
-ItoCalculusKit.DoleansSigma -hard-> ItoCalculusKit.DoleansSDE
 ItoCalculusKit.EighthMoment -hard-> ItoCalculusKit.EighthTransform
 ItoCalculusKit.EighthTransform -hard-> ItoCalculusKit.ItoIncrement8
 ItoCalculusKit.ExpSupermartingale -hard-> ItoCalculusKit.DoleansMoments
@@ -200,11 +194,10 @@ ItoCalculusKit.ItoOrthogonal -hard-> ItoCalculusKit.FrozenIncrement8
 ItoCalculusKit.ItoQuadDoleans -hard-> ItoCalculusKit.OfMathFin
 ItoCalculusKit.JointPast -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.JointPast -hard-> ItoCalculusKit.MartingaleTransform
-ItoCalculusKit.KitRaw -hard-> ItoCalculusKit.DoleansSDE
 ItoCalculusKit.KitRaw -hard-> ItoCalculusKit.RiemannConvergence
+ItoCalculusKit.KolmogorovIto -hard-> ItoCalculusKit.DoleansQV
 ItoCalculusKit.MartingaleTransform -hard-> ItoCalculusKit.RiemannConvergence
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.ConstVol
-ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.DoleansSDE
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.ItoQuadDoleans
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.KitRaw
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.NovikovDoob
@@ -215,7 +208,6 @@ ItoCalculusKit.OfMathFin -hard-> SignatureRiccatiKit.OfSetup
 ItoCalculusKit.OfMathFin -hard-> TheoremA
 ItoCalculusKit.OfMathFin -hard-> TheoremB
 ItoCalculusKit.PathwiseExpIto -hard-> ItoCalculusKit.DoleansMoments
-ItoCalculusKit.PathwiseExpIto -hard-> ItoCalculusKit.DoleansSDE
 ItoCalculusKit.QVTransform -hard-> ItoCalculusKit.GridDoob
 ItoCalculusKit.QuadIncrement -hard-> ItoCalculusKit.DoleansInputs
 ItoCalculusKit.QuadIncrement -hard-> ItoCalculusKit.LogDoleansIncrement

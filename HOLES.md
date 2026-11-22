@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-22T02:47:45Z
-**Holes:** 11 open+blocked · 3 open · 8 blocked · 150 done · 6 file(s) with `sorry`.
+**Updated:** 2026-11-22T02:55:32Z
+**Holes:** 10 open+blocked · 2 open · 8 blocked · 152 done · 5 file(s) with `sorry`.
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
 
@@ -33,7 +33,6 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | Status | Id | File |
 |---|---|---|
 | blocked | `GKWDecompositionSetup.OfPFS` | `SignatureVolatility/GKWDecompositionSetup/OfPFS.lean` |
-| open | `ItoCalculusKit.DoleansSDE` | `SignatureVolatility/ItoCalculusKit/DoleansSDE.lean` |
 | open | `ItoCalculusKit.NovikovDoob` | `SignatureVolatility/ItoCalculusKit/NovikovDoob.lean` |
 | open | `ItoCalculusKit.StoppedL2` | `SignatureVolatility/ItoCalculusKit/StoppedL2.lean` |
 | blocked | `PriceFiltrationSignatureSpace.OfMarket` | `SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean` |
@@ -43,13 +42,12 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 
 | Id | File |
 |---|---|
-| `ItoCalculusKit.DoleansSDE` | `SignatureVolatility/ItoCalculusKit/DoleansSDE.lean` |
 | `ItoCalculusKit.NovikovDoob` | `SignatureVolatility/ItoCalculusKit/NovikovDoob.lean` |
 | `ItoCalculusKit.StoppedL2` | `SignatureVolatility/ItoCalculusKit/StoppedL2.lean` |
 
 ## By group
 
-### Top-level modules — 10 hole(s)
+### Top-level modules — 9 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -79,7 +77,8 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `ItoCalculusKit.DoleansIdentify` | `SignatureVolatility/ItoCalculusKit/DoleansIdentify.lean` |
 | done | `ItoCalculusKit.DoleansInputs` | `SignatureVolatility/ItoCalculusKit/DoleansInputs.lean` |
 | done | `ItoCalculusKit.DoleansMoments` | `SignatureVolatility/ItoCalculusKit/DoleansMoments.lean` |
-| open | `ItoCalculusKit.DoleansSDE` | `SignatureVolatility/ItoCalculusKit/DoleansSDE.lean` |
+| done | `ItoCalculusKit.DoleansQV` | `SignatureVolatility/ItoCalculusKit/DoleansQV.lean` |
+| done | `ItoCalculusKit.DoleansSDE` | `SignatureVolatility/ItoCalculusKit/DoleansSDE.lean` |
 | done | `ItoCalculusKit.DoleansSigma` | `SignatureVolatility/ItoCalculusKit/DoleansSigma.lean` |
 | done | `ItoCalculusKit.EighthMoment` | `SignatureVolatility/ItoCalculusKit/EighthMoment.lean` |
 | done | `ItoCalculusKit.EighthTransform` | `SignatureVolatility/ItoCalculusKit/EighthTransform.lean` |
