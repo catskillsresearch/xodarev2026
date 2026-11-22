@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-22T00:57:09Z",
+  "updated": "2026-11-22T01:07:41Z",
   "sorryCount": 11,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -481,6 +481,17 @@
       "paperKitGoal": false
     },
     {
+      "id": "ItoCalculusKit.DoleansMoments",
+      "label": "ItoCalculusKit.DoleansMoments",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/DoleansMoments.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
       "id": "ItoCalculusKit.DoleansSDE",
       "label": "ItoCalculusKit.DoleansSDE",
       "section": 1,
@@ -489,6 +500,17 @@
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
       "hasSorry": true,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.ExpSupermartingale",
+      "label": "ItoCalculusKit.ExpSupermartingale",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/ExpSupermartingale.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -1914,7 +1936,22 @@
     },
     {
       "from": "HypH3",
-      "to": "ItoCalculusKit.DoleansSDE",
+      "to": "ItoCalculusKit.DoleansMoments",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.ExpSupermartingale",
+      "to": "ItoCalculusKit.DoleansMoments",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.PathwiseExpIto",
+      "to": "ItoCalculusKit.DoleansMoments",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.SigmaHolder",
+      "to": "ItoCalculusKit.DoleansMoments",
       "kind": "hard"
     },
     {
@@ -1923,13 +1960,13 @@
       "kind": "hard"
     },
     {
-      "from": "ItoCalculusKit.PathwiseExpIto",
+      "from": "ItoCalculusKit.DoleansMoments",
       "to": "ItoCalculusKit.DoleansSDE",
       "kind": "hard"
     },
     {
-      "from": "ItoCalculusKit.SigmaHolder",
-      "to": "ItoCalculusKit.DoleansSDE",
+      "from": "ItoCalculusKit.RiemannConvergence",
+      "to": "ItoCalculusKit.ExpSupermartingale",
       "kind": "hard"
     },
     {

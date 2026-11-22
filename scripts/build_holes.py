@@ -107,6 +107,8 @@ VERIFIED: set[str] = {
     "ItoCalculusKit.GBMEnvelope",
     "ExtTensorAlgebra.TensorExpLipschitz",
     "ItoCalculusKit.SigmaHolder",
+    "ItoCalculusKit.ExpSupermartingale",
+    "ItoCalculusKit.DoleansMoments",
     "ItoCalculusKit.PathwiseExpIto",
     "Letter",
     "MemL2w",

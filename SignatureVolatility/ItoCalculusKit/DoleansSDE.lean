@@ -9,7 +9,7 @@ public import SignatureVolatility.ItoCalculusKit.ConstVol
 public import SignatureVolatility.ItoCalculusKit.KitRaw
 public import SignatureVolatility.ItoCalculusKit.MathFinBridge
 public import SignatureVolatility.ItoCalculusKit.PathwiseExpIto
-public import SignatureVolatility.ItoCalculusKit.SigmaHolder
+public import SignatureVolatility.ItoCalculusKit.DoleansMoments
 
 
 @[expose] public section
@@ -404,19 +404,6 @@ lemma kitDoleansExp_signatureSigma {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0 
   rw [kitDoleansExp_def, kitItoInt_eq_raw B ht.1 had hpair, kitQuadVar_eq_raw B ht.1 had hpair,
     kitQuadVarRaw_signatureSigma B hd hT w hw ℓ hℓ ht ω]
 
-/-- **Raw Itô limit of the signature volatility** (H1–H2): the Itô–Riemann sums of `σ` converge
-almost surely along the full sequence of uniform grids, and the raw limit is in `L⁴`, hence
-integrable (`holderAdapted_signatureSigma` + `kitItoIntRaw_of_holderAdapted`). -/
-theorem kitItoIntRaw_signatureSigma {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0 < d) (hT : 0 < T)
-    {w : Weight} (hw : HypH2 w) {ℓ : ExtTensorAlgebra (d + 1)} (hℓ : HypH1 w ℓ) {t : ℝ}
-    (ht : 0 ≤ t) :
-    (∀ᵐ ω ∂P, Tendsto (fun n : ℕ => unifRiemann B (kitDriver hd) (signatureSigma B hT ℓ) t
-      (n + 1) ω) atTop (𝓝 (kitItoIntRaw B (signatureSigma B hT ℓ) t ω))) ∧
-      MemLp (kitItoIntRaw B (signatureSigma B hT ℓ) t) 4 P ∧
-      Integrable (kitItoIntRaw B (signatureSigma B hT ℓ) t) P := by
-  obtain ⟨K, hK⟩ := holderAdapted_signatureSigma B hT hw hℓ t
-  exact kitItoIntRaw_of_holderAdapted B hd ht hK
-
 /-- Under H1–H3 the kit Doléans exponential of the signature volatility is, for every `ω`,
 `Z_t = exp (limUnder ∑ σ ΔW - ½ ∫₀ᵗ σ²)` (the integrability gate is discharged by
 `kitItoIntRaw_signatureSigma`). -/
@@ -428,6 +415,27 @@ lemma kitDoleansExp_signatureSigma_eq {T : ℝ} (B : MultiBrownian Ω P d) (hd :
         (1 / 2 : ℝ) * ∫ s in (0 : ℝ)..t, (signatureSigma B hT ℓ s ω) ^ 2) :=
   kitDoleansExp_signatureSigma B hd hT w hw ℓ hℓ h3 ht
     (kitItoIntRaw_signatureSigma B hd hT hw hℓ ht.1).2.2 ω
+
+/-- **All `Lⁿ` moments of the Doléans exponential of the signature volatility** (H1–H3). -/
+theorem memLp_kitDoleansExp_signatureSigma {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0 < d)
+    (hT : 0 < T) (w : Weight) (hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1)) (hℓ : HypH1 w ℓ)
+    (h3 : HypH3 P T (signatureSigma B hT ℓ)) {t : ℝ} (ht : t ∈ Icc 0 T) (n : ℕ) (hn : 1 ≤ n) :
+    MemLp (kitDoleansExp B (signatureSigma B hT ℓ) t) n P := by
+  have hmeas := (measurable_kitDoleansExp B (signatureSigma B hT ℓ) t).aestronglyMeasurable
+    (μ := P)
+  have hfin := lintegral_exp_mul_signatureSigma_le B hd hT hw hℓ h3 ht (p := n)
+    (by exact_mod_cast hn)
+  have hlt := hfin.trans_lt (ENNReal.add_lt_top.mpr ⟨ENNReal.one_lt_top, ENNReal.ofReal_lt_top⟩)
+  have h4 : MemLp (kitDoleansExp B (signatureSigma B hT ℓ) t) ((n : ℕ) : ENNReal) P := by
+    rw [← integrable_norm_rpow_iff hmeas (by simpa using (by omega : n ≠ 0)) (by simp)]
+    simp only [ENNReal.toReal_natCast, Real.rpow_natCast]
+    refine ⟨hmeas.norm.pow n, ?_⟩
+    refine lt_of_eq_of_lt (lintegral_congr fun ω => ?_) hlt
+    rw [Real.enorm_eq_ofReal (by positivity)]
+    simp only [Real.norm_eq_abs]
+    rw [kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 ht ω, Real.abs_exp,
+      ← Real.exp_nat_mul]
+  exact_mod_cast h4
 
 /-! ## The Doléans SDE -/
 

@@ -152,6 +152,7 @@ HypH2 -hard-> QuinticOUSignatureModel
 HypH2 -hard-> SignatureHestonLevel2Model
 HypH2 -hard-> SignatureVolatilityModel
 HypH3 -hard-> ItoCalculusKit
+HypH3 -hard-> ItoCalculusKit.DoleansMoments
 HypH3 -hard-> ItoCalculusKit.DoleansSDE
 HypH3 -hard-> ItoCalculusKit.NovikovDoob
 HypH3 -hard-> SignatureVolatilityModel
@@ -173,7 +174,9 @@ ItoCalculusKit.BrownianQuadVarAS -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.BrownianQuadVarAS -hard-> ItoCalculusKit.MartingaleTransform
 ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.DoleansSDE
 ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.GBMMartingale
+ItoCalculusKit.DoleansMoments -hard-> ItoCalculusKit.DoleansSDE
 ItoCalculusKit.DoleansSDE -hard-> ItoCalculusKit.OfMathFin
+ItoCalculusKit.ExpSupermartingale -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.FourthMoment -hard-> ItoCalculusKit.BrownianQuadVarAS
 ItoCalculusKit.GBMEnvelope -hard-> ItoCalculusKit.NovikovDoob
 ItoCalculusKit.GBMMartingale -hard-> ItoCalculusKit.GBMEnvelope
@@ -194,11 +197,13 @@ ItoCalculusKit.OfMathFin -hard-> PriceFiltrationSignatureSpace.OfMarket
 ItoCalculusKit.OfMathFin -hard-> SignatureRiccatiKit.OfSetup
 ItoCalculusKit.OfMathFin -hard-> TheoremA
 ItoCalculusKit.OfMathFin -hard-> TheoremB
+ItoCalculusKit.PathwiseExpIto -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.PathwiseExpIto -hard-> ItoCalculusKit.DoleansSDE
+ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.ExpSupermartingale
 ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.SigmaHolder
 ItoCalculusKit.SigmaContinuity -hard-> ItoCalculusKit.NovikovDoob
 ItoCalculusKit.SigmaContinuity -hard-> ItoCalculusKit.SigmaHolder
-ItoCalculusKit.SigmaHolder -hard-> ItoCalculusKit.DoleansSDE
+ItoCalculusKit.SigmaHolder -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.StoppedL2 -hard-> ItoCalculusKit.OfMathFin
 Lemma32SignatureInTw -hard-> Corollary36SigmaWellDefined
 Letter -hard-> ExtTensorAlgebra.ExtTensorAlgebra
