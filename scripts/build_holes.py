@@ -119,6 +119,7 @@ VERIFIED: set[str] = {
     "ItoCalculusKit.GridChange",
     "ItoCalculusKit.ItoOrthogonal",
     "ItoCalculusKit.FrozenIncrement8",
+    "ItoCalculusKit.FrozenOrthogonal",
     "ItoCalculusKit.PathwiseExpIto",
     "Letter",
     "MemL2w",

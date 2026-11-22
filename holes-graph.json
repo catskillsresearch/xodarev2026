@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-22T02:01:27Z",
+  "updated": "2026-11-22T02:11:30Z",
   "sorryCount": 11,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -551,6 +551,17 @@
       "label": "ItoCalculusKit.FrozenIncrement8",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/FrozenIncrement8.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.FrozenOrthogonal",
+      "label": "ItoCalculusKit.FrozenOrthogonal",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/FrozenOrthogonal.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
@@ -2097,6 +2108,11 @@
     {
       "from": "ItoCalculusKit.ItoOrthogonal",
       "to": "ItoCalculusKit.FrozenIncrement8",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.FrozenIncrement8",
+      "to": "ItoCalculusKit.FrozenOrthogonal",
       "kind": "hard"
     },
     {

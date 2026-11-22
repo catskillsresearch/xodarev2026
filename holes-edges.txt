@@ -181,6 +181,7 @@ ItoCalculusKit.EighthTransform -hard-> ItoCalculusKit.ItoIncrement8
 ItoCalculusKit.ExpSupermartingale -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.FourthMoment -hard-> ItoCalculusKit.BrownianQuadVarAS
 ItoCalculusKit.FourthMoment -hard-> ItoCalculusKit.EighthMoment
+ItoCalculusKit.FrozenIncrement8 -hard-> ItoCalculusKit.FrozenOrthogonal
 ItoCalculusKit.GBMEnvelope -hard-> ItoCalculusKit.NovikovDoob
 ItoCalculusKit.GBMMartingale -hard-> ItoCalculusKit.GBMEnvelope
 ItoCalculusKit.GridChange -hard-> ItoCalculusKit.ItoOrthogonal
