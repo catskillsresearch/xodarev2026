@@ -198,6 +198,7 @@ ItoCalculusKit.JointPast -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.JointPast -hard-> ItoCalculusKit.MartingaleTransform
 ItoCalculusKit.KitRaw -hard-> ItoCalculusKit.RiemannConvergence
 ItoCalculusKit.KolmogorovIto -hard-> ItoCalculusKit.DoleansQV
+ItoCalculusKit.KolmogorovIto -hard-> ItoCalculusKit.HolderPath
 ItoCalculusKit.LogDoleansIncrement -hard-> ItoCalculusKit.NovikovMartingale
 ItoCalculusKit.MartingaleTransform -hard-> ItoCalculusKit.RiemannConvergence
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.ConstVol

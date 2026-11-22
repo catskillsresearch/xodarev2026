@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-22T03:08:21Z",
+  "updated": "2026-11-22T03:14:50Z",
   "sorryCount": 10,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -661,6 +661,17 @@
       "label": "ItoCalculusKit.GridDoob",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/GridDoob.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.HolderPath",
+      "label": "ItoCalculusKit.HolderPath",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/HolderPath.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
@@ -2288,6 +2299,11 @@
     {
       "from": "ItoCalculusKit.QVTransform",
       "to": "ItoCalculusKit.GridDoob",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.KolmogorovIto",
+      "to": "ItoCalculusKit.HolderPath",
       "kind": "hard"
     },
     {
