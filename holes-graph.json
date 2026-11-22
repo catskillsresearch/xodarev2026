@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-22T03:22:30Z",
+  "updated": "2026-11-22T03:27:12Z",
   "sorryCount": 10,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -551,6 +551,17 @@
       "label": "ItoCalculusKit.DoleansSigma",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/DoleansSigma.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.DoobEnvelope",
+      "label": "ItoCalculusKit.DoobEnvelope",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/DoobEnvelope.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
@@ -2250,6 +2261,11 @@
     {
       "from": "ItoCalculusKit.DoleansMoments",
       "to": "ItoCalculusKit.DoleansSigma",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.GBMEnvelope",
+      "to": "ItoCalculusKit.DoobEnvelope",
       "kind": "hard"
     },
     {
