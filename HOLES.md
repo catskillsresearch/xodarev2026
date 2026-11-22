@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-22T00:41:23Z
-**Holes:** 11 open+blocked · 3 open · 8 blocked · 128 done · 6 file(s) with `sorry`.
+**Updated:** 2026-11-22T00:56:06Z
+**Holes:** 11 open+blocked · 3 open · 8 blocked · 130 done · 6 file(s) with `sorry`.
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
 
@@ -89,6 +89,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `ItoCalculusKit.PathwiseExpIto` | `SignatureVolatility/ItoCalculusKit/PathwiseExpIto.lean` |
 | done | `ItoCalculusKit.RiemannConvergence` | `SignatureVolatility/ItoCalculusKit/RiemannConvergence.lean` |
 | done | `ItoCalculusKit.SigmaContinuity` | `SignatureVolatility/ItoCalculusKit/SigmaContinuity.lean` |
+| done | `ItoCalculusKit.SigmaHolder` | `SignatureVolatility/ItoCalculusKit/SigmaHolder.lean` |
 | open | `ItoCalculusKit.StoppedL2` | `SignatureVolatility/ItoCalculusKit/StoppedL2.lean` |
 | done | `Lemma32SignatureInTw` | `SignatureVolatility/Lemma32SignatureInTw.lean` |
 | done | `Lemma61GramPosDef` | `SignatureVolatility/Lemma61GramPosDef.lean` |
@@ -167,6 +168,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `ExtTensorAlgebra.ShuffleWords` | `SignatureVolatility/ExtTensorAlgebra/ShuffleWords.lean` |
 | done | `ExtTensorAlgebra.TensorExp` | `SignatureVolatility/ExtTensorAlgebra/TensorExp.lean` |
 | done | `ExtTensorAlgebra.TensorExpLevelNorm` | `SignatureVolatility/ExtTensorAlgebra/TensorExpLevelNorm.lean` |
+| done | `ExtTensorAlgebra.TensorExpLipschitz` | `SignatureVolatility/ExtTensorAlgebra/TensorExpLipschitz.lean` |
 | done | `ExtTensorAlgebra.TensorExpNeg` | `SignatureVolatility/ExtTensorAlgebra/TensorExpNeg.lean` |
 | done | `ExtTensorAlgebra.TensorExpShuffle` | `SignatureVolatility/ExtTensorAlgebra/TensorExpShuffle.lean` |
 

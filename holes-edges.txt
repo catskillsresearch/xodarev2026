@@ -6,6 +6,7 @@ ClassicalRiccatiSolution -hard-> Remark219BlackScholesRiccati
 ClassicalRiccatiSolution -hard-> SignatureRiccatiKit
 ClassicalRiccatiSolution -hard-> TheoremBOfSetupItoRiccatiKit
 DualPairing -hard-> DualPairingLeNormWDualMulNormW
+DualPairing -hard-> ExtTensorAlgebra.TensorExpLipschitz
 DualPairing -hard-> ItoCalculusKit
 DualPairing -hard-> ItoCalculusKit.DoleansSDE
 DualPairing -hard-> ItoCalculusKit.NovikovDoob
@@ -113,7 +114,9 @@ ExtTensorAlgebra.ShuffleWords -hard-> Remark219BlackScholesRiccati
 ExtTensorAlgebra.TensorExp -hard-> ExtTensorAlgebra.TensorExpLevelNorm
 ExtTensorAlgebra.TensorExp -hard-> ExtTensorAlgebra.TensorExpNeg
 ExtTensorAlgebra.TensorExp -hard-> ExtTensorAlgebra.TensorExpShuffle
+ExtTensorAlgebra.TensorExpLevelNorm -hard-> ExtTensorAlgebra.TensorExpLipschitz
 ExtTensorAlgebra.TensorExpLevelNorm -hard-> ProlongedBrownianSetup.SignatureOfBM
+ExtTensorAlgebra.TensorExpLipschitz -hard-> ItoCalculusKit.SigmaHolder
 ExtTensorAlgebra.TensorExpNeg -hard-> ProlongedBrownianSetup.SignatureOfBM
 ExtTensorAlgebra.TensorExpShuffle -hard-> ProlongedBrownianSetup.Sig2StratDyadic
 ExtTensorAlgebra.TensorExpShuffle -hard-> ProlongedBrownianSetup.SignatureOfBM
@@ -192,8 +195,10 @@ ItoCalculusKit.OfMathFin -hard-> SignatureRiccatiKit.OfSetup
 ItoCalculusKit.OfMathFin -hard-> TheoremA
 ItoCalculusKit.OfMathFin -hard-> TheoremB
 ItoCalculusKit.PathwiseExpIto -hard-> ItoCalculusKit.DoleansSDE
-ItoCalculusKit.SigmaContinuity -hard-> ItoCalculusKit.DoleansSDE
+ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.SigmaHolder
 ItoCalculusKit.SigmaContinuity -hard-> ItoCalculusKit.NovikovDoob
+ItoCalculusKit.SigmaContinuity -hard-> ItoCalculusKit.SigmaHolder
+ItoCalculusKit.SigmaHolder -hard-> ItoCalculusKit.DoleansSDE
 ItoCalculusKit.StoppedL2 -hard-> ItoCalculusKit.OfMathFin
 Lemma32SignatureInTw -hard-> Corollary36SigmaWellDefined
 Letter -hard-> ExtTensorAlgebra.ExtTensorAlgebra

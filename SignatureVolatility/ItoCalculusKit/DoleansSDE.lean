@@ -9,7 +9,7 @@ public import SignatureVolatility.ItoCalculusKit.ConstVol
 public import SignatureVolatility.ItoCalculusKit.KitRaw
 public import SignatureVolatility.ItoCalculusKit.MathFinBridge
 public import SignatureVolatility.ItoCalculusKit.PathwiseExpIto
-public import SignatureVolatility.ItoCalculusKit.SigmaContinuity
+public import SignatureVolatility.ItoCalculusKit.SigmaHolder
 
 
 @[expose] public section
@@ -339,27 +339,6 @@ theorem kit_doleans_sde_of_const_on {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0
   exact hω
 
 /-! ## Signature volatility: adaptedness and the quadratic-variation half of the kit -/
-
-/-- The signature volatility `σ_t(ω) = ⟨ℓ, Ŵ_t(ω)⟩` of the Stratonovich setup over `B`. -/
-noncomputable abbrev signatureSigma {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T)
-    (ℓ : ExtTensorAlgebra (d + 1)) : ℝ → Ω → ℝ :=
-  fun t ω => dualPairing ℓ ((prolongedBrownianSetup_stratonovich_of_brownian B hT).W_hat t ω)
-
-/-- `σ_s = ⟨ℓ, Ŵ_s⟩` is adapted to the path filtration. -/
-lemma measurable_signatureSigma_path {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T)
-    (ℓ : ExtTensorAlgebra (d + 1)) (t : ℝ) (s : {s : ℝ // 0 ≤ s ∧ s ≤ t}) :
-    Measurable[(pathFiltration B).σAlg t] (signatureSigma B hT ℓ s.1) := by
-  have hc : ∀ I : Word (d + 1), Measurable[(pathFiltration B).σAlg t]
-      (fun ω => ((prolongedBrownianSetup_stratonovich_of_brownian B hT).W_hat s.1 ω).coeff I) :=
-    fun I => (prolongedBrownianSetup_stratonovich_of_brownian B hT).sig_adapted_to_W t s I
-  unfold signatureSigma
-  simp only [dualPairing, ExtTensorAlgebra.levelInner]
-  have hn : ∀ n : ℕ, Measurable[(pathFiltration B).σAlg t] (fun ω =>
-      ∑ I ∈ wordsOfLength (d + 1) n, ℓ.coeff I *
-        ((prolongedBrownianSetup_stratonovich_of_brownian B hT).W_hat s.1 ω).coeff I) :=
-    fun n => Finset.measurable_sum _ fun I _ => (hc I).const_mul _
-  let : MeasurableSpace Ω := (pathFiltration B).σAlg t
-  exact Measurable.tsum hn
 
 /-- **Raw quadratic variation of the signature volatility, pathwise for every `ω`**: the
 `limUnder` of left Riemann sums of `σ²` on the uniform grids is `∫₀ᵗ σ_s² ds` (H1–H2 give

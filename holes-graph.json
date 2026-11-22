@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-22T00:41:23Z",
+  "updated": "2026-11-22T00:56:06Z",
   "sorryCount": 11,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -287,6 +287,17 @@
       "label": "ExtTensorAlgebra.TensorExpLevelNorm",
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/TensorExpLevelNorm.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ExtTensorAlgebra.TensorExpLipschitz",
+      "label": "ExtTensorAlgebra.TensorExpLipschitz",
+      "section": 2,
+      "file": "SignatureVolatility/ExtTensorAlgebra/TensorExpLipschitz.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
@@ -617,6 +628,17 @@
       "label": "ItoCalculusKit.SigmaContinuity",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/SigmaContinuity.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.SigmaHolder",
+      "label": "ItoCalculusKit.SigmaHolder",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/SigmaHolder.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
@@ -1756,6 +1778,16 @@
       "kind": "hard"
     },
     {
+      "from": "DualPairing",
+      "to": "ExtTensorAlgebra.TensorExpLipschitz",
+      "kind": "hard"
+    },
+    {
+      "from": "ExtTensorAlgebra.TensorExpLevelNorm",
+      "to": "ExtTensorAlgebra.TensorExpLipschitz",
+      "kind": "hard"
+    },
+    {
       "from": "ExtTensorAlgebra.TensorExp",
       "to": "ExtTensorAlgebra.TensorExpNeg",
       "kind": "hard"
@@ -1886,17 +1918,7 @@
       "kind": "hard"
     },
     {
-      "from": "ItoCalculusKit.BrownianQuadVarAS",
-      "to": "ItoCalculusKit.DoleansSDE",
-      "kind": "hard"
-    },
-    {
       "from": "ItoCalculusKit.ConstVol",
-      "to": "ItoCalculusKit.DoleansSDE",
-      "kind": "hard"
-    },
-    {
-      "from": "ItoCalculusKit.KitRaw",
       "to": "ItoCalculusKit.DoleansSDE",
       "kind": "hard"
     },
@@ -1906,7 +1928,7 @@
       "kind": "hard"
     },
     {
-      "from": "ItoCalculusKit.SigmaContinuity",
+      "from": "ItoCalculusKit.SigmaHolder",
       "to": "ItoCalculusKit.DoleansSDE",
       "kind": "hard"
     },
@@ -2043,6 +2065,21 @@
     {
       "from": "ProlongedBrownianSetup.WHat",
       "to": "ItoCalculusKit.SigmaContinuity",
+      "kind": "hard"
+    },
+    {
+      "from": "ExtTensorAlgebra.TensorExpLipschitz",
+      "to": "ItoCalculusKit.SigmaHolder",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.RiemannConvergence",
+      "to": "ItoCalculusKit.SigmaHolder",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.SigmaContinuity",
+      "to": "ItoCalculusKit.SigmaHolder",
       "kind": "hard"
     },
     {
