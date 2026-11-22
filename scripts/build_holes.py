@@ -123,6 +123,8 @@ VERIFIED: set[str] = {
     "ItoCalculusKit.QVTransform",
     "ItoCalculusKit.GridDoob",
     "ItoCalculusKit.DoleansErrorPathwise",
+    "ItoCalculusKit.DoleansSigma",
+    "ItoCalculusKit.DoleansInputs",
     "ItoCalculusKit.PathwiseExpIto",
     "Letter",
     "MemL2w",

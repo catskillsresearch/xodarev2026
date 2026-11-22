@@ -173,9 +173,13 @@ ItoCalculusKit.BrownianQuadVarAS -hard-> ItoCalculusKit.DoleansSDE
 ItoCalculusKit.BrownianQuadVarAS -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.BrownianQuadVarAS -hard-> ItoCalculusKit.MartingaleTransform
 ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.DoleansSDE
+ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.DoleansSigma
 ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.GBMMartingale
-ItoCalculusKit.DoleansMoments -hard-> ItoCalculusKit.DoleansSDE
+ItoCalculusKit.DoleansErrorPathwise -hard-> ItoCalculusKit.DoleansInputs
+ItoCalculusKit.DoleansMoments -hard-> ItoCalculusKit.DoleansSigma
 ItoCalculusKit.DoleansSDE -hard-> ItoCalculusKit.OfMathFin
+ItoCalculusKit.DoleansSigma -hard-> ItoCalculusKit.DoleansInputs
+ItoCalculusKit.DoleansSigma -hard-> ItoCalculusKit.DoleansSDE
 ItoCalculusKit.EighthMoment -hard-> ItoCalculusKit.EighthTransform
 ItoCalculusKit.EighthTransform -hard-> ItoCalculusKit.ItoIncrement8
 ItoCalculusKit.ExpSupermartingale -hard-> ItoCalculusKit.DoleansMoments
@@ -211,6 +215,7 @@ ItoCalculusKit.OfMathFin -hard-> TheoremB
 ItoCalculusKit.PathwiseExpIto -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.PathwiseExpIto -hard-> ItoCalculusKit.DoleansSDE
 ItoCalculusKit.QVTransform -hard-> ItoCalculusKit.GridDoob
+ItoCalculusKit.QuadIncrement -hard-> ItoCalculusKit.DoleansInputs
 ItoCalculusKit.QuadIncrement -hard-> ItoCalculusKit.LogDoleansIncrement
 ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.ExpSupermartingale
 ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.ItoIncrement

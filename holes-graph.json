@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-22T02:24:05Z",
+  "updated": "2026-11-22T02:36:51Z",
   "sorryCount": 11,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -492,6 +492,17 @@
       "paperKitGoal": false
     },
     {
+      "id": "ItoCalculusKit.DoleansInputs",
+      "label": "ItoCalculusKit.DoleansInputs",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/DoleansInputs.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
       "id": "ItoCalculusKit.DoleansMoments",
       "label": "ItoCalculusKit.DoleansMoments",
       "section": 1,
@@ -511,6 +522,17 @@
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
       "hasSorry": true,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.DoleansSigma",
+      "label": "ItoCalculusKit.DoleansSigma",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/DoleansSigma.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -2094,6 +2116,21 @@
       "kind": "hard"
     },
     {
+      "from": "ItoCalculusKit.DoleansErrorPathwise",
+      "to": "ItoCalculusKit.DoleansInputs",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.DoleansSigma",
+      "to": "ItoCalculusKit.DoleansInputs",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.QuadIncrement",
+      "to": "ItoCalculusKit.DoleansInputs",
+      "kind": "hard"
+    },
+    {
       "from": "HypH3",
       "to": "ItoCalculusKit.DoleansMoments",
       "kind": "hard"
@@ -2114,13 +2151,18 @@
       "kind": "hard"
     },
     {
-      "from": "ItoCalculusKit.ConstVol",
+      "from": "ItoCalculusKit.DoleansSigma",
       "to": "ItoCalculusKit.DoleansSDE",
       "kind": "hard"
     },
     {
+      "from": "ItoCalculusKit.ConstVol",
+      "to": "ItoCalculusKit.DoleansSigma",
+      "kind": "hard"
+    },
+    {
       "from": "ItoCalculusKit.DoleansMoments",
-      "to": "ItoCalculusKit.DoleansSDE",
+      "to": "ItoCalculusKit.DoleansSigma",
       "kind": "hard"
     },
     {

@@ -59,6 +59,22 @@ lemma integral_qvIncrR_pow_four {a b : ℝ} (ha : 0 ≤ a) (hab : a ≤ b) :
 lemma qvFourthConst_nonneg : 0 ≤ qvFourthConst :=
   integral_nonneg fun y => by positivity
 
+/-- An adapted `L⁴` weight times the next centred squared increment is in `L⁴`. -/
+lemma memLp_mul_qvIncrR {u v : ℝ} (hu : 0 ≤ u) (huv : u ≤ v) {h : Ω → ℝ}
+    (hm : Measurable[(pathFiltration B).σAlg u] h) (hLp : MemLp h 4 P) :
+    MemLp (fun ω => h ω * qvIncrR B k u v ω) 4 P := by
+  have hφm : Measurable (fun x : ℝ => x ^ 2 - (v - u)) := by fun_prop
+  have hζm : Measurable (qvIncrR B k u v) := hφm.comp (measurable_wnnIncr B k _ _)
+  have hind : IndepFun h (qvIncrR B k u v) P :=
+    (indepFun_pathFiltration_wnnIncr B k huv hm).comp measurable_id hφm
+  have hhm : Measurable h := hm.mono ((pathFiltration B).le_ambient _) le_rfl
+  have hi4 := (hind.comp (measurable_id.pow_const 4) (measurable_id.pow_const 4)).integrable_mul
+    (integrable_pow_of_memLp_four hLp le_rfl) (integrable_qvIncrR_pow_four B k hu huv)
+  refine memLp_four_of_integrable_pow_four (hhm.mul hζm).aestronglyMeasurable
+    (hi4.congr (ae_of_all _ fun ω => ?_))
+  simp only [Pi.mul_apply, Function.comp_apply, id_eq]
+  ring
+
 /-- **`L⁴` bound for adapted transforms of centred squared increments.** -/
 theorem integral_sum_mul_qvIncrR_pow_four_le {τ : ℕ → ℝ} (hτ0 : 0 ≤ τ 0) (hτ : Monotone τ)
     (m : ℕ) {h : ℕ → Ω → ℝ} (hmeas : ∀ i < m, Measurable[(pathFiltration B).σAlg (τ i)] (h i))
