@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-22T03:04:59Z",
+  "updated": "2026-11-22T03:08:21Z",
   "sorryCount": 10,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -848,6 +848,17 @@
       "label": "ItoCalculusKit.RiemannConvergence",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/RiemannConvergence.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.RiemannRate8",
+      "label": "ItoCalculusKit.RiemannRate8",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/RiemannRate8.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
@@ -2417,6 +2428,11 @@
     {
       "from": "ItoCalculusKit.MartingaleTransform",
       "to": "ItoCalculusKit.RiemannConvergence",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.FrozenIncrement8",
+      "to": "ItoCalculusKit.RiemannRate8",
       "kind": "hard"
     },
     {

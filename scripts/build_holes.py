@@ -130,6 +130,7 @@ VERIFIED: set[str] = {
     "ItoCalculusKit.DoleansQV",
     "ItoCalculusKit.DoleansSDE",
     "ItoCalculusKit.NovikovMartingale",
+    "ItoCalculusKit.RiemannRate8",
     "ItoCalculusKit.PathwiseExpIto",
     "Letter",
     "MemL2w",
