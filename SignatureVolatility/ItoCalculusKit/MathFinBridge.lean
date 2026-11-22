@@ -1,18 +1,14 @@
 module
 
-public import Mathlib.Probability.ConditionalExpectation
-public import SignatureVolatility.ProlongedBrownianSetup.ItoIntegralProcess
-public import SignatureVolatility.ProlongedBrownianSetup.OfBrownian
 public import SignatureVolatility.ProlongedBrownianSetup.Sig2StratAdapted
-public import SignatureVolatility.ProlongedBrownianSetup.BrownianFiltration
 public import SignatureVolatility.ProlongedBrownianSetup.StratonovichOfBM
 public import SignatureVolatility.SignatureFiltrationEqBrownianFiltration
 
 
 @[expose] public section
 
-open MeasureTheory Filter Topology Set
-open scoped MeasureTheory Classical
+open MeasureTheory Filter
+open scoped Classical
 
 noncomputable section
 

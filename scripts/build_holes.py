@@ -98,6 +98,8 @@ VERIFIED: set[str] = {
     "ItoCalculusKit.JointPast",
     "ItoCalculusKit.KitRaw",
     "ItoCalculusKit.MartingaleTransform",
+    "ItoCalculusKit.MathFinBridge",
+    "ItoCalculusKit.RiemannConvergence",
     "ItoCalculusKit.PathwiseExpIto",
     "Letter",
     "MemL2w",

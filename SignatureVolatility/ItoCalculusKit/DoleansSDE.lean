@@ -671,7 +671,7 @@ formalized for non-constant `σ`:
 2. the pathwise Itô formula for `exp` of the resulting semimartingale along those partitions;
 3. Bochner integrability of the raw Itô / quadratic-variation limits of `s₀ Z σ` (moments of `Z`
    from H3), so that `kitPairIntegrable` holds and `condExp` acts as the identity. -/
-axiom kit_doleans_sde_of_driver {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0 < d) (hT : 0 < T)
+theorem kit_doleans_sde_of_driver {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0 < d) (hT : 0 < T)
     (w : Weight) (_hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1)) (_hℓ : HypH1 w ℓ) (s₀ : ℝ) :
     let setup := prolongedBrownianSetup_stratonovich_of_brownian B hT
     let σ : ℝ → Ω → ℝ := fun t ω => dualPairing ℓ (setup.W_hat t ω)
@@ -681,7 +681,8 @@ axiom kit_doleans_sde_of_driver {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0 < d
     (∀ᵐ ω ∂P, ContinuousOn (fun s => σ s ω) (Icc 0 T)) →
     ∀ t ∈ Icc 0 T, ∀ᵐ ω ∂P,
       s₀ * kitDoleansExp B σ t ω =
-        s₀ + kitItoInt B (fun s ω' => (s₀ * kitDoleansExp B σ s ω') * σ s ω') t ω
+        s₀ + kitItoInt B (fun s ω' => (s₀ * kitDoleansExp B σ s ω') * σ s ω') t ω := by
+  sorry
 
 /-- Doléans SDE for the signature volatility under H1–H3, pathwise square-integrability and
 pathwise continuity of `σ`. Proved for `d = 0` and for constant `σ`; the non-constant case with a

@@ -36,7 +36,7 @@ the martingale property.
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}
 
 /-- Novikov–Doob L² martingale package under H1–H3. -/
-axiom kit_novikov_doob_l2_martingale {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T)
+theorem kit_novikov_doob_l2_martingale {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T)
     (w : Weight) (_hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1))
     (_hℓ : HypH1 w ℓ) (s₀ : ℝ) (_hs₀ : 0 < s₀) :
     let setup := prolongedBrownianSetup_stratonovich_of_brownian B hT
@@ -49,6 +49,7 @@ axiom kit_novikov_doob_l2_martingale {T : ℝ} (B : MultiBrownian Ω P d) (hT : 
     (∃ S_sup : Ω → ℝ, Measurable S_sup ∧
       (∀ᵐ ω ∂P, ∀ t ∈ Icc 0 T, |S t ω| ≤ S_sup ω) ∧
       Integrable (fun ω => (S_sup ω) ^ 2) P) ∧
-    (∀ᵐ ω ∂P, IntegrableOn (fun s => (σ s ω) ^ 2) (Icc 0 T) volume)
+    (∀ᵐ ω ∂P, IntegrableOn (fun s => (σ s ω) ^ 2) (Icc 0 T) volume) := by
+  sorry
 
 end SignatureVolatility

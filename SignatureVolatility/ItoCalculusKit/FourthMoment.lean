@@ -293,4 +293,30 @@ theorem ae_tendsto_zero_of_summable_integral_pow_four {A : ℕ → Ω → ℝ}
   rw [show A n ω ^ 4 = (A n ω ^ 2) ^ 2 by ring, Real.sqrt_sq (sq_nonneg _), Real.sqrt_sq_eq_abs]
   rfl
 
+omit [IsProbabilityMeasure P] in
+/-- Lower-integral form of `ae_tendsto_zero_of_summable_integral_pow_four` (no integrability
+hypothesis; convenient after Fatou). -/
+theorem ae_tendsto_zero_of_summable_lintegral_pow_four {A : ℕ → Ω → ℝ}
+    (hmeas : ∀ n, Measurable (A n)) {b : ℕ → ℝ} (hb : Summable b)
+    (hle : ∀ n, ∫⁻ ω, ENNReal.ofReal (A n ω ^ 4) ∂P ≤ ENNReal.ofReal (b n)) :
+    ∀ᵐ ω ∂P, Tendsto (fun n => A n ω) atTop (𝓝 0) := by
+  have hmeas4 : ∀ n, Measurable fun ω => ENNReal.ofReal (A n ω ^ 4) := fun n =>
+    ((hmeas n).pow_const 4).ennreal_ofReal
+  have h1 : ∫⁻ ω, ∑' n, ENNReal.ofReal (A n ω ^ 4) ∂P ≠ ∞ := by
+    rw [lintegral_tsum fun n => (hmeas4 n).aemeasurable]
+    exact ne_top_of_le_ne_top hb.tsum_ofReal_ne_top (ENNReal.tsum_le_tsum hle)
+  filter_upwards [ae_lt_top (Measurable.tsum hmeas4) h1] with ω hω
+  have h3 := ENNReal.tendsto_atTop_zero_of_tsum_ne_top hω.ne
+  have h4 : Tendsto (fun n => A n ω ^ 4) atTop (𝓝 0) := by
+    have h := (ENNReal.tendsto_toReal ENNReal.zero_ne_top).comp h3
+    simp only [Function.comp_def, ENNReal.toReal_zero] at h
+    refine h.congr fun n => ENNReal.toReal_ofReal (by positivity)
+  have h5 : Tendsto (fun n => Real.sqrt (Real.sqrt (A n ω ^ 4))) atTop (𝓝 0) := by
+    have h := (Real.continuous_sqrt.comp Real.continuous_sqrt).tendsto 0
+    simp only [Function.comp_def, Real.sqrt_zero] at h
+    exact h.comp h4
+  refine (tendsto_zero_iff_abs_tendsto_zero _).mpr (h5.congr fun n => ?_)
+  rw [show A n ω ^ 4 = (A n ω ^ 2) ^ 2 by ring, Real.sqrt_sq (sq_nonneg _), Real.sqrt_sq_eq_abs]
+  rfl
+
 end SignatureVolatility

@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-21T23:49:52Z",
-  "sorryCount": 14,
+  "updated": "2026-11-22T00:19:13Z",
+  "sorryCount": 12,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, SignatureRiccatiKit.OfSetup, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done. Green = open. Grey = blocked.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: ItoCalculusKit.MathFinBridge."
+    "Open tips: ItoCalculusKit.DoleansSDE, ItoCalculusKit.ItoQuadDoleans, ItoCalculusKit.NovikovDoob, ItoCalculusKit.StoppedL2."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -463,10 +463,10 @@
       "label": "ItoCalculusKit.DoleansSDE",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/DoleansSDE.lean",
-      "status": "blocked",
-      "blocker": "needs ItoCalculusKit.KitRaw, ItoCalculusKit.MathFinBridge",
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
-      "hasSorry": false,
+      "status": "open",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
+      "hasSorry": true,
       "paperKitGoal": false
     },
     {
@@ -485,8 +485,8 @@
       "label": "ItoCalculusKit.ItoQuadDoleans",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/ItoQuadDoleans.lean",
-      "status": "blocked",
-      "blocker": "needs ItoCalculusKit.MathFinBridge",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -507,8 +507,8 @@
       "label": "ItoCalculusKit.KitRaw",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/KitRaw.lean",
-      "status": "blocked",
-      "blocker": "needs ItoCalculusKit.MathFinBridge",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -529,7 +529,7 @@
       "label": "ItoCalculusKit.MathFinBridge",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/MathFinBridge.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
@@ -540,10 +540,10 @@
       "label": "ItoCalculusKit.NovikovDoob",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/NovikovDoob.lean",
-      "status": "blocked",
-      "blocker": "needs ItoCalculusKit.MathFinBridge",
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
-      "hasSorry": false,
+      "status": "open",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
+      "hasSorry": true,
       "paperKitGoal": false
     },
     {
@@ -569,14 +569,25 @@
       "paperKitGoal": false
     },
     {
+      "id": "ItoCalculusKit.RiemannConvergence",
+      "label": "ItoCalculusKit.RiemannConvergence",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/RiemannConvergence.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
       "id": "ItoCalculusKit.StoppedL2",
       "label": "ItoCalculusKit.StoppedL2",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/StoppedL2.lean",
-      "status": "blocked",
-      "blocker": "needs ItoCalculusKit.MathFinBridge",
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
-      "hasSorry": false,
+      "status": "open",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
+      "hasSorry": true,
       "paperKitGoal": false
     },
     {
@@ -1943,6 +1954,16 @@
     {
       "from": "ItoCalculusKit.StoppedL2",
       "to": "ItoCalculusKit.OfMathFin",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.KitRaw",
+      "to": "ItoCalculusKit.RiemannConvergence",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.MartingaleTransform",
+      "to": "ItoCalculusKit.RiemannConvergence",
       "kind": "hard"
     },
     {

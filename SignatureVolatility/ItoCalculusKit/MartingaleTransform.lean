@@ -62,6 +62,22 @@ lemma memLp_four_of_integrable_pow_four {f : Ω → ℝ} (hf : AEStronglyMeasura
     rw [Real.norm_eq_abs, ← abs_pow, abs_of_nonneg (by positivity)]
   exact_mod_cast h4
 
+/-- An `𝓕_s`-measurable `L⁴` variable times the driver increment over `[s, u]` is in `L⁴`. -/
+lemma memLp_mul_wnnIncr (B : MultiBrownian Ω P d) (k : Fin d) {s u : ℝ} (hs : 0 ≤ s)
+    (hsu : s ≤ u) {h : Ω → ℝ} (hmeas : Measurable[(pathFiltration B).σAlg s] h)
+    (hLp : MemLp h 4 P) : MemLp (fun ω => h ω * wnnIncr B k s u ω) 4 P := by
+  have hwLp : MemLp (fun ω => wnnIncr B k s u ω) 4 P :=
+    (hasLaw_wnnIncr B k hs hsu).memLp (memLp_id_gaussianReal' (μ := 0) 4 (by simp))
+  have hhm : Measurable h := hmeas.mono ((pathFiltration B).le_ambient _) le_rfl
+  have hi := ((indepFun_pathFiltration_wnnIncr B k hsu hmeas).comp (measurable_id.pow_const 4)
+    (measurable_id.pow_const 4)).integrable_mul
+    (integrable_pow_of_memLp_four hLp le_rfl) (integrable_pow_of_memLp_four hwLp le_rfl)
+  refine memLp_four_of_integrable_pow_four
+    (hhm.mul (measurable_wnnIncr B k s u)).aestronglyMeasurable
+    (hi.congr (ae_of_all _ fun ω => ?_))
+  simp only [Pi.mul_apply, Function.comp_apply, id_eq]
+  ring
+
 /-- **Discrete Itô `L⁴` bound in the joint filtration.** -/
 theorem integral_transform_pow_four_le (B : MultiBrownian Ω P d) (k : Fin d) {τ : ℕ → ℝ}
     (hτ0 : 0 ≤ τ 0) (hτ : Monotone τ) (h : ℕ → Ω → ℝ) (m : ℕ)

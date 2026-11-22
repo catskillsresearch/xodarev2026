@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-21T23:49:52Z
-**Holes:** 14 open+blocked · 1 open · 13 blocked · 120 done · 3 file(s) with `sorry`.
+**Updated:** 2026-11-22T00:19:13Z
+**Holes:** 12 open+blocked · 4 open · 8 blocked · 123 done · 6 file(s) with `sorry`.
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
 
@@ -33,6 +33,9 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | Status | Id | File |
 |---|---|---|
 | blocked | `GKWDecompositionSetup.OfPFS` | `SignatureVolatility/GKWDecompositionSetup/OfPFS.lean` |
+| open | `ItoCalculusKit.DoleansSDE` | `SignatureVolatility/ItoCalculusKit/DoleansSDE.lean` |
+| open | `ItoCalculusKit.NovikovDoob` | `SignatureVolatility/ItoCalculusKit/NovikovDoob.lean` |
+| open | `ItoCalculusKit.StoppedL2` | `SignatureVolatility/ItoCalculusKit/StoppedL2.lean` |
 | blocked | `PriceFiltrationSignatureSpace.OfMarket` | `SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean` |
 | blocked | `SignatureRiccatiKit.OfSetup` | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
 
@@ -40,11 +43,14 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 
 | Id | File |
 |---|---|
-| `ItoCalculusKit.MathFinBridge` | `SignatureVolatility/ItoCalculusKit/MathFinBridge.lean` |
+| `ItoCalculusKit.DoleansSDE` | `SignatureVolatility/ItoCalculusKit/DoleansSDE.lean` |
+| `ItoCalculusKit.ItoQuadDoleans` | `SignatureVolatility/ItoCalculusKit/ItoQuadDoleans.lean` |
+| `ItoCalculusKit.NovikovDoob` | `SignatureVolatility/ItoCalculusKit/NovikovDoob.lean` |
+| `ItoCalculusKit.StoppedL2` | `SignatureVolatility/ItoCalculusKit/StoppedL2.lean` |
 
 ## By group
 
-### Top-level modules — 13 hole(s)
+### Top-level modules — 11 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -69,17 +75,18 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `IsSpecialSemimartingale` | `SignatureVolatility/IsSpecialSemimartingale.lean` |
 | done | `ItoCalculusKit` | `SignatureVolatility/ItoCalculusKit.lean` |
 | done | `ItoCalculusKit.BrownianQuadVarAS` | `SignatureVolatility/ItoCalculusKit/BrownianQuadVarAS.lean` |
-| blocked | `ItoCalculusKit.DoleansSDE` | `SignatureVolatility/ItoCalculusKit/DoleansSDE.lean` |
+| open | `ItoCalculusKit.DoleansSDE` | `SignatureVolatility/ItoCalculusKit/DoleansSDE.lean` |
 | done | `ItoCalculusKit.FourthMoment` | `SignatureVolatility/ItoCalculusKit/FourthMoment.lean` |
-| blocked | `ItoCalculusKit.ItoQuadDoleans` | `SignatureVolatility/ItoCalculusKit/ItoQuadDoleans.lean` |
+| open | `ItoCalculusKit.ItoQuadDoleans` | `SignatureVolatility/ItoCalculusKit/ItoQuadDoleans.lean` |
 | done | `ItoCalculusKit.JointPast` | `SignatureVolatility/ItoCalculusKit/JointPast.lean` |
-| blocked | `ItoCalculusKit.KitRaw` | `SignatureVolatility/ItoCalculusKit/KitRaw.lean` |
+| done | `ItoCalculusKit.KitRaw` | `SignatureVolatility/ItoCalculusKit/KitRaw.lean` |
 | done | `ItoCalculusKit.MartingaleTransform` | `SignatureVolatility/ItoCalculusKit/MartingaleTransform.lean` |
-| open | `ItoCalculusKit.MathFinBridge` | `SignatureVolatility/ItoCalculusKit/MathFinBridge.lean` |
-| blocked | `ItoCalculusKit.NovikovDoob` | `SignatureVolatility/ItoCalculusKit/NovikovDoob.lean` |
+| done | `ItoCalculusKit.MathFinBridge` | `SignatureVolatility/ItoCalculusKit/MathFinBridge.lean` |
+| open | `ItoCalculusKit.NovikovDoob` | `SignatureVolatility/ItoCalculusKit/NovikovDoob.lean` |
 | blocked | `ItoCalculusKit.OfMathFin` | `SignatureVolatility/ItoCalculusKit/OfMathFin.lean` |
 | done | `ItoCalculusKit.PathwiseExpIto` | `SignatureVolatility/ItoCalculusKit/PathwiseExpIto.lean` |
-| blocked | `ItoCalculusKit.StoppedL2` | `SignatureVolatility/ItoCalculusKit/StoppedL2.lean` |
+| done | `ItoCalculusKit.RiemannConvergence` | `SignatureVolatility/ItoCalculusKit/RiemannConvergence.lean` |
+| open | `ItoCalculusKit.StoppedL2` | `SignatureVolatility/ItoCalculusKit/StoppedL2.lean` |
 | done | `Lemma32SignatureInTw` | `SignatureVolatility/Lemma32SignatureInTw.lean` |
 | done | `Lemma61GramPosDef` | `SignatureVolatility/Lemma61GramPosDef.lean` |
 | done | `Letter` | `SignatureVolatility/Letter.lean` |

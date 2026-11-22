@@ -27,7 +27,7 @@ under the strengthened continuous independent driver.
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}
 
 /-- Stopped L² localisation package. -/
-axiom kit_stopped_l2_localisation {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T)
+theorem kit_stopped_l2_localisation {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T)
     (w : Weight) (ℓ : ExtTensorAlgebra (d + 1)) (s₀ : ℝ)
     (S₁ S₂ : ℝ → Ω → ℝ) :
     let setup := prolongedBrownianSetup_stratonovich_of_brownian B hT
@@ -42,6 +42,7 @@ axiom kit_stopped_l2_localisation {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 <
       (∀ k, ∀ t ∈ Icc 0 T,
         f k t ≤ ((k : ℝ) * norm2w w ℓ) ^ 2 * ∫ s in (0 : ℝ)..t, f k s) ∧
       ((∀ k, ∀ t ∈ Icc 0 T, f k t = 0) →
-        ∀ t ∈ Icc 0 T, ∀ᵐ ω ∂P, S₁ t ω = S₂ t ω)
+        ∀ t ∈ Icc 0 T, ∀ᵐ ω ∂P, S₁ t ω = S₂ t ω) := by
+  sorry
 
 end SignatureVolatility
