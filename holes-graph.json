@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-22T01:30:36Z",
+  "updated": "2026-11-22T01:33:15Z",
   "sorryCount": 11,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -705,6 +705,17 @@
       "label": "ItoCalculusKit.SigmaHolder",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/SigmaHolder.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.SigmaHolder8",
+      "label": "ItoCalculusKit.SigmaHolder8",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/SigmaHolder8.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
@@ -2191,6 +2202,11 @@
     {
       "from": "ItoCalculusKit.SigmaContinuity",
       "to": "ItoCalculusKit.SigmaHolder",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.ItoIncrement8",
+      "to": "ItoCalculusKit.SigmaHolder8",
       "kind": "hard"
     },
     {

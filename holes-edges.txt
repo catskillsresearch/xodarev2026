@@ -184,6 +184,7 @@ ItoCalculusKit.FourthMoment -hard-> ItoCalculusKit.EighthMoment
 ItoCalculusKit.GBMEnvelope -hard-> ItoCalculusKit.NovikovDoob
 ItoCalculusKit.GBMMartingale -hard-> ItoCalculusKit.GBMEnvelope
 ItoCalculusKit.ItoIncrement -hard-> ItoCalculusKit.ItoIncrement8
+ItoCalculusKit.ItoIncrement8 -hard-> ItoCalculusKit.SigmaHolder8
 ItoCalculusKit.ItoQuadDoleans -hard-> ItoCalculusKit.OfMathFin
 ItoCalculusKit.JointPast -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.JointPast -hard-> ItoCalculusKit.MartingaleTransform
