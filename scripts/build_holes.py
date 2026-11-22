@@ -110,6 +110,7 @@ VERIFIED: set[str] = {
     "ItoCalculusKit.ExpSupermartingale",
     "ItoCalculusKit.DoleansMoments",
     "ItoCalculusKit.ItoIncrement",
+    "ItoCalculusKit.EighthMoment",
     "ItoCalculusKit.PathwiseExpIto",
     "Letter",
     "MemL2w",

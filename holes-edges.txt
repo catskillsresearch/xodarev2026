@@ -178,6 +178,7 @@ ItoCalculusKit.DoleansMoments -hard-> ItoCalculusKit.DoleansSDE
 ItoCalculusKit.DoleansSDE -hard-> ItoCalculusKit.OfMathFin
 ItoCalculusKit.ExpSupermartingale -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.FourthMoment -hard-> ItoCalculusKit.BrownianQuadVarAS
+ItoCalculusKit.FourthMoment -hard-> ItoCalculusKit.EighthMoment
 ItoCalculusKit.GBMEnvelope -hard-> ItoCalculusKit.NovikovDoob
 ItoCalculusKit.GBMMartingale -hard-> ItoCalculusKit.GBMEnvelope
 ItoCalculusKit.ItoQuadDoleans -hard-> ItoCalculusKit.OfMathFin
