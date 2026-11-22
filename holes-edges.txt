@@ -174,6 +174,7 @@ ItoCalculusKit.DoleansIdentify -hard-> ItoCalculusKit.KolmogorovIto
 ItoCalculusKit.DoleansInputs -hard-> ItoCalculusKit.DoleansIdentify
 ItoCalculusKit.DoleansMoments -hard-> ItoCalculusKit.DoleansSigma
 ItoCalculusKit.DoleansQV -hard-> ItoCalculusKit.DoleansSDE
+ItoCalculusKit.DoleansQV -hard-> ItoCalculusKit.NovikovMartingale
 ItoCalculusKit.DoleansSDE -hard-> ItoCalculusKit.OfMathFin
 ItoCalculusKit.DoleansSigma -hard-> ItoCalculusKit.DoleansInputs
 ItoCalculusKit.EighthMoment -hard-> ItoCalculusKit.EighthTransform
@@ -196,6 +197,7 @@ ItoCalculusKit.JointPast -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.JointPast -hard-> ItoCalculusKit.MartingaleTransform
 ItoCalculusKit.KitRaw -hard-> ItoCalculusKit.RiemannConvergence
 ItoCalculusKit.KolmogorovIto -hard-> ItoCalculusKit.DoleansQV
+ItoCalculusKit.LogDoleansIncrement -hard-> ItoCalculusKit.NovikovMartingale
 ItoCalculusKit.MartingaleTransform -hard-> ItoCalculusKit.RiemannConvergence
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.ConstVol
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.ItoQuadDoleans

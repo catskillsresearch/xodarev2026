@@ -129,6 +129,7 @@ VERIFIED: set[str] = {
     "ItoCalculusKit.KolmogorovIto",
     "ItoCalculusKit.DoleansQV",
     "ItoCalculusKit.DoleansSDE",
+    "ItoCalculusKit.NovikovMartingale",
     "ItoCalculusKit.PathwiseExpIto",
     "Letter",
     "MemL2w",
