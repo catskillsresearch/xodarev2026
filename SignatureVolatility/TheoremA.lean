@@ -18,6 +18,7 @@ theorem theorem_A (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
     (h3 : HypH3 P M.T (SignatureVolatilityModel.sigma M (paperSetup B M.hT))) :
     ∃ sol : SignaturePriceSolution M (paperSetup B M.hT) (itoCalculusKit_of_mathfin B M.hT),
       ∀ S_tilde : ℝ → Ω → ℝ,
+        (∀ t ∈ Icc 0 M.T, Measurable[(paperSetup B M.hT).signatureFiltration.σAlg t] (S_tilde t)) →
         (∀ t ∈ Icc 0 M.T, ∀ᵐ ω ∂P,
           S_tilde t ω = M.s₀ + (itoCalculusKit_of_mathfin B M.hT).itoInt
             (fun s ω' => S_tilde s ω' *

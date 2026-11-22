@@ -51,10 +51,13 @@ structure ItoCalculusKit (Ω : Type*) [m₀ : MeasurableSpace Ω]
     (∀ᵐ ω ∂ℙ, ContinuousOn (fun s => σ s ω) (Icc 0 T)) →
     ∀ t ∈ Icc 0 T, ∀ᵐ ω ∂ℙ,
       s₀ * doleansExp σ t ω = s₀ + itoInt (fun s ω' => (s₀ * doleansExp σ s ω') * σ s ω') t ω
-  /-- L² localisation / Gronwall package. Conclusion is uniqueness **up to modification**. -/
+  /-- L² localisation / Gronwall package. Conclusion is uniqueness **up to modification** among
+  solutions adapted to the signature filtration (strong solutions). -/
   stopped_l2_localisation : ∀ (w : Weight) (ℓ : ExtTensorAlgebra (d + 1)) (s₀ : ℝ)
     (S₁ S₂ : ℝ → Ω → ℝ),
     let σ : ℝ → Ω → ℝ := fun t ω => dualPairing ℓ (setup.W_hat t ω)
+    (∀ t ∈ Icc 0 T, Measurable[setup.signatureFiltration.σAlg t] (S₁ t)) →
+    (∀ t ∈ Icc 0 T, Measurable[setup.signatureFiltration.σAlg t] (S₂ t)) →
     (∀ t ∈ Icc 0 T, ∀ᵐ ω ∂ℙ, S₁ t ω = s₀ + itoInt (fun s ω' => S₁ s ω' * σ s ω') t ω) →
     (∀ t ∈ Icc 0 T, ∀ᵐ ω ∂ℙ, S₂ t ω = s₀ + itoInt (fun s ω' => S₂ s ω' * σ s ω') t ω) →
     (∃ f : ℕ → ℝ → ℝ,

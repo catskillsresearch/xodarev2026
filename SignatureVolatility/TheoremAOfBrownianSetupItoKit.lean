@@ -31,6 +31,7 @@ theorem theorem_A_of_Brownian_Setup_Ito_Kit {Ω : Type*} [MeasurableSpace Ω]
       ContinuousOn (fun s => SignatureVolatilityModel.sigma M setup s ω) (Icc 0 M.T)) :
     ∃ (sol : SignaturePriceSolution M setup ito),
       ∀ (S_tilde : ℝ → Ω → ℝ),
+        (∀ t ∈ Icc 0 M.T, Measurable[setup.signatureFiltration.σAlg t] (S_tilde t)) →
         (∀ t ∈ Icc 0 M.T, ∀ᵐ ω ∂ℙ,
           S_tilde t ω = M.s₀ + ito.itoInt (fun s ω' => S_tilde s ω' *
               SignatureVolatilityModel.sigma M setup s ω') t ω) →
@@ -77,9 +78,10 @@ theorem theorem_A_of_Brownian_Setup_Ito_Kit {Ω : Type*} [MeasurableSpace Ω]
       solves_sde := hsde
       sup_l2_integrable := hsup
       is_martingale := hmart }
-  refine ⟨sol, fun S_tilde hS_tilde => ?_⟩
+  refine ⟨sol, fun S_tilde hS_tilde_adapt hS_tilde => ?_⟩
   obtain ⟨f, hf_cont, hf_nonneg, hf_bound, hexhaust⟩ :=
-    ito.stopped_l2_localisation M.w M.ℓ M.s₀ S_tilde S hS_tilde hsde
+    ito.stopped_l2_localisation M.w M.ℓ M.s₀ S_tilde S hS_tilde_adapt
+      (fun t ht => hS_adapt t ⟨t, ht.1, le_rfl⟩) hS_tilde hsde
   apply hexhaust
   intro k t ht
   exact gronwall_zero_of_continuousOn M.hT.le (sq_nonneg _)
