@@ -211,6 +211,7 @@ ItoCalculusKit.SigmaContinuity -hard-> ItoCalculusKit.NovikovDoob
 ItoCalculusKit.SigmaContinuity -hard-> ItoCalculusKit.SigmaHolder
 ItoCalculusKit.SigmaHolder -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.SigmaHolder -hard-> ItoCalculusKit.EighthTransform
+ItoCalculusKit.SigmaHolder8 -hard-> ItoCalculusKit.QuadIncrement
 ItoCalculusKit.StoppedL2 -hard-> ItoCalculusKit.OfMathFin
 Lemma32SignatureInTw -hard-> Corollary36SigmaWellDefined
 Letter -hard-> ExtTensorAlgebra.ExtTensorAlgebra

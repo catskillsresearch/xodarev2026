@@ -114,6 +114,7 @@ VERIFIED: set[str] = {
     "ItoCalculusKit.EighthTransform",
     "ItoCalculusKit.ItoIncrement8",
     "ItoCalculusKit.SigmaHolder8",
+    "ItoCalculusKit.QuadIncrement",
     "ItoCalculusKit.PathwiseExpIto",
     "Letter",
     "MemL2w",
