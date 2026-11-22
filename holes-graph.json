@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-22T00:29:58Z",
+  "updated": "2026-11-22T00:35:45Z",
   "sorryCount": 11,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -459,6 +459,17 @@
       "paperKitGoal": false
     },
     {
+      "id": "ItoCalculusKit.ConstVol",
+      "label": "ItoCalculusKit.ConstVol",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/ConstVol.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
       "id": "ItoCalculusKit.DoleansSDE",
       "label": "ItoCalculusKit.DoleansSDE",
       "section": 1,
@@ -474,6 +485,17 @@
       "label": "ItoCalculusKit.FourthMoment",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/FourthMoment.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.GBMMartingale",
+      "label": "ItoCalculusKit.GBMMartingale",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/GBMMartingale.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
@@ -1843,12 +1865,22 @@
       "kind": "hard"
     },
     {
+      "from": "ItoCalculusKit.MathFinBridge",
+      "to": "ItoCalculusKit.ConstVol",
+      "kind": "hard"
+    },
+    {
       "from": "HypH3",
       "to": "ItoCalculusKit.DoleansSDE",
       "kind": "hard"
     },
     {
       "from": "ItoCalculusKit.BrownianQuadVarAS",
+      "to": "ItoCalculusKit.DoleansSDE",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.ConstVol",
       "to": "ItoCalculusKit.DoleansSDE",
       "kind": "hard"
     },
@@ -1865,6 +1897,21 @@
     {
       "from": "ItoCalculusKit.SigmaContinuity",
       "to": "ItoCalculusKit.DoleansSDE",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.BrownianQuadVarAS",
+      "to": "ItoCalculusKit.GBMMartingale",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.ConstVol",
+      "to": "ItoCalculusKit.GBMMartingale",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.JointPast",
+      "to": "ItoCalculusKit.GBMMartingale",
       "kind": "hard"
     },
     {
