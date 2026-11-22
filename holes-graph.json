@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-22T00:20:25Z",
+  "updated": "2026-11-22T00:26:59Z",
   "sorryCount": 11,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -573,6 +573,17 @@
       "label": "ItoCalculusKit.RiemannConvergence",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/RiemannConvergence.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.SigmaContinuity",
+      "label": "ItoCalculusKit.SigmaContinuity",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/SigmaContinuity.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
@@ -1832,21 +1843,6 @@
       "kind": "hard"
     },
     {
-      "from": "DualPairing",
-      "to": "ItoCalculusKit.DoleansSDE",
-      "kind": "hard"
-    },
-    {
-      "from": "HypH1",
-      "to": "ItoCalculusKit.DoleansSDE",
-      "kind": "hard"
-    },
-    {
-      "from": "HypH2",
-      "to": "ItoCalculusKit.DoleansSDE",
-      "kind": "hard"
-    },
-    {
       "from": "HypH3",
       "to": "ItoCalculusKit.DoleansSDE",
       "kind": "hard"
@@ -1863,6 +1859,11 @@
     },
     {
       "from": "ItoCalculusKit.PathwiseExpIto",
+      "to": "ItoCalculusKit.DoleansSDE",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.SigmaContinuity",
       "to": "ItoCalculusKit.DoleansSDE",
       "kind": "hard"
     },
@@ -1907,16 +1908,6 @@
       "kind": "hard"
     },
     {
-      "from": "HypH1",
-      "to": "ItoCalculusKit.NovikovDoob",
-      "kind": "hard"
-    },
-    {
-      "from": "HypH2",
-      "to": "ItoCalculusKit.NovikovDoob",
-      "kind": "hard"
-    },
-    {
       "from": "HypH3",
       "to": "ItoCalculusKit.NovikovDoob",
       "kind": "hard"
@@ -1927,7 +1918,7 @@
       "kind": "hard"
     },
     {
-      "from": "DualPairing",
+      "from": "ItoCalculusKit.SigmaContinuity",
       "to": "ItoCalculusKit.NovikovDoob",
       "kind": "hard"
     },
@@ -1964,6 +1955,31 @@
     {
       "from": "ItoCalculusKit.MartingaleTransform",
       "to": "ItoCalculusKit.RiemannConvergence",
+      "kind": "hard"
+    },
+    {
+      "from": "DualPairing",
+      "to": "ItoCalculusKit.SigmaContinuity",
+      "kind": "hard"
+    },
+    {
+      "from": "HypH1",
+      "to": "ItoCalculusKit.SigmaContinuity",
+      "kind": "hard"
+    },
+    {
+      "from": "HypH2",
+      "to": "ItoCalculusKit.SigmaContinuity",
+      "kind": "hard"
+    },
+    {
+      "from": "ProlongedBrownianSetup.StratonovichOfBM",
+      "to": "ItoCalculusKit.SigmaContinuity",
+      "kind": "hard"
+    },
+    {
+      "from": "ProlongedBrownianSetup.WHat",
+      "to": "ItoCalculusKit.SigmaContinuity",
       "kind": "hard"
     },
     {

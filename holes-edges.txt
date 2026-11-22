@@ -9,6 +9,7 @@ DualPairing -hard-> DualPairingLeNormWDualMulNormW
 DualPairing -hard-> ItoCalculusKit
 DualPairing -hard-> ItoCalculusKit.DoleansSDE
 DualPairing -hard-> ItoCalculusKit.NovikovDoob
+DualPairing -hard-> ItoCalculusKit.SigmaContinuity
 DualPairing -hard-> ItoCalculusKit.StoppedL2
 DualPairing -hard-> SignatureRiccatiKit
 DualPairing -hard-> SignatureVolatilityModel.Sigma
@@ -128,6 +129,7 @@ HypH1 -hard-> HypH1OfIsFinitelySupported
 HypH1 -hard-> ItoCalculusKit
 HypH1 -hard-> ItoCalculusKit.DoleansSDE
 HypH1 -hard-> ItoCalculusKit.NovikovDoob
+HypH1 -hard-> ItoCalculusKit.SigmaContinuity
 HypH1 -hard-> Proposition311SharpnessOfH1
 HypH1 -hard-> SignatureVolatilityModel
 HypH1OfIsFinitelySupported -hard-> BlackScholesModel
@@ -140,6 +142,7 @@ HypH2 -hard-> InfiniteGeometricSignatureModel
 HypH2 -hard-> ItoCalculusKit
 HypH2 -hard-> ItoCalculusKit.DoleansSDE
 HypH2 -hard-> ItoCalculusKit.NovikovDoob
+HypH2 -hard-> ItoCalculusKit.SigmaContinuity
 HypH2 -hard-> Lemma32SignatureInTw
 HypH2 -hard-> Proposition311SharpnessOfH1
 HypH2 -hard-> QuinticOUSignatureModel
@@ -182,6 +185,8 @@ ItoCalculusKit.OfMathFin -hard-> SignatureRiccatiKit.OfSetup
 ItoCalculusKit.OfMathFin -hard-> TheoremA
 ItoCalculusKit.OfMathFin -hard-> TheoremB
 ItoCalculusKit.PathwiseExpIto -hard-> ItoCalculusKit.DoleansSDE
+ItoCalculusKit.SigmaContinuity -hard-> ItoCalculusKit.DoleansSDE
+ItoCalculusKit.SigmaContinuity -hard-> ItoCalculusKit.NovikovDoob
 ItoCalculusKit.StoppedL2 -hard-> ItoCalculusKit.OfMathFin
 Lemma32SignatureInTw -hard-> Corollary36SigmaWellDefined
 Letter -hard-> ExtTensorAlgebra.ExtTensorAlgebra
@@ -342,10 +347,12 @@ ProlongedBrownianSetup.StratonovichItoConversion -hard-> ProlongedBrownianSetup.
 ProlongedBrownianSetup.StratonovichOfBM -hard-> ItoCalculusKit.MathFinBridge
 ProlongedBrownianSetup.StratonovichOfBM -hard-> ItoCalculusKit.NovikovDoob
 ProlongedBrownianSetup.StratonovichOfBM -hard-> ItoCalculusKit.OfMathFin
+ProlongedBrownianSetup.StratonovichOfBM -hard-> ItoCalculusKit.SigmaContinuity
 ProlongedBrownianSetup.StratonovichOfBM -hard-> ItoCalculusKit.StoppedL2
 ProlongedBrownianSetup.WHat -hard-> Corollary36SigmaWellDefined
 ProlongedBrownianSetup.WHat -hard-> ItoCalculusKit
 ProlongedBrownianSetup.WHat -hard-> ItoCalculusKit.NovikovDoob
+ProlongedBrownianSetup.WHat -hard-> ItoCalculusKit.SigmaContinuity
 ProlongedBrownianSetup.WHat -hard-> ItoCalculusKit.StoppedL2
 ProlongedBrownianSetup.WHat -hard-> Lemma32SignatureInTw
 ProlongedBrownianSetup.WHat -hard-> ProlongedBrownianSetup.SignatureFiltration

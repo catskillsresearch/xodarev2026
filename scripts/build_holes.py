@@ -101,6 +101,7 @@ VERIFIED: set[str] = {
     "ItoCalculusKit.ItoQuadDoleans",
     "ItoCalculusKit.MathFinBridge",
     "ItoCalculusKit.RiemannConvergence",
+    "ItoCalculusKit.SigmaContinuity",
     "ItoCalculusKit.PathwiseExpIto",
     "Letter",
     "MemL2w",
