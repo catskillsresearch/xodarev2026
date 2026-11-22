@@ -104,6 +104,7 @@ VERIFIED: set[str] = {
     "ItoCalculusKit.SigmaContinuity",
     "ItoCalculusKit.ConstVol",
     "ItoCalculusKit.GBMMartingale",
+    "ItoCalculusKit.GBMEnvelope",
     "ItoCalculusKit.PathwiseExpIto",
     "Letter",
     "MemL2w",

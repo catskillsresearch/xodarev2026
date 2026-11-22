@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-22T00:35:45Z",
+  "updated": "2026-11-22T00:41:23Z",
   "sorryCount": 11,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -485,6 +485,17 @@
       "label": "ItoCalculusKit.FourthMoment",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/FourthMoment.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.GBMEnvelope",
+      "label": "ItoCalculusKit.GBMEnvelope",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/GBMEnvelope.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
@@ -1900,6 +1911,11 @@
       "kind": "hard"
     },
     {
+      "from": "ItoCalculusKit.GBMMartingale",
+      "to": "ItoCalculusKit.GBMEnvelope",
+      "kind": "hard"
+    },
+    {
       "from": "ItoCalculusKit.BrownianQuadVarAS",
       "to": "ItoCalculusKit.GBMMartingale",
       "kind": "hard"
@@ -1960,7 +1976,7 @@
       "kind": "hard"
     },
     {
-      "from": "ItoCalculusKit.MathFinBridge",
+      "from": "ItoCalculusKit.GBMEnvelope",
       "to": "ItoCalculusKit.NovikovDoob",
       "kind": "hard"
     },
