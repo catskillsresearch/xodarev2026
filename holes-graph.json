@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-22T01:42:54Z",
+  "updated": "2026-11-22T01:47:59Z",
   "sorryCount": 11,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -562,6 +562,17 @@
       "label": "ItoCalculusKit.GBMMartingale",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/GBMMartingale.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.GridChange",
+      "label": "ItoCalculusKit.GridChange",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/GridChange.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
@@ -2079,6 +2090,11 @@
     {
       "from": "ItoCalculusKit.JointPast",
       "to": "ItoCalculusKit.GBMMartingale",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.ItoIncrement8",
+      "to": "ItoCalculusKit.GridChange",
       "kind": "hard"
     },
     {
