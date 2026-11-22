@@ -134,6 +134,8 @@ VERIFIED: set[str] = {
     "ItoCalculusKit.HolderPath",
     "ItoCalculusKit.SubseqUniform",
     "ItoCalculusKit.DoobEnvelope",
+    "ItoCalculusKit.DoleansEnvelope",
+    "ItoCalculusKit.NovikovDoob",
     "ItoCalculusKit.PathwiseExpIto",
     "Letter",
     "MemL2w",

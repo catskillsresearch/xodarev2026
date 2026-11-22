@@ -1,16 +1,6 @@
 module
 
-public import SignatureVolatility.HypH1
-public import SignatureVolatility.HypH2
-public import SignatureVolatility.HypH3
-public import SignatureVolatility.ItoCalculusKit.GBMEnvelope
-public import SignatureVolatility.ItoCalculusKit.MathFinBridge
-public import SignatureVolatility.ItoCalculusKit.SigmaContinuity
-public import SignatureVolatility.DualPairing
-public import SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration
-public import SignatureVolatility.ProlongedBrownianSetup.StratonovichOfBM
-public import SignatureVolatility.ProlongedBrownianSetup.WHat
-public import SignatureVolatility.Weight
+public import SignatureVolatility.ItoCalculusKit.DoleansEnvelope
 
 
 @[expose] public section
@@ -37,14 +27,14 @@ the martingale property.
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}
 
-/-- **Remaining analytic gap.** Novikov–Doob for a positive-dimensional driver and a
-**non-constant** signature volatility: the Doléans price is a martingale on the signature
-filtration with a square-integrable envelope on `[0, T]`. The pathwise `IntegrableOn σ²` part,
+/-- Novikov–Doob for a positive-dimensional driver and a **non-constant** signature volatility:
+the Doléans price is a martingale on the signature filtration with a square-integrable envelope
+on `[0, T]` (`condExp_kitDoleansExp_signatureSigma`, `exists_envelope_kitDoleansExp_signatureSigma`). The pathwise `IntegrableOn σ²` part,
 the `d = 0` case and the constant-volatility (geometric Brownian motion) case are proved in
 `kit_novikov_doob_l2_martingale`. -/
-theorem kit_novikov_doob_l2_martingale_of_driver {T : ℝ} (B : MultiBrownian Ω P d) (_hd : 0 < d)
-    (hT : 0 < T) (w : Weight) (_hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1))
-    (_hℓ : HypH1 w ℓ) (s₀ : ℝ) (_hs₀ : 0 < s₀) :
+theorem kit_novikov_doob_l2_martingale_of_driver {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0 < d)
+    (hT : 0 < T) (w : Weight) (hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1))
+    (hℓ : HypH1 w ℓ) (s₀ : ℝ) (hs₀ : 0 < s₀) :
     let setup := prolongedBrownianSetup_stratonovich_of_brownian B hT
     let σ : ℝ → Ω → ℝ := fun t ω => dualPairing ℓ (setup.W_hat t ω)
     let S : ℝ → Ω → ℝ := fun t ω => s₀ * kitDoleansExp B σ t ω
@@ -56,7 +46,22 @@ theorem kit_novikov_doob_l2_martingale_of_driver {T : ℝ} (B : MultiBrownian Ω
     (∃ S_sup : Ω → ℝ, Measurable S_sup ∧
       (∀ᵐ ω ∂P, ∀ t ∈ Icc 0 T, |S t ω| ≤ S_sup ω) ∧
       Integrable (fun ω => (S_sup ω) ^ 2) P) := by
-  sorry
+  intro setup σ S _hconst h3
+  have hfilt : ∀ s, setup.signatureFiltration.σAlg s = (pathFiltration B).σAlg s := fun s => by
+    rw [signature_filtration_eq_brownian_filtration setup s,
+      ← pathFiltration_eq_brownianFiltration B hT]
+  obtain ⟨G, hGm, hGL, hGdom⟩ := exists_envelope_kitDoleansExp_signatureSigma B hd hT hw hℓ h3
+  refine ⟨fun s t hs hst htT => ?_, ⟨fun ω => s₀ * G ω, hGm.const_mul s₀, ?_, ?_⟩⟩
+  · obtain ⟨h1, h2⟩ := condExp_kitDoleansExp_signatureSigma B hd hT hw hℓ h3 s₀ hs hst htT
+    refine ⟨h1, ?_⟩
+    rw [hfilt s]
+    exact h2
+  · filter_upwards [hGdom] with ω hω t ht
+    show |s₀ * kitDoleansExp B σ t ω| ≤ s₀ * G ω
+    have hZ : 0 < kitDoleansExp B σ t ω := by rw [kitDoleansExp_def]; exact Real.exp_pos _
+    rw [abs_of_pos (mul_pos hs₀ hZ)]
+    exact mul_le_mul_of_nonneg_left (hω t ht) hs₀.le
+  · exact (hGL.const_mul s₀).integrable_sq
 
 /-- For a volatility constant on `[0, T] × Ω`, the kit Doléans exponential is geometric Brownian
 motion on `[0, T]`. -/

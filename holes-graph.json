@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-22T03:27:12Z",
-  "sorryCount": 10,
+  "updated": "2026-11-22T03:32:13Z",
+  "sorryCount": 9,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, SignatureRiccatiKit.OfSetup, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done. Green = open. Grey = blocked.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: ItoCalculusKit.NovikovDoob, ItoCalculusKit.StoppedL2."
+    "Open tips: ItoCalculusKit.StoppedL2."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -481,6 +481,17 @@
       "paperKitGoal": false
     },
     {
+      "id": "ItoCalculusKit.DoleansEnvelope",
+      "label": "ItoCalculusKit.DoleansEnvelope",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/DoleansEnvelope.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
       "id": "ItoCalculusKit.DoleansErrorPathwise",
       "label": "ItoCalculusKit.DoleansErrorPathwise",
       "section": 1,
@@ -804,10 +815,10 @@
       "label": "ItoCalculusKit.NovikovDoob",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/NovikovDoob.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
-      "hasSorry": true,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -827,7 +838,7 @@
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/OfMathFin.lean",
       "status": "blocked",
-      "blocker": "needs ItoCalculusKit.NovikovDoob, ItoCalculusKit.StoppedL2",
+      "blocker": "needs ItoCalculusKit.StoppedL2",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Paper kit / theorem goal.",
       "hasSorry": false,
       "paperKitGoal": true
@@ -2199,6 +2210,21 @@
       "kind": "hard"
     },
     {
+      "from": "ItoCalculusKit.DoobEnvelope",
+      "to": "ItoCalculusKit.DoleansEnvelope",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.NovikovMartingale",
+      "to": "ItoCalculusKit.DoleansEnvelope",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.SubseqUniform",
+      "to": "ItoCalculusKit.DoleansEnvelope",
+      "kind": "hard"
+    },
+    {
       "from": "ItoCalculusKit.GridDoob",
       "to": "ItoCalculusKit.DoleansErrorPathwise",
       "kind": "hard"
@@ -2404,17 +2430,7 @@
       "kind": "hard"
     },
     {
-      "from": "HypH3",
-      "to": "ItoCalculusKit.NovikovDoob",
-      "kind": "hard"
-    },
-    {
-      "from": "ItoCalculusKit.GBMEnvelope",
-      "to": "ItoCalculusKit.NovikovDoob",
-      "kind": "hard"
-    },
-    {
-      "from": "ItoCalculusKit.SigmaContinuity",
+      "from": "ItoCalculusKit.DoleansEnvelope",
       "to": "ItoCalculusKit.NovikovDoob",
       "kind": "hard"
     },

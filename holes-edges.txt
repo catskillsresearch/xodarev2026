@@ -8,7 +8,6 @@ ClassicalRiccatiSolution -hard-> TheoremBOfSetupItoRiccatiKit
 DualPairing -hard-> DualPairingLeNormWDualMulNormW
 DualPairing -hard-> ExtTensorAlgebra.TensorExpLipschitz
 DualPairing -hard-> ItoCalculusKit
-DualPairing -hard-> ItoCalculusKit.NovikovDoob
 DualPairing -hard-> ItoCalculusKit.SigmaContinuity
 DualPairing -hard-> ItoCalculusKit.StoppedL2
 DualPairing -hard-> SignatureRiccatiKit
@@ -129,7 +128,6 @@ GeneratedFiltration -hard-> ProlongedBrownianSetup.Sig2StratAdapted
 GeneratedFiltration -hard-> ProlongedBrownianSetup.SignatureFiltration
 HypH1 -hard-> HypH1OfIsFinitelySupported
 HypH1 -hard-> ItoCalculusKit
-HypH1 -hard-> ItoCalculusKit.NovikovDoob
 HypH1 -hard-> ItoCalculusKit.SigmaContinuity
 HypH1 -hard-> Proposition311SharpnessOfH1
 HypH1 -hard-> SignatureVolatilityModel
@@ -141,7 +139,6 @@ HypH2 -hard-> BlackScholesModel
 HypH2 -hard-> FirstOrderBrownianVolModel
 HypH2 -hard-> InfiniteGeometricSignatureModel
 HypH2 -hard-> ItoCalculusKit
-HypH2 -hard-> ItoCalculusKit.NovikovDoob
 HypH2 -hard-> ItoCalculusKit.SigmaContinuity
 HypH2 -hard-> Lemma32SignatureInTw
 HypH2 -hard-> Proposition311SharpnessOfH1
@@ -150,7 +147,6 @@ HypH2 -hard-> SignatureHestonLevel2Model
 HypH2 -hard-> SignatureVolatilityModel
 HypH3 -hard-> ItoCalculusKit
 HypH3 -hard-> ItoCalculusKit.DoleansMoments
-HypH3 -hard-> ItoCalculusKit.NovikovDoob
 HypH3 -hard-> SignatureVolatilityModel
 HypH3 -hard-> TheoremAOfBrownianSetupItoKit
 IndexedFiltration -hard-> GeneratedFiltration
@@ -169,6 +165,7 @@ ItoCalculusKit.BrownianQuadVarAS -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.BrownianQuadVarAS -hard-> ItoCalculusKit.MartingaleTransform
 ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.DoleansSigma
 ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.GBMMartingale
+ItoCalculusKit.DoleansEnvelope -hard-> ItoCalculusKit.NovikovDoob
 ItoCalculusKit.DoleansErrorPathwise -hard-> ItoCalculusKit.DoleansInputs
 ItoCalculusKit.DoleansIdentify -hard-> ItoCalculusKit.KolmogorovIto
 ItoCalculusKit.DoleansInputs -hard-> ItoCalculusKit.DoleansIdentify
@@ -177,6 +174,7 @@ ItoCalculusKit.DoleansQV -hard-> ItoCalculusKit.DoleansSDE
 ItoCalculusKit.DoleansQV -hard-> ItoCalculusKit.NovikovMartingale
 ItoCalculusKit.DoleansSDE -hard-> ItoCalculusKit.OfMathFin
 ItoCalculusKit.DoleansSigma -hard-> ItoCalculusKit.DoleansInputs
+ItoCalculusKit.DoobEnvelope -hard-> ItoCalculusKit.DoleansEnvelope
 ItoCalculusKit.EighthMoment -hard-> ItoCalculusKit.EighthTransform
 ItoCalculusKit.EighthTransform -hard-> ItoCalculusKit.ItoIncrement8
 ItoCalculusKit.ExpSupermartingale -hard-> ItoCalculusKit.DoleansMoments
@@ -186,7 +184,6 @@ ItoCalculusKit.FrozenIncrement8 -hard-> ItoCalculusKit.FrozenOrthogonal
 ItoCalculusKit.FrozenIncrement8 -hard-> ItoCalculusKit.RiemannRate8
 ItoCalculusKit.FrozenOrthogonal -hard-> ItoCalculusKit.QVTransform
 ItoCalculusKit.GBMEnvelope -hard-> ItoCalculusKit.DoobEnvelope
-ItoCalculusKit.GBMEnvelope -hard-> ItoCalculusKit.NovikovDoob
 ItoCalculusKit.GBMMartingale -hard-> ItoCalculusKit.GBMEnvelope
 ItoCalculusKit.GridChange -hard-> ItoCalculusKit.ItoOrthogonal
 ItoCalculusKit.GridDoob -hard-> ItoCalculusKit.DoleansErrorPathwise
@@ -206,9 +203,9 @@ ItoCalculusKit.MartingaleTransform -hard-> ItoCalculusKit.RiemannConvergence
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.ConstVol
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.ItoQuadDoleans
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.KitRaw
-ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.NovikovDoob
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.StoppedL2
 ItoCalculusKit.NovikovDoob -hard-> ItoCalculusKit.OfMathFin
+ItoCalculusKit.NovikovMartingale -hard-> ItoCalculusKit.DoleansEnvelope
 ItoCalculusKit.OfMathFin -hard-> PriceFiltrationSignatureSpace.OfMarket
 ItoCalculusKit.OfMathFin -hard-> SignatureRiccatiKit.OfSetup
 ItoCalculusKit.OfMathFin -hard-> TheoremA
@@ -221,12 +218,12 @@ ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.ExpSupermartingale
 ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.ItoIncrement
 ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.SigmaHolder
 ItoCalculusKit.RiemannRate8 -hard-> ItoCalculusKit.SubseqUniform
-ItoCalculusKit.SigmaContinuity -hard-> ItoCalculusKit.NovikovDoob
 ItoCalculusKit.SigmaContinuity -hard-> ItoCalculusKit.SigmaHolder
 ItoCalculusKit.SigmaHolder -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.SigmaHolder -hard-> ItoCalculusKit.EighthTransform
 ItoCalculusKit.SigmaHolder8 -hard-> ItoCalculusKit.QuadIncrement
 ItoCalculusKit.StoppedL2 -hard-> ItoCalculusKit.OfMathFin
+ItoCalculusKit.SubseqUniform -hard-> ItoCalculusKit.DoleansEnvelope
 Lemma32SignatureInTw -hard-> Corollary36SigmaWellDefined
 Letter -hard-> ExtTensorAlgebra.ExtTensorAlgebra
 Letter -hard-> ExtTensorAlgebra.ShuffleWords
@@ -373,7 +370,6 @@ ProlongedBrownianSetup.Sig2StratChenShuffle -hard-> ProlongedBrownianSetup.Strat
 ProlongedBrownianSetup.Sig2StratDyadic -hard-> ProlongedBrownianSetup.Sig2StratChenShuffle
 ProlongedBrownianSetup.Sig2StratMoments -hard-> ProlongedBrownianSetup.StratonovichOfBM
 ProlongedBrownianSetup.SignatureFiltration -hard-> ItoCalculusKit
-ProlongedBrownianSetup.SignatureFiltration -hard-> ItoCalculusKit.NovikovDoob
 ProlongedBrownianSetup.SignatureFiltration -hard-> SignatureFiltrationEqBrownianFiltration
 ProlongedBrownianSetup.SignatureFiltration -hard-> SignaturePriceSolution
 ProlongedBrownianSetup.SignatureFiltration -hard-> SignatureRiccatiKit
@@ -384,13 +380,11 @@ ProlongedBrownianSetup.StratonovichItoConversion -hard-> ProlongedBrownianSetup.
 ProlongedBrownianSetup.StratonovichItoConversion -hard-> ProlongedBrownianSetup.Sig2StratAdapted
 ProlongedBrownianSetup.StratonovichItoConversion -hard-> ProlongedBrownianSetup.Sig2StratChenShuffle
 ProlongedBrownianSetup.StratonovichOfBM -hard-> ItoCalculusKit.MathFinBridge
-ProlongedBrownianSetup.StratonovichOfBM -hard-> ItoCalculusKit.NovikovDoob
 ProlongedBrownianSetup.StratonovichOfBM -hard-> ItoCalculusKit.OfMathFin
 ProlongedBrownianSetup.StratonovichOfBM -hard-> ItoCalculusKit.SigmaContinuity
 ProlongedBrownianSetup.StratonovichOfBM -hard-> ItoCalculusKit.StoppedL2
 ProlongedBrownianSetup.WHat -hard-> Corollary36SigmaWellDefined
 ProlongedBrownianSetup.WHat -hard-> ItoCalculusKit
-ProlongedBrownianSetup.WHat -hard-> ItoCalculusKit.NovikovDoob
 ProlongedBrownianSetup.WHat -hard-> ItoCalculusKit.SigmaContinuity
 ProlongedBrownianSetup.WHat -hard-> ItoCalculusKit.StoppedL2
 ProlongedBrownianSetup.WHat -hard-> Lemma32SignatureInTw
@@ -452,7 +446,6 @@ Weight -hard-> HypH1
 Weight -hard-> HypH1OfIsFinitelySupported
 Weight -hard-> HypH2
 Weight -hard-> ItoCalculusKit
-Weight -hard-> ItoCalculusKit.NovikovDoob
 Weight -hard-> ItoCalculusKit.StoppedL2
 Weight -hard-> Lemma32SignatureInTw
 Weight -hard-> MemL2w
