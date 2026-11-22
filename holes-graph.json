@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-22T02:11:30Z",
+  "updated": "2026-11-22T02:13:59Z",
   "sorryCount": 11,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -727,6 +727,17 @@
       "label": "ItoCalculusKit.PathwiseExpIto",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/PathwiseExpIto.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.QVTransform",
+      "label": "ItoCalculusKit.QVTransform",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/QVTransform.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
@@ -2243,6 +2254,11 @@
     {
       "from": "ItoCalculusKit.StoppedL2",
       "to": "ItoCalculusKit.OfMathFin",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.FrozenOrthogonal",
+      "to": "ItoCalculusKit.QVTransform",
       "kind": "hard"
     },
     {
