@@ -404,6 +404,31 @@ lemma kitDoleansExp_signatureSigma {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0 
   rw [kitDoleansExp_def, kitItoInt_eq_raw B ht.1 had hpair, kitQuadVar_eq_raw B ht.1 had hpair,
     kitQuadVarRaw_signatureSigma B hd hT w hw ℓ hℓ ht ω]
 
+/-- **Raw Itô limit of the signature volatility** (H1–H2): the Itô–Riemann sums of `σ` converge
+almost surely along the full sequence of uniform grids, and the raw limit is in `L⁴`, hence
+integrable (`holderAdapted_signatureSigma` + `kitItoIntRaw_of_holderAdapted`). -/
+theorem kitItoIntRaw_signatureSigma {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0 < d) (hT : 0 < T)
+    {w : Weight} (hw : HypH2 w) {ℓ : ExtTensorAlgebra (d + 1)} (hℓ : HypH1 w ℓ) {t : ℝ}
+    (ht : 0 ≤ t) :
+    (∀ᵐ ω ∂P, Tendsto (fun n : ℕ => unifRiemann B (kitDriver hd) (signatureSigma B hT ℓ) t
+      (n + 1) ω) atTop (𝓝 (kitItoIntRaw B (signatureSigma B hT ℓ) t ω))) ∧
+      MemLp (kitItoIntRaw B (signatureSigma B hT ℓ) t) 4 P ∧
+      Integrable (kitItoIntRaw B (signatureSigma B hT ℓ) t) P := by
+  obtain ⟨K, hK⟩ := holderAdapted_signatureSigma B hT hw hℓ t
+  exact kitItoIntRaw_of_holderAdapted B hd ht hK
+
+/-- Under H1–H3 the kit Doléans exponential of the signature volatility is, for every `ω`,
+`Z_t = exp (limUnder ∑ σ ΔW - ½ ∫₀ᵗ σ²)` (the integrability gate is discharged by
+`kitItoIntRaw_signatureSigma`). -/
+lemma kitDoleansExp_signatureSigma_eq {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0 < d)
+    (hT : 0 < T) (w : Weight) (hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1)) (hℓ : HypH1 w ℓ)
+    (h3 : HypH3 P T (signatureSigma B hT ℓ)) {t : ℝ} (ht : t ∈ Icc 0 T) (ω : Ω) :
+    kitDoleansExp B (signatureSigma B hT ℓ) t ω =
+      Real.exp (kitItoIntRaw B (signatureSigma B hT ℓ) t ω -
+        (1 / 2 : ℝ) * ∫ s in (0 : ℝ)..t, (signatureSigma B hT ℓ s ω) ^ 2) :=
+  kitDoleansExp_signatureSigma B hd hT w hw ℓ hℓ h3 ht
+    (kitItoIntRaw_signatureSigma B hd hT hw hℓ ht.1).2.2 ω
+
 /-! ## The Doléans SDE -/
 
 /-- **Remaining analytic gap (single axiom).** Doléans SDE for a positive-dimensional driver and a
