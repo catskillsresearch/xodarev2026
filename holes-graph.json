@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-22T00:19:13Z",
-  "sorryCount": 12,
+  "updated": "2026-11-22T00:20:25Z",
+  "sorryCount": 11,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, SignatureRiccatiKit.OfSetup, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done. Green = open. Grey = blocked.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: ItoCalculusKit.DoleansSDE, ItoCalculusKit.ItoQuadDoleans, ItoCalculusKit.NovikovDoob, ItoCalculusKit.StoppedL2."
+    "Open tips: ItoCalculusKit.DoleansSDE, ItoCalculusKit.NovikovDoob, ItoCalculusKit.StoppedL2."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -485,7 +485,7 @@
       "label": "ItoCalculusKit.ItoQuadDoleans",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/ItoQuadDoleans.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
@@ -552,7 +552,7 @@
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/OfMathFin.lean",
       "status": "blocked",
-      "blocker": "needs ItoCalculusKit.DoleansSDE, ItoCalculusKit.ItoQuadDoleans, ItoCalculusKit.NovikovDoob, ItoCalculusKit.StoppedL2",
+      "blocker": "needs ItoCalculusKit.DoleansSDE, ItoCalculusKit.NovikovDoob, ItoCalculusKit.StoppedL2",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Paper kit / theorem goal.",
       "hasSorry": false,
       "paperKitGoal": true
