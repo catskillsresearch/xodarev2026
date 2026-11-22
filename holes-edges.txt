@@ -177,11 +177,13 @@ ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.DoleansMoments -hard-> ItoCalculusKit.DoleansSDE
 ItoCalculusKit.DoleansSDE -hard-> ItoCalculusKit.OfMathFin
 ItoCalculusKit.EighthMoment -hard-> ItoCalculusKit.EighthTransform
+ItoCalculusKit.EighthTransform -hard-> ItoCalculusKit.ItoIncrement8
 ItoCalculusKit.ExpSupermartingale -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.FourthMoment -hard-> ItoCalculusKit.BrownianQuadVarAS
 ItoCalculusKit.FourthMoment -hard-> ItoCalculusKit.EighthMoment
 ItoCalculusKit.GBMEnvelope -hard-> ItoCalculusKit.NovikovDoob
 ItoCalculusKit.GBMMartingale -hard-> ItoCalculusKit.GBMEnvelope
+ItoCalculusKit.ItoIncrement -hard-> ItoCalculusKit.ItoIncrement8
 ItoCalculusKit.ItoQuadDoleans -hard-> ItoCalculusKit.OfMathFin
 ItoCalculusKit.JointPast -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.JointPast -hard-> ItoCalculusKit.MartingaleTransform

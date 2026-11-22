@@ -112,6 +112,7 @@ VERIFIED: set[str] = {
     "ItoCalculusKit.ItoIncrement",
     "ItoCalculusKit.EighthMoment",
     "ItoCalculusKit.EighthTransform",
+    "ItoCalculusKit.ItoIncrement8",
     "ItoCalculusKit.PathwiseExpIto",
     "Letter",
     "MemL2w",
