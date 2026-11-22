@@ -187,6 +187,7 @@ ItoCalculusKit.GridChange -hard-> ItoCalculusKit.ItoOrthogonal
 ItoCalculusKit.ItoIncrement -hard-> ItoCalculusKit.ItoIncrement8
 ItoCalculusKit.ItoIncrement8 -hard-> ItoCalculusKit.GridChange
 ItoCalculusKit.ItoIncrement8 -hard-> ItoCalculusKit.SigmaHolder8
+ItoCalculusKit.ItoOrthogonal -hard-> ItoCalculusKit.FrozenIncrement8
 ItoCalculusKit.ItoQuadDoleans -hard-> ItoCalculusKit.OfMathFin
 ItoCalculusKit.JointPast -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.JointPast -hard-> ItoCalculusKit.MartingaleTransform
