@@ -204,6 +204,7 @@ ItoCalculusKit.OfMathFin -hard-> TheoremA
 ItoCalculusKit.OfMathFin -hard-> TheoremB
 ItoCalculusKit.PathwiseExpIto -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.PathwiseExpIto -hard-> ItoCalculusKit.DoleansSDE
+ItoCalculusKit.QuadIncrement -hard-> ItoCalculusKit.LogDoleansIncrement
 ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.ExpSupermartingale
 ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.ItoIncrement
 ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.SigmaHolder

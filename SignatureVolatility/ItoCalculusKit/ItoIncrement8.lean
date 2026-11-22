@@ -61,7 +61,7 @@ lemma HolderAdapted8.toHolderAdapted {B : MultiBrownian Ω P d} {H : ℝ → Ω 
   rwa [Real.sqrt_mul hH.K_nonneg, show (v - u) ^ 4 = ((v - u) ^ 2) ^ 2 by ring,
     Real.sqrt_sq (by positivity)] at h3
 
-private lemma add_pow_eight_le_conv (a b : ℝ) : (a + b) ^ 8 ≤ 128 * a ^ 8 + 128 * b ^ 8 := by
+lemma add_pow_eight_le_conv (a b : ℝ) : (a + b) ^ 8 ≤ 128 * a ^ 8 + 128 * b ^ 8 := by
   have hx : 0 ≤ a ^ 2 := sq_nonneg a
   have hy : 0 ≤ b ^ 2 := sq_nonneg b
   have h1 : (a + b) ^ 2 ≤ 2 * (a ^ 2 + b ^ 2) := by nlinarith [sq_nonneg (a - b)]
