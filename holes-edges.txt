@@ -176,6 +176,7 @@ ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.DoleansSDE
 ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.DoleansSigma
 ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.DoleansErrorPathwise -hard-> ItoCalculusKit.DoleansInputs
+ItoCalculusKit.DoleansIdentify -hard-> ItoCalculusKit.KolmogorovIto
 ItoCalculusKit.DoleansInputs -hard-> ItoCalculusKit.DoleansIdentify
 ItoCalculusKit.DoleansMoments -hard-> ItoCalculusKit.DoleansSigma
 ItoCalculusKit.DoleansSDE -hard-> ItoCalculusKit.OfMathFin
