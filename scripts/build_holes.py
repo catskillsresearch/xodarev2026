@@ -132,6 +132,7 @@ VERIFIED: set[str] = {
     "ItoCalculusKit.NovikovMartingale",
     "ItoCalculusKit.RiemannRate8",
     "ItoCalculusKit.HolderPath",
+    "ItoCalculusKit.SubseqUniform",
     "ItoCalculusKit.PathwiseExpIto",
     "Letter",
     "MemL2w",

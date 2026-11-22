@@ -189,6 +189,7 @@ ItoCalculusKit.GBMEnvelope -hard-> ItoCalculusKit.NovikovDoob
 ItoCalculusKit.GBMMartingale -hard-> ItoCalculusKit.GBMEnvelope
 ItoCalculusKit.GridChange -hard-> ItoCalculusKit.ItoOrthogonal
 ItoCalculusKit.GridDoob -hard-> ItoCalculusKit.DoleansErrorPathwise
+ItoCalculusKit.HolderPath -hard-> ItoCalculusKit.SubseqUniform
 ItoCalculusKit.ItoIncrement -hard-> ItoCalculusKit.ItoIncrement8
 ItoCalculusKit.ItoIncrement8 -hard-> ItoCalculusKit.GridChange
 ItoCalculusKit.ItoIncrement8 -hard-> ItoCalculusKit.SigmaHolder8
@@ -218,6 +219,7 @@ ItoCalculusKit.QuadIncrement -hard-> ItoCalculusKit.LogDoleansIncrement
 ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.ExpSupermartingale
 ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.ItoIncrement
 ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.SigmaHolder
+ItoCalculusKit.RiemannRate8 -hard-> ItoCalculusKit.SubseqUniform
 ItoCalculusKit.SigmaContinuity -hard-> ItoCalculusKit.NovikovDoob
 ItoCalculusKit.SigmaContinuity -hard-> ItoCalculusKit.SigmaHolder
 ItoCalculusKit.SigmaHolder -hard-> ItoCalculusKit.DoleansMoments

@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-22T03:14:50Z",
+  "updated": "2026-11-22T03:22:30Z",
   "sorryCount": 10,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -918,6 +918,17 @@
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
       "hasSorry": true,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.SubseqUniform",
+      "label": "ItoCalculusKit.SubseqUniform",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/SubseqUniform.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -2509,6 +2520,16 @@
     {
       "from": "Norm2w",
       "to": "ItoCalculusKit.StoppedL2",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.HolderPath",
+      "to": "ItoCalculusKit.SubseqUniform",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.RiemannRate8",
+      "to": "ItoCalculusKit.SubseqUniform",
       "kind": "hard"
     },
     {
