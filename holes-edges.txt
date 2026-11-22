@@ -176,6 +176,7 @@ ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.DoleansSDE
 ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.DoleansMoments -hard-> ItoCalculusKit.DoleansSDE
 ItoCalculusKit.DoleansSDE -hard-> ItoCalculusKit.OfMathFin
+ItoCalculusKit.EighthMoment -hard-> ItoCalculusKit.EighthTransform
 ItoCalculusKit.ExpSupermartingale -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.FourthMoment -hard-> ItoCalculusKit.BrownianQuadVarAS
 ItoCalculusKit.FourthMoment -hard-> ItoCalculusKit.EighthMoment
@@ -206,6 +207,7 @@ ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.SigmaHolder
 ItoCalculusKit.SigmaContinuity -hard-> ItoCalculusKit.NovikovDoob
 ItoCalculusKit.SigmaContinuity -hard-> ItoCalculusKit.SigmaHolder
 ItoCalculusKit.SigmaHolder -hard-> ItoCalculusKit.DoleansMoments
+ItoCalculusKit.SigmaHolder -hard-> ItoCalculusKit.EighthTransform
 ItoCalculusKit.StoppedL2 -hard-> ItoCalculusKit.OfMathFin
 Lemma32SignatureInTw -hard-> Corollary36SigmaWellDefined
 Letter -hard-> ExtTensorAlgebra.ExtTensorAlgebra

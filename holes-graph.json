@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-22T01:24:14Z",
+  "updated": "2026-11-22T01:26:07Z",
   "sorryCount": 11,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -507,6 +507,17 @@
       "label": "ItoCalculusKit.EighthMoment",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/EighthMoment.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.EighthTransform",
+      "label": "ItoCalculusKit.EighthTransform",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/EighthTransform.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
@@ -1989,6 +2000,16 @@
     {
       "from": "ItoCalculusKit.FourthMoment",
       "to": "ItoCalculusKit.EighthMoment",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.EighthMoment",
+      "to": "ItoCalculusKit.EighthTransform",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.SigmaHolder",
+      "to": "ItoCalculusKit.EighthTransform",
       "kind": "hard"
     },
     {
