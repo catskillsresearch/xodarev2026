@@ -186,6 +186,7 @@ ItoCalculusKit.FrozenOrthogonal -hard-> ItoCalculusKit.QVTransform
 ItoCalculusKit.GBMEnvelope -hard-> ItoCalculusKit.NovikovDoob
 ItoCalculusKit.GBMMartingale -hard-> ItoCalculusKit.GBMEnvelope
 ItoCalculusKit.GridChange -hard-> ItoCalculusKit.ItoOrthogonal
+ItoCalculusKit.GridDoob -hard-> ItoCalculusKit.DoleansErrorPathwise
 ItoCalculusKit.ItoIncrement -hard-> ItoCalculusKit.ItoIncrement8
 ItoCalculusKit.ItoIncrement8 -hard-> ItoCalculusKit.GridChange
 ItoCalculusKit.ItoIncrement8 -hard-> ItoCalculusKit.SigmaHolder8
