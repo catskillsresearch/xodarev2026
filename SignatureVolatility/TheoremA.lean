@@ -13,12 +13,16 @@ namespace SignatureVolatility
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P]
 
 /-- **Paper Theorem A.** Existence/uniqueness of the signature-price solution over Brownian motion
-(Stratonovich prolonged setup + MathFin Ito kit). -/
+(Stratonovich prolonged setup + MathFin Ito kit). Uniqueness is among strong solutions: adapted to
+the signature filtration and in `KitStrongSolutionClass` (square-integrable supremum, `L⁴`-regular
+integrand), which the constructed Doléans solution satisfies. -/
 theorem theorem_A (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
     (h3 : HypH3 P M.T (SignatureVolatilityModel.sigma M (paperSetup B M.hT))) :
     ∃ sol : SignaturePriceSolution M (paperSetup B M.hT) (itoCalculusKit_of_mathfin B M.hT),
       ∀ S_tilde : ℝ → Ω → ℝ,
         (∀ t ∈ Icc 0 M.T, Measurable[(paperSetup B M.hT).signatureFiltration.σAlg t] (S_tilde t)) →
+        KitStrongSolutionClass P M.T (SignatureVolatilityModel.sigma M (paperSetup B M.hT))
+          S_tilde →
         (∀ t ∈ Icc 0 M.T, ∀ᵐ ω ∂P,
           S_tilde t ω = M.s₀ + (itoCalculusKit_of_mathfin B M.hT).itoInt
             (fun s ω' => S_tilde s ω' *

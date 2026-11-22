@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-22T03:32:13Z",
+  "updated": "2026-11-22T03:42:10Z",
   "sorryCount": 9,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -562,6 +562,17 @@
       "label": "ItoCalculusKit.DoleansSigma",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/DoleansSigma.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.DoleansStrongClass",
+      "label": "ItoCalculusKit.DoleansStrongClass",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/DoleansStrongClass.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
@@ -2290,6 +2301,21 @@
       "kind": "hard"
     },
     {
+      "from": "ItoCalculusKit",
+      "to": "ItoCalculusKit.DoleansStrongClass",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.NovikovDoob",
+      "to": "ItoCalculusKit.DoleansStrongClass",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.ItoQuadDoleans",
+      "to": "ItoCalculusKit.DoleansStrongClass",
+      "kind": "hard"
+    },
+    {
       "from": "ItoCalculusKit.GBMEnvelope",
       "to": "ItoCalculusKit.DoobEnvelope",
       "kind": "hard"
@@ -2445,27 +2471,17 @@
       "kind": "hard"
     },
     {
-      "from": "ItoCalculusKit",
-      "to": "ItoCalculusKit.OfMathFin",
-      "kind": "hard"
-    },
-    {
       "from": "ItoCalculusKit.DoleansSDE",
       "to": "ItoCalculusKit.OfMathFin",
       "kind": "hard"
     },
     {
-      "from": "ItoCalculusKit.ItoQuadDoleans",
-      "to": "ItoCalculusKit.OfMathFin",
-      "kind": "hard"
-    },
-    {
-      "from": "ItoCalculusKit.NovikovDoob",
-      "to": "ItoCalculusKit.OfMathFin",
-      "kind": "hard"
-    },
-    {
       "from": "ItoCalculusKit.StoppedL2",
+      "to": "ItoCalculusKit.OfMathFin",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.DoleansStrongClass",
       "to": "ItoCalculusKit.OfMathFin",
       "kind": "hard"
     },
@@ -2540,17 +2556,12 @@
       "kind": "hard"
     },
     {
+      "from": "ItoCalculusKit",
+      "to": "ItoCalculusKit.StoppedL2",
+      "kind": "hard"
+    },
+    {
       "from": "ItoCalculusKit.MathFinBridge",
-      "to": "ItoCalculusKit.StoppedL2",
-      "kind": "hard"
-    },
-    {
-      "from": "DualPairing",
-      "to": "ItoCalculusKit.StoppedL2",
-      "kind": "hard"
-    },
-    {
-      "from": "Norm2w",
       "to": "ItoCalculusKit.StoppedL2",
       "kind": "hard"
     },

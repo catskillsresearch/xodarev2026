@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-22T03:32:13Z
-**Holes:** 9 open+blocked · 1 open · 8 blocked · 159 done · 4 file(s) with `sorry`.
+**Updated:** 2026-11-22T03:42:10Z
+**Holes:** 9 open+blocked · 1 open · 8 blocked · 160 done · 4 file(s) with `sorry`.
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
 
@@ -79,6 +79,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `ItoCalculusKit.DoleansQV` | `SignatureVolatility/ItoCalculusKit/DoleansQV.lean` |
 | done | `ItoCalculusKit.DoleansSDE` | `SignatureVolatility/ItoCalculusKit/DoleansSDE.lean` |
 | done | `ItoCalculusKit.DoleansSigma` | `SignatureVolatility/ItoCalculusKit/DoleansSigma.lean` |
+| done | `ItoCalculusKit.DoleansStrongClass` | `SignatureVolatility/ItoCalculusKit/DoleansStrongClass.lean` |
 | done | `ItoCalculusKit.DoobEnvelope` | `SignatureVolatility/ItoCalculusKit/DoobEnvelope.lean` |
 | done | `ItoCalculusKit.EighthMoment` | `SignatureVolatility/ItoCalculusKit/EighthMoment.lean` |
 | done | `ItoCalculusKit.EighthTransform` | `SignatureVolatility/ItoCalculusKit/EighthTransform.lean` |

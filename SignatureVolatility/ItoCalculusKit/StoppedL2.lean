@@ -1,6 +1,10 @@
 module
 
+public import SignatureVolatility.ItoCalculusKit
 public import SignatureVolatility.ItoCalculusKit.MathFinBridge
+public import SignatureVolatility.HypH1
+public import SignatureVolatility.HypH2
+public import SignatureVolatility.HypH3
 public import SignatureVolatility.DualPairing
 public import SignatureVolatility.Norm2w
 public import SignatureVolatility.ProlongedBrownianSetup.StratonovichOfBM
@@ -26,17 +30,32 @@ under the strengthened continuous independent driver.
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}
 
-/-- Stopped L² localisation package, for solutions adapted to the signature filtration. Without
-adaptedness the uniqueness clause is false: `kitItoInt` zeroes non-measurable integrands
-(`forceMeasurable`), so on an incomplete space `s₀ + 𝟙_A` (`A` a non-measurable subset of a null
-set) is a spurious second solution. -/
+/-- Stopped L² localisation package under H1–H3, for **strong solutions**: adapted to the
+signature filtration and in `KitStrongSolutionClass` (square-integrable supremum on `[0, T]` and
+`L⁴`-regular integrand `S σ`).
+
+Why these hypotheses (the paper's uniqueness is for strong solutions, i.e. continuous
+semimartingales):
+* without adaptedness the clause is false: `kitItoInt` zeroes non-measurable integrands
+  (`forceMeasurable`), so on an incomplete space `s₀ + 𝟙_A` (`A` a non-measurable subset of a null
+  set) is a spurious second solution;
+* without H1–H2 the volatility need not have moments (e.g. `σ = exp(W⁴)`, `𝔼 ∫ σ² = ∞`), then
+  `kitItoInt (s₀ σ) = 0` and the constant `s₀` solves the kit equation although it is not the
+  paper's price;
+* without the regularity class an adapted process is not a semimartingale solution: the kit's
+  integral at `t` only samples the integrand at `q t`, `q ∈ ℚ`, and is linear / isometric only on
+  regular integrands. The constructed Doléans price is in the class
+  (`kit_doleans_strong_class`). -/
 theorem kit_stopped_l2_localisation {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T)
-    (w : Weight) (ℓ : ExtTensorAlgebra (d + 1)) (s₀ : ℝ)
+    (w : Weight) (_hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1)) (_hℓ : HypH1 w ℓ) (s₀ : ℝ)
     (S₁ S₂ : ℝ → Ω → ℝ) :
     let setup := prolongedBrownianSetup_stratonovich_of_brownian B hT
     let σ : ℝ → Ω → ℝ := fun t ω => dualPairing ℓ (setup.W_hat t ω)
+    HypH3 P T σ →
     (∀ t ∈ Icc 0 T, Measurable[setup.signatureFiltration.σAlg t] (S₁ t)) →
     (∀ t ∈ Icc 0 T, Measurable[setup.signatureFiltration.σAlg t] (S₂ t)) →
+    KitStrongSolutionClass P T σ S₁ →
+    KitStrongSolutionClass P T σ S₂ →
     (∀ t ∈ Icc 0 T, ∀ᵐ ω ∂P,
       S₁ t ω = s₀ + kitItoInt B (fun s ω' => S₁ s ω' * σ s ω') t ω) →
     (∀ t ∈ Icc 0 T, ∀ᵐ ω ∂P,

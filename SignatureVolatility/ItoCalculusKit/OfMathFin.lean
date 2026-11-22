@@ -5,6 +5,7 @@ public import SignatureVolatility.ItoCalculusKit.DoleansSDE
 public import SignatureVolatility.ItoCalculusKit.ItoQuadDoleans
 public import SignatureVolatility.ItoCalculusKit.NovikovDoob
 public import SignatureVolatility.ItoCalculusKit.StoppedL2
+public import SignatureVolatility.ItoCalculusKit.DoleansStrongClass
 public import SignatureVolatility.ProlongedBrownianSetup.StratonovichOfBM
 
 
@@ -48,5 +49,6 @@ noncomputable def itoCalculusKit_of_mathfin {T : ℝ} (B : MultiBrownian Ω P d)
   doleans_sde := kit_doleans_sde B hT
   stopped_l2_localisation := kit_stopped_l2_localisation B hT
   novikov_doob_l2_martingale := kit_novikov_doob_l2_martingale B hT
+  doleans_strong_class := kit_doleans_strong_class B hT
 
 end SignatureVolatility

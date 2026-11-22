@@ -20,6 +20,28 @@ open MeasureTheory Set
 
 namespace SignatureVolatility
 
+/-- **Kit strong-solution class.** The kit's stand-in for the paper's strong solutions of
+`dS = S σ dW` on `[0, T]` (used together with adaptedness to the signature filtration):
+
+* a square-integrable envelope of `sup_{t ∈ [0,T]} |S_t|` (the paper's `L²` solution class), and
+* the SDE integrand `S σ` is `L⁴` with a Kolmogorov-type bound `𝔼 (S_v σ_v - S_u σ_u)⁴ ≤ K (v - u)²`
+  on `[0, T]`.
+
+The second clause is the minimal time regularity under which the kit's Riemann-sum integral
+`itoInt` is a genuine (linear, martingale, `L²`) Itô integral of `S σ`; every strong solution of
+the linear signature SDE under H1–H3 has it (BDG), and the constructed Doléans solution is proved to
+have it (`doleans_strong_class`). Without such a class, uniqueness for the kit equation is not
+provable: `itoInt` only samples the integrand at the grid points `q t`, `q ∈ ℚ`, and returns `0`
+for integrands whose pair is not integrable, so arbitrary adapted processes are not semimartingale
+solutions in the paper's sense. -/
+def KitStrongSolutionClass {Ω : Type*} [MeasurableSpace Ω] (ℙ : Measure Ω) (T : ℝ)
+    (σ S : ℝ → Ω → ℝ) : Prop :=
+  (∃ S_sup : Ω → ℝ, Measurable S_sup ∧ (∀ᵐ ω ∂ℙ, ∀ t ∈ Icc 0 T, |S t ω| ≤ S_sup ω) ∧
+    Integrable (fun ω => (S_sup ω) ^ 2) ℙ) ∧
+  ∃ K : ℝ, 0 ≤ K ∧ (∀ u ∈ Icc 0 T, MemLp (fun ω => S u ω * σ u ω) 4 ℙ) ∧
+    ∀ u v, 0 ≤ u → u ≤ v → v ≤ T →
+      ∫ ω, (S v ω * σ v ω - S u ω * σ u ω) ^ 4 ∂ℙ ≤ K * (v - u) ^ 2
+
 /-- Itô calculus kit. Uniqueness is stated up to **modification** (not indistinguishability),
 matching SDE hypotheses that constrain each fixed time only almost surely. Novikov/Doob
 requires the paper's exponential-integrability hypothesis `HypH3` on the integrand `σ`. -/
@@ -51,13 +73,20 @@ structure ItoCalculusKit (Ω : Type*) [m₀ : MeasurableSpace Ω]
     (∀ᵐ ω ∂ℙ, ContinuousOn (fun s => σ s ω) (Icc 0 T)) →
     ∀ t ∈ Icc 0 T, ∀ᵐ ω ∂ℙ,
       s₀ * doleansExp σ t ω = s₀ + itoInt (fun s ω' => (s₀ * doleansExp σ s ω') * σ s ω') t ω
-  /-- L² localisation / Gronwall package. Conclusion is uniqueness **up to modification** among
-  solutions adapted to the signature filtration (strong solutions). -/
-  stopped_l2_localisation : ∀ (w : Weight) (ℓ : ExtTensorAlgebra (d + 1)) (s₀ : ℝ)
-    (S₁ S₂ : ℝ → Ω → ℝ),
+  /-- L² localisation / Gronwall package under H1–H3. Conclusion is uniqueness **up to
+  modification** among strong solutions: adapted to the signature filtration and in
+  `KitStrongSolutionClass` (square-integrable supremum, `L⁴`-regular integrand `S σ`). Without
+  H1–H2 the volatility can violate every moment bound (e.g. `σ = exp(W⁴)`), in which case
+  `itoInt` returns `0` and the constant `s₀` is a spurious solution; without the class, arbitrary
+  adapted processes are not semimartingale solutions and uniqueness is not provable. -/
+  stopped_l2_localisation : ∀ (w : Weight) (_hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1))
+    (_hℓ : HypH1 w ℓ) (s₀ : ℝ) (S₁ S₂ : ℝ → Ω → ℝ),
     let σ : ℝ → Ω → ℝ := fun t ω => dualPairing ℓ (setup.W_hat t ω)
+    HypH3 ℙ T σ →
     (∀ t ∈ Icc 0 T, Measurable[setup.signatureFiltration.σAlg t] (S₁ t)) →
     (∀ t ∈ Icc 0 T, Measurable[setup.signatureFiltration.σAlg t] (S₂ t)) →
+    KitStrongSolutionClass ℙ T σ S₁ →
+    KitStrongSolutionClass ℙ T σ S₂ →
     (∀ t ∈ Icc 0 T, ∀ᵐ ω ∂ℙ, S₁ t ω = s₀ + itoInt (fun s ω' => S₁ s ω' * σ s ω') t ω) →
     (∀ t ∈ Icc 0 T, ∀ᵐ ω ∂ℙ, S₂ t ω = s₀ + itoInt (fun s ω' => S₂ s ω' * σ s ω') t ω) →
     (∃ f : ℕ → ℝ → ℝ,
@@ -80,5 +109,12 @@ structure ItoCalculusKit (Ω : Type*) [m₀ : MeasurableSpace Ω]
       (∀ᵐ ω ∂ℙ, ∀ t ∈ Icc 0 T, |S t ω| ≤ S_sup ω) ∧
       Integrable (fun ω => (S_sup ω) ^ 2) ℙ) ∧
     (∀ᵐ ω ∂ℙ, IntegrableOn (fun s => (σ s ω) ^ 2) (Icc 0 T) volume)
+  /-- The Doléans price `s₀ · doleansExp σ` lies in the strong-solution class under H1–H3, so the
+  uniqueness clause of `stopped_l2_localisation` applies to it. -/
+  doleans_strong_class : ∀ (w : Weight) (_hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1))
+    (_hℓ : HypH1 w ℓ) (s₀ : ℝ) (_hs₀ : 0 < s₀),
+    let σ : ℝ → Ω → ℝ := fun t ω => dualPairing ℓ (setup.W_hat t ω)
+    HypH3 ℙ T σ →
+    KitStrongSolutionClass ℙ T σ (fun t ω => s₀ * doleansExp σ t ω)
 
 end SignatureVolatility

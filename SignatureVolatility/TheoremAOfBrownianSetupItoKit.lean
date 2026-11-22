@@ -18,7 +18,10 @@ open MeasureTheory Set
 
 namespace SignatureVolatility
 
-/-- Kit-level Theorem A: unique signature-price solution up to modification, under H3 on `σ`
+/-- Kit-level Theorem A: unique signature-price solution up to modification among strong
+solutions (adapted and in `KitStrongSolutionClass`, the kit's stand-in for continuous
+semimartingale solutions; the constructed solution is in the class by `doleans_strong_class`),
+under H3 on `σ`
 and pathwise continuity of `σ` on `[0, T]`, relative to an abstract `ProlongedBrownianSetup`
 and `ItoCalculusKit`. (An abstract setup carries no time-regularity of `sig2`; for the
 Brownian setup `hcont` is `continuousOn_sigma_of_brownian`.) -/
@@ -32,6 +35,7 @@ theorem theorem_A_of_Brownian_Setup_Ito_Kit {Ω : Type*} [MeasurableSpace Ω]
     ∃ (sol : SignaturePriceSolution M setup ito),
       ∀ (S_tilde : ℝ → Ω → ℝ),
         (∀ t ∈ Icc 0 M.T, Measurable[setup.signatureFiltration.σAlg t] (S_tilde t)) →
+        KitStrongSolutionClass ℙ M.T (SignatureVolatilityModel.sigma M setup) S_tilde →
         (∀ t ∈ Icc 0 M.T, ∀ᵐ ω ∂ℙ,
           S_tilde t ω = M.s₀ + ito.itoInt (fun s ω' => S_tilde s ω' *
               SignatureVolatilityModel.sigma M setup s ω') t ω) →
@@ -78,10 +82,11 @@ theorem theorem_A_of_Brownian_Setup_Ito_Kit {Ω : Type*} [MeasurableSpace Ω]
       solves_sde := hsde
       sup_l2_integrable := hsup
       is_martingale := hmart }
-  refine ⟨sol, fun S_tilde hS_tilde_adapt hS_tilde => ?_⟩
+  refine ⟨sol, fun S_tilde hS_tilde_adapt hS_tilde_class hS_tilde => ?_⟩
   obtain ⟨f, hf_cont, hf_nonneg, hf_bound, hexhaust⟩ :=
-    ito.stopped_l2_localisation M.w M.ℓ M.s₀ S_tilde S hS_tilde_adapt
-      (fun t ht => hS_adapt t ⟨t, ht.1, le_rfl⟩) hS_tilde hsde
+    ito.stopped_l2_localisation M.w M.h2 M.ℓ M.h1 M.s₀ S_tilde S h3 hS_tilde_adapt
+      (fun t ht => hS_adapt t ⟨t, ht.1, le_rfl⟩) hS_tilde_class
+      (ito.doleans_strong_class M.w M.h2 M.ℓ M.h1 M.s₀ M.hs₀ h3) hS_tilde hsde
   apply hexhaust
   intro k t ht
   exact gronwall_zero_of_continuousOn M.hT.le (sq_nonneg _)

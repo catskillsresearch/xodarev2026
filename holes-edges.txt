@@ -129,6 +129,7 @@ GeneratedFiltration -hard-> ProlongedBrownianSetup.SignatureFiltration
 HypH1 -hard-> HypH1OfIsFinitelySupported
 HypH1 -hard-> ItoCalculusKit
 HypH1 -hard-> ItoCalculusKit.SigmaContinuity
+HypH1 -hard-> ItoCalculusKit.StoppedL2
 HypH1 -hard-> Proposition311SharpnessOfH1
 HypH1 -hard-> SignatureVolatilityModel
 HypH1OfIsFinitelySupported -hard-> BlackScholesModel
@@ -140,6 +141,7 @@ HypH2 -hard-> FirstOrderBrownianVolModel
 HypH2 -hard-> InfiniteGeometricSignatureModel
 HypH2 -hard-> ItoCalculusKit
 HypH2 -hard-> ItoCalculusKit.SigmaContinuity
+HypH2 -hard-> ItoCalculusKit.StoppedL2
 HypH2 -hard-> Lemma32SignatureInTw
 HypH2 -hard-> Proposition311SharpnessOfH1
 HypH2 -hard-> QuinticOUSignatureModel
@@ -147,6 +149,7 @@ HypH2 -hard-> SignatureHestonLevel2Model
 HypH2 -hard-> SignatureVolatilityModel
 HypH3 -hard-> ItoCalculusKit
 HypH3 -hard-> ItoCalculusKit.DoleansMoments
+HypH3 -hard-> ItoCalculusKit.StoppedL2
 HypH3 -hard-> SignatureVolatilityModel
 HypH3 -hard-> TheoremAOfBrownianSetupItoKit
 IndexedFiltration -hard-> GeneratedFiltration
@@ -157,7 +160,9 @@ IndexedFiltration -hard-> ProlongedBrownianSetup.BrownianFiltration
 IndexedFiltration -hard-> ProlongedBrownianSetup.SignatureFiltration
 IsSpecialSemimartingale -hard-> SignatureRiccatiKit
 IsSpecialSemimartingale -hard-> TheoremBOfSetupItoRiccatiKit
+ItoCalculusKit -hard-> ItoCalculusKit.DoleansStrongClass
 ItoCalculusKit -hard-> ItoCalculusKit.OfMathFin
+ItoCalculusKit -hard-> ItoCalculusKit.StoppedL2
 ItoCalculusKit -hard-> SignaturePriceSolution
 ItoCalculusKit -hard-> TheoremAOfBrownianSetupItoKit
 ItoCalculusKit -hard-> TheoremBOfSetupItoRiccatiKit
@@ -174,6 +179,7 @@ ItoCalculusKit.DoleansQV -hard-> ItoCalculusKit.DoleansSDE
 ItoCalculusKit.DoleansQV -hard-> ItoCalculusKit.NovikovMartingale
 ItoCalculusKit.DoleansSDE -hard-> ItoCalculusKit.OfMathFin
 ItoCalculusKit.DoleansSigma -hard-> ItoCalculusKit.DoleansInputs
+ItoCalculusKit.DoleansStrongClass -hard-> ItoCalculusKit.OfMathFin
 ItoCalculusKit.DoobEnvelope -hard-> ItoCalculusKit.DoleansEnvelope
 ItoCalculusKit.EighthMoment -hard-> ItoCalculusKit.EighthTransform
 ItoCalculusKit.EighthTransform -hard-> ItoCalculusKit.ItoIncrement8
@@ -192,6 +198,7 @@ ItoCalculusKit.ItoIncrement -hard-> ItoCalculusKit.ItoIncrement8
 ItoCalculusKit.ItoIncrement8 -hard-> ItoCalculusKit.GridChange
 ItoCalculusKit.ItoIncrement8 -hard-> ItoCalculusKit.SigmaHolder8
 ItoCalculusKit.ItoOrthogonal -hard-> ItoCalculusKit.FrozenIncrement8
+ItoCalculusKit.ItoQuadDoleans -hard-> ItoCalculusKit.DoleansStrongClass
 ItoCalculusKit.ItoQuadDoleans -hard-> ItoCalculusKit.OfMathFin
 ItoCalculusKit.JointPast -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.JointPast -hard-> ItoCalculusKit.MartingaleTransform
@@ -204,6 +211,7 @@ ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.ConstVol
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.ItoQuadDoleans
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.KitRaw
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.StoppedL2
+ItoCalculusKit.NovikovDoob -hard-> ItoCalculusKit.DoleansStrongClass
 ItoCalculusKit.NovikovDoob -hard-> ItoCalculusKit.OfMathFin
 ItoCalculusKit.NovikovMartingale -hard-> ItoCalculusKit.DoleansEnvelope
 ItoCalculusKit.OfMathFin -hard-> PriceFiltrationSignatureSpace.OfMarket
