@@ -109,6 +109,7 @@ VERIFIED: set[str] = {
     "ItoCalculusKit.SigmaHolder",
     "ItoCalculusKit.ExpSupermartingale",
     "ItoCalculusKit.DoleansMoments",
+    "ItoCalculusKit.ItoIncrement",
     "ItoCalculusKit.PathwiseExpIto",
     "Letter",
     "MemL2w",

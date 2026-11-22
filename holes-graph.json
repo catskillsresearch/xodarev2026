@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-22T01:07:41Z",
+  "updated": "2026-11-22T01:18:50Z",
   "sorryCount": 11,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -540,6 +540,17 @@
       "label": "ItoCalculusKit.GBMMartingale",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/GBMMartingale.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.ItoIncrement",
+      "label": "ItoCalculusKit.ItoIncrement",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/ItoIncrement.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
@@ -1987,6 +1998,11 @@
     {
       "from": "ItoCalculusKit.JointPast",
       "to": "ItoCalculusKit.GBMMartingale",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.RiemannConvergence",
+      "to": "ItoCalculusKit.ItoIncrement",
       "kind": "hard"
     },
     {
