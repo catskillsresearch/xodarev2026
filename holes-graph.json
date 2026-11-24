@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T09:45:42Z",
+  "updated": "2026-11-24T09:55:29Z",
   "sorryCount": 6,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -1112,6 +1112,17 @@
       "label": "Lemma61GramPosDef",
       "section": 1,
       "file": "SignatureVolatility/Lemma61GramPosDef.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "Lemma77ShuffleEstimateFalse",
+      "label": "Lemma77ShuffleEstimateFalse",
+      "section": 1,
+      "file": "SignatureVolatility/Lemma77ShuffleEstimateFalse.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
@@ -2874,6 +2885,26 @@
     {
       "from": "Preliminaries",
       "to": "Lemma61GramPosDef",
+      "kind": "hard"
+    },
+    {
+      "from": "NormW",
+      "to": "Lemma77ShuffleEstimateFalse",
+      "kind": "hard"
+    },
+    {
+      "from": "MemTw",
+      "to": "Lemma77ShuffleEstimateFalse",
+      "kind": "hard"
+    },
+    {
+      "from": "HypH2",
+      "to": "Lemma77ShuffleEstimateFalse",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.RiccatiOp",
+      "to": "Lemma77ShuffleEstimateFalse",
       "kind": "hard"
     },
     {

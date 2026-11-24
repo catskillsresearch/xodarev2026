@@ -91,6 +91,7 @@ VERIFIED: set[str] = {
     "InfiniteGeometricSignatureModel",
     "Lemma32SignatureInTw",
     "Lemma61GramPosDef",
+    "Lemma77ShuffleEstimateFalse",
     "IsSpecialSemimartingale",
     "ItoCalculusKit",
     "ItoCalculusKit.BrownianQuadVarAS",

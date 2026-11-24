@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-24T09:45:42Z
-**Holes:** 6 open+blocked · 2 open · 4 blocked · 179 done · 3 file(s) with `sorry`.
+**Updated:** 2026-11-24T09:55:29Z
+**Holes:** 6 open+blocked · 2 open · 4 blocked · 180 done · 3 file(s) with `sorry`.
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
 
@@ -130,6 +130,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `ItoCalculusKit.SubseqUniform` | `SignatureVolatility/ItoCalculusKit/SubseqUniform.lean` |
 | done | `Lemma32SignatureInTw` | `SignatureVolatility/Lemma32SignatureInTw.lean` |
 | done | `Lemma61GramPosDef` | `SignatureVolatility/Lemma61GramPosDef.lean` |
+| done | `Lemma77ShuffleEstimateFalse` | `SignatureVolatility/Lemma77ShuffleEstimateFalse.lean` |
 | done | `Letter` | `SignatureVolatility/Letter.lean` |
 | done | `MemL2w` | `SignatureVolatility/MemL2w.lean` |
 | done | `MemL2wInv` | `SignatureVolatility/MemL2wInv.lean` |

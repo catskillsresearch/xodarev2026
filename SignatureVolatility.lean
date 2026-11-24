@@ -34,6 +34,7 @@ public import SignatureVolatility.IsSpecialSemimartingale
 public import SignatureVolatility.ItoCalculusKit
 public import SignatureVolatility.Lemma32SignatureInTw
 public import SignatureVolatility.Lemma61GramPosDef
+public import SignatureVolatility.Lemma77ShuffleEstimateFalse
 public import SignatureVolatility.Letter
 public import SignatureVolatility.MemL2w
 public import SignatureVolatility.MemL2wInv

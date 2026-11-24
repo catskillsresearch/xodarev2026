@@ -131,6 +131,7 @@ HypH2 -hard-> InfiniteGeometricSignatureModel
 HypH2 -hard-> ItoCalculusKit
 HypH2 -hard-> ItoCalculusKit.SigmaContinuity
 HypH2 -hard-> Lemma32SignatureInTw
+HypH2 -hard-> Lemma77ShuffleEstimateFalse
 HypH2 -hard-> Proposition311SharpnessOfH1
 HypH2 -hard-> QuinticOUSignatureModel
 HypH2 -hard-> SignatureHestonLevel2Model
@@ -261,6 +262,7 @@ MemTw -hard-> BanachAlgebraConcatBound
 MemTw -hard-> ClassicalRiccatiSolution
 MemTw -hard-> DualPairingLeNormWDualMulNormW
 MemTw -hard-> Lemma32SignatureInTw
+MemTw -hard-> Lemma77ShuffleEstimateFalse
 MemTw -hard-> MemL2wInvOfMemTw
 MemTw -hard-> TailNorm2wInvLeRatioMulNormW
 MemTw -hard-> TheoremDOfMarketKit
@@ -281,6 +283,7 @@ NormW -hard-> BanachAlgebraConcatBound
 NormW -hard-> ClassicalRiccatiSolution
 NormW -hard-> DualPairingLeNormWDualMulNormW
 NormW -hard-> Lemma32SignatureInTw
+NormW -hard-> Lemma77ShuffleEstimateFalse
 NormW -hard-> MemL2wInvOfMemTw
 NormW -hard-> TailNorm2wInvLeRatioMulNormW
 NormW -hard-> TheoremDOfMarketKit
@@ -408,6 +411,7 @@ SignatureRiccatiKit -hard-> SignatureRiccatiKit.OfSetup
 SignatureRiccatiKit -hard-> TheoremBOfSetupItoRiccatiKit
 SignatureRiccatiKit.CoordSemimartingale -hard-> SignatureRiccatiKit.OfSetup
 SignatureRiccatiKit.OfSetup -hard-> TheoremB
+SignatureRiccatiKit.RiccatiOp -hard-> Lemma77ShuffleEstimateFalse
 SignatureRiccatiKit.RiccatiOp -hard-> SignatureRiccatiKit.OfSetup
 SignatureVolatilityModel -hard-> BlackScholesModel
 SignatureVolatilityModel -hard-> FirstOrderBrownianVolModel
