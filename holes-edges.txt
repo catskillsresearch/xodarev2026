@@ -6,7 +6,6 @@ ClassicalRiccatiSolution -hard-> Remark219BlackScholesRiccati
 ClassicalRiccatiSolution -hard-> SignatureRiccatiKit
 ClassicalRiccatiSolution -hard-> TheoremBOfSetupItoRiccatiKit
 DualPairing -hard-> DualPairingLeNormWDualMulNormW
-DualPairing -hard-> ExtTensorAlgebra.TensorExpLipschitz
 DualPairing -hard-> ItoCalculusKit
 DualPairing -hard-> ItoCalculusKit.SigmaBounds
 DualPairing -hard-> SignatureRiccatiKit
@@ -106,11 +105,9 @@ ExtTensorAlgebra.ShuffleWords -hard-> Remark219BlackScholesRiccati
 ExtTensorAlgebra.TensorExp -hard-> ExtTensorAlgebra.TensorExpLevelNorm
 ExtTensorAlgebra.TensorExp -hard-> ExtTensorAlgebra.TensorExpNeg
 ExtTensorAlgebra.TensorExp -hard-> ExtTensorAlgebra.TensorExpShuffle
-ExtTensorAlgebra.TensorExpLevelNorm -hard-> ExtTensorAlgebra.TensorExpLipschitz
 ExtTensorAlgebra.TensorExpLevelNorm -hard-> ProlongedBrownianSetup.SignatureOfBM
 ExtTensorAlgebra.TensorExpNeg -hard-> ProlongedBrownianSetup.SignatureOfBM
 ExtTensorAlgebra.TensorExpShuffle -hard-> ProlongedBrownianSetup.PaperSigChen
-ExtTensorAlgebra.TensorExpShuffle -hard-> ProlongedBrownianSetup.Sig2StratDyadic
 ExtTensorAlgebra.TensorExpShuffle -hard-> ProlongedBrownianSetup.SignatureOfBM
 GKWDecompositionSetup -hard-> GKWDecompositionSetup.OfPFS
 GKWDecompositionSetup -hard-> TheoremDOfMarketKit
@@ -361,7 +358,6 @@ ProlongedBrownianSetup.ItoWordIntegralConsLong -hard-> ProlongedBrownianSetup.It
 ProlongedBrownianSetup.ItoWordIntegralLe1 -hard-> ProlongedBrownianSetup.ItoWordIntegralConsLong
 ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.ItoIntegralAgainstBM
 ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.ItoWordIntegralLe1
-ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.Sig2StratDyadic
 ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.SignatureOfBM
 ProlongedBrownianSetup.PaperSig -hard-> ItoCalculusKit.SigmaBounds
 ProlongedBrownianSetup.PaperSig -hard-> ProlongedBrownianSetup.PaperSigDynamics

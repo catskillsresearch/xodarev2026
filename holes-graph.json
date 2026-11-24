@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T09:26:00Z",
+  "updated": "2026-11-24T09:29:24Z",
   "sorryCount": 6,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -287,17 +287,6 @@
       "label": "ExtTensorAlgebra.TensorExpLevelNorm",
       "section": 2,
       "file": "SignatureVolatility/ExtTensorAlgebra/TensorExpLevelNorm.lean",
-      "status": "done",
-      "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
-      "hasSorry": false,
-      "paperKitGoal": false
-    },
-    {
-      "id": "ExtTensorAlgebra.TensorExpLipschitz",
-      "label": "ExtTensorAlgebra.TensorExpLipschitz",
-      "section": 2,
-      "file": "SignatureVolatility/ExtTensorAlgebra/TensorExpLipschitz.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
@@ -1548,17 +1537,6 @@
       "paperKitGoal": false
     },
     {
-      "id": "ProlongedBrownianSetup.Sig2StratDyadic",
-      "label": "ProlongedBrownianSetup.Sig2StratDyadic",
-      "section": 4,
-      "file": "SignatureVolatility/ProlongedBrownianSetup/Sig2StratDyadic.lean",
-      "status": "done",
-      "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
-      "hasSorry": false,
-      "paperKitGoal": false
-    },
-    {
       "id": "ProlongedBrownianSetup.SignatureFiltration",
       "label": "ProlongedBrownianSetup.SignatureFiltration",
       "section": 4,
@@ -2270,16 +2248,6 @@
     {
       "from": "ExtTensorAlgebra.TensorExp",
       "to": "ExtTensorAlgebra.TensorExpLevelNorm",
-      "kind": "hard"
-    },
-    {
-      "from": "DualPairing",
-      "to": "ExtTensorAlgebra.TensorExpLipschitz",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.TensorExpLevelNorm",
-      "to": "ExtTensorAlgebra.TensorExpLipschitz",
       "kind": "hard"
     },
     {
@@ -3195,16 +3163,6 @@
     {
       "from": "ProlongedBrownianSetup.StratonovichItoConversion",
       "to": "ProlongedBrownianSetup.Sig2StratAdapted",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.TensorExpShuffle",
-      "to": "ProlongedBrownianSetup.Sig2StratDyadic",
-      "kind": "hard"
-    },
-    {
-      "from": "ProlongedBrownianSetup.OfBrownian",
-      "to": "ProlongedBrownianSetup.Sig2StratDyadic",
       "kind": "hard"
     },
     {

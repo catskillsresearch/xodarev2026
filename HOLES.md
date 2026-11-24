@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-24T09:26:00Z
-**Holes:** 6 open+blocked · 2 open · 4 blocked · 180 done · 3 file(s) with `sorry`.
+**Updated:** 2026-11-24T09:29:24Z
+**Holes:** 6 open+blocked · 2 open · 4 blocked · 178 done · 3 file(s) with `sorry`.
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
 
@@ -206,7 +206,6 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `ExtTensorAlgebra.ShuffleWords` | `SignatureVolatility/ExtTensorAlgebra/ShuffleWords.lean` |
 | done | `ExtTensorAlgebra.TensorExp` | `SignatureVolatility/ExtTensorAlgebra/TensorExp.lean` |
 | done | `ExtTensorAlgebra.TensorExpLevelNorm` | `SignatureVolatility/ExtTensorAlgebra/TensorExpLevelNorm.lean` |
-| done | `ExtTensorAlgebra.TensorExpLipschitz` | `SignatureVolatility/ExtTensorAlgebra/TensorExpLipschitz.lean` |
 | done | `ExtTensorAlgebra.TensorExpNeg` | `SignatureVolatility/ExtTensorAlgebra/TensorExpNeg.lean` |
 | done | `ExtTensorAlgebra.TensorExpShuffle` | `SignatureVolatility/ExtTensorAlgebra/TensorExpShuffle.lean` |
 
@@ -235,7 +234,6 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `ProlongedBrownianSetup.PaperSigDynamics` | `SignatureVolatility/ProlongedBrownianSetup/PaperSigDynamics.lean` |
 | done | `ProlongedBrownianSetup.ShiftedWordIntegral` | `SignatureVolatility/ProlongedBrownianSetup/ShiftedWordIntegral.lean` |
 | done | `ProlongedBrownianSetup.Sig2StratAdapted` | `SignatureVolatility/ProlongedBrownianSetup/Sig2StratAdapted.lean` |
-| done | `ProlongedBrownianSetup.Sig2StratDyadic` | `SignatureVolatility/ProlongedBrownianSetup/Sig2StratDyadic.lean` |
 | done | `ProlongedBrownianSetup.SignatureFiltration` | `SignatureVolatility/ProlongedBrownianSetup/SignatureFiltration.lean` |
 | done | `ProlongedBrownianSetup.SignatureOfBM` | `SignatureVolatility/ProlongedBrownianSetup/SignatureOfBM.lean` |
 | done | `ProlongedBrownianSetup.StratItoCoeffBounds` | `SignatureVolatility/ProlongedBrownianSetup/StratItoCoeffBounds.lean` |
