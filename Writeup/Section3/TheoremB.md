@@ -11,3 +11,5 @@ Builds on `theorem_A`, `nflvr_of_martingale_measure`, and `SignatureRiccatiKit.a
 **[SignatureVolatility/TheoremB.lean](../../SignatureVolatility/TheoremB.lean)**
 
 @import "../../SignatureVolatility/TheoremB.lean"
+
+**Proposed counterexample (unverified).** Gemini Carbon (outside opinion, 2026-11-24) claims the remaining `←` lemma `affine_riccati_duality_mpr` is false as stated. The argument has not been verified or compiled here; Pillars A–D are still `sorry`. See [`SupportingModules/AffineRiccatiDualityMpr.md`](SupportingModules/AffineRiccatiDualityMpr.md) and the full writeup [`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.md`](../../SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.md).
