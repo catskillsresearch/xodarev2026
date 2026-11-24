@@ -18,8 +18,8 @@ project:
     not 0), Lemma 77 (weighted shuffle estimate, for every (H2) weight) and
     Lemma 78 (local Lipschitz bound for the Riccati operator); and the
     residual-expansion hypothesis "N^*_S < ∞" of Theorem D fails for
-    Black–Scholes. One open problem remains outside the submitted library:
-    the ← direction of the Riccati duality (affine_riccati_duality_mpr, in
+    Black–Scholes. One open problem remains and is not compared: the ←
+    direction of the Riccati duality (affine_riccati_duality_mpr, in
     Theorem B form theorem_B_mpr), on which the full theorem_B depends. Every compared theorem uses only
     propext, Quot.sound and Classical.choice. Project rule: no Lean `axiom`
     declarations. Akmal Xodarev did not participate in or endorse this
@@ -48,13 +48,15 @@ status:
     sorry — the 15 headline results below (proved results, refutations and
     counterexamples of paper claims) plus 41 supporting facts in their
     dependency closure (Itô / Doléans kit, Brownian driver, signature
-    properties, MathFin / BrownianMotion lemmas). The submitted library
-    SignatureVolatility and SignatureVolatilityComparator/Solution.lean have
-    no sorry. The single sorry of the repository is the open ← direction of
-    the affine / Riccati duality, in the separate non-submitted OpenProblems
-    library together with what depends on it (affine_riccati_duality,
-    signatureRiccatiKit_of_setup, theorem_B_mpr, full theorem_B). Challenge is one file
-    importing only Lean core and Mathlib.
+    properties, MathFin / BrownianMotion lemmas). The Challenge and
+    SignatureVolatilityComparator/Solution.lean have no sorry. The single
+    sorry of the repository is the open ← direction of the affine / Riccati
+    duality (affine_riccati_duality_mpr in
+    SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDuality.lean),
+    together with what depends on it (affine_riccati_duality,
+    signatureRiccatiKit_of_setup, theorem_B_mpr, full theorem_B in
+    SignatureVolatility/TheoremBMpr.lean). Those are in the main library but
+    are not compared. Challenge is one file importing only Lean core and Mathlib.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms:
@@ -287,7 +289,7 @@ known_gaps:
     Open problem (the one gap): the ← direction of the affine / Riccati
     duality, paper Theorem 4.2(ii) p. 21, proof §4.4 p. 23
     (SignatureVolatility.affine_riccati_duality_mpr,
-    OpenProblems/AffineRiccatiDuality.lean, sorry). It requires the positive
+    SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDuality.lean, sorry). It requires the positive
     local martingale exp⟨ψ(T − t), Ŵ_t⟩ to be a true martingale. The paper's
     argument is unsupported: H3 and polynomial moments do not give uniform
     integrability of the exponential, and Lemma 4.10 uses Lemmas B.1/B.2,
@@ -295,7 +297,7 @@ known_gaps:
     not_lemma78_local_lipschitz). No counterexample is known;
     Cuchiero–Svaluto-Ferro–Teichmann (arXiv:2302.01362, Thm 3.5) assume the
     true-martingale property. Consequently the full paper Theorem B
-    (theorem_B, OpenProblems/TheoremB.lean, from theorem_B_mp and the open
+    (theorem_B, SignatureVolatility/TheoremBMpr.lean, from theorem_B_mp and the open
     theorem_B_mpr) is not compared; only theorem_B_mp is.
   - >-
     Theorem C, Proposition 58 and Lemmas 77/78 are false as stated; the

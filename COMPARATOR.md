@@ -35,17 +35,19 @@ is everything proved: the martingale, NFLVR and special-semimartingale conclusio
 direction of part (ii)'s Riccati equivalence; it is compared. `theorem_B_mpr` is the `←` direction
 (Riccati solution ⇒ exponential-affine conditional transform); it is `affine_riccati_duality_mpr`,
 the open problem below. `theorem_B` is the full paper statement, proved from `theorem_B_mp` and
-`theorem_B_mpr`. Both `theorem_B_mpr` and `theorem_B` are in the non-submitted `OpenProblems`
-library (`OpenProblems/TheoremB.lean`) and are not compared.
+`theorem_B_mpr`. Both `theorem_B_mpr` and `theorem_B` are in
+`SignatureVolatility/TheoremBMpr.lean` and are not compared.
 
-**Open problem (not submitted).** The affine / Riccati duality (paper Thm 4.2(ii), p. 21; proof
+**Open problem (not compared).** The affine / Riccati duality (paper Thm 4.2(ii), p. 21; proof
 §4.4, p. 23) is split. The `→` direction `affine_riccati_duality_mp` is proved and compared. The
-`←` direction `affine_riccati_duality_mpr` (`OpenProblems/AffineRiccatiDuality.lean`) is stated at
-paper strength and is the single `sorry` in the repository: a positive local martingale
+`←` direction `affine_riccati_duality_mpr`
+(`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDuality.lean`) is stated at paper strength
+and is the single `sorry` in the repository: a positive local martingale
 `exp⟨ψ(T − t), Ŵ_t⟩` must be shown to be the true conditional expectation. The paper's argument
 for it is unsupported: H3 and polynomial moment bounds do not give the uniform integrability it
 claims, and its Lemma 4.10 uses the false Lemmas B.1/B.2 (our Lemma 77/78 counterexamples). No
 counterexample has been found, and the closest literature (Cuchiero–Svaluto-Ferro–Teichmann,
-arXiv:2302.01362, Thm 3.5) assumes the true-martingale property that would close it. The
-`OpenProblems` library also holds `affine_riccati_duality` (the iff), `signatureRiccatiKit_of_setup`,
-`theorem_B_mpr` and `theorem_B`. The submitted `SignatureVolatility` library and `Solution.lean` contain no `sorry`.
+arXiv:2302.01362, Thm 3.5) assumes the true-martingale property that would close it. The same
+module holds `affine_riccati_duality` (the iff) and `signatureRiccatiKit_of_setup`;
+`theorem_B_mpr` and `theorem_B` are in `SignatureVolatility/TheoremBMpr.lean`. The Challenge and
+`Solution.lean` contain no `sorry`.

@@ -1,7 +1,7 @@
 module
 
 public import SignatureVolatility.TheoremB
-public import OpenProblems.AffineRiccatiDuality
+public import SignatureVolatility.SignatureRiccatiKit.AffineRiccatiDuality
 
 
 @[expose] public section
@@ -13,12 +13,11 @@ namespace SignatureVolatility
 /-!
 # Paper Theorem B: `←` part (open) and the full statement
 
-Not part of the submitted library. `theorem_B_mp` (`SignatureVolatility/TheoremB.lean`) is the
-proved part. `theorem_B_mpr` is the `←` direction of the Riccati transform equivalence (paper
-Theorem B / Theorem 4.2(ii)); it is `affine_riccati_duality_mpr`, the single open `sorry` of the
-repository. `theorem_B` is the full paper statement, proved from `theorem_B_mp` and
-`theorem_B_mpr`; its Riccati operator is that of the paper-strength kit
-`signatureRiccatiKit_of_setup` (definitionally `riccatiOp`).
+`theorem_B_mp` (`SignatureVolatility/TheoremB.lean`) is the proved part. `theorem_B_mpr` is the
+`←` direction of the Riccati transform equivalence (paper Theorem B / Theorem 4.2(ii)); it is
+`affine_riccati_duality_mpr`, the single open `sorry` of the repository. `theorem_B` is the full
+paper statement, proved from `theorem_B_mp` and `theorem_B_mpr`; its Riccati operator is that of
+the paper-strength kit `signatureRiccatiKit_of_setup` (definitionally `riccatiOp`).
 -/
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P]

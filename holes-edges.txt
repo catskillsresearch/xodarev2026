@@ -282,7 +282,6 @@ NormW -hard-> MemL2wInvOfMemTw
 NormW -hard-> TailNorm2wInvLeRatioMulNormW
 NormWDual -hard-> DualPairingLeNormWDualMulNormW
 NormWDual -hard-> MemTwDualOfMemL2w
-OpenProblems.AffineRiccatiDuality -hard-> OpenProblems.TheoremB
 Preliminaries -hard-> BanachAlgebraConcatBound
 Preliminaries -hard-> DualPairingLeNormWDualMulNormW
 Preliminaries -hard-> ExtTensorAlgebra.LevelInner
@@ -374,9 +373,10 @@ SignaturePriceSolution -hard-> TheoremAOfBrownianSetupItoKit
 SignaturePriceSolution -hard-> TheoremBOfSetupItoRiccatiKit
 SignatureRiccatiKit -hard-> SignatureRiccatiKit.AffineRiccatiDualityMp
 SignatureRiccatiKit -hard-> TheoremBOfSetupItoRiccatiKit
-SignatureRiccatiKit.AffineRiccatiDualityMp -hard-> OpenProblems.AffineRiccatiDuality
+SignatureRiccatiKit.AffineRiccatiDuality -hard-> TheoremBMpr
+SignatureRiccatiKit.AffineRiccatiDualityMp -hard-> SignatureRiccatiKit.AffineRiccatiDuality
 SignatureRiccatiKit.AffineRiccatiDualityMp -hard-> TheoremB
-SignatureRiccatiKit.CoordSemimartingale -hard-> OpenProblems.AffineRiccatiDuality
+SignatureRiccatiKit.CoordSemimartingale -hard-> SignatureRiccatiKit.AffineRiccatiDuality
 SignatureRiccatiKit.CoordSemimartingale -hard-> TheoremB
 SignatureRiccatiKit.RiccatiOp -hard-> Lemma77ShuffleEstimateFalse
 SignatureRiccatiKit.RiccatiOp -hard-> SignatureRiccatiKit.AffineRiccatiDualityMp
@@ -400,7 +400,7 @@ SuperfactorialFunctional -hard-> Proposition311SharpnessOfH1
 TheoremA -hard-> PriceFiltrationSignatureSpace.OfMarket
 TheoremAOfBrownianSetupItoKit -hard-> TheoremA
 TheoremAOfBrownianSetupItoKit -hard-> TheoremBOfSetupItoRiccatiKit
-TheoremB -hard-> OpenProblems.TheoremB
+TheoremB -hard-> TheoremBMpr
 TheoremBOfSetupItoRiccatiKit -hard-> TheoremB
 TheoremCCounterExample -hard-> TheoremC
 TimeReindex -hard-> ProlongedBrownianSetup.ItoIntegralAgainstBM

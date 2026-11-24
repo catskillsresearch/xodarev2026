@@ -11,11 +11,10 @@ open MeasureTheory Set
 namespace SignatureVolatility
 
 /-!
-# Open problem: the `←` direction of the affine / Riccati duality
+# The `←` direction of the affine / Riccati duality
 
-Not part of the submitted `SignatureVolatility` library (this is the separate `OpenProblems`
-library). The `→` direction is proved in the submitted library
-(`affine_riccati_duality_mp`, `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMp`).
+The `→` direction is proved in `affine_riccati_duality_mp`
+(`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMp`).
 Here `affine_riccati_duality_mpr` states the `←` direction at paper strength with `sorry` (the
 single `sorry` of the repository), `affine_riccati_duality` assembles the paper's equivalence, and
 `signatureRiccatiKit_of_setup` builds the paper-strength Riccati kit from it.

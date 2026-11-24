@@ -85,6 +85,7 @@ public import SignatureVolatility.SignatureFiltrationEqBrownianFiltration
 public import SignatureVolatility.SignatureHestonLevel2Model
 public import SignatureVolatility.SignaturePriceSolution
 public import SignatureVolatility.SignatureRiccatiKit
+public import SignatureVolatility.SignatureRiccatiKit.AffineRiccatiDuality
 public import SignatureVolatility.SignatureRiccatiKit.AffineRiccatiDualityMp
 public import SignatureVolatility.SignatureRiccatiKit.CoordSemimartingale
 public import SignatureVolatility.SignatureRiccatiKit.RiccatiExpProcess
@@ -99,6 +100,7 @@ public import SignatureVolatility.TheoremAOfBrownianSetupItoKit
 public import SignatureVolatility.TheoremA
 public import SignatureVolatility.TheoremBOfSetupItoRiccatiKit
 public import SignatureVolatility.TheoremB
+public import SignatureVolatility.TheoremBMpr
 public import SignatureVolatility.TheoremC
 public import SignatureVolatility.TheoremD
 public import SignatureVolatility.TheoremDCounterExample
