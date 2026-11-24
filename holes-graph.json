@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T07:27:47Z",
+  "updated": "2026-11-24T07:40:53Z",
   "sorryCount": 46,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -1014,9 +1014,9 @@
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/SigmaContinuity.lean",
       "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup.StratonovichOfBM",
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
-      "hasSorry": true,
+      "blocker": "needs ItoCalculusKit.SigmaBounds, ProlongedBrownianSetup.StratonovichOfBM",
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -2709,17 +2709,17 @@
       "kind": "hard"
     },
     {
-      "from": "DualPairing",
-      "to": "ItoCalculusKit.SigmaContinuity",
-      "kind": "hard"
-    },
-    {
       "from": "HypH1",
       "to": "ItoCalculusKit.SigmaContinuity",
       "kind": "hard"
     },
     {
       "from": "HypH2",
+      "to": "ItoCalculusKit.SigmaContinuity",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.SigmaBounds",
       "to": "ItoCalculusKit.SigmaContinuity",
       "kind": "hard"
     },
@@ -2731,11 +2731,6 @@
     {
       "from": "ProlongedBrownianSetup.WHat",
       "to": "ItoCalculusKit.SigmaContinuity",
-      "kind": "hard"
-    },
-    {
-      "from": "ItoCalculusKit.SigmaBounds",
-      "to": "ItoCalculusKit.SigmaHolder",
       "kind": "hard"
     },
     {

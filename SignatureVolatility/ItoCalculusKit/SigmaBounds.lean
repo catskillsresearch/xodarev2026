@@ -469,4 +469,37 @@ theorem dualPairing_paperSig2_incr (B : MultiBrownian Ω P d) {ℓ : ExtTensorAl
   simp only [b]
   rw [tsum_mul_right, mul_pow, pow_mul δ, Real.sq_sqrt (sub_nonneg.2 huv)]
 
+/-! ## Helpers for the continuity argument -/
+
+lemma levelNorm_le_sum_abs {D : ℕ} (a : ExtTensorAlgebra D) (n : ℕ) :
+    a.levelNorm n ≤ ∑ I ∈ wordsOfLength D n, |a.coeff I| := by
+  simp only [ExtTensorAlgebra.levelNorm, ExtTensorAlgebra.levelNormSq]
+  rw [← Real.sqrt_sq (Finset.sum_nonneg fun I _ => abs_nonneg _)]
+  apply Real.sqrt_le_sqrt
+  calc ∑ I ∈ wordsOfLength D n, a.coeff I ^ 2 = ∑ I ∈ wordsOfLength D n, |a.coeff I| ^ 2 := by
+        simp [sq_abs]
+    _ ≤ _ := Finset.sum_sq_le_sq_sum_of_nonneg fun I _ => abs_nonneg _
+
+omit [IsProbabilityMeasure P] in
+/-- From an `L^{2q}` norm bound to a `2q`-th moment bound. -/
+lemma integral_pow_le_of_eLpNorm_le {f : Ω → ℝ} {q : ℕ} (hq : 1 ≤ q)
+    (hm : MemLp f (2 * q : ℕ) P) {a : ℝ} (ha : 0 ≤ a)
+    (hb : eLpNorm f (2 * q : ℕ) P ≤ ENNReal.ofReal a) :
+    ∫ ω, f ω ^ (2 * q) ∂P ≤ a ^ (2 * q) := by
+  have h2q : ((2 * q : ℕ) : ℝ≥0∞) ≠ 0 := by exact_mod_cast (show 2 * q ≠ 0 by omega)
+  rw [hm.eLpNorm_eq_integral_rpow_norm h2q (ENNReal.natCast_ne_top _),
+    ENNReal.toReal_natCast] at hb
+  have hev : Even (2 * q) := ⟨q, by ring⟩
+  have hI : ∫ ω, ‖f ω‖ ^ (((2 * q : ℕ) : ℝ)) ∂P = ∫ ω, f ω ^ (2 * q) ∂P := by
+    congr 1; funext ω
+    rw [Real.rpow_natCast, Real.norm_eq_abs, hev.pow_abs]
+  rw [hI] at hb
+  have h0 : 0 ≤ ∫ ω, f ω ^ (2 * q) ∂P := integral_nonneg fun ω => hev.pow_nonneg _
+  have h1 := (ENNReal.ofReal_le_ofReal_iff ha).1 hb
+  have hpos : (0 : ℝ) < ((2 * q : ℕ) : ℝ) := by exact_mod_cast (show 0 < 2 * q by omega)
+  calc ∫ ω, f ω ^ (2 * q) ∂P
+      = ((∫ ω, f ω ^ (2 * q) ∂P) ^ (((2 * q : ℕ) : ℝ))⁻¹) ^ (2 * q) := by
+        rw [← Real.rpow_natCast, ← Real.rpow_mul h0, inv_mul_cancel₀ hpos.ne', Real.rpow_one]
+    _ ≤ a ^ (2 * q) := pow_le_pow_left₀ (Real.rpow_nonneg h0 _) h1 _
+
 end SignatureVolatility

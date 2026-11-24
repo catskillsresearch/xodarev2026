@@ -9,7 +9,6 @@ DualPairing -hard-> DualPairingLeNormWDualMulNormW
 DualPairing -hard-> ExtTensorAlgebra.TensorExpLipschitz
 DualPairing -hard-> ItoCalculusKit
 DualPairing -hard-> ItoCalculusKit.SigmaBounds
-DualPairing -hard-> ItoCalculusKit.SigmaContinuity
 DualPairing -hard-> SignatureRiccatiKit
 DualPairing -hard-> SignatureVolatilityModel.Sigma
 DualPairing -hard-> TheoremBOfSetupItoRiccatiKit
@@ -226,6 +225,7 @@ ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.EvenTransform
 ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.ExpSupermartingale
 ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.ItoIncrement
 ItoCalculusKit.RiemannRate8 -hard-> ItoCalculusKit.SubseqUniform
+ItoCalculusKit.SigmaBounds -hard-> ItoCalculusKit.SigmaContinuity
 ItoCalculusKit.SigmaBounds -hard-> ItoCalculusKit.SigmaHolder
 ItoCalculusKit.SigmaContinuity -hard-> ItoCalculusKit.SigmaHolder
 ItoCalculusKit.SigmaHolder -hard-> ItoCalculusKit.DoleansMoments
