@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-22T03:42:10Z
-**Holes:** 9 open+blocked · 1 open · 8 blocked · 160 done · 4 file(s) with `sorry`.
+**Updated:** 2026-11-24T03:17:13Z
+**Holes:** 9 open+blocked · 1 open · 8 blocked · 161 done · 4 file(s) with `sorry`.
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
 
@@ -85,6 +85,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `ItoCalculusKit.EighthTransform` | `SignatureVolatility/ItoCalculusKit/EighthTransform.lean` |
 | done | `ItoCalculusKit.ExpSupermartingale` | `SignatureVolatility/ItoCalculusKit/ExpSupermartingale.lean` |
 | done | `ItoCalculusKit.FourthMoment` | `SignatureVolatility/ItoCalculusKit/FourthMoment.lean` |
+| done | `ItoCalculusKit.FrozenIncrement4` | `SignatureVolatility/ItoCalculusKit/FrozenIncrement4.lean` |
 | done | `ItoCalculusKit.FrozenIncrement8` | `SignatureVolatility/ItoCalculusKit/FrozenIncrement8.lean` |
 | done | `ItoCalculusKit.FrozenOrthogonal` | `SignatureVolatility/ItoCalculusKit/FrozenOrthogonal.lean` |
 | done | `ItoCalculusKit.GBMEnvelope` | `SignatureVolatility/ItoCalculusKit/GBMEnvelope.lean` |

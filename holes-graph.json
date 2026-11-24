@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-22T03:42:10Z",
+  "updated": "2026-11-24T03:17:13Z",
   "sorryCount": 9,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -628,6 +628,17 @@
       "label": "ItoCalculusKit.FourthMoment",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/FourthMoment.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.FrozenIncrement4",
+      "label": "ItoCalculusKit.FrozenIncrement4",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/FrozenIncrement4.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
@@ -2338,6 +2349,11 @@
     {
       "from": "ItoCalculusKit.RiemannConvergence",
       "to": "ItoCalculusKit.ExpSupermartingale",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.ItoOrthogonal",
+      "to": "ItoCalculusKit.FrozenIncrement4",
       "kind": "hard"
     },
     {
