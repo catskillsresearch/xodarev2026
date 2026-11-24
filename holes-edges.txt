@@ -157,7 +157,6 @@ IndexedFiltration -hard-> ProlongedBrownianSetup.SignatureFiltration
 IsSpecialSemimartingale -hard-> SignatureRiccatiKit
 IsSpecialSemimartingale -hard-> TheoremBOfSetupItoRiccatiKit
 ItoCalculusKit -hard-> ItoCalculusKit.DoleansStrongClass
-ItoCalculusKit -hard-> ItoCalculusKit.OfMathFin
 ItoCalculusKit -hard-> ItoCalculusKit.StoppedRaw
 ItoCalculusKit -hard-> SignaturePriceSolution
 ItoCalculusKit -hard-> TheoremAOfBrownianSetupItoKit
@@ -198,7 +197,6 @@ ItoCalculusKit.ItoIncrement8 -hard-> ItoCalculusKit.SigmaHolder8
 ItoCalculusKit.ItoOrthogonal -hard-> ItoCalculusKit.FrozenIncrement4
 ItoCalculusKit.ItoOrthogonal -hard-> ItoCalculusKit.FrozenIncrement8
 ItoCalculusKit.ItoQuadDoleans -hard-> ItoCalculusKit.DoleansStrongClass
-ItoCalculusKit.ItoQuadDoleans -hard-> ItoCalculusKit.OfMathFin
 ItoCalculusKit.JointPast -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.JointPast -hard-> ItoCalculusKit.MartingaleTransform
 ItoCalculusKit.KitRaw -hard-> ItoCalculusKit.RiemannConvergence
@@ -210,7 +208,6 @@ ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.ConstVol
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.ItoQuadDoleans
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.KitRaw
 ItoCalculusKit.NovikovDoob -hard-> ItoCalculusKit.DoleansStrongClass
-ItoCalculusKit.NovikovDoob -hard-> ItoCalculusKit.OfMathFin
 ItoCalculusKit.NovikovMartingale -hard-> ItoCalculusKit.DoleansEnvelope
 ItoCalculusKit.OfMathFin -hard-> PriceFiltrationSignatureSpace.OfMarket
 ItoCalculusKit.OfMathFin -hard-> SignatureRiccatiKit.OfSetup
@@ -388,7 +385,6 @@ ProlongedBrownianSetup.StratonovichItoConversion -hard-> ProlongedBrownianSetup.
 ProlongedBrownianSetup.StratonovichItoConversion -hard-> ProlongedBrownianSetup.Sig2StratAdapted
 ProlongedBrownianSetup.StratonovichItoConversion -hard-> ProlongedBrownianSetup.Sig2StratChenShuffle
 ProlongedBrownianSetup.StratonovichOfBM -hard-> ItoCalculusKit.MathFinBridge
-ProlongedBrownianSetup.StratonovichOfBM -hard-> ItoCalculusKit.OfMathFin
 ProlongedBrownianSetup.StratonovichOfBM -hard-> ItoCalculusKit.SigmaContinuity
 ProlongedBrownianSetup.WHat -hard-> Corollary36SigmaWellDefined
 ProlongedBrownianSetup.WHat -hard-> ItoCalculusKit

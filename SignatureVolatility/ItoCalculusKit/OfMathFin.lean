@@ -14,7 +14,7 @@ namespace SignatureVolatility
 /-!
 # Paper-strength `ItoCalculusKit` from MathFin (Phase 2)
 
-**Status: PROVED (no axioms, no `sorry`).** Process fields from the dyadic limUnder bridge
+**Status: PROVED (no axioms, no holes).** Process fields from the dyadic limUnder bridge
 (`MathFinBridge` / `ItoQuadDoleans`). Every analytic field is a theorem: `doleans_sde`
 (`DoleansSDE`), `stopped_l2_localisation` (`StoppedL2`, weighted-energy uniqueness),
 `novikov_doob_l2_martingale` (`NovikovDoob`), `doleans_strong_class` (`DoleansStrongClass`).

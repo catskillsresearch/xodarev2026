@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-24T03:52:15Z",
-  "sorryCount": 8,
+  "updated": "2026-11-24T03:52:36Z",
+  "sorryCount": 6,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, SignatureRiccatiKit.OfSetup, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done. Green = open. Grey = blocked.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: ItoCalculusKit.OfMathFin."
+    "Open tips: PriceFiltrationSignatureSpace.OfMarket, SignatureRiccatiKit.OfSetup."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -859,10 +859,10 @@
       "label": "ItoCalculusKit.OfMathFin",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/OfMathFin.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap). Paper kit / theorem goal.",
-      "hasSorry": true,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Paper kit / theorem goal.",
+      "hasSorry": false,
       "paperKitGoal": true
     },
     {
@@ -1233,8 +1233,8 @@
       "label": "PriceFiltrationSignatureSpace.OfMarket",
       "section": 5,
       "file": "SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean",
-      "status": "blocked",
-      "blocker": "needs ItoCalculusKit.OfMathFin",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap). Paper kit / theorem goal.",
       "hasSorry": true,
       "paperKitGoal": true
@@ -1673,8 +1673,8 @@
       "label": "SignatureRiccatiKit.OfSetup",
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit/OfSetup.lean",
-      "status": "blocked",
-      "blocker": "needs ItoCalculusKit.OfMathFin",
+      "status": "open",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap). Paper kit / theorem goal.",
       "hasSorry": true,
       "paperKitGoal": true
@@ -1761,8 +1761,8 @@
       "label": "TheoremA",
       "section": 1,
       "file": "SignatureVolatility/TheoremA.lean",
-      "status": "blocked",
-      "blocker": "needs ItoCalculusKit.OfMathFin",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Paper kit / theorem goal.",
       "hasSorry": false,
       "paperKitGoal": true
@@ -1784,7 +1784,7 @@
       "section": 1,
       "file": "SignatureVolatility/TheoremB.lean",
       "status": "blocked",
-      "blocker": "needs ItoCalculusKit.OfMathFin, SignatureRiccatiKit.OfSetup",
+      "blocker": "needs SignatureRiccatiKit.OfSetup",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Paper kit / theorem goal.",
       "hasSorry": false,
       "paperKitGoal": true
