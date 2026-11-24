@@ -28,14 +28,27 @@ public import SignatureVolatility.ItoCalculusKit.PathwiseExpIto
 public import SignatureVolatility.ItoCalculusKit.DoleansIdentify
 public import SignatureVolatility.ItoCalculusKit.BrownianQuadVarAS
 public import SignatureVolatility.SignatureRiccatiKit.FawcettHermite
-public import SignatureVolatility.SignatureRiccatiKit.FawcettEntireBound
+public import SignatureVolatility.SignatureRiccatiKit.ComplexTilt
+public import SignatureVolatility.SignatureRiccatiKit.ItoWordTiltClosedForm
+public import SignatureVolatility.SignatureRiccatiKit.CondSigPoly
+public import SignatureVolatility.SignatureRiccatiKit.CondSigPolyIdentification
+public import SignatureVolatility.SignatureRiccatiKit.SummableNormTermAndBound
+public import SignatureVolatility.SignatureRiccatiKit.DifferentiableAtTsum
+public import SignatureVolatility.SignatureRiccatiKit.FourierUniquenessGaussian
+public import SignatureVolatility.SignatureRiccatiKit.IteratedDerivGaussian
+public import SignatureVolatility.SignatureRiccatiKit.EntireTransfer
 public import SignatureVolatility.SignatureRiccatiKit.CounterexampleTensor
 public import SignatureVolatility.SignatureRiccatiKit.CounterexampleV1
-public import SignatureVolatility.SignatureRiccatiKit.GirsanovFawcett
-public import SignatureVolatility.SignatureRiccatiKit.EntireTransfer
+public import SignatureVolatility.SignatureRiccatiKit.LintegralExpShifted
+public import SignatureVolatility.SignatureRiccatiKit.BarrierU
+public import SignatureVolatility.SignatureRiccatiKit.IntegralExpBarrier
+public import SignatureVolatility.SignatureRiccatiKit.CameronMartinC2Shift
+public import SignatureVolatility.SignatureRiccatiKit.BrownianScalingShiftedExponent
+public import SignatureVolatility.SignatureRiccatiKit.CondExpMulIndepDisintegrate
+public import SignatureVolatility.SignatureRiccatiKit.Poly4ConstOfLogBdd
 public import SignatureVolatility.SignatureRiccatiKit.CounterexampleV1PosLe
 public import SignatureVolatility.SignatureRiccatiKit.CounterexampleV1LogBound
-public import SignatureVolatility.SignatureRiccatiKit.CounterexampleV1Monotone
+public import SignatureVolatility.SignatureRiccatiKit.CounterexampleV1LogNonpos
 public import SignatureVolatility.SignatureRiccatiKit.CounterexampleV1Decay
 public import SignatureVolatility.SignatureRiccatiKit.CounterexampleV1CondExp
 
@@ -950,12 +963,13 @@ lemma signatureTransformFinite_counterexampleU0 (M : SignatureVolatilityModel)
   rw [HasFiniteIntegral, he]
   exact hlin'.trans_lt ENNReal.one_lt_top
 
-/-- **Pillar B (Markov + Brownian scaling + stopped Girsanov explosion asymptotics)**:
-There exists a function `v₁ : ℝ → ℝ` (namely `x ↦ ℚ_x(τ_∞ > T/2)` for `dY = Y² dr + dB̃`)
+/-- **Pillar B (Wiener-space v₁ + Jensen + Cameron–Martin + barrier + independent increments)**:
+There exists a function `v₁ : ℝ → ℝ` (namely Carbon's expectation of `exp Φ(x, T/2)`)
 such that:
 1. `0 < v₁ x ≤ 1` for all `x : ℝ`;
 2. polynomial lower bound on `log v₁`: `∃ C ≥ 0, ∀ x, -C * (1 + |x|^4) ≤ Real.log (v₁ x)`;
-3. uniform positive lower bound on `(-∞, 0]`: `∀ x ≤ 0, v₁ 0 ≤ v₁ x`;
+3. logarithmic lower bound on `(-∞, 0]`:
+   `∀ x ≤ 0, -((T/2)³/2) - 2 log(1 + (T/2)|x|) ≤ log (v₁ x)`;
 4. decay to `0` as `x → +∞`: `Tendsto v₁ atTop (𝓝 0)`;
 5. for every `lam ≥ 1`, at `t = M.T - lam ^ (-(2/3 : ℝ)) * (M.T / 2) ∈ [M.T/2, M.T)`:
    `𝔼[M_T^(λ) | ℱ_t] = M_t^(λ) * v₁(lam^(1/3) * W_t)` a.s. -/
@@ -964,7 +978,8 @@ lemma exists_scaled_survival_function (M : SignatureVolatilityModel)
     ∃ v₁ : ℝ → ℝ,
       (∀ x, 0 < v₁ x ∧ v₁ x ≤ 1) ∧
       (∃ C : ℝ, 0 ≤ C ∧ ∀ x : ℝ, -C * (1 + |x| ^ 4) ≤ Real.log (v₁ x)) ∧
-      (∀ x : ℝ, x ≤ 0 → v₁ 0 ≤ v₁ x) ∧
+      (∀ x : ℝ, x ≤ 0 →
+        -((M.T / 2) ^ 3 / 2) - 2 * Real.log (1 + (M.T / 2) * |x|) ≤ Real.log (v₁ x)) ∧
       Tendsto v₁ atTop (𝓝 0) ∧
       ∀ lam : ℝ, 1 ≤ lam →
         let s_lam := lam ^ (-(2 / 3 : ℝ)) * (M.T / 2)
@@ -979,12 +994,12 @@ lemma exists_scaled_survival_function (M : SignatureVolatilityModel)
   refine ⟨counterexampleV1AtHalf M B, ?_, ?_, ?_, ?_, ?_⟩
   · exact counterexampleV1_pos_le M B
   · exact counterexampleV1_log_bound M B
-  · exact counterexampleV1_monotone_nonpos M B
+  · exact counterexampleV1_log_nonpos M B
   · exact counterexampleV1_tendsto_zero M B
   · exact counterexampleV1_condExp M B
 
-/-- **Pillar C (Girsanov–Fawcett / Hermite conditional signature expansion)**:
-If `ϕ ∈ T_w` and `⟨ϕ, Ŵ_t⟩ = f(W_t^0)` a.s. for a measurable function `f : ℝ → ℝ` at `t ∈ (0, T)`,
+/-- **Pillar C (tilted Itô-word induction + Hermite + Fourier uniqueness)**:
+If `ϕ ∈ T_w` and `⟨ϕ, Ŵ_t⟩ = f(W_t^0)` a.s. for a function `f : ℝ → ℝ` at `t ∈ (0, T]`,
 then `f` agrees Lebesgue-a.e. with the restriction to `ℝ` of an entire function `G : ℂ → ℂ`
 of exponential type `≤ 1` (`∃ C ≥ 0, ∀ z, ‖G z‖ ≤ C * Real.exp ‖z‖`). -/
 lemma exists_entire_expTypeOne_of_memTw (M : SignatureVolatilityModel)
@@ -994,10 +1009,8 @@ lemma exists_entire_expTypeOne_of_memTw (M : SignatureVolatilityModel)
       fun ω => f (MultiBrownian.W B t ω ⟨0, M.hd⟩)) :
     ∃ (G : ℂ → ℂ) (C : ℝ), Differentiable ℂ G ∧ 0 ≤ C ∧
       (∀ z : ℂ, ‖G z‖ ≤ C * Real.exp ‖z‖) ∧
-      (∀ᵐ x : ℝ ∂volume, G x = (f x : ℂ)) := by
-  refine fawcett_transfer_to_f M B ht0 htT hϕ hfeq ?_
-  intro I
-  exact girsanov_fawcett_identification M.hd B M.hT ht0 htT I
+      (∀ᵐ x : ℝ ∂volume, G x = (f x : ℂ)) :=
+  fawcett_transfer_to_f M B ht0 htT hϕ hfeq
 
 section PillarD
 open Complex Metric
@@ -1674,24 +1687,35 @@ theorem not_affine_riccati_duality_mpr (M : SignatureVolatilityModel)
     linarith
   -- Apply Pillar D: `F` is a polynomial of degree `≤ 4`.
   obtain ⟨a₀, a₁, a₂, a₃, a₄, hF_eq⟩ := entire_expTypeZero_polyBound_is_poly4 hF_diff hF_type0 hF_poly
-  -- On `(-∞, 0]`, `F` is bounded between `log (v₁ 0)` and `0` (by `hv₁_nonpos` + density).
-  have hF_nonpos : ∀ x : ℝ, x ≤ 0 → Real.log (v₁ 0) ≤ (F x).re ∧ (F x).re ≤ 0 := by
-    have h_ae : ∀ᵐ x : ℝ ∂volume, x ≤ 0 → Real.log (v₁ 0) ≤ (F x).re := by
+  -- On `(-∞, 0]`, `F` is bounded between the Cameron–Martin log lower bound and `0`.
+  set s₀ : ℝ := M.T / 2
+  have hs₀ : 0 < s₀ := half_pos M.hT
+  set lower : ℝ → ℝ := fun y =>
+    -(s₀ ^ 3 / 2) - 2 * Real.log (1 + s₀ * |y|)
+  have hlower_cont : Continuous lower := by
+    have harg : Continuous (fun y : ℝ => (1 : ℝ) + s₀ * |y|) :=
+      continuous_const.add (continuous_const.mul continuous_abs)
+    have hpos : ∀ y : ℝ, 0 < 1 + s₀ * |y| := fun y =>
+      add_pos_of_pos_of_nonneg zero_lt_one (mul_nonneg hs₀.le (abs_nonneg _))
+    exact continuous_const.sub (continuous_const.mul (harg.log fun y => (hpos y).ne'))
+  have hF_nonpos : ∀ x : ℝ, x ≤ 0 → lower x ≤ (F x).re ∧ (F x).re ≤ 0 := by
+    have h_ae : ∀ᵐ x : ℝ ∂volume, x ≤ 0 → lower x ≤ (F x).re := by
       filter_upwards [hF_ae] with x hx hx0
       rw [hx, Complex.ofReal_re]
-      exact Real.log_le_log (hv₁_pos_le 0).1 (hv₁_nonpos x hx0)
+      simpa [lower, s₀] using hv₁_nonpos x hx0
     intro x hx
     refine ⟨?_, (hF_real_bounds x).2.2⟩
     by_contra hlt
     push Not at hlt
-    have hopen : IsOpen {y : ℝ | y < 0 ∧ (F y).re < Real.log (v₁ 0)} :=
+    have hopen : IsOpen {y : ℝ | y < 0 ∧ (F y).re < lower y} :=
       isOpen_Iio.inter (isOpen_lt (Complex.continuous_re.comp
-        (hF_diff.continuous.comp Complex.continuous_ofReal)) continuous_const)
-    have hne : {y : ℝ | y < 0 ∧ (F y).re < Real.log (v₁ 0)}.Nonempty := by
-      have hcont : Continuous (fun y : ℝ => (F y).re) :=
-        Complex.continuous_re.comp (hF_diff.continuous.comp Complex.continuous_ofReal)
+        (hF_diff.continuous.comp Complex.continuous_ofReal)) hlower_cont)
+    have hne : {y : ℝ | y < 0 ∧ (F y).re < lower y}.Nonempty := by
+      have hcont : Continuous (fun y : ℝ => (F y).re - lower y) :=
+        (Complex.continuous_re.comp
+          (hF_diff.continuous.comp Complex.continuous_ofReal)).sub hlower_cont
       obtain ⟨δ, hδ, hball⟩ := Metric.continuousAt_iff.mp hcont.continuousAt
-        ((Real.log (v₁ 0) - (F x).re) / 2) (by linarith)
+        ((lower x - (F x).re) / 2) (by linarith)
       refine ⟨x - δ / 2, by linarith, ?_⟩
       have hd : dist (x - δ / 2) x < δ := by
         rw [Real.dist_eq, show x - δ / 2 - x = -(δ / 2) by ring, abs_neg, abs_of_pos (half_pos hδ)]
@@ -1700,8 +1724,8 @@ theorem not_affine_riccati_duality_mpr (M : SignatureVolatilityModel)
       rw [Real.dist_eq, abs_lt] at h
       linarith
     have hpos := hopen.measure_pos volume hne
-    have hsub : {y : ℝ | y < 0 ∧ (F y).re < Real.log (v₁ 0)} ⊆
-        {y : ℝ | y ≤ 0 → Real.log (v₁ 0) ≤ (F y).re}ᶜ := by
+    have hsub : {y : ℝ | y < 0 ∧ (F y).re < lower y} ⊆
+        {y : ℝ | y ≤ 0 → lower y ≤ (F y).re}ᶜ := by
       intro y ⟨hy0, hylt⟩ h
       exact not_le.mpr hylt (h hy0.le)
     exact hpos.ne' (measure_mono_null hsub h_ae)
@@ -1711,8 +1735,11 @@ theorem not_affine_riccati_duality_mpr (M : SignatureVolatilityModel)
     intro x
     rw [hF_eq x]
     simp [Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, pow_succ]
-  obtain ⟨ha1, ha2, ha3, ha4⟩ := poly4_const_of_bdd_nonpos (L := Real.log (v₁ 0)) fun x hx => by
-    rw [← hre_poly x]; exact hF_nonpos x hx
+  obtain ⟨ha1, ha2, ha3, ha4⟩ :=
+    poly4_const_of_log_bdd_nonpos (a₀ := a₀.re) (a₁ := a₁.re) (a₂ := a₂.re)
+      (a₃ := a₃.re) (a₄ := a₄.re) (L := -(s₀ ^ 3 / 2)) (s₀ := s₀) hs₀
+      fun x hx => by
+        rw [← hre_poly x]; exact hF_nonpos x hx
   have hF_const : ∀ x : ℝ, (F x).re = a₀.re := fun x => by
     rw [hre_poly x, ha1, ha2, ha3, ha4]; ring
   -- Contradiction: `v₁ x → 0` as `x → +∞`, so `log (v₁ x) < a₀.re - 1` for all sufficiently large `x`.

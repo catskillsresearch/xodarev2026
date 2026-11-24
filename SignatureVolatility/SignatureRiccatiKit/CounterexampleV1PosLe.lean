@@ -1,6 +1,7 @@
 module
 
 public import SignatureVolatility.SignatureRiccatiKit.CounterexampleV1
+public import SignatureVolatility.SignatureRiccatiKit.LintegralExpShifted
 
 
 /-!

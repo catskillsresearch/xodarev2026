@@ -2,6 +2,8 @@ module
 
 public import SignatureVolatility.SignatureRiccatiKit.CounterexampleTensor
 public import SignatureVolatility.SignatureRiccatiKit.CounterexampleV1
+public import SignatureVolatility.SignatureRiccatiKit.BrownianScalingShiftedExponent
+public import SignatureVolatility.SignatureRiccatiKit.CondExpMulIndepDisintegrate
 public import SignatureVolatility.ItoCalculusKit.OfMathFin
 public import SignatureVolatility.DualPairing
 
