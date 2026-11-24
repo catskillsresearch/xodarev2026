@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T05:45:05Z",
+  "updated": "2026-11-24T05:57:36Z",
   "sorryCount": 53,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -1299,6 +1299,17 @@
       "label": "ProlongedBrownianSetup.BrownianFiltration",
       "section": 4,
       "file": "SignatureVolatility/ProlongedBrownianSetup/BrownianFiltration.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ProlongedBrownianSetup.ContVersion",
+      "label": "ProlongedBrownianSetup.ContVersion",
+      "section": 4,
+      "file": "SignatureVolatility/ProlongedBrownianSetup/ContVersion.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
@@ -2891,6 +2902,11 @@
     {
       "from": "ProlongedBrownianSetup.ItoIntegralAgainstBM",
       "to": "ProlongedBrownianSetup.ItoIntegralProcess",
+      "kind": "hard"
+    },
+    {
+      "from": "ProlongedBrownianSetup.ContVersion",
+      "to": "ProlongedBrownianSetup.ItoWordIntegral",
       "kind": "hard"
     },
     {

@@ -57,6 +57,7 @@ public import SignatureVolatility.PriceFiltrationSignatureSpace
 public import SignatureVolatility.ProjGt
 public import SignatureVolatility.ProjLe
 public import SignatureVolatility.ProlongedBrownianSetup.BrownianFiltration
+public import SignatureVolatility.ProlongedBrownianSetup.ContVersion
 public import SignatureVolatility.ProlongedBrownianSetup.ItoIntegralAgainstBM
 public import SignatureVolatility.ProlongedBrownianSetup.ItoIntegralProcess
 public import SignatureVolatility.ProlongedBrownianSetup.ItoWordIntegral

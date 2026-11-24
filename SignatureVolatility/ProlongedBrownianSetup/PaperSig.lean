@@ -19,6 +19,8 @@ the tensor-algebra conventions used by the paper (`concat`, `rightShift`, `ricca
 `dŴ = Ŵ ⊗ ∘dX`) make the *last* letter the latest.  `paperSig2` therefore reads the
 Stratonovich word integral of the reversed word:
 `⟨e_{i₁⋯iₙ}, Ŵ_{s,t}⟩ = ∫_{s<u₁<⋯<uₙ<t} ∘dX^{i₁}_{u₁} ⋯ ∘dX^{iₙ}_{uₙ}`.
+Each Itô level `≥ 2` is its adapted continuous version (`contVersion`), so `Ŵ` is the
+continuous signature process of the paper (up to the almost-sure continuity proved later).
 
 Chen and shuffle (`paperSig2_chen`, `paperSig2_shuffle`) are to be obtained from the
 piecewise-linear (Wong–Zakai) approximants `sig2StratDyadic` of `Sig2StratDyadic`, which satisfy

@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-24T05:45:05Z
-**Holes:** 53 open+blocked · 1 open · 52 blocked · 119 done · 8 file(s) with `sorry`.
+**Updated:** 2026-11-24T05:57:36Z
+**Holes:** 53 open+blocked · 1 open · 52 blocked · 120 done · 8 file(s) with `sorry`.
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
 
@@ -217,6 +217,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | Status | Id | File |
 |---|---|---|
 | done | `ProlongedBrownianSetup.BrownianFiltration` | `SignatureVolatility/ProlongedBrownianSetup/BrownianFiltration.lean` |
+| done | `ProlongedBrownianSetup.ContVersion` | `SignatureVolatility/ProlongedBrownianSetup/ContVersion.lean` |
 | done | `ProlongedBrownianSetup.ItoIntegralAgainstBM` | `SignatureVolatility/ProlongedBrownianSetup/ItoIntegralAgainstBM.lean` |
 | done | `ProlongedBrownianSetup.ItoIntegralProcess` | `SignatureVolatility/ProlongedBrownianSetup/ItoIntegralProcess.lean` |
 | done | `ProlongedBrownianSetup.ItoWordIntegral` | `SignatureVolatility/ProlongedBrownianSetup/ItoWordIntegral.lean` |

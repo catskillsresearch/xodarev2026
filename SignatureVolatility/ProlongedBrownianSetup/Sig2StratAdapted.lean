@@ -1,20 +1,12 @@
 module
 
-public import Mathlib.MeasureTheory.Constructions.Polish.StronglyMeasurable
 public import SignatureVolatility.GeneratedFiltration
-public import SignatureVolatility.ProlongedBrownianSetup.ItoIntegralAgainstBM
-public import SignatureVolatility.ProlongedBrownianSetup.ItoIntegralProcess
-public import SignatureVolatility.ProlongedBrownianSetup.ItoWordIntegral
-public import SignatureVolatility.ProlongedBrownianSetup.ItoWordIntegralConsLong
-public import SignatureVolatility.ProlongedBrownianSetup.ItoWordIntegralLe1
-public import SignatureVolatility.ProlongedBrownianSetup.ItoWordIntegralLe2
 public import SignatureVolatility.ProlongedBrownianSetup.StratonovichItoConversion
 
 
 @[expose] public section
 
-open MeasureTheory Filter Topology
-open scoped MeasureTheory
+open MeasureTheory
 
 noncomputable section
 
@@ -251,6 +243,21 @@ lemma measurable_itoWordIntegral_cons_long_pathFiltration (B : MultiBrownian Ω 
   · simpa [hj] using
       measurable_itoIntegral_process_pathFiltration B (spaceLetterIndex j hj) H hH hs hst htT
 
+lemma measurable_itoWordStep_pathFiltration (B : MultiBrownian Ω P d) {T : ℝ}
+    {s u : ℝ} (j : Fin (d + 1)) (I : Word (d + 1)) (H : ℝ → Ω → ℝ)
+    (hH : ∀ v, s ≤ v → v ≤ T → Measurable[(pathFiltration B).σAlg T] (H v))
+    (hs : 0 ≤ s) (huT : u ≤ T) :
+    Measurable[(pathFiltration B).σAlg T] (fun ω => itoWordStep B j I H s u ω) := by
+  unfold itoWordStep
+  by_cases hsu : s ≤ u
+  · by_cases hlen : I.length = 1
+    · simpa [hsu, hlen] using
+        measurable_itoWordIntegral_le2_pathFiltration B j I hlen hs hsu huT
+    · simpa [hsu, hlen] using
+        measurable_itoWordIntegral_cons_long_pathFiltration B j H hH hs hsu huT
+  · simp only [hsu, ↓reduceIte]
+    exact measurable_const
+
 /-- Main Itô ladder under the path filtration (lower time `0 ≤ s ≤ t ≤ T`). -/
 lemma measurable_itoWordIntegral_pathFiltration (B : MultiBrownian Ω P d) {T : ℝ}
     {s t : ℝ} (hs : 0 ≤ s) (hst : s ≤ t) (htT : t ≤ T) (I : Word (d + 1)) :
@@ -262,14 +269,12 @@ lemma measurable_itoWordIntegral_pathFiltration (B : MultiBrownian Ω P d) {T : 
     · subst hI
       simpa [itoWordIntegral] using
         measurable_itoWordIntegral_le1_pathFiltration B hs hst htT [j]
-    · by_cases hlen : I'.length = 1
-      · simp only [itoWordIntegral, hI, ↓reduceIte, hlen, ↓reduceDIte]
-        exact measurable_itoWordIntegral_le2_pathFiltration B j I' hlen hs hst htT
-      · simp only [itoWordIntegral, hI, ↓reduceIte, hlen, ↓reduceDIte]
-        refine measurable_itoWordIntegral_cons_long_pathFiltration B j
-          (fun u ω' => itoWordIntegral B s u ω' I') ?_ hs hst htT
-        intro u hus huT
-        exact measurable_itoWordIntegral_pathFiltration B hs hus huT I'
+    · simp only [itoWordIntegral, hI, ↓reduceIte]
+      refine measurable_contVersion _ t fun n => ?_
+      refine measurable_itoWordStep_pathFiltration B j I' _ ?_ hs
+        ((dyadicFloor_le (hs.trans hst) n).trans htT)
+      intro v hsv hvT
+      exact measurable_itoWordIntegral_pathFiltration B hs hsv hvT I'
 
 lemma measurable_stratItoCorrection_pathFiltration (B : MultiBrownian Ω P d) {T : ℝ}
     {s t : ℝ} (hs : 0 ≤ s) (hst : s ≤ t) (htT : t ≤ T) (I : Word (d + 1)) :

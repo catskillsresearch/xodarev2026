@@ -178,6 +178,7 @@ VERIFIED: set[str] = {
     "ProlongedBrownianSetup.ItoWordIntegralConsLong",
     "ProlongedBrownianSetup.ItoWordIntegralLe1",
     "ProlongedBrownianSetup.ItoWordIntegralLe2",
+    "ProlongedBrownianSetup.ContVersion",
     "ProlongedBrownianSetup.PaperSig",
     "ProlongedBrownianSetup.Sig2StratAdapted",
     "ProlongedBrownianSetup.Sig2StratDyadic",
