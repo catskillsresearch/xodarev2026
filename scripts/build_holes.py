@@ -55,22 +55,31 @@ PAPER_KIT_GOALS: list[str] = [
 # ends in "False" or contains "Counterexample" is picked up automatically.
 COUNTEREXAMPLES: dict[str, str] = {
     "Lemma77ShuffleEstimateFalse":
-        "COUNTEREXAMPLE: refutes paper Lemma 77 (weighted shuffle estimate) and Lemma 78 "
+        "CounterExample_Lemma77 + CounterExample_Lemma78: refutes paper Lemma 77 (weighted shuffle estimate) and Lemma 78 "
         "(local Lipschitz bound for the Riccati operator).",
     "Prop58BlackScholesDepthFalse":
-        "COUNTEREXAMPLE: refutes paper Prop. 58 / PDF Prop. 5.5 (Black-Scholes has completeness "
+        "CounterExample_Prop58: refutes paper Prop. 58 / PDF Prop. 5.5 (Black-Scholes has completeness "
         "depth 0); Black-Scholes depth is infinite under Definition 55.",
 }
 
 # Headline theorem modules whose paper statement is (partly) refuted. Value: (status, detail).
 REFUTED_THEOREMS: dict[str, tuple[str, str]] = {
-    "TheoremC": ("refuted",
-        "REFUTED: the finite-depth side of Theorem C / Thm 56 is false in every non-degenerate "
+    "TheoremC": ("partly-refuted",
+        "CounterExample_TheoremC (pending: needs Black-Scholes completeness via martingale "
+        "representation). Proved so far: the finite-depth side of Theorem C / Thm 56 is false in every non-degenerate "
         "model (depth = infinity), incl. Black-Scholes; Prop. 58 refuted. The 'complete iff' "
         "direction awaits a Black-Scholes completeness proof."),
     "TheoremD": ("partly-refuted",
         "PARTLY REFUTED: GKW projection part proved; the residual-expansion clause assumes "
         "finite depth, which is false (vacuous)."),
+}
+
+
+# Board labels (exact strings requested by Lars) for refuting modules / headline theorems.
+REFUTATION_LABELS: dict[str, str] = {
+    "Lemma77ShuffleEstimateFalse": "CounterExample_Lemma77 + CounterExample_Lemma78",
+    "Prop58BlackScholesDepthFalse": "CounterExample_Prop58",
+    "TheoremC": "CounterExample_TheoremC (pending)",
 }
 
 
@@ -453,7 +462,8 @@ def build() -> dict:
             detail = (detail or "") + (" " if detail else "") + "Paper kit / theorem goal."
         nodes.append({
             "id": nid,
-            "label": meta["label"],
+            "label": REFUTATION_LABELS.get(nid, meta["label"])
+            if display[nid] in ("counterexample", "refuted", "partly-refuted") else meta["label"],
             "section": meta["section"],
             "file": meta["file"],
             "status": display[nid],
@@ -557,9 +567,9 @@ def write_md(data: dict) -> None:
         "",
         "## Counterexamples and refuted paper claims",
         "",
-        "| Status | Id | What is refuted | File |",
+        "| Status | Label (module) | What is refuted | File |",
         "|---|---|---|---|",
-        *[f"| **{n['status']}** | `{n['id']}` | {n['detail']} | `{n['file']}` |"
+        *[f"| **{n['status']}** | **{n['label']}** (`{n['id']}`) | {n['detail']} | `{n['file']}` |"
           for n in sorted(refute_n, key=lambda x: (x['status'], x['id']))],
         "",
         "**Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).",

@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T10:39:37Z",
+  "updated": "2026-11-24T10:41:21Z",
   "sorryCount": 2,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -1112,12 +1112,12 @@
     },
     {
       "id": "Lemma77ShuffleEstimateFalse",
-      "label": "Lemma77ShuffleEstimateFalse",
+      "label": "CounterExample_Lemma77 + CounterExample_Lemma78",
       "section": 1,
       "file": "SignatureVolatility/Lemma77ShuffleEstimateFalse.lean",
       "status": "counterexample",
       "blocker": null,
-      "detail": "COUNTEREXAMPLE: refutes paper Lemma 77 (weighted shuffle estimate) and Lemma 78 (local Lipschitz bound for the Riccati operator).",
+      "detail": "CounterExample_Lemma77 + CounterExample_Lemma78: refutes paper Lemma 77 (weighted shuffle estimate) and Lemma 78 (local Lipschitz bound for the Riccati operator).",
       "hasSorry": false,
       "paperKitGoal": false
     },
@@ -1552,12 +1552,12 @@
     },
     {
       "id": "Prop58BlackScholesDepthFalse",
-      "label": "Prop58BlackScholesDepthFalse",
+      "label": "CounterExample_Prop58",
       "section": 1,
       "file": "SignatureVolatility/Prop58BlackScholesDepthFalse.lean",
       "status": "counterexample",
       "blocker": null,
-      "detail": "COUNTEREXAMPLE: refutes paper Prop. 58 / PDF Prop. 5.5 (Black-Scholes has completeness depth 0); Black-Scholes depth is infinite under Definition 55.",
+      "detail": "CounterExample_Prop58: refutes paper Prop. 58 / PDF Prop. 5.5 (Black-Scholes has completeness depth 0); Black-Scholes depth is infinite under Definition 55.",
       "hasSorry": false,
       "paperKitGoal": false
     },
@@ -1882,12 +1882,12 @@
     },
     {
       "id": "TheoremC",
-      "label": "TheoremC",
+      "label": "CounterExample_TheoremC (pending)",
       "section": 1,
       "file": "SignatureVolatility/TheoremC.lean",
-      "status": "refuted",
+      "status": "partly-refuted",
       "blocker": null,
-      "detail": "REFUTED: the finite-depth side of Theorem C / Thm 56 is false in every non-degenerate model (depth = infinity), incl. Black-Scholes; Prop. 58 refuted. The 'complete iff' direction awaits a Black-Scholes completeness proof. Paper kit / theorem goal.",
+      "detail": "CounterExample_TheoremC (pending: needs Black-Scholes completeness via martingale representation). Proved so far: the finite-depth side of Theorem C / Thm 56 is false in every non-degenerate model (depth = infinity), incl. Black-Scholes; Prop. 58 refuted. The 'complete iff' direction awaits a Black-Scholes completeness proof. Paper kit / theorem goal.",
       "hasSorry": false,
       "paperKitGoal": true
     },
