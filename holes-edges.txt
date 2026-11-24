@@ -145,6 +145,7 @@ IndexedFiltration -hard-> PriceFiltration
 IndexedFiltration -hard-> ProlongedBrownianSetup.BrownianFiltration
 IndexedFiltration -hard-> ProlongedBrownianSetup.SignatureFiltration
 IsSpecialSemimartingale -hard-> SignatureRiccatiKit
+IsSpecialSemimartingale -hard-> SignatureRiccatiKit.CoordSemimartingale
 IsSpecialSemimartingale -hard-> TheoremBOfSetupItoRiccatiKit
 ItoCalculusKit -hard-> ItoCalculusKit.DoleansStrongClass
 ItoCalculusKit -hard-> ItoCalculusKit.StoppedRaw
@@ -215,6 +216,7 @@ ItoCalculusKit.MathFinBridgeSetup -hard-> ItoCalculusKit.StoppedRaw
 ItoCalculusKit.NovikovDoob -hard-> ItoCalculusKit.DoleansStrongClass
 ItoCalculusKit.NovikovMartingale -hard-> ItoCalculusKit.DoleansEnvelope
 ItoCalculusKit.OfMathFin -hard-> PriceFiltrationSignatureSpace.OfMarket
+ItoCalculusKit.OfMathFin -hard-> SignatureRiccatiKit.CoordSemimartingale
 ItoCalculusKit.OfMathFin -hard-> SignatureRiccatiKit.OfSetup
 ItoCalculusKit.OfMathFin -hard-> TheoremA
 ItoCalculusKit.OfMathFin -hard-> TheoremB
@@ -404,6 +406,7 @@ SignaturePriceSolution -hard-> TheoremAOfBrownianSetupItoKit
 SignaturePriceSolution -hard-> TheoremBOfSetupItoRiccatiKit
 SignatureRiccatiKit -hard-> SignatureRiccatiKit.OfSetup
 SignatureRiccatiKit -hard-> TheoremBOfSetupItoRiccatiKit
+SignatureRiccatiKit.CoordSemimartingale -hard-> SignatureRiccatiKit.OfSetup
 SignatureRiccatiKit.OfSetup -hard-> TheoremB
 SignatureRiccatiKit.RiccatiOp -hard-> SignatureRiccatiKit.OfSetup
 SignatureVolatilityModel -hard-> BlackScholesModel

@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-24T09:29:24Z
-**Holes:** 6 open+blocked · 2 open · 4 blocked · 178 done · 3 file(s) with `sorry`.
+**Updated:** 2026-11-24T09:45:42Z
+**Holes:** 6 open+blocked · 2 open · 4 blocked · 179 done · 3 file(s) with `sorry`.
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
 
@@ -163,6 +163,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `SignatureHestonLevel2Model` | `SignatureVolatility/SignatureHestonLevel2Model.lean` |
 | done | `SignaturePriceSolution` | `SignatureVolatility/SignaturePriceSolution.lean` |
 | done | `SignatureRiccatiKit` | `SignatureVolatility/SignatureRiccatiKit.lean` |
+| done | `SignatureRiccatiKit.CoordSemimartingale` | `SignatureVolatility/SignatureRiccatiKit/CoordSemimartingale.lean` |
 | open | `SignatureRiccatiKit.OfSetup` | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
 | done | `SignatureRiccatiKit.RiccatiOp` | `SignatureVolatility/SignatureRiccatiKit/RiccatiOp.lean` |
 | done | `SignatureVolatilityModel` | `SignatureVolatility/SignatureVolatilityModel.lean` |

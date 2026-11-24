@@ -3,6 +3,7 @@ module
 public import SignatureVolatility.ItoCalculusKit.OfMathFin
 public import SignatureVolatility.SignatureRiccatiKit
 public import SignatureVolatility.SignatureRiccatiKit.RiccatiOp
+public import SignatureVolatility.SignatureRiccatiKit.CoordSemimartingale
 
 
 @[expose] public section
@@ -28,7 +29,7 @@ variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasur
 noncomputable def signatureRiccatiKit_of_setup (M : SignatureVolatilityModel)
     (B : MultiBrownian Ω P M.d) :
     SignatureRiccatiKit Ω P M (paperSetup B M.hT) where
-  coord_special_semimartingale := sorry
+  coord_special_semimartingale := fun I => isSpecialSemimartingale_paperSig2_coeff B I M.hT
   R_op := riccatiOp
   affine_riccati_duality := sorry
 

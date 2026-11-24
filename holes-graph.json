@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T09:29:24Z",
+  "updated": "2026-11-24T09:45:42Z",
   "sorryCount": 6,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -1779,6 +1779,17 @@
       "paperKitGoal": false
     },
     {
+      "id": "SignatureRiccatiKit.CoordSemimartingale",
+      "label": "SignatureRiccatiKit.CoordSemimartingale",
+      "section": 1,
+      "file": "SignatureVolatility/SignatureRiccatiKit/CoordSemimartingale.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
       "id": "SignatureRiccatiKit.OfSetup",
       "label": "SignatureRiccatiKit.OfSetup",
       "section": 1,
@@ -3367,7 +3378,12 @@
     },
     {
       "from": "ItoCalculusKit.OfMathFin",
-      "to": "SignatureRiccatiKit.OfSetup",
+      "to": "SignatureRiccatiKit.CoordSemimartingale",
+      "kind": "hard"
+    },
+    {
+      "from": "IsSpecialSemimartingale",
+      "to": "SignatureRiccatiKit.CoordSemimartingale",
       "kind": "hard"
     },
     {
@@ -3377,6 +3393,11 @@
     },
     {
       "from": "SignatureRiccatiKit.RiccatiOp",
+      "to": "SignatureRiccatiKit.OfSetup",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.CoordSemimartingale",
       "to": "SignatureRiccatiKit.OfSetup",
       "kind": "hard"
     },
