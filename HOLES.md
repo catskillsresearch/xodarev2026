@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-24T21:55:21Z
-**`sorry` occurrences:** 21 · 7 open · 11 blocked · 190 done · 15 file(s) with `sorry`.
+**Updated:** 2026-11-24T22:01:32Z
+**`sorry` occurrences:** 20 · 6 open · 11 blocked · 191 done · 14 file(s) with `sorry`.
 **Paper claims refuted:** 5 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
 
 ## Open analytic leaves of the affine / Riccati counterexample
@@ -59,7 +59,6 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | blocked | `SignatureRiccatiKit.CounterexampleV1Decay` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1Decay.lean` |
 | blocked | `SignatureRiccatiKit.CounterexampleV1LogNonpos` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1LogNonpos.lean` |
 | blocked | `SignatureRiccatiKit.EntireTransfer` | `SignatureVolatility/SignatureRiccatiKit/EntireTransfer.lean` |
-| open | `SignatureRiccatiKit.FourierUniquenessGaussian` | `SignatureVolatility/SignatureRiccatiKit/FourierUniquenessGaussian.lean` |
 | open | `SignatureRiccatiKit.IntegralExpBarrier` | `SignatureVolatility/SignatureRiccatiKit/IntegralExpBarrier.lean` |
 | open | `SignatureRiccatiKit.IteratedDerivGaussian` | `SignatureVolatility/SignatureRiccatiKit/IteratedDerivGaussian.lean` |
 | blocked | `SignatureRiccatiKit.ItoWordTiltClosedForm` | `SignatureVolatility/SignatureRiccatiKit/ItoWordTiltClosedForm.lean` |
@@ -73,13 +72,12 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | `SignatureRiccatiKit.CameronMartinC2Shift` | `SignatureVolatility/SignatureRiccatiKit/CameronMartinC2Shift.lean` |
 | `SignatureRiccatiKit.ComplexTilt` | `SignatureVolatility/SignatureRiccatiKit/ComplexTilt.lean` |
 | `SignatureRiccatiKit.CondExpMulIndepDisintegrate` | `SignatureVolatility/SignatureRiccatiKit/CondExpMulIndepDisintegrate.lean` |
-| `SignatureRiccatiKit.FourierUniquenessGaussian` | `SignatureVolatility/SignatureRiccatiKit/FourierUniquenessGaussian.lean` |
 | `SignatureRiccatiKit.IntegralExpBarrier` | `SignatureVolatility/SignatureRiccatiKit/IntegralExpBarrier.lean` |
 | `SignatureRiccatiKit.IteratedDerivGaussian` | `SignatureVolatility/SignatureRiccatiKit/IteratedDerivGaussian.lean` |
 
 ## By group
 
-### Top-level modules — 18 hole(s)
+### Top-level modules — 17 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -218,7 +216,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `SignatureRiccatiKit.DifferentiableAtTsum` | `SignatureVolatility/SignatureRiccatiKit/DifferentiableAtTsum.lean` |
 | blocked | `SignatureRiccatiKit.EntireTransfer` | `SignatureVolatility/SignatureRiccatiKit/EntireTransfer.lean` |
 | done | `SignatureRiccatiKit.FawcettHermite` | `SignatureVolatility/SignatureRiccatiKit/FawcettHermite.lean` |
-| open | `SignatureRiccatiKit.FourierUniquenessGaussian` | `SignatureVolatility/SignatureRiccatiKit/FourierUniquenessGaussian.lean` |
+| done | `SignatureRiccatiKit.FourierUniquenessGaussian` | `SignatureVolatility/SignatureRiccatiKit/FourierUniquenessGaussian.lean` |
 | open | `SignatureRiccatiKit.IntegralExpBarrier` | `SignatureVolatility/SignatureRiccatiKit/IntegralExpBarrier.lean` |
 | open | `SignatureRiccatiKit.IteratedDerivGaussian` | `SignatureVolatility/SignatureRiccatiKit/IteratedDerivGaussian.lean` |
 | blocked | `SignatureRiccatiKit.ItoWordTiltClosedForm` | `SignatureVolatility/SignatureRiccatiKit/ItoWordTiltClosedForm.lean` |
