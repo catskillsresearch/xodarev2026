@@ -1,6 +1,6 @@
 module
 
-public import SignatureVolatility.ProlongedBrownianSetup.PaperSigDynamics
+public import SignatureVolatility.ProlongedBrownianSetup.PaperSigChen
 
 
 @[expose] public section
@@ -14,7 +14,7 @@ namespace SignatureVolatility
 
 Packs `paperSig2` (iterated Stratonovich integrals of `X = (t, W_t)` in the paper's word order)
 into `ProlongedBrownianSetup`. Chen, shuffle, factorial moments and the signature dynamics are
-the theorems `paperSig2_*` of `PaperSig`.
+the theorems `paperSig2_*` of `PaperSig`, `PaperSigDynamics` and `PaperSigChen`.
 -/
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}

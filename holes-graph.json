@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-24T08:44:01Z",
-  "sorryCount": 44,
+  "updated": "2026-11-24T08:57:22Z",
+  "sorryCount": 42,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, SignatureRiccatiKit.OfSetup, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done. Green = open. Grey = blocked.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: ProlongedBrownianSetup.PaperSig."
+    "Open tips: ProlongedBrownianSetup.PaperSigChen."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -1013,8 +1013,8 @@
       "label": "ItoCalculusKit.SigmaBounds",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/SigmaBounds.lean",
-      "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup.PaperSig",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -1025,7 +1025,7 @@
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/SigmaContinuity.lean",
       "status": "blocked",
-      "blocker": "needs ItoCalculusKit.SigmaBounds, ProlongedBrownianSetup.StratonovichOfBM",
+      "blocker": "needs ProlongedBrownianSetup.StratonovichOfBM",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -1036,7 +1036,7 @@
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/SigmaHolder.lean",
       "status": "blocked",
-      "blocker": "needs ItoCalculusKit.SigmaBounds, ItoCalculusKit.SigmaContinuity",
+      "blocker": "needs ItoCalculusKit.SigmaContinuity",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -1497,6 +1497,17 @@
       "label": "ProlongedBrownianSetup.PaperSig",
       "section": 4,
       "file": "SignatureVolatility/ProlongedBrownianSetup/PaperSig.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ProlongedBrownianSetup.PaperSigChen",
+      "label": "ProlongedBrownianSetup.PaperSigChen",
+      "section": 4,
+      "file": "SignatureVolatility/ProlongedBrownianSetup/PaperSigChen.lean",
       "status": "open",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
@@ -1508,8 +1519,19 @@
       "label": "ProlongedBrownianSetup.PaperSigDynamics",
       "section": 4,
       "file": "SignatureVolatility/ProlongedBrownianSetup/PaperSigDynamics.lean",
-      "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup.PaperSig",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ProlongedBrownianSetup.ShiftedWordIntegral",
+      "label": "ProlongedBrownianSetup.ShiftedWordIntegral",
+      "section": 4,
+      "file": "SignatureVolatility/ProlongedBrownianSetup/ShiftedWordIntegral.lean",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -1586,7 +1608,7 @@
       "section": 4,
       "file": "SignatureVolatility/ProlongedBrownianSetup/StratonovichOfBM.lean",
       "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup.PaperSigDynamics",
+      "blocker": "needs ProlongedBrownianSetup.PaperSigChen",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Paper kit / theorem goal.",
       "hasSorry": false,
       "paperKitGoal": true
@@ -3141,6 +3163,11 @@
       "kind": "hard"
     },
     {
+      "from": "ProlongedBrownianSetup.ShiftedWordIntegral",
+      "to": "ProlongedBrownianSetup.PaperSigChen",
+      "kind": "hard"
+    },
+    {
       "from": "ProlongedBrownianSetup.PaperSig",
       "to": "ProlongedBrownianSetup.PaperSigDynamics",
       "kind": "hard"
@@ -3148,6 +3175,11 @@
     {
       "from": "ItoCalculusKit.CrossVariation",
       "to": "ProlongedBrownianSetup.PaperSigDynamics",
+      "kind": "hard"
+    },
+    {
+      "from": "ProlongedBrownianSetup.PaperSigDynamics",
+      "to": "ProlongedBrownianSetup.ShiftedWordIntegral",
       "kind": "hard"
     },
     {
@@ -3221,7 +3253,7 @@
       "kind": "hard"
     },
     {
-      "from": "ProlongedBrownianSetup.PaperSigDynamics",
+      "from": "ProlongedBrownianSetup.PaperSigChen",
       "to": "ProlongedBrownianSetup.StratonovichOfBM",
       "kind": "hard"
     },

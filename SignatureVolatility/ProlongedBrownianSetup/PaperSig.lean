@@ -24,9 +24,7 @@ Stratonovich word integral of the reversed word:
 Each Itô level `≥ 2` is its adapted continuous version (`contVersion`), so `Ŵ` is the
 continuous signature process of the paper (up to the almost-sure continuity proved later).
 
-Chen and shuffle (`paperSig2_chen`, `paperSig2_shuffle`) are to be obtained from the
-piecewise-linear (Wong–Zakai) approximants `sig2StratDyadic` of `Sig2StratDyadic`, which satisfy
-both identities exactly, by passing to the limit in probability.
+Chen and shuffle (`paperSig2_chen`, `paperSig2_shuffle`) are proved in `PaperSigChen`.
 -/
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}
@@ -288,17 +286,6 @@ theorem eLpNorm_paperSig2_coeff_le (B : MultiBrownian Ω P d) {q : ℕ} (hq : 2 
         congr 1; ring
 
 /-! ## Paper properties of `paperSig2` (holes, step 3 of the true-signature refactor) -/
-
-/-- **Chen's identity** for the Brownian Stratonovich signature (almost surely). -/
-theorem paperSig2_chen (B : MultiBrownian Ω P d) {s t : ℝ} (hs : 0 ≤ s) (hst : s ≤ t) :
-    ∀ᵐ ω ∂P, paperSig2 B 0 t ω = paperSig2 B 0 s ω ⊗ₜ paperSig2 B s t ω := by
-  sorry
-
-/-- **Shuffle identity** for the Brownian Stratonovich signature (almost surely). -/
-theorem paperSig2_shuffle (B : MultiBrownian Ω P d) {t : ℝ} (ht : 0 ≤ t) (I J : Word (d + 1)) :
-    ∀ᵐ ω ∂P, (paperSig2 B 0 t ω).coeff I * (paperSig2 B 0 t ω).coeff J =
-      ExtTensorAlgebra.evalShuffleBasis I J (paperSig2 B 0 t ω) := by
-  sorry
 
 /-- **Paper Proposition 12 / Appendix A**: factorial level control of the Brownian signature
 against weights of at most geometric growth. -/

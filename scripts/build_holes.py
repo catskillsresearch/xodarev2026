@@ -191,6 +191,7 @@ VERIFIED: set[str] = {
     "ProlongedBrownianSetup.StratItoCoeffBounds",
     "ProlongedBrownianSetup.PaperSig",
     "ProlongedBrownianSetup.PaperSigDynamics",
+    "ProlongedBrownianSetup.ShiftedWordIntegral",
     "ProlongedBrownianSetup.Sig2StratAdapted",
     "ProlongedBrownianSetup.Sig2StratDyadic",
     "ProlongedBrownianSetup.SignatureOfBM",

@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-24T08:44:01Z
-**Holes:** 44 open+blocked · 1 open · 43 blocked · 140 done · 4 file(s) with `sorry`.
+**Updated:** 2026-11-24T08:57:22Z
+**Holes:** 42 open+blocked · 1 open · 41 blocked · 144 done · 4 file(s) with `sorry`.
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
 
@@ -34,18 +34,18 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 |---|---|---|
 | blocked | `GKWDecompositionSetup.OfPFS` | `SignatureVolatility/GKWDecompositionSetup/OfPFS.lean` |
 | blocked | `PriceFiltrationSignatureSpace.OfMarket` | `SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean` |
-| open | `ProlongedBrownianSetup.PaperSig` | `SignatureVolatility/ProlongedBrownianSetup/PaperSig.lean` |
+| open | `ProlongedBrownianSetup.PaperSigChen` | `SignatureVolatility/ProlongedBrownianSetup/PaperSigChen.lean` |
 | blocked | `SignatureRiccatiKit.OfSetup` | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
 
 ## Open now (Layer 0)
 
 | Id | File |
 |---|---|
-| `ProlongedBrownianSetup.PaperSig` | `SignatureVolatility/ProlongedBrownianSetup/PaperSig.lean` |
+| `ProlongedBrownianSetup.PaperSigChen` | `SignatureVolatility/ProlongedBrownianSetup/PaperSigChen.lean` |
 
 ## By group
 
-### Top-level modules — 40 hole(s)
+### Top-level modules — 39 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -119,7 +119,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | blocked | `ItoCalculusKit.QuadIncrement` | `SignatureVolatility/ItoCalculusKit/QuadIncrement.lean` |
 | done | `ItoCalculusKit.RiemannConvergence` | `SignatureVolatility/ItoCalculusKit/RiemannConvergence.lean` |
 | blocked | `ItoCalculusKit.RiemannRate8` | `SignatureVolatility/ItoCalculusKit/RiemannRate8.lean` |
-| blocked | `ItoCalculusKit.SigmaBounds` | `SignatureVolatility/ItoCalculusKit/SigmaBounds.lean` |
+| done | `ItoCalculusKit.SigmaBounds` | `SignatureVolatility/ItoCalculusKit/SigmaBounds.lean` |
 | blocked | `ItoCalculusKit.SigmaContinuity` | `SignatureVolatility/ItoCalculusKit/SigmaContinuity.lean` |
 | blocked | `ItoCalculusKit.SigmaHolder` | `SignatureVolatility/ItoCalculusKit/SigmaHolder.lean` |
 | blocked | `ItoCalculusKit.SigmaHolder8` | `SignatureVolatility/ItoCalculusKit/SigmaHolder8.lean` |
@@ -217,7 +217,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `Weight.ConstOne` | `SignatureVolatility/Weight/ConstOne.lean` |
 | done | `Weight.Geometric` | `SignatureVolatility/Weight/Geometric.lean` |
 
-### ProlongedBrownianSetup — 3 hole(s)
+### ProlongedBrownianSetup — 2 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -230,8 +230,10 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `ProlongedBrownianSetup.ItoWordIntegralConsLong` | `SignatureVolatility/ProlongedBrownianSetup/ItoWordIntegralConsLong.lean` |
 | done | `ProlongedBrownianSetup.ItoWordIntegralLe1` | `SignatureVolatility/ProlongedBrownianSetup/ItoWordIntegralLe1.lean` |
 | done | `ProlongedBrownianSetup.OfBrownian` | `SignatureVolatility/ProlongedBrownianSetup/OfBrownian.lean` |
-| open | `ProlongedBrownianSetup.PaperSig` | `SignatureVolatility/ProlongedBrownianSetup/PaperSig.lean` |
-| blocked | `ProlongedBrownianSetup.PaperSigDynamics` | `SignatureVolatility/ProlongedBrownianSetup/PaperSigDynamics.lean` |
+| done | `ProlongedBrownianSetup.PaperSig` | `SignatureVolatility/ProlongedBrownianSetup/PaperSig.lean` |
+| open | `ProlongedBrownianSetup.PaperSigChen` | `SignatureVolatility/ProlongedBrownianSetup/PaperSigChen.lean` |
+| done | `ProlongedBrownianSetup.PaperSigDynamics` | `SignatureVolatility/ProlongedBrownianSetup/PaperSigDynamics.lean` |
+| done | `ProlongedBrownianSetup.ShiftedWordIntegral` | `SignatureVolatility/ProlongedBrownianSetup/ShiftedWordIntegral.lean` |
 | done | `ProlongedBrownianSetup.Sig2StratAdapted` | `SignatureVolatility/ProlongedBrownianSetup/Sig2StratAdapted.lean` |
 | done | `ProlongedBrownianSetup.Sig2StratDyadic` | `SignatureVolatility/ProlongedBrownianSetup/Sig2StratDyadic.lean` |
 | done | `ProlongedBrownianSetup.SignatureFiltration` | `SignatureVolatility/ProlongedBrownianSetup/SignatureFiltration.lean` |
