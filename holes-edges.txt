@@ -163,6 +163,7 @@ IsSpecialSemimartingale -hard-> TheoremBOfSetupItoRiccatiKit
 ItoCalculusKit -hard-> ItoCalculusKit.DoleansStrongClass
 ItoCalculusKit -hard-> ItoCalculusKit.OfMathFin
 ItoCalculusKit -hard-> ItoCalculusKit.StoppedL2
+ItoCalculusKit -hard-> ItoCalculusKit.StoppedRaw
 ItoCalculusKit -hard-> SignaturePriceSolution
 ItoCalculusKit -hard-> TheoremAOfBrownianSetupItoKit
 ItoCalculusKit -hard-> TheoremBOfSetupItoRiccatiKit
@@ -171,6 +172,7 @@ ItoCalculusKit.BrownianQuadVarAS -hard-> ItoCalculusKit.MartingaleTransform
 ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.DoleansSigma
 ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.DoleansEnvelope -hard-> ItoCalculusKit.NovikovDoob
+ItoCalculusKit.DoleansEnvelope -hard-> ItoCalculusKit.StoppedRaw
 ItoCalculusKit.DoleansErrorPathwise -hard-> ItoCalculusKit.DoleansInputs
 ItoCalculusKit.DoleansIdentify -hard-> ItoCalculusKit.KolmogorovIto
 ItoCalculusKit.DoleansInputs -hard-> ItoCalculusKit.DoleansIdentify
@@ -186,6 +188,7 @@ ItoCalculusKit.EighthTransform -hard-> ItoCalculusKit.ItoIncrement8
 ItoCalculusKit.ExpSupermartingale -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.FourthMoment -hard-> ItoCalculusKit.BrownianQuadVarAS
 ItoCalculusKit.FourthMoment -hard-> ItoCalculusKit.EighthMoment
+ItoCalculusKit.FrozenIncrement4 -hard-> ItoCalculusKit.StoppedRaw
 ItoCalculusKit.FrozenIncrement8 -hard-> ItoCalculusKit.FrozenOrthogonal
 ItoCalculusKit.FrozenIncrement8 -hard-> ItoCalculusKit.RiemannRate8
 ItoCalculusKit.FrozenOrthogonal -hard-> ItoCalculusKit.QVTransform
@@ -232,6 +235,7 @@ ItoCalculusKit.SigmaHolder -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.SigmaHolder -hard-> ItoCalculusKit.EighthTransform
 ItoCalculusKit.SigmaHolder8 -hard-> ItoCalculusKit.QuadIncrement
 ItoCalculusKit.StoppedL2 -hard-> ItoCalculusKit.OfMathFin
+ItoCalculusKit.StoppedRaw -hard-> ItoCalculusKit.StoppedL2
 ItoCalculusKit.SubseqUniform -hard-> ItoCalculusKit.DoleansEnvelope
 Lemma32SignatureInTw -hard-> Corollary36SigmaWellDefined
 Letter -hard-> ExtTensorAlgebra.ExtTensorAlgebra

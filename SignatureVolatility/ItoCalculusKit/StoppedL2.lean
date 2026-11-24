@@ -2,6 +2,7 @@ module
 
 public import SignatureVolatility.ItoCalculusKit
 public import SignatureVolatility.ItoCalculusKit.MathFinBridge
+public import SignatureVolatility.ItoCalculusKit.StoppedRaw
 public import SignatureVolatility.HypH1
 public import SignatureVolatility.HypH2
 public import SignatureVolatility.HypH3

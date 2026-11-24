@@ -42,11 +42,13 @@ lemma HolderAdapted.const_mul {B : MultiBrownian Ω P d} {H : ℝ → Ω → ℝ
     _ ≤ c ^ 4 * (K * (v - u) ^ 2) := by gcongr; exact hH.holder u v h0 huv hv
     _ = _ := by ring
 
+omit [IsProbabilityMeasure P] in
 lemma integrable_pow_of_memLp_even {f : Ω → ℝ} {p : ℕ} (hp : p ≠ 0) (he : Even p)
     (hf : MemLp f p P) : Integrable (fun ω => f ω ^ p) P :=
   (hf.integrable_norm_pow hp).congr (ae_of_all _ fun ω => by
     simp only [Real.norm_eq_abs, he.pow_abs])
 
+omit [IsProbabilityMeasure P] in
 lemma integral_mul_pow_four_le_sqrt {f g : Ω → ℝ} (hf : MemLp (fun ω => f ω ^ 4) 2 P)
     (hg : MemLp (fun ω => g ω ^ 4) 2 P) :
     ∫ ω, f ω ^ 4 * g ω ^ 4 ∂P ≤

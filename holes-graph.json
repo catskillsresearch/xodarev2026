@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T03:17:13Z",
+  "updated": "2026-11-24T03:25:24Z",
   "sorryCount": 9,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -962,6 +962,17 @@
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
       "hasSorry": true,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.StoppedRaw",
+      "label": "ItoCalculusKit.StoppedRaw",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/StoppedRaw.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -2572,13 +2583,23 @@
       "kind": "hard"
     },
     {
-      "from": "ItoCalculusKit",
+      "from": "ItoCalculusKit.StoppedRaw",
       "to": "ItoCalculusKit.StoppedL2",
       "kind": "hard"
     },
     {
-      "from": "ItoCalculusKit.MathFinBridge",
-      "to": "ItoCalculusKit.StoppedL2",
+      "from": "ItoCalculusKit",
+      "to": "ItoCalculusKit.StoppedRaw",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.FrozenIncrement4",
+      "to": "ItoCalculusKit.StoppedRaw",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.DoleansEnvelope",
+      "to": "ItoCalculusKit.StoppedRaw",
       "kind": "hard"
     },
     {
