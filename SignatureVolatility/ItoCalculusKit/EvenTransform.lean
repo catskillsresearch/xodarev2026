@@ -1,7 +1,7 @@
 module
 
 public import SignatureVolatility.ItoCalculusKit.EvenMoment
-public import SignatureVolatility.ItoCalculusKit.EighthTransform
+public import SignatureVolatility.ItoCalculusKit.RiemannConvergence
 
 
 @[expose] public section

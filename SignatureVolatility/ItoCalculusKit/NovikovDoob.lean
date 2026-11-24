@@ -1,5 +1,6 @@
 module
 
+public import SignatureVolatility.ItoCalculusKit.MathFinBridgeSetup
 public import SignatureVolatility.ItoCalculusKit.DoleansEnvelope
 
 

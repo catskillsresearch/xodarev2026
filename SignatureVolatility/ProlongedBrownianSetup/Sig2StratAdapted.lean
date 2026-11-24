@@ -213,25 +213,6 @@ lemma measurable_itoWordIntegral_le1_pathFiltration (B : MultiBrownian Ω P d) {
         exact (measurable_W_pathFiltration B ⟨t, le_trans hs hst, htT⟩ (spaceLetterIndex j hj)).sub
           (measurable_W_pathFiltration B ⟨s, hs, le_trans hst htT⟩ (spaceLetterIndex j hj))
 
-lemma measurable_itoWordIntegral_le2_pathFiltration (B : MultiBrownian Ω P d) {T : ℝ}
-    (j : Fin (d + 1)) (I : Word (d + 1)) (hI : I.length = 1)
-    {s t : ℝ} (hs : 0 ≤ s) (hst : s ≤ t) (htT : t ≤ T) :
-    Measurable[(pathFiltration B).σAlg T] (fun ω => itoWordIntegral_le2 B j I hI s t ω) := by
-  simp only [itoWordIntegral_le2]
-  by_cases hj : (j : ℕ) = 0
-  · simp only [hj, ↓reduceDIte]
-    by_cases hj' : ((lengthOneLetter I hI) : ℕ) = 0
-    · simp [hj']
-    · simpa [hj'] using
-        measurable_lebIntegral_wnnIncrement_pathFiltration B
-          (spaceLetterIndex (lengthOneLetter I hI) hj') hs hst htT
-  · simp only [hj, ↓reduceDIte]
-    by_cases hj' : ((lengthOneLetter I hI) : ℕ) = 0
-    · simpa [hj'] using
-        measurable_itoIntegral_timeIntegrand_pathFiltration B (spaceLetterIndex j hj) hs hst htT
-    · simpa [hj'] using measurable_itoIntegral_wnnIncrement_pathFiltration B
-        (spaceLetterIndex (lengthOneLetter I hI) hj') (spaceLetterIndex j hj) hs hst htT
-
 lemma measurable_itoWordIntegral_cons_long_pathFiltration (B : MultiBrownian Ω P d) {T : ℝ}
     {s t : ℝ} (j : Fin (d + 1)) (H : ℝ → Ω → ℝ)
     (hH : ∀ u, s ≤ u → u ≤ T → Measurable[(pathFiltration B).σAlg T] (H u))
@@ -244,17 +225,13 @@ lemma measurable_itoWordIntegral_cons_long_pathFiltration (B : MultiBrownian Ω 
       measurable_itoIntegral_process_pathFiltration B (spaceLetterIndex j hj) H hH hs hst htT
 
 lemma measurable_itoWordStep_pathFiltration (B : MultiBrownian Ω P d) {T : ℝ}
-    {s u : ℝ} (j : Fin (d + 1)) (I : Word (d + 1)) (H : ℝ → Ω → ℝ)
+    {s u : ℝ} (j : Fin (d + 1)) (H : ℝ → Ω → ℝ)
     (hH : ∀ v, s ≤ v → v ≤ T → Measurable[(pathFiltration B).σAlg T] (H v))
     (hs : 0 ≤ s) (huT : u ≤ T) :
-    Measurable[(pathFiltration B).σAlg T] (fun ω => itoWordStep B j I H s u ω) := by
+    Measurable[(pathFiltration B).σAlg T] (fun ω => itoWordStep B j H s u ω) := by
   unfold itoWordStep
   by_cases hsu : s ≤ u
-  · by_cases hlen : I.length = 1
-    · simpa [hsu, hlen] using
-        measurable_itoWordIntegral_le2_pathFiltration B j I hlen hs hsu huT
-    · simpa [hsu, hlen] using
-        measurable_itoWordIntegral_cons_long_pathFiltration B j H hH hs hsu huT
+  · simpa [hsu] using measurable_itoWordIntegral_cons_long_pathFiltration B j H hH hs hsu huT
   · simp only [hsu, ↓reduceIte]
     exact measurable_const
 
@@ -271,7 +248,7 @@ lemma measurable_itoWordIntegral_pathFiltration (B : MultiBrownian Ω P d) {T : 
         measurable_itoWordIntegral_le1_pathFiltration B hs hst htT [j]
     · simp only [itoWordIntegral, hI, ↓reduceIte]
       refine measurable_contVersion _ t fun n => ?_
-      refine measurable_itoWordStep_pathFiltration B j I' _ ?_ hs
+      refine measurable_itoWordStep_pathFiltration B j _ ?_ hs
         ((dyadicFloor_le (hs.trans hst) n).trans htT)
       intro v hsv hvT
       exact measurable_itoWordIntegral_pathFiltration B hs hsv hvT I'

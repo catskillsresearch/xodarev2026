@@ -1,7 +1,7 @@
 module
 
 public import SignatureVolatility.ProlongedBrownianSetup
-public import SignatureVolatility.ProlongedBrownianSetup.Sig2StratAdapted
+public import SignatureVolatility.ItoCalculusKit.LevelBounds
 
 @[expose] public section
 
@@ -60,6 +60,64 @@ lemma measurable_paperSig2_coeff_pathFiltration (B : MultiBrownian Ω P d) {T : 
 /-- Level 2, two different letters: the paper order puts the first letter earliest. -/
 lemma paperSig2_pair (B : MultiBrownian Ω P d) (s t : ℝ) (ω : Ω) (i j : Fin (d + 1)) :
     (paperSig2 B s t ω).coeff [i, j] = stratWordIntegral B s t ω [j, i] := rfl
+
+/-! ## Regularity of the coordinates from the level-wise Itô bounds -/
+
+/-- Almost surely, every Itô word coordinate is continuous on `[0, T]`. -/
+lemma ae_continuousOn_itoWordIntegral (B : MultiBrownian Ω P d) {T : ℝ} (hT : 0 ≤ T) :
+    ∀ᵐ ω ∂P, ∀ J : Word (d + 1),
+      ContinuousOn (fun t => itoWordIntegral B 0 t ω J) (Set.Icc 0 T) := by
+  rw [ae_all_iff]
+  intro J
+  by_cases hJ : J = []
+  · subst hJ
+    exact Filter.Eventually.of_forall fun ω => by
+      simpa [itoWordIntegral_empty] using continuousOn_const
+  · exact (levelBound_itoWordIntegral B hT J hJ).cont
+
+/-- Every Itô word coordinate is in every even `L^{2q}`, `q ≥ 2`. -/
+lemma memLp_itoWordIntegral (B : MultiBrownian Ω P d) {t : ℝ} (ht : 0 ≤ t) (J : Word (d + 1))
+    {q : ℕ} (hq : 2 ≤ q) : MemLp (fun ω => itoWordIntegral B 0 t ω J) (2 * q : ℕ) P := by
+  by_cases hJ : J = []
+  · subst hJ; simpa [itoWordIntegral_empty] using memLp_const (1 : ℝ)
+  · exact (levelBound_itoWordIntegral B ht J hJ).memLp q hq t ht le_rfl
+
+lemma continuousOn_stratItoCorrection (B : MultiBrownian Ω P d) {T : ℝ} {ω : Ω}
+    (hω : ∀ J : Word (d + 1), ContinuousOn (fun t => itoWordIntegral B 0 t ω J) (Set.Icc 0 T))
+    (K : Word (d + 1)) :
+    ContinuousOn (fun t => stratItoCorrection B 0 t ω K) (Set.Icc 0 T) := by
+  match K with
+  | [] => exact continuousOn_const
+  | [_] => exact continuousOn_const
+  | _ :: _ :: _ =>
+    exact continuousOn_finsetSum _ fun n _ => continuousOn_finsetSum _ fun J _ =>
+      continuousOn_const.mul (hω J)
+
+lemma memLp_stratItoCorrection (B : MultiBrownian Ω P d) {t : ℝ} (ht : 0 ≤ t)
+    (K : Word (d + 1)) {q : ℕ} (hq : 2 ≤ q) :
+    MemLp (fun ω => stratItoCorrection B 0 t ω K) (2 * q : ℕ) P := by
+  match K with
+  | [] => exact memLp_const 0
+  | [_] => exact memLp_const 0
+  | _ :: _ :: _ =>
+    simp only [stratItoCorrection]
+    exact memLp_finsetSum _ fun n _ => memLp_finsetSum _ fun J _ =>
+      (memLp_itoWordIntegral B ht J hq).const_mul _
+
+/-- Almost surely, every coordinate of `Ŵ_{0,·}` is continuous on `[0, T]`. -/
+theorem ae_continuousOn_paperSig2_coeff (B : MultiBrownian Ω P d) {T : ℝ} (hT : 0 ≤ T) :
+    ∀ᵐ ω ∂P, ∀ I : Word (d + 1),
+      ContinuousOn (fun t => (paperSig2 B 0 t ω).coeff I) (Set.Icc 0 T) := by
+  filter_upwards [ae_continuousOn_itoWordIntegral B hT] with ω hω I
+  simp only [paperSig2_coeff, stratWordIntegral]
+  exact (hω _).add (continuousOn_stratItoCorrection B hω _)
+
+/-- Every coordinate of `Ŵ_{0,t}` has finite moments of every even order `2q ≥ 4`. -/
+theorem memLp_paperSig2_coeff (B : MultiBrownian Ω P d) {t : ℝ} (ht : 0 ≤ t)
+    (I : Word (d + 1)) {q : ℕ} (hq : 2 ≤ q) :
+    MemLp (fun ω => (paperSig2 B 0 t ω).coeff I) (2 * q : ℕ) P := by
+  simp only [paperSig2_coeff, stratWordIntegral]
+  exact (memLp_itoWordIntegral B ht _ hq).add (memLp_stratItoCorrection B ht _ hq)
 
 /-! ## Paper properties of `paperSig2` (holes, step 3 of the true-signature refactor) -/
 
