@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-24T20:34:55Z
-**`sorry` occurrences:** 30 · 11 open · 14 blocked · 184 done · 22 file(s) with `sorry`.
+**Updated:** 2026-11-24T20:39:47Z
+**`sorry` occurrences:** 29 · 10 open · 14 blocked · 185 done · 21 file(s) with `sorry`.
 **Paper claims refuted:** 5 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
 
 ## Open problem (the single remaining `sorry`)
@@ -70,7 +70,6 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | open | `SignatureRiccatiKit.IteratedDerivGaussian` | `SignatureVolatility/SignatureRiccatiKit/IteratedDerivGaussian.lean` |
 | blocked | `SignatureRiccatiKit.ItoWordTiltClosedForm` | `SignatureVolatility/SignatureRiccatiKit/ItoWordTiltClosedForm.lean` |
 | open | `SignatureRiccatiKit.LintegralExpShifted` | `SignatureVolatility/SignatureRiccatiKit/LintegralExpShifted.lean` |
-| open | `SignatureRiccatiKit.Poly4ConstOfLogBdd` | `SignatureVolatility/SignatureRiccatiKit/Poly4ConstOfLogBdd.lean` |
 | blocked | `SignatureRiccatiKit.SummableNormTermAndBound` | `SignatureVolatility/SignatureRiccatiKit/SummableNormTermAndBound.lean` |
 
 ## Open now (Layer 0)
@@ -87,11 +86,10 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | `SignatureRiccatiKit.FourierUniquenessGaussian` | `SignatureVolatility/SignatureRiccatiKit/FourierUniquenessGaussian.lean` |
 | `SignatureRiccatiKit.IteratedDerivGaussian` | `SignatureVolatility/SignatureRiccatiKit/IteratedDerivGaussian.lean` |
 | `SignatureRiccatiKit.LintegralExpShifted` | `SignatureVolatility/SignatureRiccatiKit/LintegralExpShifted.lean` |
-| `SignatureRiccatiKit.Poly4ConstOfLogBdd` | `SignatureVolatility/SignatureRiccatiKit/Poly4ConstOfLogBdd.lean` |
 
 ## By group
 
-### Top-level modules — 25 hole(s)
+### Top-level modules — 24 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -236,7 +234,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | open | `SignatureRiccatiKit.IteratedDerivGaussian` | `SignatureVolatility/SignatureRiccatiKit/IteratedDerivGaussian.lean` |
 | blocked | `SignatureRiccatiKit.ItoWordTiltClosedForm` | `SignatureVolatility/SignatureRiccatiKit/ItoWordTiltClosedForm.lean` |
 | open | `SignatureRiccatiKit.LintegralExpShifted` | `SignatureVolatility/SignatureRiccatiKit/LintegralExpShifted.lean` |
-| open | `SignatureRiccatiKit.Poly4ConstOfLogBdd` | `SignatureVolatility/SignatureRiccatiKit/Poly4ConstOfLogBdd.lean` |
+| done | `SignatureRiccatiKit.Poly4ConstOfLogBdd` | `SignatureVolatility/SignatureRiccatiKit/Poly4ConstOfLogBdd.lean` |
 | done | `SignatureRiccatiKit.RiccatiExpProcess` | `SignatureVolatility/SignatureRiccatiKit/RiccatiExpProcess.lean` |
 | done | `SignatureRiccatiKit.RiccatiOp` | `SignatureVolatility/SignatureRiccatiKit/RiccatiOp.lean` |
 | blocked | `SignatureRiccatiKit.SummableNormTermAndBound` | `SignatureVolatility/SignatureRiccatiKit/SummableNormTermAndBound.lean` |
