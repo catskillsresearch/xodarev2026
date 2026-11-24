@@ -220,6 +220,7 @@ ItoCalculusKit.ItoOrthogonal -hard-> ItoCalculusKit.FrozenIncrement8
 ItoCalculusKit.ItoQuadDoleans -hard-> ItoCalculusKit.DoleansStrongClass
 ItoCalculusKit.JointPast -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.JointPast -hard-> ItoCalculusKit.MartingaleTransform
+ItoCalculusKit.JointPast -hard-> SignatureRiccatiKit.ComplexTilt
 ItoCalculusKit.KitRaw -hard-> ItoCalculusKit.RiemannConvergence
 ItoCalculusKit.KolmogorovIto -hard-> ItoCalculusKit.DoleansQV
 ItoCalculusKit.KolmogorovIto -hard-> ItoCalculusKit.HolderPath
