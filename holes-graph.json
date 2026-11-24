@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T14:43:20Z",
+  "updated": "2026-11-24T14:58:11Z",
   "sorryCount": 1,
   "submittedSorryCount": 0,
   "legend": {
@@ -32,25 +32,25 @@
   "nodes": [
     {
       "id": "OpenProblems.AffineRiccatiDuality",
-      "label": "OPEN: affine_riccati_duality_mpr (sorry)",
+      "label": "OPEN: theorem_B_mpr via affine_riccati_duality_mpr (sorry)",
       "section": 1,
       "file": "OpenProblems/AffineRiccatiDuality.lean",
       "status": "open",
       "kind": null,
       "blocker": null,
-      "detail": "OPEN PROBLEM (not submitted; `OpenProblems` library): `affine_riccati_duality_mpr`, the <- direction of the affine / Riccati duality (paper Thm 4.2(ii), p. 21; proof \u00a74.4, p. 23), is stated at paper strength with `sorry`. The -> direction `affine_riccati_duality_mp` is proved and compared (SignatureRiccatiKit.AffineRiccatiDualityMp). The paper's justification of <- is unsupported: H3 plus polynomial moments do not give uniform integrability of exp<psi(T-t), W_t>, and Lemma 4.10 uses the false Lemmas B.1/B.2 (CounterExample_Lemma77/78). No counterexample found; Cuchiero-Svaluto-Ferro-Teichmann (arXiv:2302.01362, Thm 3.5) assume the true-martingale property. The full theorem_B (OpenProblems.TheoremB) depends on it. Contains `sorry` (paper gap). Paper kit / theorem goal.",
+      "detail": "OPEN PROBLEM (not submitted; `OpenProblems` library): `affine_riccati_duality_mpr`, the <- direction of the affine / Riccati duality (paper Thm 4.2(ii), p. 21; proof \u00a74.4, p. 23), is stated at paper strength with `sorry`. The -> direction `affine_riccati_duality_mp` is proved and compared (SignatureRiccatiKit.AffineRiccatiDualityMp). The paper's justification of <- is unsupported: H3 plus polynomial moments do not give uniform integrability of exp<psi(T-t), W_t>, and Lemma 4.10 uses the false Lemmas B.1/B.2 (CounterExample_Lemma77/78). No counterexample found; Cuchiero-Svaluto-Ferro-Teichmann (arXiv:2302.01362, Thm 3.5) assume the true-martingale property. theorem_B_mpr and the full theorem_B (OpenProblems.TheoremB) depend on it. Contains `sorry` (paper gap). Paper kit / theorem goal.",
       "hasSorry": true,
       "paperKitGoal": true
     },
     {
       "id": "OpenProblems.TheoremB",
-      "label": "theorem_B (needs affine_riccati_duality_mpr)",
+      "label": "theorem_B_mpr (sorry, via affine_riccati_duality_mpr), theorem_B",
       "section": 1,
       "file": "OpenProblems/TheoremB.lean",
       "status": "blocked",
       "kind": null,
       "blocker": "needs OpenProblems.AffineRiccatiDuality",
-      "detail": "Full paper Theorem B (not submitted). Its Riccati clause uses signatureRiccatiKit_of_setup, whose duality field rests on the open affine_riccati_duality_mpr. No `sorry` in this file.",
+      "detail": "theorem_B_mpr: the <- direction of paper Theorem B's Riccati clause, open; it is affine_riccati_duality_mpr (the single sorry, OpenProblems.AffineRiccatiDuality). theorem_B: the full paper statement, proved from theorem_B_mp and theorem_B_mpr. Not submitted; no `sorry` in this file.",
       "hasSorry": false,
       "paperKitGoal": false
     },
@@ -2060,13 +2060,13 @@
     },
     {
       "id": "TheoremB",
-      "label": "Partial_TheoremB (theorem_B_proved)",
+      "label": "theorem_B_mp",
       "section": 1,
       "file": "SignatureVolatility/TheoremB.lean",
       "status": "done",
       "kind": null,
       "blocker": null,
-      "detail": "Partial_TheoremB. theorem_B_proved (martingale on the signature filtration, NFLVR, special semimartingale coordinates) is sorry-free and compared. The full theorem_B is in the non-submitted OpenProblems library (OpenProblems.TheoremB). Paper kit / theorem goal.",
+      "detail": "theorem_B_mp (proved, compared): martingale on the signature filtration, NFLVR, special semimartingale coordinates, and the -> direction of the Riccati transform equivalence. theorem_B_mpr (<-, open) and the full theorem_B are in OpenProblems.TheoremB. Paper kit / theorem goal.",
       "hasSorry": false,
       "paperKitGoal": true
     },
@@ -3655,6 +3655,11 @@
     },
     {
       "from": "SignatureRiccatiKit.CoordSemimartingale",
+      "to": "TheoremB",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.AffineRiccatiDualityMp",
       "to": "TheoremB",
       "kind": "hard"
     },

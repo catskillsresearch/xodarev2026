@@ -375,6 +375,7 @@ SignaturePriceSolution -hard-> TheoremBOfSetupItoRiccatiKit
 SignatureRiccatiKit -hard-> SignatureRiccatiKit.AffineRiccatiDualityMp
 SignatureRiccatiKit -hard-> TheoremBOfSetupItoRiccatiKit
 SignatureRiccatiKit.AffineRiccatiDualityMp -hard-> OpenProblems.AffineRiccatiDuality
+SignatureRiccatiKit.AffineRiccatiDualityMp -hard-> TheoremB
 SignatureRiccatiKit.CoordSemimartingale -hard-> OpenProblems.AffineRiccatiDuality
 SignatureRiccatiKit.CoordSemimartingale -hard-> TheoremB
 SignatureRiccatiKit.RiccatiOp -hard-> Lemma77ShuffleEstimateFalse

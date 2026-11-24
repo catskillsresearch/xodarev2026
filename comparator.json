@@ -3,7 +3,7 @@
   "solution_module": "SignatureVolatilityComparator.Solution",
   "theorem_names": [
     "SignatureVolatility.theorem_A",
-    "SignatureVolatility.theorem_B_proved",
+    "SignatureVolatility.theorem_B_mp",
     "SignatureVolatility.affine_riccati_duality_mp",
     "SignatureVolatility.theorem_C_refuted",
     "SignatureVolatility.not_theorem_C",

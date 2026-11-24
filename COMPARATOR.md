@@ -16,7 +16,7 @@ each module is its own file); neither adds declarations or changes any kernel ty
 | Compared theorem | Paper item | Status (board label) |
 |---|---|---|
 | `theorem_A` | Theorem A | proved |
-| `theorem_B_proved` | Theorem B: martingale on the signature filtration, NFLVR, every coordinate special semimartingale | proved (partial Theorem B, see below) |
+| `theorem_B_mp` | Theorem B: martingale on the signature filtration, NFLVR, every coordinate special semimartingale, and the `→` direction of the Riccati transform equivalence | proved (`→` part of Theorem B, see below) |
 | `affine_riccati_duality_mp` | Theorem 4.2(ii), `→` direction: an exponential-affine conditional transform through a classical Riccati solution gives a solution | proved |
 | `not_theorem_C`, `theorem_C_refuted`, `blackScholes_isCompleteWithCalls` | Theorem C | refuted: Black–Scholes is complete with calls, but `N^*_S = ∞` (`CounterExample_TheoremC`) |
 | `theorem_C_depth_infinite`, `theorem_C_blackScholes_depth_infinite` | Theorem C right-hand side | `N^*_S = ∞` whenever `L²(ℱ^S_T)` is infinite-dimensional, and for Black–Scholes |
@@ -30,10 +30,13 @@ The other `theorem_names` entries are supporting facts: Itô/Doléans kit, Brown
 signature properties. They sit in the dependency closure of the statements above, so the
 Solution must prove them too.
 
-**Theorem B is only partly proved.** The full `theorem_B` also asserts the Riccati duality
-clause, which rests on the open `←` direction below. `theorem_B` therefore lives in the separate,
-non-submitted `OpenProblems` library (`OpenProblems/TheoremB.lean`) and is not compared. Only the
-proved conjuncts (`theorem_B_proved`) are compared.
+**Theorem B is split into three theorems.** `theorem_B_mp` (`SignatureVolatility/TheoremB.lean`)
+is everything proved: the martingale, NFLVR and special-semimartingale conclusions and the `→`
+direction of part (ii)'s Riccati equivalence; it is compared. `theorem_B_mpr` is the `←` direction
+(Riccati solution ⇒ exponential-affine conditional transform); it is `affine_riccati_duality_mpr`,
+the open problem below. `theorem_B` is the full paper statement, proved from `theorem_B_mp` and
+`theorem_B_mpr`. Both `theorem_B_mpr` and `theorem_B` are in the non-submitted `OpenProblems`
+library (`OpenProblems/TheoremB.lean`) and are not compared.
 
 **Open problem (not submitted).** The affine / Riccati duality (paper Thm 4.2(ii), p. 21; proof
 §4.4, p. 23) is split. The `→` direction `affine_riccati_duality_mp` is proved and compared. The
@@ -44,5 +47,5 @@ for it is unsupported: H3 and polynomial moment bounds do not give the uniform i
 claims, and its Lemma 4.10 uses the false Lemmas B.1/B.2 (our Lemma 77/78 counterexamples). No
 counterexample has been found, and the closest literature (Cuchiero–Svaluto-Ferro–Teichmann,
 arXiv:2302.01362, Thm 3.5) assumes the true-martingale property that would close it. The
-`OpenProblems` library also holds `affine_riccati_duality` (the iff), `signatureRiccatiKit_of_setup`
-and `theorem_B`. The submitted `SignatureVolatility` library and `Solution.lean` contain no `sorry`.
+`OpenProblems` library also holds `affine_riccati_duality` (the iff), `signatureRiccatiKit_of_setup`,
+`theorem_B_mpr` and `theorem_B`. The submitted `SignatureVolatility` library and `Solution.lean` contain no `sorry`.

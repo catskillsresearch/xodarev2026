@@ -5,7 +5,7 @@ def localMods : List Name := [`SignatureVolatility, `MathFin, `BrownianMotion, `
 
 def isLocalMod (m : Name) : Bool := localMods.any (·.isPrefixOf m)
 
-def targets : List Name := [`SignatureVolatility.theorem_A, `SignatureVolatility.theorem_B_proved,
+def targets : List Name := [`SignatureVolatility.theorem_A, `SignatureVolatility.theorem_B_mp,
   `SignatureVolatility.affine_riccati_duality_mp,
     `SignatureVolatility.theorem_C_refuted, `SignatureVolatility.not_theorem_C,
     `SignatureVolatility.blackScholes_isCompleteWithCalls,

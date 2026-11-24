@@ -9,8 +9,8 @@ project:
     rigorous verification of Theorems A–D, proving what holds at paper
     strength and refuting what does not. Proved: Theorem A (global existence
     and uniqueness of the positive strong solution of the signature SDE under
-    H1–H3); the martingale / NFLVR / special-semimartingale part of Theorem B
-    (theorem_B_proved); the → direction of the affine / Riccati duality of
+    H1–H3); Theorem B except the ← direction of its Riccati clause
+    (theorem_B_mp: martingale, NFLVR, special semimartingale, → Riccati); the → direction of the affine / Riccati duality of
     Theorem 4.2(ii) (affine_riccati_duality_mp); and the GKW projection part
     of Theorem D (theorem_D, Half_TheoremD). Refuted by Lean counterexamples:
     Theorem C (Black–Scholes is complete with finitely many calls but has
@@ -19,8 +19,8 @@ project:
     Lemma 78 (local Lipschitz bound for the Riccati operator); and the
     residual-expansion hypothesis "N^*_S < ∞" of Theorem D fails for
     Black–Scholes. One open problem remains outside the submitted library:
-    the ← direction of the Riccati duality (affine_riccati_duality_mpr), on
-    which the full Theorem B depends. Every compared theorem uses only
+    the ← direction of the Riccati duality (affine_riccati_duality_mpr, in
+    Theorem B form theorem_B_mpr), on which the full theorem_B depends. Every compared theorem uses only
     propext, Quot.sound and Classical.choice. Project rule: no Lean `axiom`
     declarations. Akmal Xodarev did not participate in or endorse this
     formalization. Lean was written with AI-agent assistance under Lars
@@ -53,7 +53,7 @@ status:
     no sorry. The single sorry of the repository is the open ← direction of
     the affine / Riccati duality, in the separate non-submitted OpenProblems
     library together with what depends on it (affine_riccati_duality,
-    signatureRiccatiKit_of_setup, full theorem_B). Challenge is one file
+    signatureRiccatiKit_of_setup, theorem_B_mpr, full theorem_B). Challenge is one file
     importing only Lean core and Mathlib.
   sorry_count: 0
   sorry_in_definitions: 0
@@ -71,7 +71,7 @@ status:
     - Quot.sound
     comparator_config: comparator.json
     literature_dependencies: []
-  - declaration: SignatureVolatility.theorem_B_proved
+  - declaration: SignatureVolatility.theorem_B_mp
     file: SignatureVolatility/TheoremB.lean
     sorry_count: 0
     axioms:
@@ -295,7 +295,8 @@ known_gaps:
     not_lemma78_local_lipschitz). No counterexample is known;
     Cuchiero–Svaluto-Ferro–Teichmann (arXiv:2302.01362, Thm 3.5) assume the
     true-martingale property. Consequently the full paper Theorem B
-    (OpenProblems/TheoremB.lean) is not compared; only theorem_B_proved is.
+    (theorem_B, OpenProblems/TheoremB.lean, from theorem_B_mp and the open
+    theorem_B_mpr) is not compared; only theorem_B_mp is.
   - >-
     Theorem C, Proposition 58 and Lemmas 77/78 are false as stated; the
     Comparator family contains their Lean refutations, not the claims.
@@ -315,8 +316,8 @@ alignment:
     lean: theorem_A
     module: SignatureVolatility.TheoremA
     status: proved
-  - source: "Thm B (partial): martingale on the signature filtration, NFLVR, special-semimartingale coordinates."
-    lean: theorem_B_proved
+  - source: "Thm B, all but the ← Riccati direction: martingale, NFLVR, special semimartingale, → Riccati."
+    lean: theorem_B_mp
     module: SignatureVolatility.TheoremB
     status: proved
   - source: "Thm 4.2(ii), → direction of the affine / Riccati duality."

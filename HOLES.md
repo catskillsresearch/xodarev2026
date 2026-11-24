@@ -2,14 +2,14 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-24T14:43:20Z
+**Updated:** 2026-11-24T14:58:11Z
 **`sorry` occurrences:** 1 (submitted library: 0; the rest in the non-submitted `OpenProblems` library) · 1 open · 1 blocked · 181 done · 1 file(s) with `sorry`.
 **Paper claims refuted:** 5 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
 
 ## Open problem (the single remaining `sorry`)
 
-- **`OpenProblems.AffineRiccatiDuality`**: OPEN PROBLEM (not submitted; `OpenProblems` library): `affine_riccati_duality_mpr`, the <- direction of the affine / Riccati duality (paper Thm 4.2(ii), p. 21; proof §4.4, p. 23), is stated at paper strength with `sorry`. The -> direction `affine_riccati_duality_mp` is proved and compared (SignatureRiccatiKit.AffineRiccatiDualityMp). The paper's justification of <- is unsupported: H3 plus polynomial moments do not give uniform integrability of exp<psi(T-t), W_t>, and Lemma 4.10 uses the false Lemmas B.1/B.2 (CounterExample_Lemma77/78). No counterexample found; Cuchiero-Svaluto-Ferro-Teichmann (arXiv:2302.01362, Thm 3.5) assume the true-martingale property. The full theorem_B (OpenProblems.TheoremB) depends on it.
-- `OpenProblems.TheoremB` (full `theorem_B`) is blocked only because it imports this module. The submitted library (`SignatureVolatility`, `Solution.lean`) has **0** `sorry`: `theorem_B_proved` (martingale, NFLVR, special semimartingale) and the `->` direction `affine_riccati_duality_mp` are sorry-free and compared in `comparator.json`.
+- **`OpenProblems.AffineRiccatiDuality`**: OPEN PROBLEM (not submitted; `OpenProblems` library): `affine_riccati_duality_mpr`, the <- direction of the affine / Riccati duality (paper Thm 4.2(ii), p. 21; proof §4.4, p. 23), is stated at paper strength with `sorry`. The -> direction `affine_riccati_duality_mp` is proved and compared (SignatureRiccatiKit.AffineRiccatiDualityMp). The paper's justification of <- is unsupported: H3 plus polynomial moments do not give uniform integrability of exp<psi(T-t), W_t>, and Lemma 4.10 uses the false Lemmas B.1/B.2 (CounterExample_Lemma77/78). No counterexample found; Cuchiero-Svaluto-Ferro-Teichmann (arXiv:2302.01362, Thm 3.5) assume the true-martingale property. theorem_B_mpr and the full theorem_B (OpenProblems.TheoremB) depend on it.
+- `OpenProblems.TheoremB` (`theorem_B_mpr`, full `theorem_B`) is blocked only because it imports this module. The submitted library (`SignatureVolatility`, `Solution.lean`) has **0** `sorry`: `theorem_B_mp` (martingale, NFLVR, special semimartingale, `->` Riccati direction) and `affine_riccati_duality_mp` are sorry-free and compared in `comparator.json`.
 
 ## Counterexamples and refuted paper claims
 

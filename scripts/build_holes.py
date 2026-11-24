@@ -96,30 +96,32 @@ OPEN_PROBLEMS: dict[str, str] = {
         "of <- is unsupported: H3 plus polynomial moments do not give uniform integrability of "
         "exp<psi(T-t), W_t>, and Lemma 4.10 uses the false Lemmas B.1/B.2 (CounterExample_Lemma77/78). "
         "No counterexample found; Cuchiero-Svaluto-Ferro-Teichmann (arXiv:2302.01362, Thm 3.5) assume "
-        "the true-martingale property. The full theorem_B (OpenProblems.TheoremB) depends on it.",
+        "the true-martingale property. theorem_B_mpr and the full theorem_B (OpenProblems.TheoremB) depend on it.",
 }
 
 
 # Labels shown on unfinished nodes (always applied).
 STATUS_LABELS: dict[str, str] = {
-    "OpenProblems.AffineRiccatiDuality": "OPEN: affine_riccati_duality_mpr (sorry)",
-    "OpenProblems.TheoremB": "theorem_B (needs affine_riccati_duality_mpr)",
+    "OpenProblems.AffineRiccatiDuality": "OPEN: theorem_B_mpr via affine_riccati_duality_mpr (sorry)",
+    "OpenProblems.TheoremB": "theorem_B_mpr (sorry, via affine_riccati_duality_mpr), theorem_B",
     "SignatureRiccatiKit.AffineRiccatiDualityMp": "affine_riccati_duality_mp (-> proved)",
-    "TheoremB": "Partial_TheoremB (theorem_B_proved)",
+    "TheoremB": "theorem_B_mp",
 }
 STATUS_DETAILS: dict[str, str] = {
     "TheoremB":
-        "Partial_TheoremB. theorem_B_proved (martingale on the signature filtration, NFLVR, special "
-        "semimartingale coordinates) is sorry-free and compared. The full theorem_B is in the "
-        "non-submitted OpenProblems library (OpenProblems.TheoremB).",
+        "theorem_B_mp (proved, compared): martingale on the signature filtration, NFLVR, special "
+        "semimartingale coordinates, and the -> direction of the Riccati transform equivalence. "
+        "theorem_B_mpr (<-, open) and the full theorem_B are in OpenProblems.TheoremB.",
     "SignatureRiccatiKit.AffineRiccatiDualityMp":
         "Proved -> direction of the affine / Riccati duality (paper Thm 4.2(ii)): an exponential-"
         "affine conditional transform through a classical Riccati solution gives a solution. "
         "Compared in comparator.json. The <- direction is the open problem "
         "(OpenProblems.AffineRiccatiDuality).",
     "OpenProblems.TheoremB":
-        "Full paper Theorem B (not submitted). Its Riccati clause uses signatureRiccatiKit_of_setup, "
-        "whose duality field rests on the open affine_riccati_duality_mpr. No `sorry` in this file.",
+        "theorem_B_mpr: the <- direction of paper Theorem B's Riccati clause, open; it is "
+        "affine_riccati_duality_mpr (the single sorry, OpenProblems.AffineRiccatiDuality). "
+        "theorem_B: the full paper statement, proved from theorem_B_mp and theorem_B_mpr. "
+        "Not submitted; no `sorry` in this file.",
 }
 
 
@@ -663,9 +665,9 @@ def write_md(data: dict) -> None:
         "## Open problem (the single remaining `sorry`)",
         "",
         *[f"- **`{nid}`**: {txt}" for nid, txt in OPEN_PROBLEMS.items()],
-        "- `OpenProblems.TheoremB` (full `theorem_B`) is blocked only because it imports this module. "
+        "- `OpenProblems.TheoremB` (`theorem_B_mpr`, full `theorem_B`) is blocked only because it imports this module. "
         "The submitted library (`SignatureVolatility`, `Solution.lean`) has **0** `sorry`: "
-        "`theorem_B_proved` (martingale, NFLVR, special semimartingale) and the `->` direction "
+        "`theorem_B_mp` (martingale, NFLVR, special semimartingale, `->` Riccati direction) and "
         "`affine_riccati_duality_mp` are sorry-free and compared in `comparator.json`.",
         "",
         "## Counterexamples and refuted paper claims",
