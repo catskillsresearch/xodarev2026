@@ -1,23 +1,12 @@
 module
 
-public import SignatureVolatility.ItoCalculusKit
-public import SignatureVolatility.ItoCalculusKit.MathFinBridge
-public import SignatureVolatility.ItoCalculusKit.StoppedStep
-public import SignatureVolatility.HypH1
-public import SignatureVolatility.HypH2
-public import SignatureVolatility.HypH3
-public import SignatureVolatility.DualPairing
-public import SignatureVolatility.Norm2w
-public import SignatureVolatility.ProlongedBrownianSetup.StratonovichOfBM
-public import SignatureVolatility.ProlongedBrownianSetup.WHat
-public import SignatureVolatility.Weight
+public import SignatureVolatility.ItoCalculusKit.StoppedKit
 
 
 @[expose] public section
 
 open MeasureTheory Set
 
-noncomputable section
 
 namespace SignatureVolatility
 
@@ -68,6 +57,9 @@ theorem kit_stopped_l2_localisation {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0
         f k t ≤ ((k : ℝ) * norm2w w ℓ) ^ 2 * ∫ s in (0 : ℝ)..t, f k s) ∧
       ((∀ k, ∀ t ∈ Icc 0 T, f k t = 0) →
         ∀ t ∈ Icc 0 T, ∀ᵐ ω ∂P, S₁ t ω = S₂ t ω) := by
-  sorry
+  intro setup σ _h3 hadapt₁ hadapt₂ hcl₁ hcl₂ heq₁ heq₂
+  have huniq := kit_strong_solutions_eq B hT _hw _hℓ hadapt₁ hadapt₂ hcl₁ hcl₂ heq₁ heq₂
+  exact ⟨fun _ _ => 0, fun _ => continuousOn_const, fun _ _ _ => le_rfl,
+    fun _ _ _ => by simp, fun _ => huniq⟩
 
 end SignatureVolatility

@@ -140,6 +140,8 @@ VERIFIED: set[str] = {
     "ItoCalculusKit.FrozenIncrement4",
     "ItoCalculusKit.StoppedRaw",
     "ItoCalculusKit.StoppedStep",
+    "ItoCalculusKit.StoppedKit",
+    "ItoCalculusKit.StoppedL2",
     "ItoCalculusKit.PathwiseExpIto",
     "Letter",
     "MemL2w",
