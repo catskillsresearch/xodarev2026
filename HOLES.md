@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-24T07:06:18Z
-**Holes:** 45 open+blocked · 1 open · 44 blocked · 136 done · 8 file(s) with `sorry`.
+**Updated:** 2026-11-24T07:27:47Z
+**Holes:** 46 open+blocked · 1 open · 45 blocked · 136 done · 5 file(s) with `sorry`.
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
 
@@ -33,10 +33,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | Status | Id | File |
 |---|---|---|
 | blocked | `GKWDecompositionSetup.OfPFS` | `SignatureVolatility/GKWDecompositionSetup/OfPFS.lean` |
-| blocked | `ItoCalculusKit.QuadIncrement` | `SignatureVolatility/ItoCalculusKit/QuadIncrement.lean` |
 | blocked | `ItoCalculusKit.SigmaContinuity` | `SignatureVolatility/ItoCalculusKit/SigmaContinuity.lean` |
-| blocked | `ItoCalculusKit.SigmaHolder` | `SignatureVolatility/ItoCalculusKit/SigmaHolder.lean` |
-| blocked | `ItoCalculusKit.SigmaHolder8` | `SignatureVolatility/ItoCalculusKit/SigmaHolder8.lean` |
 | blocked | `PriceFiltrationSignatureSpace.OfMarket` | `SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean` |
 | open | `ProlongedBrownianSetup.PaperSig` | `SignatureVolatility/ProlongedBrownianSetup/PaperSig.lean` |
 | blocked | `SignatureRiccatiKit.OfSetup` | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
@@ -49,7 +46,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 
 ## By group
 
-### Top-level modules — 42 hole(s)
+### Top-level modules — 43 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -122,6 +119,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | blocked | `ItoCalculusKit.QuadIncrement` | `SignatureVolatility/ItoCalculusKit/QuadIncrement.lean` |
 | done | `ItoCalculusKit.RiemannConvergence` | `SignatureVolatility/ItoCalculusKit/RiemannConvergence.lean` |
 | blocked | `ItoCalculusKit.RiemannRate8` | `SignatureVolatility/ItoCalculusKit/RiemannRate8.lean` |
+| blocked | `ItoCalculusKit.SigmaBounds` | `SignatureVolatility/ItoCalculusKit/SigmaBounds.lean` |
 | blocked | `ItoCalculusKit.SigmaContinuity` | `SignatureVolatility/ItoCalculusKit/SigmaContinuity.lean` |
 | blocked | `ItoCalculusKit.SigmaHolder` | `SignatureVolatility/ItoCalculusKit/SigmaHolder.lean` |
 | blocked | `ItoCalculusKit.SigmaHolder8` | `SignatureVolatility/ItoCalculusKit/SigmaHolder8.lean` |

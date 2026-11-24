@@ -152,7 +152,12 @@ theorem signatureSigma_pow16_moment {w : Weight} (hw : HypH2 w) (hℓ : HypH1 w 
     ∃ Cσ, 0 ≤ Cσ ∧ ∀ s ∈ Icc 0 T,
       Integrable (fun ω => signatureSigma B hT ℓ s ω ^ 16) P ∧
       ∫ ω, signatureSigma B hT ℓ s ω ^ 16 ∂P ≤ Cσ := by
-  sorry
+  obtain ⟨C, r, hC, hr, hℓn⟩ := exists_levelNorm_le_geometric hw hℓ
+  obtain ⟨M, hM0, hM⟩ := dualPairing_paperSig2_moment (P := P) B hC hr hℓn (q := 8)
+    (by norm_num) (t := T)
+  refine ⟨M, hM0, fun s hs => ?_⟩
+  obtain ⟨-, hL, hI⟩ := hM s hs.1 hs.2
+  exact ⟨integrable_pow_of_memLp_evenDeg ⟨8, rfl⟩ hL, hI⟩
 
 /-- **Eighth moments of increments of `∫ σ²`** under H1–H2. -/
 theorem integral_quadIncr_pow_eight_le {w : Weight} (hw : HypH2 w) (hℓ : HypH1 w ℓ) :

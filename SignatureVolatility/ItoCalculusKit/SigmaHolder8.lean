@@ -1,13 +1,11 @@
 module
 
 public import SignatureVolatility.ItoCalculusKit.ItoIncrement8
-public import SignatureVolatility.ItoCalculusKit.EvenTransform
 
 
 @[expose] public section
 
-open MeasureTheory ProbabilityTheory
-open scoped NNReal ENNReal
+open MeasureTheory
 
 namespace SignatureVolatility
 
@@ -66,6 +64,13 @@ lemma sum_sq_pow_eight_le (Δ : Fin (d + 1) → ℝ) :
 theorem holderAdapted8_signatureSigma {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T)
     {w : Weight} (hw : HypH2 w) {ℓ : ExtTensorAlgebra (d + 1)} (hℓ : HypH1 w ℓ) (t : ℝ) :
     ∃ K, HolderAdapted8 B (signatureSigma B hT ℓ) t K := by
-  sorry
+  obtain ⟨C, r, hC, hr, hℓn⟩ := exists_levelNorm_le_geometric hw hℓ
+  obtain ⟨K, hK, hKb⟩ := dualPairing_paperSig2_incr (P := P) B hC hr hℓn (q := 4) (by norm_num)
+    (le_max_right t 0)
+  obtain ⟨M, -, hM⟩ := dualPairing_paperSig2_moment (P := P) B hC hr hℓn (q := 4) (by norm_num)
+    (t := max t 0)
+  refine ⟨K, hK, fun u hu _ => measurable_signatureSigma_path B hT ℓ u ⟨u, hu, le_rfl⟩,
+    fun u hu hut => (hM u hu (hut.trans (le_max_left _ _))).2.1,
+    fun u v hu huv hvt => (hKb u v hu huv (hvt.trans (le_max_left _ _))).2⟩
 
 end SignatureVolatility

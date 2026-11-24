@@ -8,6 +8,7 @@ ClassicalRiccatiSolution -hard-> TheoremBOfSetupItoRiccatiKit
 DualPairing -hard-> DualPairingLeNormWDualMulNormW
 DualPairing -hard-> ExtTensorAlgebra.TensorExpLipschitz
 DualPairing -hard-> ItoCalculusKit
+DualPairing -hard-> ItoCalculusKit.SigmaBounds
 DualPairing -hard-> ItoCalculusKit.SigmaContinuity
 DualPairing -hard-> SignatureRiccatiKit
 DualPairing -hard-> SignatureVolatilityModel.Sigma
@@ -174,7 +175,6 @@ ItoCalculusKit.EighthMoment -hard-> ItoCalculusKit.EvenMoment
 ItoCalculusKit.EighthTransform -hard-> ItoCalculusKit.ItoIncrement8
 ItoCalculusKit.EvenMoment -hard-> ItoCalculusKit.EvenTransform
 ItoCalculusKit.EvenTransform -hard-> ItoCalculusKit.ItoIncrementEven
-ItoCalculusKit.EvenTransform -hard-> ItoCalculusKit.SigmaHolder8
 ItoCalculusKit.ExpSupermartingale -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.FourthMoment -hard-> ItoCalculusKit.BrownianQuadVarAS
 ItoCalculusKit.FourthMoment -hard-> ItoCalculusKit.EighthMoment
@@ -225,8 +225,8 @@ ItoCalculusKit.QuadIncrement -hard-> ItoCalculusKit.LogDoleansIncrement
 ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.EvenTransform
 ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.ExpSupermartingale
 ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.ItoIncrement
-ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.SigmaHolder
 ItoCalculusKit.RiemannRate8 -hard-> ItoCalculusKit.SubseqUniform
+ItoCalculusKit.SigmaBounds -hard-> ItoCalculusKit.SigmaHolder
 ItoCalculusKit.SigmaContinuity -hard-> ItoCalculusKit.SigmaHolder
 ItoCalculusKit.SigmaHolder -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.SigmaHolder -hard-> ItoCalculusKit.EighthTransform
@@ -358,6 +358,7 @@ ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.ItoIntegralAgai
 ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.ItoWordIntegralLe1
 ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.Sig2StratDyadic
 ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.SignatureOfBM
+ProlongedBrownianSetup.PaperSig -hard-> ItoCalculusKit.SigmaBounds
 ProlongedBrownianSetup.PaperSig -hard-> ProlongedBrownianSetup.StratonovichOfBM
 ProlongedBrownianSetup.Sig2StratAdapted -hard-> ItoCalculusKit.JointPast
 ProlongedBrownianSetup.Sig2StratAdapted -hard-> ItoCalculusKit.MathFinBridge

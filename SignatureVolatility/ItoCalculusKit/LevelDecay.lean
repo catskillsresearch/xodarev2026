@@ -160,6 +160,97 @@ theorem eLpNorm_itoWordIntegral_le (B : MultiBrownian Ω P d) {q : ℕ} (hq : 2 
             (nrm_nonneg q (by positivity)))
     _ = _ := by ring
 
+/-- **Factorial decay** of the level increment constants. -/
+theorem wordIncr_le {q : ℕ} (hq : 2 ≤ q) {T : ℝ} (hT : 0 ≤ T) :
+    ∀ I : Word (d + 1), I ≠ [] →
+    wordIncr q T I ≤ decayConst q ^ I.length * max 1 T ^ (2 * I.length) *
+      nrm q (1 / ((I.length - 1).factorial : ℝ))
+  | [], h => absurd rfl h
+  | j :: I, _ => by
+    have hC := one_le_decayConst q
+    have hT1 : (1 : ℝ) ≤ max 1 T := le_max_left _ _
+    have hTM : T ≤ max 1 T := le_max_right _ _
+    by_cases hI : I = []
+    · subst hI
+      simp only [wordIncr, ↓reduceIte, List.length_cons, List.length_nil, zero_add, pow_one,
+        Nat.sub_self, Nat.factorial_zero, Nat.cast_one, div_one, nrm_one, mul_one]
+      have hM2 : max 1 T ≤ max 1 T ^ (2 * 1) := by
+        calc max 1 T = max 1 T ^ 1 := (pow_one _).symm
+          _ ≤ _ := pow_le_pow_right₀ hT1 (by norm_num)
+      have hM1 : (1 : ℝ) ≤ max 1 T ^ 2 := one_le_pow₀ hT1
+      split_ifs
+      · calc T ≤ max 1 T ^ 2 := hTM.trans (by simpa using hM2)
+          _ ≤ decayConst q * max 1 T ^ 2 := le_mul_of_one_le_left (by positivity) hC
+      · have h1 : nrm q (gaussMoment q) ≤ decayConst q :=
+          (le_max_right _ _).trans (le_max_right _ _)
+        calc nrm q (gaussMoment q) ≤ decayConst q := h1
+          _ ≤ decayConst q * max 1 T ^ 2 := le_mul_of_one_le_right (by linarith) hM1
+    · set m := I.length with hm
+      have hA := wordConst_nonneg hq I
+      have hW := wordConst_le hq I hI
+      have hN0 : 0 ≤ nrm q (1 / (m.factorial : ℝ)) := nrm_nonneg q (by positivity)
+      have hTe : T ^ wordExp I ≤ max 1 T ^ (2 * m) :=
+        (pow_le_pow_left₀ hT hTM _).trans (pow_le_pow_right₀ hT1 (wordExp_le_two_mul_length I))
+      have hT2 : T ≤ max 1 T ^ 2 :=
+        hTM.trans (by nlinarith)
+      have hlen : (j :: I).length - 1 = m := by simp [m]
+      rw [hlen]
+      simp only [wordIncr, hI, ↓reduceIte, List.length_cons]
+      have hD0 : 0 ≤ decayConst q := by linarith
+      have key : wordConst q I * T ^ wordExp I ≤
+          decayConst q ^ m * max 1 T ^ (2 * m) * nrm q (1 / (m.factorial : ℝ)) := by
+        calc wordConst q I * T ^ wordExp I
+            ≤ (decayConst q ^ m * nrm q (1 / (m.factorial : ℝ))) * max 1 T ^ (2 * m) :=
+              mul_le_mul hW hTe (pow_nonneg hT _) (by positivity)
+          _ = _ := by ring
+      have hK0 : 0 ≤ decayConst q ^ m * max 1 T ^ (2 * m) * nrm q (1 / (m.factorial : ℝ)) := by
+        positivity
+      have hp : 0 ≤ wordConst q I * T ^ wordExp I := mul_nonneg hA (pow_nonneg hT _)
+      split_ifs with hj
+      · calc wordConst q I * T ^ wordExp I * T
+            ≤ (decayConst q ^ m * max 1 T ^ (2 * m) * nrm q (1 / (m.factorial : ℝ))) *
+                (decayConst q * max 1 T ^ 2) :=
+              mul_le_mul key (hT2.trans (le_mul_of_one_le_left (by positivity) hC)) hT hK0
+          _ = _ := by rw [pow_succ, mul_add, pow_add]; ring
+      · have hE : itoEvenConst q ≤ decayConst q := (le_max_left _ _).trans (le_max_right _ _)
+        calc itoEvenConst q * (wordConst q I * T ^ wordExp I)
+            ≤ decayConst q * (decayConst q ^ m * max 1 T ^ (2 * m) *
+                nrm q (1 / (m.factorial : ℝ))) * 1 := by
+              rw [mul_one]; exact mul_le_mul hE key hp hD0
+          _ ≤ decayConst q * (decayConst q ^ m * max 1 T ^ (2 * m) *
+                nrm q (1 / (m.factorial : ℝ))) * max 1 T ^ 2 :=
+              mul_le_mul_of_nonneg_left (one_le_pow₀ hT1) (by positivity)
+          _ = _ := by rw [pow_succ, mul_add, pow_add]; ring
+
+/-- `L^{2q}` increment bound for an Itô word coordinate on `[0, T]`. -/
+theorem eLpNorm_itoWordIntegral_sub_le (B : MultiBrownian Ω P d) {q : ℕ} (hq : 2 ≤ q) {T : ℝ}
+    (hT : 0 ≤ T) (J : Word (d + 1)) (hJ : J ≠ []) {u v : ℝ} (hu : 0 ≤ u) (huv : u ≤ v)
+    (hvT : v ≤ T) :
+    eLpNorm (fun ω => itoWordIntegral B 0 v ω J - itoWordIntegral B 0 u ω J) (2 * q : ℕ) P ≤
+      ENNReal.ofReal (Real.sqrt (wordIncr q T J * (v - u))) := by
+  have hL := levelBound_itoWordIntegral (P := P) B hT J hJ
+  have hm : MemLp (fun ω => itoWordIntegral B 0 v ω J - itoWordIntegral B 0 u ω J)
+      (2 * q : ℕ) P :=
+    (hL.memLp q hq v (hu.trans huv) hvT).sub (hL.memLp q hq u hu (huv.trans hvT))
+  have hinc := hL.incr q hq u v hu huv hvT
+  have hev : Even (2 * q) := ⟨q, by ring⟩
+  have h2q : ((2 * q : ℕ) : ℝ≥0∞) ≠ 0 := by
+    exact_mod_cast (show 2 * q ≠ 0 by omega)
+  rw [hm.eLpNorm_eq_integral_rpow_norm h2q (ENNReal.natCast_ne_top _)]
+  apply ENNReal.ofReal_le_ofReal
+  set F : Ω → ℝ := fun ω => itoWordIntegral B 0 v ω J - itoWordIntegral B 0 u ω J
+  have hI : ∫ ω, ‖F ω‖ ^ (((2 * q : ℕ) : ℝ≥0∞).toReal) ∂P = ∫ ω, F ω ^ (2 * q) ∂P := by
+    congr 1; funext ω
+    rw [ENNReal.toReal_natCast, Real.rpow_natCast, Real.norm_eq_abs, hev.pow_abs]
+  have h0 : 0 ≤ ∫ ω, F ω ^ (2 * q) ∂P := integral_nonneg fun ω => hev.pow_nonneg _
+  rw [hI, ENNReal.toReal_natCast]
+  have hsq : (∫ ω, F ω ^ (2 * q) ∂P) ^ (((2 * q : ℕ) : ℝ))⁻¹ =
+      Real.sqrt (nrm q (∫ ω, F ω ^ (2 * q) ∂P)) := by
+    rw [Real.sqrt_eq_rpow, nrm, ← Real.rpow_mul h0]
+    congr 1; push_cast; field_simp
+  rw [hsq]
+  exact Real.sqrt_le_sqrt hinc
+
 /-- Superexponential decay: `Σ Kⁿ (1/⌊n/2⌋!)^{1/s} < ∞`. -/
 theorem summable_pow_mul_inv_factorial_half {K : ℝ} (hK : 0 ≤ K) {s : ℕ} (hs : s ≠ 0) :
     Summable (fun n : ℕ => K ^ n * ((1 : ℝ) / ((n / 2).factorial : ℝ)) ^ ((s : ℝ)⁻¹)) := by
@@ -216,14 +307,12 @@ theorem summable_pow_mul_inv_factorial_half {K : ℝ} (hK : 0 ≤ K) {s : ℕ} (
         exact hcore.trans (mul_le_mul_of_nonneg_left h4 (by positivity))
     _ = _ := by ring
 
-/-- **Summation in `L^N`.** Non-negative measurable `Yₙ` with `Σ ‖Yₙ‖_N < ∞` are a.s. summable,
-and the `p`-th power of the sum is integrable for `1 ≤ p ≤ N`. -/
-theorem summable_integrable_of_eLpNorm_le {Y : ℕ → Ω → ℝ} (hY0 : ∀ n ω, 0 ≤ Y n ω)
+omit [IsProbabilityMeasure P] in
+/-- `L^N` bound for a sum of non-negative terms: `∫⁻ (Σ Yₙ)^N ≤ (Σ bₙ)^N`. -/
+theorem lintegral_tsum_rpow_le {Y : ℕ → Ω → ℝ} (hY0 : ∀ n ω, 0 ≤ Y n ω)
     (hYm : ∀ n, Measurable (Y n)) {N : ℕ} (hN : 1 ≤ N) {b : ℕ → ℝ} (hb0 : ∀ n, 0 ≤ b n)
-    (hb : ∀ n, eLpNorm (Y n) N P ≤ ENNReal.ofReal (b n)) (hbs : Summable b) {p : ℝ}
-    (hp : 1 ≤ p) (hpN : p ≤ N) :
-    (∀ᵐ ω ∂P, Summable (fun n => Y n ω)) ∧
-      Integrable (fun ω => (∑' n, Y n ω) ^ p) P := by
+    (hb : ∀ n, eLpNorm (Y n) N P ≤ ENNReal.ofReal (b n)) (hbs : Summable b) :
+    ∫⁻ ω, (∑' n, ENNReal.ofReal (Y n ω)) ^ (N : ℝ) ∂P ≤ ENNReal.ofReal (∑' n, b n) ^ (N : ℝ) := by
   have hN0 : (0 : ℝ) < N := by exact_mod_cast hN
   set G : Ω → ℝ≥0∞ := fun ω => ∑' n, ENNReal.ofReal (Y n ω) with hG
   have hGm : Measurable G := Measurable.tsum fun n => (hYm n).ennreal_ofReal
@@ -266,6 +355,22 @@ theorem summable_integrable_of_eLpNorm_le {Y : ℕ → Ω → ℝ} (hY0 : ∀ n 
       (Eventually.of_forall fun ω =>
         ((ENNReal.continuous_rpow_const).tendsto _).comp (ENNReal.tendsto_nat_tsum _))
     exact le_of_tendsto' ht hpart
+  exact hlim
+
+/-- **Summation in `L^N`.** Non-negative measurable `Yₙ` with `Σ ‖Yₙ‖_N < ∞` are a.s. summable,
+and the `p`-th power of the sum is integrable for `1 ≤ p ≤ N`. -/
+theorem summable_integrable_of_eLpNorm_le {Y : ℕ → Ω → ℝ} (hY0 : ∀ n ω, 0 ≤ Y n ω)
+    (hYm : ∀ n, Measurable (Y n)) {N : ℕ} (hN : 1 ≤ N) {b : ℕ → ℝ} (hb0 : ∀ n, 0 ≤ b n)
+    (hb : ∀ n, eLpNorm (Y n) N P ≤ ENNReal.ofReal (b n)) (hbs : Summable b) {p : ℝ}
+    (hp : 1 ≤ p) (hpN : p ≤ N) :
+    (∀ᵐ ω ∂P, Summable (fun n => Y n ω)) ∧
+      Integrable (fun ω => (∑' n, Y n ω) ^ p) P := by
+  have hN0 : (0 : ℝ) < N := by exact_mod_cast hN
+  set G : Ω → ℝ≥0∞ := fun ω => ∑' n, ENNReal.ofReal (Y n ω) with hG
+  have hGm : Measurable G := Measurable.tsum fun n => (hYm n).ennreal_ofReal
+  set Mb : ℝ≥0∞ := ENNReal.ofReal (∑' n, b n)
+  have hlim : ∫⁻ ω, G ω ^ (N : ℝ) ∂P ≤ Mb ^ (N : ℝ) :=
+    lintegral_tsum_rpow_le hY0 hYm hN hb0 hb hbs
   have hMb : Mb ^ (N : ℝ) ≠ ⊤ := ENNReal.rpow_ne_top_of_nonneg hN0.le ENNReal.ofReal_ne_top
   have hGfin : ∀ᵐ ω ∂P, G ω ≠ ⊤ := by
     have := ae_lt_top (hGm.pow_const (N : ℝ)) (ne_top_of_le_ne_top hMb hlim)
@@ -303,5 +408,29 @@ theorem summable_integrable_of_eLpNorm_le {Y : ℕ → Ω → ℝ} (hY0 : ∀ n 
     _ = 1 + ∫⁻ ω, G ω ^ (N : ℝ) ∂P := by
         rw [lintegral_add_left measurable_const]; simp
     _ < ⊤ := ENNReal.add_lt_top.2 ⟨ENNReal.one_lt_top, lt_of_le_of_lt hlim hMb.lt_top⟩
+
+/-- Real-valued form: `∫ (Σ Yₙ)^N ≤ (Σ bₙ)^N`, given the sum is a.s. summable. -/
+theorem integral_tsum_pow_le {Y : ℕ → Ω → ℝ} (hY0 : ∀ n ω, 0 ≤ Y n ω)
+    (hYm : ∀ n, Measurable (Y n)) {N : ℕ} (hN : 1 ≤ N) {b : ℕ → ℝ} (hb0 : ∀ n, 0 ≤ b n)
+    (hb : ∀ n, eLpNorm (Y n) N P ≤ ENNReal.ofReal (b n)) (hbs : Summable b) :
+    ∫ ω, (∑' n, Y n ω) ^ N ∂P ≤ (∑' n, b n) ^ N := by
+  have hN0 : (0 : ℝ) < N := by exact_mod_cast hN
+  have hsum := (summable_integrable_of_eLpNorm_le hY0 hYm hN hb0 hb hbs le_rfl
+    (by exact_mod_cast hN)).1
+  have hlim := lintegral_tsum_rpow_le hY0 hYm hN hb0 hb hbs
+  have hS0 : ∀ ω, 0 ≤ ∑' n, Y n ω := fun ω => tsum_nonneg fun n => hY0 n ω
+  have hSm : Measurable fun ω => ∑' n, Y n ω := Measurable.tsum hYm
+  have hB0 : 0 ≤ ∑' n, b n := tsum_nonneg hb0
+  rw [integral_eq_lintegral_of_nonneg_ae (Eventually.of_forall fun ω => pow_nonneg (hS0 ω) N)
+    (hSm.pow_const N).aestronglyMeasurable]
+  rw [← ENNReal.toReal_ofReal (pow_nonneg hB0 N)]
+  apply ENNReal.toReal_mono (ENNReal.ofReal_ne_top)
+  have hae : ∀ᵐ ω ∂P, ENNReal.ofReal ((∑' n, Y n ω) ^ N) =
+      (∑' n, ENNReal.ofReal (Y n ω)) ^ (N : ℝ) := by
+    filter_upwards [hsum] with ω hω
+    rw [ENNReal.ofReal_pow (hS0 ω), ENNReal.ofReal_tsum_of_nonneg (fun n => hY0 n ω) hω,
+      ENNReal.rpow_natCast]
+  rw [lintegral_congr_ae hae, ENNReal.ofReal_pow hB0, ← ENNReal.rpow_natCast]
+  exact hlim
 
 end SignatureVolatility

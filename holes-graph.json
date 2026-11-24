@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-24T07:06:18Z",
-  "sorryCount": 45,
+  "updated": "2026-11-24T07:27:47Z",
+  "sorryCount": 46,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -971,8 +971,8 @@
       "file": "SignatureVolatility/ItoCalculusKit/QuadIncrement.lean",
       "status": "blocked",
       "blocker": "needs ItoCalculusKit.SigmaHolder8",
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
-      "hasSorry": true,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -998,6 +998,17 @@
       "paperKitGoal": false
     },
     {
+      "id": "ItoCalculusKit.SigmaBounds",
+      "label": "ItoCalculusKit.SigmaBounds",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/SigmaBounds.lean",
+      "status": "blocked",
+      "blocker": "needs ProlongedBrownianSetup.PaperSig",
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
       "id": "ItoCalculusKit.SigmaContinuity",
       "label": "ItoCalculusKit.SigmaContinuity",
       "section": 1,
@@ -1014,9 +1025,9 @@
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/SigmaHolder.lean",
       "status": "blocked",
-      "blocker": "needs ItoCalculusKit.SigmaContinuity",
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
-      "hasSorry": true,
+      "blocker": "needs ItoCalculusKit.SigmaBounds, ItoCalculusKit.SigmaContinuity",
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -1026,8 +1037,8 @@
       "file": "SignatureVolatility/ItoCalculusKit/SigmaHolder8.lean",
       "status": "blocked",
       "blocker": "needs ItoCalculusKit.ItoIncrement8",
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
-      "hasSorry": true,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -2689,6 +2700,16 @@
     },
     {
       "from": "DualPairing",
+      "to": "ItoCalculusKit.SigmaBounds",
+      "kind": "hard"
+    },
+    {
+      "from": "ProlongedBrownianSetup.PaperSig",
+      "to": "ItoCalculusKit.SigmaBounds",
+      "kind": "hard"
+    },
+    {
+      "from": "DualPairing",
       "to": "ItoCalculusKit.SigmaContinuity",
       "kind": "hard"
     },
@@ -2710,6 +2731,11 @@
     {
       "from": "ProlongedBrownianSetup.WHat",
       "to": "ItoCalculusKit.SigmaContinuity",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.SigmaBounds",
+      "to": "ItoCalculusKit.SigmaHolder",
       "kind": "hard"
     },
     {

@@ -1,6 +1,6 @@
 module
 
-public import SignatureVolatility.ItoCalculusKit.RiemannConvergence
+public import SignatureVolatility.ItoCalculusKit.SigmaBounds
 public import SignatureVolatility.ItoCalculusKit.SigmaContinuity
 public import SignatureVolatility.ProlongedBrownianSetup.SignatureOfBM
 
@@ -264,7 +264,14 @@ path filtration, in `L⁴`, and satisfies `E|σ_v - σ_u|⁴ ≤ K (v - u)²`. -
 theorem holderAdapted_signatureSigma {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T)
     {w : Weight} (hw : HypH2 w) {ℓ : ExtTensorAlgebra (d + 1)} (hℓ : HypH1 w ℓ) (t : ℝ) :
     ∃ K, HolderAdapted B (signatureSigma B hT ℓ) t K := by
-  sorry
+  obtain ⟨C, r, hC, hr, hℓn⟩ := exists_levelNorm_le_geometric hw hℓ
+  obtain ⟨K, hK, hKb⟩ := dualPairing_paperSig2_incr (P := P) B hC hr hℓn (q := 2) le_rfl
+    (le_max_right t 0)
+  obtain ⟨M, -, hM⟩ := dualPairing_paperSig2_moment (P := P) B hC hr hℓn (q := 2) le_rfl
+    (t := max t 0)
+  refine ⟨K, hK, fun u hu _ => measurable_signatureSigma_path B hT ℓ u ⟨u, hu, le_rfl⟩,
+    fun u hu hut => (hM u hu (hut.trans (le_max_left _ _))).2.1,
+    fun u v hu huv hvt => (hKb u v hu huv (hvt.trans (le_max_left _ _))).2⟩
 
 
 end SignatureVolatility

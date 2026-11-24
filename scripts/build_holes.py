@@ -121,6 +121,7 @@ VERIFIED: set[str] = {
     "ItoCalculusKit.LebIncrementEven",
     "ItoCalculusKit.LevelBounds",
     "ItoCalculusKit.LevelDecay",
+    "ItoCalculusKit.SigmaBounds",
     "ItoCalculusKit.QuadIncrement",
     "ItoCalculusKit.LogDoleansIncrement",
     "ItoCalculusKit.GridChange",
