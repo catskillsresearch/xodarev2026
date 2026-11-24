@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T10:43:16Z",
+  "updated": "2026-11-24T10:47:14Z",
   "sorryCount": 2,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -1882,14 +1882,25 @@
     },
     {
       "id": "TheoremC",
-      "label": "CounterExample_TheoremC (pending)",
+      "label": "TheoremC: refuted by CounterExample_TheoremC",
       "section": 1,
       "file": "SignatureVolatility/TheoremC.lean",
-      "status": "partly-refuted",
+      "status": "refuted",
       "blocker": null,
-      "detail": "CounterExample_TheoremC (pending: needs Black-Scholes completeness via martingale representation). Proved so far: the finite-depth side of Theorem C / Thm 56 is false in every non-degenerate model (depth = infinity), incl. Black-Scholes; Prop. 58 refuted. The 'complete iff' direction awaits a Black-Scholes completeness proof. Paper kit / theorem goal.",
+      "detail": "REFUTED (CounterExample_TheoremC, theorem_C_refuted := not_theorem_C): Black-Scholes is complete with any finite set of calls but has N*_S = infinity, so 'complete iff N*_S < infinity' fails. Also: depth is infinite in every non-degenerate model; Prop. 58 refuted. Paper kit / theorem goal.",
       "hasSorry": false,
       "paperKitGoal": true
+    },
+    {
+      "id": "TheoremCCounterExample",
+      "label": "CounterExample_TheoremC",
+      "section": 1,
+      "file": "SignatureVolatility/TheoremCCounterExample.lean",
+      "status": "counterexample",
+      "blocker": null,
+      "detail": "CounterExample_TheoremC (proved, not_theorem_C): Black-Scholes is complete on F^S_T (vendored MathFin martingale representation, F^S = F^W) for every finite strike set, while N*_S = infinity; so the paper's 'complete iff N*_S < infinity' is false.",
+      "hasSorry": false,
+      "paperKitGoal": false
     },
     {
       "id": "TheoremD",
@@ -3438,8 +3449,13 @@
       "kind": "hard"
     },
     {
-      "from": "Prop58BlackScholesDepthFalse",
+      "from": "TheoremCCounterExample",
       "to": "TheoremC",
+      "kind": "hard"
+    },
+    {
+      "from": "Prop58BlackScholesDepthFalse",
+      "to": "TheoremCCounterExample",
       "kind": "hard"
     },
     {

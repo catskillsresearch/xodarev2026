@@ -35,6 +35,7 @@ public import SignatureVolatility.Lemma32SignatureInTw
 public import SignatureVolatility.Lemma61GramPosDef
 public import SignatureVolatility.Lemma77ShuffleEstimateFalse
 public import SignatureVolatility.Prop58BlackScholesDepthFalse
+public import SignatureVolatility.TheoremCCounterExample
 public import SignatureVolatility.Letter
 public import SignatureVolatility.MemL2w
 public import SignatureVolatility.MemL2wInv

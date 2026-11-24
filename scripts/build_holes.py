@@ -60,15 +60,18 @@ COUNTEREXAMPLES: dict[str, str] = {
     "Prop58BlackScholesDepthFalse":
         "CounterExample_Prop58: refutes paper Prop. 58 / PDF Prop. 5.5 (Black-Scholes has completeness "
         "depth 0); Black-Scholes depth is infinite under Definition 55.",
+    "TheoremCCounterExample":
+        "CounterExample_TheoremC (proved, not_theorem_C): Black-Scholes is complete on F^S_T "
+        "(vendored MathFin martingale representation, F^S = F^W) for every finite strike set, "
+        "while N*_S = infinity; so the paper's 'complete iff N*_S < infinity' is false.",
 }
 
 # Headline theorem modules whose paper statement is (partly) refuted. Value: (status, detail).
 REFUTED_THEOREMS: dict[str, tuple[str, str]] = {
-    "TheoremC": ("partly-refuted",
-        "CounterExample_TheoremC (pending: needs Black-Scholes completeness via martingale "
-        "representation). Proved so far: the finite-depth side of Theorem C / Thm 56 is false in every non-degenerate "
-        "model (depth = infinity), incl. Black-Scholes; Prop. 58 refuted. The 'complete iff' "
-        "direction awaits a Black-Scholes completeness proof."),
+    "TheoremC": ("refuted",
+        "REFUTED (CounterExample_TheoremC, theorem_C_refuted := not_theorem_C): Black-Scholes is "
+        "complete with any finite set of calls but has N*_S = infinity, so 'complete iff N*_S < "
+        "infinity' fails. Also: depth is infinite in every non-degenerate model; Prop. 58 refuted."),
     "TheoremD": ("partly-refuted",
         "Half_TheoremD: GKW projection part proved (theorem_D). CounterExample_TheoremD: theorem_D_residual_hypothesis_fails; the residual-expansion clause assumes "
         "finite depth, which is false (vacuous)."),
@@ -79,7 +82,8 @@ REFUTED_THEOREMS: dict[str, tuple[str, str]] = {
 REFUTATION_LABELS: dict[str, str] = {
     "Lemma77ShuffleEstimateFalse": "CounterExample_Lemma77 + CounterExample_Lemma78",
     "Prop58BlackScholesDepthFalse": "CounterExample_Prop58",
-    "TheoremC": "CounterExample_TheoremC (pending)",
+    "TheoremC": "TheoremC: refuted by CounterExample_TheoremC",
+    "TheoremCCounterExample": "CounterExample_TheoremC",
     "TheoremD": "Half_TheoremD + CounterExample_TheoremD",
 }
 
@@ -129,6 +133,7 @@ VERIFIED: set[str] = {
     "Lemma32SignatureInTw",
     "Lemma61GramPosDef",
     "Prop58BlackScholesDepthFalse",
+    "TheoremCCounterExample",
     "PriceFiltrationSignatureSpace.OfMarket",
     "GKWDecompositionSetup.OfPFS",
     "Lemma77ShuffleEstimateFalse",

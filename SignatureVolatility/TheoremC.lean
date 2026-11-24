@@ -1,6 +1,6 @@
 module
 
-public import SignatureVolatility.Prop58BlackScholesDepthFalse
+public import SignatureVolatility.TheoremCCounterExample
 
 @[expose] public section
 
@@ -23,10 +23,11 @@ depth is dense (`theorem_C_depth_infinite`). This includes Black–Scholes
 false (`not_prop58_blackScholes_depth_zero`).
 
 Theorem C would therefore say that every non-degenerate market with finitely many calls is
-incomplete on `ℱ^S_T`. That contradicts the classical completeness of Black–Scholes (Brownian
-martingale representation on `ℱ^S = ℱ^W`). The martingale representation theorem is not
-formalised in this repository, so the left-hand side of the "iff" is not refuted in Lean. The
-paper's equivalence cannot hold as stated, and only its right-hand side is settled formally.
+incomplete on `ℱ^S_T`. That is false: Black–Scholes is complete on `ℱ^S_T` (Brownian martingale
+representation on `ℱ^S = ℱ^W`, `blackScholes_isCompleteWithCalls`) while `N^*_S = ∞`.
+
+**CounterExample_TheoremC** (`theorem_C_refuted`, proved in `TheoremCCounterExample`): for the
+Black–Scholes market and every finite strike set, "complete ⇔ `N^*_S < ∞`" is false.
 -/
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P]
@@ -48,5 +49,13 @@ theorem theorem_C_blackScholes_depth_infinite (T s₀ σ₀ : ℝ) (hT : 0 < T) 
       ∀ N : ℕ, ((blackScholesMarket T s₀ σ₀ hT hs₀ hσ₀ B).sigSpan N).topologicalClosure ≠
         (blackScholesMarket T s₀ σ₀ hT hs₀ hσ₀ B).L2S :=
   theorem_C_depth_infinite _ (blackScholesMarket_not_finiteDimensional_L2S T s₀ σ₀ hT hs₀ hσ₀ B)
+
+/-- **CounterExample_TheoremC.** The paper's Theorem C ("complete with finitely many calls ⇔
+`N^*_S < ∞`") fails for Black–Scholes, for every finite set of strikes. -/
+theorem theorem_C_refuted (T s₀ σ₀ : ℝ) (hT : 0 < T) (hs₀ : 0 < s₀) (hσ₀ : σ₀ ≠ 0)
+    (B : MultiBrownian Ω P 1) (strikes : Finset ℝ) :
+    ¬ (IsCompleteWithCalls T s₀ σ₀ hT hs₀ hσ₀ B strikes ↔
+      (blackScholesMarket T s₀ σ₀ hT hs₀ hσ₀ B).completenessDepth < ⊤) :=
+  not_theorem_C T s₀ σ₀ hT hs₀ hσ₀ B strikes
 
 end SignatureVolatility
