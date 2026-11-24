@@ -226,6 +226,61 @@ lemma concat_shuffle {d : ℕ} {A B : ExtTensorAlgebra d}
   simp only [splitSum, Finset.sum_mul_sum]
   exact Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring
 
+/-- **Shuffle defects add under concatenation.** If `A` and `B` (with unit constant term) are
+shuffle characters on all pairs of total length `< n`, then on a pair of total length `n > 0`
+the shuffle defect of `A ⊗ B` is the sum of the defects of `A` and of `B`. -/
+lemma concat_shuffle_defect {d : ℕ} {A B : ExtTensorAlgebra d} (hA0 : A.coeff [] = 1)
+    (hB0 : B.coeff [] = 1) {n : ℕ}
+    (hA : ∀ I J : Word d, I.length + J.length < n → A.coeff I * A.coeff J = evalShuffleBasis I J A)
+    (hB : ∀ I J : Word d, I.length + J.length < n → B.coeff I * B.coeff J = evalShuffleBasis I J B)
+    {I J : Word d} (hIJ : I.length + J.length = n) (hn : 0 < n) :
+    (A ⊗ₜ B).coeff I * (A ⊗ₜ B).coeff J - evalShuffleBasis I J (A ⊗ₜ B) =
+      (A.coeff I * A.coeff J - evalShuffleBasis I J A) +
+        (B.coeff I * B.coeff J - evalShuffleBasis I J B) := by
+  have hA' : ∀ I J : Word d, I.length + J.length < n →
+      shuffleSum A.coeff I J = A.coeff I * A.coeff J := fun I J h => (hA I J h).symm
+  have hB' : ∀ I J : Word d, I.length + J.length < n →
+      shuffleSum B.coeff I J = B.coeff I * B.coeff J := fun I J h => (hB I J h).symm
+  change splitSum (fun a b => A.coeff a * B.coeff b) I *
+      splitSum (fun a b => A.coeff a * B.coeff b) J -
+    shuffleSum (splitSum fun a b => A.coeff a * B.coeff b) I J =
+      (A.coeff I * A.coeff J - shuffleSum A.coeff I J) +
+        (B.coeff I * B.coeff J - shuffleSum B.coeff I J)
+  rw [shuffleSum_splitSum]
+  simp only [shuffleSum_mul_left, shuffleSum_mul_right]
+  simp only [splitSum, Finset.sum_mul_sum, ← Finset.sum_sub_distrib]
+  rw [← Finset.sum_product' (f := fun k l => A.coeff (I.take k) * B.coeff (I.drop k) *
+      (A.coeff (J.take l) * B.coeff (J.drop l)) -
+      shuffleSum A.coeff (I.take k) (J.take l) * shuffleSum B.coeff (I.drop k) (J.drop l))]
+  have hne : ((I.length, J.length) : ℕ × ℕ) ≠ (0, 0) := by
+    intro h; simp only [Prod.mk.injEq] at h; omega
+  rw [Finset.sum_eq_add_of_mem (I.length, J.length) (0, 0)
+    (Finset.mem_product.2 ⟨Finset.self_mem_range_succ _, Finset.self_mem_range_succ _⟩)
+    (Finset.mem_product.2 ⟨Finset.mem_range.2 (Nat.succ_pos _), Finset.mem_range.2 (Nat.succ_pos _)⟩)
+    hne]
+  · simp only [List.take_length, List.drop_length, List.take_zero, List.drop_zero,
+      shuffleSum_nil_left, hA0, hB0]
+    ring
+  · rintro ⟨k, l⟩ hkl ⟨h1, h2⟩
+    obtain ⟨hk, hl⟩ := Finset.mem_product.1 hkl
+    simp only [Finset.mem_range] at hk hl
+    simp only [ne_eq, Prod.mk.injEq, not_and] at h1 h2
+    have e1 : (I.take k).length + (J.take l).length < n := by
+      simp only [List.length_take]
+      by_cases hk' : k = I.length
+      · have := h1 hk'; omega
+      · omega
+    have e2 : (I.drop k).length + (J.drop l).length < n := by
+      simp only [List.length_drop]
+      by_cases hk' : k = 0
+      · have := h2 hk'; omega
+      · omega
+    have x1 := hA' _ _ e1
+    have x2 := hB' _ _ e2
+    simp only
+    rw [x1, x2]
+    ring
+
 /-- Group-like / shuffle identity for folded products of level-1 exponentials. -/
 lemma foldTensorExp_shuffle {d : ℕ} (vs : List (Fin d → ℝ)) (I J : Word d) :
     (foldTensorExp vs).coeff I * (foldTensorExp vs).coeff J =

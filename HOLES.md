@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-24T09:09:57Z
-**Holes:** 42 open+blocked · 1 open · 41 blocked · 144 done · 4 file(s) with `sorry`.
+**Updated:** 2026-11-24T09:26:00Z
+**Holes:** 6 open+blocked · 2 open · 4 blocked · 180 done · 3 file(s) with `sorry`.
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
 
@@ -19,11 +19,11 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | Status | Id | `sorry`? | File |
 |---|---|---|---|
 | blocked | `GKWDecompositionSetup.OfPFS` | yes | `SignatureVolatility/GKWDecompositionSetup/OfPFS.lean` |
-| blocked | `ItoCalculusKit.OfMathFin` | no | `SignatureVolatility/ItoCalculusKit/OfMathFin.lean` |
-| blocked | `PriceFiltrationSignatureSpace.OfMarket` | yes | `SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean` |
-| blocked | `ProlongedBrownianSetup.StratonovichOfBM` | no | `SignatureVolatility/ProlongedBrownianSetup/StratonovichOfBM.lean` |
-| blocked | `SignatureRiccatiKit.OfSetup` | yes | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
-| blocked | `TheoremA` | no | `SignatureVolatility/TheoremA.lean` |
+| done | `ItoCalculusKit.OfMathFin` | no | `SignatureVolatility/ItoCalculusKit/OfMathFin.lean` |
+| open | `PriceFiltrationSignatureSpace.OfMarket` | yes | `SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean` |
+| done | `ProlongedBrownianSetup.StratonovichOfBM` | no | `SignatureVolatility/ProlongedBrownianSetup/StratonovichOfBM.lean` |
+| open | `SignatureRiccatiKit.OfSetup` | yes | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
+| done | `TheoremA` | no | `SignatureVolatility/TheoremA.lean` |
 | blocked | `TheoremB` | no | `SignatureVolatility/TheoremB.lean` |
 | blocked | `TheoremC` | no | `SignatureVolatility/TheoremC.lean` |
 | blocked | `TheoremD` | no | `SignatureVolatility/TheoremD.lean` |
@@ -33,19 +33,19 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | Status | Id | File |
 |---|---|---|
 | blocked | `GKWDecompositionSetup.OfPFS` | `SignatureVolatility/GKWDecompositionSetup/OfPFS.lean` |
-| blocked | `PriceFiltrationSignatureSpace.OfMarket` | `SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean` |
-| open | `ProlongedBrownianSetup.PaperSigChen` | `SignatureVolatility/ProlongedBrownianSetup/PaperSigChen.lean` |
-| blocked | `SignatureRiccatiKit.OfSetup` | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
+| open | `PriceFiltrationSignatureSpace.OfMarket` | `SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean` |
+| open | `SignatureRiccatiKit.OfSetup` | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
 
 ## Open now (Layer 0)
 
 | Id | File |
 |---|---|
-| `ProlongedBrownianSetup.PaperSigChen` | `SignatureVolatility/ProlongedBrownianSetup/PaperSigChen.lean` |
+| `PriceFiltrationSignatureSpace.OfMarket` | `SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean` |
+| `SignatureRiccatiKit.OfSetup` | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
 
 ## By group
 
-### Top-level modules — 39 hole(s)
+### Top-level modules — 5 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -72,62 +72,62 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `ItoCalculusKit.BrownianQuadVarAS` | `SignatureVolatility/ItoCalculusKit/BrownianQuadVarAS.lean` |
 | done | `ItoCalculusKit.ConstVol` | `SignatureVolatility/ItoCalculusKit/ConstVol.lean` |
 | done | `ItoCalculusKit.CrossVariation` | `SignatureVolatility/ItoCalculusKit/CrossVariation.lean` |
-| blocked | `ItoCalculusKit.DoleansEnvelope` | `SignatureVolatility/ItoCalculusKit/DoleansEnvelope.lean` |
-| blocked | `ItoCalculusKit.DoleansErrorPathwise` | `SignatureVolatility/ItoCalculusKit/DoleansErrorPathwise.lean` |
-| blocked | `ItoCalculusKit.DoleansIdentify` | `SignatureVolatility/ItoCalculusKit/DoleansIdentify.lean` |
-| blocked | `ItoCalculusKit.DoleansInputs` | `SignatureVolatility/ItoCalculusKit/DoleansInputs.lean` |
-| blocked | `ItoCalculusKit.DoleansMoments` | `SignatureVolatility/ItoCalculusKit/DoleansMoments.lean` |
-| blocked | `ItoCalculusKit.DoleansQV` | `SignatureVolatility/ItoCalculusKit/DoleansQV.lean` |
-| blocked | `ItoCalculusKit.DoleansSDE` | `SignatureVolatility/ItoCalculusKit/DoleansSDE.lean` |
-| blocked | `ItoCalculusKit.DoleansSigma` | `SignatureVolatility/ItoCalculusKit/DoleansSigma.lean` |
-| blocked | `ItoCalculusKit.DoleansStrongClass` | `SignatureVolatility/ItoCalculusKit/DoleansStrongClass.lean` |
+| done | `ItoCalculusKit.DoleansEnvelope` | `SignatureVolatility/ItoCalculusKit/DoleansEnvelope.lean` |
+| done | `ItoCalculusKit.DoleansErrorPathwise` | `SignatureVolatility/ItoCalculusKit/DoleansErrorPathwise.lean` |
+| done | `ItoCalculusKit.DoleansIdentify` | `SignatureVolatility/ItoCalculusKit/DoleansIdentify.lean` |
+| done | `ItoCalculusKit.DoleansInputs` | `SignatureVolatility/ItoCalculusKit/DoleansInputs.lean` |
+| done | `ItoCalculusKit.DoleansMoments` | `SignatureVolatility/ItoCalculusKit/DoleansMoments.lean` |
+| done | `ItoCalculusKit.DoleansQV` | `SignatureVolatility/ItoCalculusKit/DoleansQV.lean` |
+| done | `ItoCalculusKit.DoleansSDE` | `SignatureVolatility/ItoCalculusKit/DoleansSDE.lean` |
+| done | `ItoCalculusKit.DoleansSigma` | `SignatureVolatility/ItoCalculusKit/DoleansSigma.lean` |
+| done | `ItoCalculusKit.DoleansStrongClass` | `SignatureVolatility/ItoCalculusKit/DoleansStrongClass.lean` |
 | done | `ItoCalculusKit.DoobEnvelope` | `SignatureVolatility/ItoCalculusKit/DoobEnvelope.lean` |
 | done | `ItoCalculusKit.EighthMoment` | `SignatureVolatility/ItoCalculusKit/EighthMoment.lean` |
-| blocked | `ItoCalculusKit.EighthTransform` | `SignatureVolatility/ItoCalculusKit/EighthTransform.lean` |
+| done | `ItoCalculusKit.EighthTransform` | `SignatureVolatility/ItoCalculusKit/EighthTransform.lean` |
 | done | `ItoCalculusKit.EvenMoment` | `SignatureVolatility/ItoCalculusKit/EvenMoment.lean` |
 | done | `ItoCalculusKit.EvenTransform` | `SignatureVolatility/ItoCalculusKit/EvenTransform.lean` |
 | done | `ItoCalculusKit.ExpSupermartingale` | `SignatureVolatility/ItoCalculusKit/ExpSupermartingale.lean` |
 | done | `ItoCalculusKit.FourthMoment` | `SignatureVolatility/ItoCalculusKit/FourthMoment.lean` |
 | done | `ItoCalculusKit.FrozenIncrement4` | `SignatureVolatility/ItoCalculusKit/FrozenIncrement4.lean` |
-| blocked | `ItoCalculusKit.FrozenIncrement8` | `SignatureVolatility/ItoCalculusKit/FrozenIncrement8.lean` |
-| blocked | `ItoCalculusKit.FrozenOrthogonal` | `SignatureVolatility/ItoCalculusKit/FrozenOrthogonal.lean` |
+| done | `ItoCalculusKit.FrozenIncrement8` | `SignatureVolatility/ItoCalculusKit/FrozenIncrement8.lean` |
+| done | `ItoCalculusKit.FrozenOrthogonal` | `SignatureVolatility/ItoCalculusKit/FrozenOrthogonal.lean` |
 | done | `ItoCalculusKit.GBMEnvelope` | `SignatureVolatility/ItoCalculusKit/GBMEnvelope.lean` |
 | done | `ItoCalculusKit.GBMMartingale` | `SignatureVolatility/ItoCalculusKit/GBMMartingale.lean` |
 | done | `ItoCalculusKit.GridChange` | `SignatureVolatility/ItoCalculusKit/GridChange.lean` |
-| blocked | `ItoCalculusKit.GridDoob` | `SignatureVolatility/ItoCalculusKit/GridDoob.lean` |
-| blocked | `ItoCalculusKit.HolderPath` | `SignatureVolatility/ItoCalculusKit/HolderPath.lean` |
+| done | `ItoCalculusKit.GridDoob` | `SignatureVolatility/ItoCalculusKit/GridDoob.lean` |
+| done | `ItoCalculusKit.HolderPath` | `SignatureVolatility/ItoCalculusKit/HolderPath.lean` |
 | done | `ItoCalculusKit.ItoIncrement` | `SignatureVolatility/ItoCalculusKit/ItoIncrement.lean` |
-| blocked | `ItoCalculusKit.ItoIncrement8` | `SignatureVolatility/ItoCalculusKit/ItoIncrement8.lean` |
+| done | `ItoCalculusKit.ItoIncrement8` | `SignatureVolatility/ItoCalculusKit/ItoIncrement8.lean` |
 | done | `ItoCalculusKit.ItoIncrementEven` | `SignatureVolatility/ItoCalculusKit/ItoIncrementEven.lean` |
 | done | `ItoCalculusKit.ItoOrthogonal` | `SignatureVolatility/ItoCalculusKit/ItoOrthogonal.lean` |
-| blocked | `ItoCalculusKit.ItoQuadDoleans` | `SignatureVolatility/ItoCalculusKit/ItoQuadDoleans.lean` |
+| done | `ItoCalculusKit.ItoQuadDoleans` | `SignatureVolatility/ItoCalculusKit/ItoQuadDoleans.lean` |
 | done | `ItoCalculusKit.JointPast` | `SignatureVolatility/ItoCalculusKit/JointPast.lean` |
 | done | `ItoCalculusKit.KitRaw` | `SignatureVolatility/ItoCalculusKit/KitRaw.lean` |
-| blocked | `ItoCalculusKit.KolmogorovIto` | `SignatureVolatility/ItoCalculusKit/KolmogorovIto.lean` |
+| done | `ItoCalculusKit.KolmogorovIto` | `SignatureVolatility/ItoCalculusKit/KolmogorovIto.lean` |
 | done | `ItoCalculusKit.LebIncrementEven` | `SignatureVolatility/ItoCalculusKit/LebIncrementEven.lean` |
 | done | `ItoCalculusKit.LevelBounds` | `SignatureVolatility/ItoCalculusKit/LevelBounds.lean` |
 | done | `ItoCalculusKit.LevelDecay` | `SignatureVolatility/ItoCalculusKit/LevelDecay.lean` |
-| blocked | `ItoCalculusKit.LogDoleansIncrement` | `SignatureVolatility/ItoCalculusKit/LogDoleansIncrement.lean` |
+| done | `ItoCalculusKit.LogDoleansIncrement` | `SignatureVolatility/ItoCalculusKit/LogDoleansIncrement.lean` |
 | done | `ItoCalculusKit.MartingaleTransform` | `SignatureVolatility/ItoCalculusKit/MartingaleTransform.lean` |
 | done | `ItoCalculusKit.MathFinBridge` | `SignatureVolatility/ItoCalculusKit/MathFinBridge.lean` |
-| blocked | `ItoCalculusKit.MathFinBridgeSetup` | `SignatureVolatility/ItoCalculusKit/MathFinBridgeSetup.lean` |
-| blocked | `ItoCalculusKit.NovikovDoob` | `SignatureVolatility/ItoCalculusKit/NovikovDoob.lean` |
-| blocked | `ItoCalculusKit.NovikovMartingale` | `SignatureVolatility/ItoCalculusKit/NovikovMartingale.lean` |
-| blocked | `ItoCalculusKit.OfMathFin` | `SignatureVolatility/ItoCalculusKit/OfMathFin.lean` |
+| done | `ItoCalculusKit.MathFinBridgeSetup` | `SignatureVolatility/ItoCalculusKit/MathFinBridgeSetup.lean` |
+| done | `ItoCalculusKit.NovikovDoob` | `SignatureVolatility/ItoCalculusKit/NovikovDoob.lean` |
+| done | `ItoCalculusKit.NovikovMartingale` | `SignatureVolatility/ItoCalculusKit/NovikovMartingale.lean` |
+| done | `ItoCalculusKit.OfMathFin` | `SignatureVolatility/ItoCalculusKit/OfMathFin.lean` |
 | done | `ItoCalculusKit.PathwiseExpIto` | `SignatureVolatility/ItoCalculusKit/PathwiseExpIto.lean` |
-| blocked | `ItoCalculusKit.QVTransform` | `SignatureVolatility/ItoCalculusKit/QVTransform.lean` |
-| blocked | `ItoCalculusKit.QuadIncrement` | `SignatureVolatility/ItoCalculusKit/QuadIncrement.lean` |
+| done | `ItoCalculusKit.QVTransform` | `SignatureVolatility/ItoCalculusKit/QVTransform.lean` |
+| done | `ItoCalculusKit.QuadIncrement` | `SignatureVolatility/ItoCalculusKit/QuadIncrement.lean` |
 | done | `ItoCalculusKit.RiemannConvergence` | `SignatureVolatility/ItoCalculusKit/RiemannConvergence.lean` |
-| blocked | `ItoCalculusKit.RiemannRate8` | `SignatureVolatility/ItoCalculusKit/RiemannRate8.lean` |
+| done | `ItoCalculusKit.RiemannRate8` | `SignatureVolatility/ItoCalculusKit/RiemannRate8.lean` |
 | done | `ItoCalculusKit.SigmaBounds` | `SignatureVolatility/ItoCalculusKit/SigmaBounds.lean` |
-| blocked | `ItoCalculusKit.SigmaContinuity` | `SignatureVolatility/ItoCalculusKit/SigmaContinuity.lean` |
-| blocked | `ItoCalculusKit.SigmaHolder` | `SignatureVolatility/ItoCalculusKit/SigmaHolder.lean` |
-| blocked | `ItoCalculusKit.SigmaHolder8` | `SignatureVolatility/ItoCalculusKit/SigmaHolder8.lean` |
-| blocked | `ItoCalculusKit.StoppedKit` | `SignatureVolatility/ItoCalculusKit/StoppedKit.lean` |
-| blocked | `ItoCalculusKit.StoppedL2` | `SignatureVolatility/ItoCalculusKit/StoppedL2.lean` |
-| blocked | `ItoCalculusKit.StoppedRaw` | `SignatureVolatility/ItoCalculusKit/StoppedRaw.lean` |
-| blocked | `ItoCalculusKit.StoppedStep` | `SignatureVolatility/ItoCalculusKit/StoppedStep.lean` |
-| blocked | `ItoCalculusKit.SubseqUniform` | `SignatureVolatility/ItoCalculusKit/SubseqUniform.lean` |
+| done | `ItoCalculusKit.SigmaContinuity` | `SignatureVolatility/ItoCalculusKit/SigmaContinuity.lean` |
+| done | `ItoCalculusKit.SigmaHolder` | `SignatureVolatility/ItoCalculusKit/SigmaHolder.lean` |
+| done | `ItoCalculusKit.SigmaHolder8` | `SignatureVolatility/ItoCalculusKit/SigmaHolder8.lean` |
+| done | `ItoCalculusKit.StoppedKit` | `SignatureVolatility/ItoCalculusKit/StoppedKit.lean` |
+| done | `ItoCalculusKit.StoppedL2` | `SignatureVolatility/ItoCalculusKit/StoppedL2.lean` |
+| done | `ItoCalculusKit.StoppedRaw` | `SignatureVolatility/ItoCalculusKit/StoppedRaw.lean` |
+| done | `ItoCalculusKit.StoppedStep` | `SignatureVolatility/ItoCalculusKit/StoppedStep.lean` |
+| done | `ItoCalculusKit.SubseqUniform` | `SignatureVolatility/ItoCalculusKit/SubseqUniform.lean` |
 | done | `Lemma32SignatureInTw` | `SignatureVolatility/Lemma32SignatureInTw.lean` |
 | done | `Lemma61GramPosDef` | `SignatureVolatility/Lemma61GramPosDef.lean` |
 | done | `Letter` | `SignatureVolatility/Letter.lean` |
@@ -163,7 +163,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `SignatureHestonLevel2Model` | `SignatureVolatility/SignatureHestonLevel2Model.lean` |
 | done | `SignaturePriceSolution` | `SignatureVolatility/SignaturePriceSolution.lean` |
 | done | `SignatureRiccatiKit` | `SignatureVolatility/SignatureRiccatiKit.lean` |
-| blocked | `SignatureRiccatiKit.OfSetup` | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
+| open | `SignatureRiccatiKit.OfSetup` | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
 | done | `SignatureRiccatiKit.RiccatiOp` | `SignatureVolatility/SignatureRiccatiKit/RiccatiOp.lean` |
 | done | `SignatureVolatilityModel` | `SignatureVolatility/SignatureVolatilityModel.lean` |
 | done | `SmoothIteratedIntegral` | `SignatureVolatility/SmoothIteratedIntegral.lean` |
@@ -171,7 +171,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `StratonovichHalfLaplacian` | `SignatureVolatility/StratonovichHalfLaplacian.lean` |
 | done | `SuperfactorialFunctional` | `SignatureVolatility/SuperfactorialFunctional.lean` |
 | done | `TailNorm2wInvLeRatioMulNormW` | `SignatureVolatility/TailNorm2wInvLeRatioMulNormW.lean` |
-| blocked | `TheoremA` | `SignatureVolatility/TheoremA.lean` |
+| done | `TheoremA` | `SignatureVolatility/TheoremA.lean` |
 | done | `TheoremAOfBrownianSetupItoKit` | `SignatureVolatility/TheoremAOfBrownianSetupItoKit.lean` |
 | blocked | `TheoremB` | `SignatureVolatility/TheoremB.lean` |
 | done | `TheoremBOfSetupItoRiccatiKit` | `SignatureVolatility/TheoremBOfSetupItoRiccatiKit.lean` |
@@ -217,7 +217,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `Weight.ConstOne` | `SignatureVolatility/Weight/ConstOne.lean` |
 | done | `Weight.Geometric` | `SignatureVolatility/Weight/Geometric.lean` |
 
-### ProlongedBrownianSetup — 2 hole(s)
+### ProlongedBrownianSetup — 0 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -231,7 +231,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `ProlongedBrownianSetup.ItoWordIntegralLe1` | `SignatureVolatility/ProlongedBrownianSetup/ItoWordIntegralLe1.lean` |
 | done | `ProlongedBrownianSetup.OfBrownian` | `SignatureVolatility/ProlongedBrownianSetup/OfBrownian.lean` |
 | done | `ProlongedBrownianSetup.PaperSig` | `SignatureVolatility/ProlongedBrownianSetup/PaperSig.lean` |
-| open | `ProlongedBrownianSetup.PaperSigChen` | `SignatureVolatility/ProlongedBrownianSetup/PaperSigChen.lean` |
+| done | `ProlongedBrownianSetup.PaperSigChen` | `SignatureVolatility/ProlongedBrownianSetup/PaperSigChen.lean` |
 | done | `ProlongedBrownianSetup.PaperSigDynamics` | `SignatureVolatility/ProlongedBrownianSetup/PaperSigDynamics.lean` |
 | done | `ProlongedBrownianSetup.ShiftedWordIntegral` | `SignatureVolatility/ProlongedBrownianSetup/ShiftedWordIntegral.lean` |
 | done | `ProlongedBrownianSetup.Sig2StratAdapted` | `SignatureVolatility/ProlongedBrownianSetup/Sig2StratAdapted.lean` |
@@ -240,7 +240,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `ProlongedBrownianSetup.SignatureOfBM` | `SignatureVolatility/ProlongedBrownianSetup/SignatureOfBM.lean` |
 | done | `ProlongedBrownianSetup.StratItoCoeffBounds` | `SignatureVolatility/ProlongedBrownianSetup/StratItoCoeffBounds.lean` |
 | done | `ProlongedBrownianSetup.StratonovichItoConversion` | `SignatureVolatility/ProlongedBrownianSetup/StratonovichItoConversion.lean` |
-| blocked | `ProlongedBrownianSetup.StratonovichOfBM` | `SignatureVolatility/ProlongedBrownianSetup/StratonovichOfBM.lean` |
+| done | `ProlongedBrownianSetup.StratonovichOfBM` | `SignatureVolatility/ProlongedBrownianSetup/StratonovichOfBM.lean` |
 | done | `ProlongedBrownianSetup.WAug` | `SignatureVolatility/ProlongedBrownianSetup/WAug.lean` |
 | done | `ProlongedBrownianSetup.WHat` | `SignatureVolatility/ProlongedBrownianSetup/WHat.lean` |
 
@@ -251,7 +251,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `PriceFiltrationSignatureSpace.AugmentedMarketSpan` | `SignatureVolatility/PriceFiltrationSignatureSpace/AugmentedMarketSpan.lean` |
 | done | `PriceFiltrationSignatureSpace.CompletenessDepth` | `SignatureVolatility/PriceFiltrationSignatureSpace/CompletenessDepth.lean` |
 | done | `PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration` | `SignatureVolatility/PriceFiltrationSignatureSpace/IsCompleteOnPriceFiltration.lean` |
-| blocked | `PriceFiltrationSignatureSpace.OfMarket` | `SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean` |
+| open | `PriceFiltrationSignatureSpace.OfMarket` | `SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean` |
 | done | `PriceFiltrationSignatureSpace.VInfty` | `SignatureVolatility/PriceFiltrationSignatureSpace/VInfty.lean` |
 | done | `PriceFiltrationSignatureSpace.VSubspace` | `SignatureVolatility/PriceFiltrationSignatureSpace/VSubspace.lean` |
 
