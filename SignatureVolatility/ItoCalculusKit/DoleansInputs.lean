@@ -104,12 +104,8 @@ theorem exists_integral_signatureSigma_pow_sixteen_le (hT : 0 < T) {w : Weight}
     (hw : HypH2 w) {ℓ : ExtTensorAlgebra (d + 1)} (hℓ : HypH1 w ℓ) :
     ∃ Cσ, 0 ≤ Cσ ∧ ∀ s ∈ Set.Icc 0 T,
       Integrable (fun ω => signatureSigma B hT ℓ s ω ^ 16) P ∧
-      ∫ ω, signatureSigma B hT ℓ s ω ^ 16 ∂P ≤ Cσ := by
-  obtain ⟨C, r, hC, hr, hℓn⟩ := exists_levelNorm_le_geometric hw hℓ
-  refine ⟨C ^ 16 * (2 * ((d : ℝ) + 1) *
-    Real.exp (16 * r * ((d : ℝ) + 1) * T + (16 * r * ((d : ℝ) + 1)) ^ 2 * T / 2)),
-    by positivity, fun s hs => ?_⟩
-  exact signatureSigma_pow16_moment hr hℓn hs (B := B) (hT := hT)
+      ∫ ω, signatureSigma B hT ℓ s ω ^ 16 ∂P ≤ Cσ :=
+  signatureSigma_pow16_moment (B := B) (hT := hT) hw hℓ
 
 /-- **Uniform fourth moment of `Z σ²`** on `[0, T]`. -/
 theorem exists_integral_kitDoleansExp_mul_sq_pow_four_le (hd : 0 < d) (hT : 0 < T) {w : Weight}

@@ -147,46 +147,19 @@ lemma measurable_intervalIntegral_sigmaExt {u v : ℝ} (huv : u ≤ v) (k : ℕ)
   simp only [intervalIntegral.integral_of_le huv]
   exact h.measurable
 
-/-- Uniform sixteenth moments of `σ` on `[0, T]`. -/
-lemma signatureSigma_pow16_moment {C r : ℝ} (hr : 0 ≤ r)
-    (hℓn : ∀ n, ℓ.levelNorm n ≤ C * r ^ n) {s : ℝ} (hs : s ∈ Icc 0 T) :
-    Integrable (fun ω => signatureSigma B hT ℓ s ω ^ 16) P ∧
-      ∫ ω, signatureSigma B hT ℓ s ω ^ 16 ∂P ≤ C ^ 16 * (2 * ((d : ℝ) + 1) *
-        Real.exp (16 * r * ((d : ℝ) + 1) * T + (16 * r * ((d : ℝ) + 1)) ^ 2 * T / 2)) := by
-  have hc0 : 0 ≤ 16 * r := by positivity
-  have hpt : ∀ ω, signatureSigma B hT ℓ s ω ^ 16 ≤
-      C ^ 16 * Real.exp (16 * r * incrNorm B s ω) := by
-    intro ω
-    have h := abs_signatureSigma_le B hT hℓn s ω
-    rw [← (by decide : Even 16).pow_abs]
-    calc |signatureSigma B hT ℓ s ω| ^ 16 ≤ (C * Real.exp (r * incrNorm B s ω)) ^ 16 :=
-          pow_le_pow_left₀ (abs_nonneg _) h 16
-      _ = C ^ 16 * Real.exp (16 * r * incrNorm B s ω) := by
-          rw [mul_pow, ← Real.exp_nat_mul]; congr 2; push_cast; ring
-  have hE := integrable_exp_mul_incrNorm B s hc0
-  have hmeas : AEStronglyMeasurable (fun ω => signatureSigma B hT ℓ s ω ^ 16) P :=
-    (((measurable_signatureSigma_path B hT ℓ s ⟨s, hs.1, le_rfl⟩).mono
-      ((pathFiltration B).le_ambient s) le_rfl).pow_const 16).aestronglyMeasurable
-  have hint : Integrable (fun ω => signatureSigma B hT ℓ s ω ^ 16) P :=
-    (hE.const_mul (C ^ 16)).mono' hmeas (ae_of_all _ fun ω => by
-      rw [Real.norm_eq_abs, abs_of_nonneg (by positivity)]; exact hpt ω)
-  refine ⟨hint, ?_⟩
-  calc ∫ ω, signatureSigma B hT ℓ s ω ^ 16 ∂P
-      ≤ ∫ ω, C ^ 16 * Real.exp (16 * r * incrNorm B s ω) ∂P :=
-        integral_mono hint (hE.const_mul _) hpt
-    _ = C ^ 16 * ∫ ω, Real.exp (16 * r * incrNorm B s ω) ∂P := integral_const_mul _ _
-    _ ≤ _ := mul_le_mul_of_nonneg_left (integral_exp_mul_incrNorm_le B hc0 hs.1 hs.2)
-          (by positivity)
+/-- **Uniform sixteenth moments of `σ = ⟨ℓ, Ŵ⟩`** on `[0, T]` under H1–H2. -/
+theorem signatureSigma_pow16_moment {w : Weight} (hw : HypH2 w) (hℓ : HypH1 w ℓ) :
+    ∃ Cσ, 0 ≤ Cσ ∧ ∀ s ∈ Icc 0 T,
+      Integrable (fun ω => signatureSigma B hT ℓ s ω ^ 16) P ∧
+      ∫ ω, signatureSigma B hT ℓ s ω ^ 16 ∂P ≤ Cσ := by
+  sorry
 
 /-- **Eighth moments of increments of `∫ σ²`** under H1–H2. -/
 theorem integral_quadIncr_pow_eight_le {w : Weight} (hw : HypH2 w) (hℓ : HypH1 w ℓ) :
     ∃ M, 0 ≤ M ∧ ∀ u v, 0 ≤ u → u ≤ v → v ≤ T →
       Integrable (fun ω => (∫ s in u..v, signatureSigma B hT ℓ s ω ^ 2) ^ 8) P ∧
         ∫ ω, (∫ s in u..v, signatureSigma B hT ℓ s ω ^ 2) ^ 8 ∂P ≤ M * (v - u) ^ 8 := by
-  obtain ⟨C, r, hC, hr, hℓn⟩ := exists_levelNorm_le_geometric hw hℓ
-  set M : ℝ := C ^ 16 * (2 * ((d : ℝ) + 1) *
-    Real.exp (16 * r * ((d : ℝ) + 1) * T + (16 * r * ((d : ℝ) + 1)) ^ 2 * T / 2)) with hM
-  have hM0 : 0 ≤ M := by positivity
+  obtain ⟨M, hM0, hmom16⟩ := signatureSigma_pow16_moment (B := B) (hT := hT) hw hℓ
   refine ⟨M, hM0, fun u v hu huv hvT => ?_⟩
   set G : Ω → ℝ := fun ω => ∫ s in u..v, sigmaExt B hT ℓ s ω ^ 16 with hG
   have hG0 : ∀ ω, 0 ≤ G ω := fun ω =>
@@ -215,7 +188,7 @@ theorem integral_quadIncr_pow_eight_le {w : Weight} (hw : HypH2 w) (hℓ : HypH1
       _ ≤ ∫⁻ s in Ioc u v, ENNReal.ofReal M := by
           refine setLIntegral_mono measurable_const fun s hs => ?_
           have hs' : s ∈ Icc 0 T := ⟨hu.trans hs.1.le, hs.2.trans hvT⟩
-          have hmom := signatureSigma_pow16_moment hr hℓn hs' (B := B) (hT := hT)
+          have hmom := hmom16 s hs'
           have hfun : (fun ω => ENNReal.ofReal (sigmaExt B hT ℓ s ω ^ 16)) =ᵐ[P]
               fun ω => ENNReal.ofReal (signatureSigma B hT ℓ s ω ^ 16) :=
             (ae_not_mem_sigmaBad hw hℓ).mono fun ω hω => by

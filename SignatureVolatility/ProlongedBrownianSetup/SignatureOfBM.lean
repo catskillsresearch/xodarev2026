@@ -379,23 +379,4 @@ theorem sig2OfBrownian_not_integrable_of_all_radius (B : MultiBrownian Ω P d) (
   rw [hlaw.map_eq] at hmap
   exact not_integrable_exp_sq_gaussianReal hv hmap
 
-/-- Build `ProlongedBrownianSetup` from multi-dimensional Brownian motion. -/
-def prolongedBrownianSetup_of_brownian {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T) :
-    ProlongedBrownianSetup Ω P d T where
-  hT_pos := hT
-  W := MultiBrownian.W B
-  W_zero := MultiBrownian.W_zero B
-  W_meas := MultiBrownian.W_meas B
-  sig2 := sig2OfBrownian B
-  sig_meas := sig2OfBrownian_meas B
-  sig2_empty := sig2OfBrownian_empty B
-  sig2_time := sig2OfBrownian_time B
-  sig2_space := sig2OfBrownian_space B
-  sig_adapted_to_W := sig2OfBrownian_adapted B
-  stratonovich_chen := fun s t _ _ _ ω => sig2OfBrownian_chen B s t ω
-  stratonovich_shuffle := fun t _ _ I J ω => sig2OfBrownian_shuffle B t I J ω
-  factorial_moment_control := fun p hp w_fn hw0 ⟨r, hwr⟩ t _ _ => by
-    have := sig2OfBrownian_geometric_moment_control B (zero_le_one.trans hp) hw0 hwr t
-    exact this
-
 end SignatureVolatility

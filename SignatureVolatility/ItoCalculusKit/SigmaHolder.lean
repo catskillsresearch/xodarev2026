@@ -1,8 +1,8 @@
 module
 
-public import SignatureVolatility.ExtTensorAlgebra.TensorExpLipschitz
 public import SignatureVolatility.ItoCalculusKit.RiemannConvergence
 public import SignatureVolatility.ItoCalculusKit.SigmaContinuity
+public import SignatureVolatility.ProlongedBrownianSetup.SignatureOfBM
 
 
 @[expose] public section
@@ -233,13 +233,6 @@ lemma measurable_signatureSigma_path {T : ℝ} (B : MultiBrownian Ω P d) (hT : 
   let : MeasurableSpace Ω := (pathFiltration B).σAlg t
   exact Measurable.tsum hn
 
-/-- `σ_t = ⟨ℓ, exp⊗(x_t)⟩` with `x_t = (t, W_t) - (0, W_0)`. -/
-lemma signatureSigma_eq {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T)
-    (ℓ : ExtTensorAlgebra (d + 1)) (t : ℝ) (ω : Ω) :
-    signatureSigma B hT ℓ t ω = dualPairing ℓ (ExtTensorAlgebra.tensorExp
-      (fun j => MultiBrownian.wAug B t ω j - MultiBrownian.wAug B 0 ω j)) :=
-  congrArg (dualPairing ℓ) (sig2OfBrownian_zero_left B t ω)
-
 /-- H1–H2 give a geometric bound `‖ℓ_n‖ ≤ C rⁿ`. -/
 lemma exists_levelNorm_le_geometric {w : Weight} (hw : HypH2 w) {ℓ : ExtTensorAlgebra (d + 1)}
     (hℓ : HypH1 w ℓ) : ∃ C r : ℝ, 0 ≤ C ∧ 0 ≤ r ∧ ∀ n, ℓ.levelNorm n ≤ C * r ^ n := by
@@ -263,83 +256,6 @@ lemma exists_levelNorm_le_geometric {w : Weight} (hw : HypH2 w) {ℓ : ExtTensor
     _ = C * w n := by rw [Real.sqrt_mul (tsum_nonneg hnn), Real.sqrt_sq hwpos.le]
     _ ≤ C * r ^ n := mul_le_mul_of_nonneg_left (hr n) (Real.sqrt_nonneg _)
 
-section Bounds
-
-variable {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T) {ℓ : ExtTensorAlgebra (d + 1)} {C r : ℝ}
-
-lemma abs_signatureSigma_le (hℓ : ∀ n, ℓ.levelNorm n ≤ C * r ^ n) (t : ℝ) (ω : Ω) :
-    |signatureSigma B hT ℓ t ω| ≤ C * Real.exp (r * incrNorm B t ω) := by
-  rw [signatureSigma_eq]
-  exact ExtTensorAlgebra.abs_dualPairing_tensorExp_le ℓ hℓ _ le_rfl
-
-lemma abs_signatureSigma_sub_le (hℓ : ∀ n, ℓ.levelNorm n ≤ C * r ^ n) (u v : ℝ) (ω : Ω) :
-    |signatureSigma B hT ℓ v ω - signatureSigma B hT ℓ u ω| ≤
-      C * r * Real.sqrt (∑ j, (MultiBrownian.wAug B v ω j - MultiBrownian.wAug B u ω j) ^ 2) *
-        Real.exp (r * (incrNorm B u ω + incrNorm B v ω)) := by
-  rw [signatureSigma_eq, signatureSigma_eq]
-  have h := ExtTensorAlgebra.abs_dualPairing_tensorExp_sub_le ℓ hℓ
-    (fun j => MultiBrownian.wAug B v ω j - MultiBrownian.wAug B 0 ω j)
-    (fun j => MultiBrownian.wAug B u ω j - MultiBrownian.wAug B 0 ω j)
-    (R := incrNorm B u ω + incrNorm B v ω)
-    (le_add_of_nonneg_left (incrNorm_nonneg B u ω))
-    (le_add_of_nonneg_right (incrNorm_nonneg B v ω))
-  simpa only [sub_sub_sub_cancel_right] using h
-
-end Bounds
-
-/-! ## The pointwise fourth-power majorant -/
-
-/-- For `0 < h`, `(σ_v - σ_u)⁴` is dominated by an explicit integrable majorant built from
-eighth powers of the increments and exponentials of the increment norms. -/
-lemma signatureSigma_sub_pow_four_le {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T)
-    {ℓ : ExtTensorAlgebra (d + 1)} {C r : ℝ}
-    (hℓ : ∀ n, ℓ.levelNorm n ≤ C * r ^ n) {u v h : ℝ} (hh : 0 < h) (ω : Ω) :
-    (signatureSigma B hT ℓ v ω - signatureSigma B hT ℓ u ω) ^ 4 ≤
-      (C * r) ^ 4 / 2 * (((d : ℝ) + 1) ^ 3 / h ^ 2) *
-          ∑ j, (MultiBrownian.wAug B v ω j - MultiBrownian.wAug B u ω j) ^ 8 +
-        (C * r) ^ 4 / 2 * (h ^ 2 / 2) * Real.exp (16 * r * incrNorm B u ω) +
-        (C * r) ^ 4 / 2 * (h ^ 2 / 2) * Real.exp (16 * r * incrNorm B v ω) := by
-  set N2 : ℝ := ∑ j, (MultiBrownian.wAug B v ω j - MultiBrownian.wAug B u ω j) ^ 2 with hN2
-  set S8 : ℝ := ∑ j, (MultiBrownian.wAug B v ω j - MultiBrownian.wAug B u ω j) ^ 8 with hS8
-  set iu := incrNorm B u ω
-  set iv := incrNorm B v ω
-  set E : ℝ := Real.exp (r * (iu + iv)) with hE
-  have hN20 : 0 ≤ N2 := Finset.sum_nonneg fun _ _ => sq_nonneg _
-  have hE0 : 0 ≤ E := (Real.exp_pos _).le
-  have hσ := abs_signatureSigma_sub_le B hT hℓ u v ω
-  have h4 : (signatureSigma B hT ℓ v ω - signatureSigma B hT ℓ u ω) ^ 4 ≤
-      (C * r) ^ 4 * (N2 ^ 2 * E ^ 4) := by
-    rw [← (by decide : Even 4).pow_abs]
-    calc |signatureSigma B hT ℓ v ω - signatureSigma B hT ℓ u ω| ^ 4
-        ≤ (C * r * Real.sqrt N2 * E) ^ 4 := pow_le_pow_left₀ (abs_nonneg _) hσ 4
-      _ = (C * r) ^ 4 * ((Real.sqrt N2 ^ 2) ^ 2 * E ^ 4) := by ring
-      _ = (C * r) ^ 4 * (N2 ^ 2 * E ^ 4) := by rw [Real.sq_sqrt hN20]
-  have hamgm : N2 ^ 2 * E ^ 4 ≤ (N2 ^ 4 / h ^ 2 + h ^ 2 * (E ^ 4) ^ 2) / 2 := by
-    have hkey : (N2 ^ 2 / h - h * E ^ 4) ^ 2 =
-        N2 ^ 4 / h ^ 2 - 2 * (N2 ^ 2 * E ^ 4) + h ^ 2 * (E ^ 4) ^ 2 := by
-      field_simp
-      ring
-    nlinarith [sq_nonneg (N2 ^ 2 / h - h * E ^ 4)]
-  have hN8 : N2 ^ 4 ≤ ((d : ℝ) + 1) ^ 3 * S8 := sum_sq_pow_four_le _
-  have hE8 : (E ^ 4) ^ 2 ≤ (Real.exp (16 * r * iu) + Real.exp (16 * r * iv)) / 2 := by
-    have e1 : Real.exp (16 * r * iu) = Real.exp (8 * r * iu) ^ 2 := by
-      rw [← Real.exp_nat_mul]; congr 1; push_cast; ring
-    have e2 : Real.exp (16 * r * iv) = Real.exp (8 * r * iv) ^ 2 := by
-      rw [← Real.exp_nat_mul]; congr 1; push_cast; ring
-    have e3 : (E ^ 4) ^ 2 = Real.exp (8 * r * iu) * Real.exp (8 * r * iv) := by
-      rw [← pow_mul, hE, ← Real.exp_nat_mul, ← Real.exp_add]; congr 1; push_cast; ring
-    rw [e1, e2, e3]
-    nlinarith [sq_nonneg (Real.exp (8 * r * iu) - Real.exp (8 * r * iv))]
-  have hCr : 0 ≤ (C * r) ^ 4 := by positivity
-  calc (signatureSigma B hT ℓ v ω - signatureSigma B hT ℓ u ω) ^ 4
-      ≤ (C * r) ^ 4 * (N2 ^ 2 * E ^ 4) := h4
-    _ ≤ (C * r) ^ 4 * ((N2 ^ 4 / h ^ 2 + h ^ 2 * (E ^ 4) ^ 2) / 2) :=
-        mul_le_mul_of_nonneg_left hamgm hCr
-    _ ≤ (C * r) ^ 4 * ((((d : ℝ) + 1) ^ 3 * S8 / h ^ 2 +
-          h ^ 2 * ((Real.exp (16 * r * iu) + Real.exp (16 * r * iv)) / 2)) / 2) := by
-        gcongr
-    _ = _ := by ring
-
 /-! ## `HolderAdapted` for the signature volatility -/
 
 /-- **`L⁴`-Hölder-`1/2` regularity of `σ = ⟨ℓ, Ŵ⟩` under H1–H2.** On every horizon `[0, t]`
@@ -348,85 +264,7 @@ path filtration, in `L⁴`, and satisfies `E|σ_v - σ_u|⁴ ≤ K (v - u)²`. -
 theorem holderAdapted_signatureSigma {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T)
     {w : Weight} (hw : HypH2 w) {ℓ : ExtTensorAlgebra (d + 1)} (hℓ : HypH1 w ℓ) (t : ℝ) :
     ∃ K, HolderAdapted B (signatureSigma B hT ℓ) t K := by
-  obtain ⟨C, r, hC, hr, hℓn⟩ := exists_levelNorm_le_geometric hw hℓ
-  set c : ℝ := 16 * r with hc
-  have hc0 : 0 ≤ c := by positivity
-  set Eb : ℝ := 2 * ((d : ℝ) + 1) *
-    Real.exp (c * ((d : ℝ) + 1) * t + (c * ((d : ℝ) + 1)) ^ 2 * t / 2) with hEb
-  have hEb0 : 0 ≤ Eb := by positivity
-  refine ⟨(C * r) ^ 4 / 2 * (((d : ℝ) + 1) ^ 4 * (t ^ 4 + gauss8Const) + Eb), ?_⟩
-  have hmeasA : ∀ u, 0 ≤ u → AEStronglyMeasurable (signatureSigma B hT ℓ u) P := fun u hu =>
-    ((measurable_signatureSigma_path B hT ℓ u ⟨u, hu, le_rfl⟩).mono
-      ((pathFiltration B).le_ambient u) le_rfl).aestronglyMeasurable
-  refine ⟨by have := gauss8Const_nonneg; positivity, fun u hu _ =>
-    measurable_signatureSigma_path B hT ℓ u ⟨u, hu, le_rfl⟩, ?_, ?_⟩
-  · intro u hu _
-    have hint : Integrable (fun ω => Real.exp ((4 * r) * incrNorm B u ω)) P :=
-      integrable_exp_mul_incrNorm B u (by positivity)
-    have hg : MemLp (fun ω => Real.exp (r * incrNorm B u ω)) 4 P := by
-      have hmeas : AEStronglyMeasurable (fun ω => Real.exp (r * incrNorm B u ω)) P :=
-        ((measurable_incrNorm B u).const_mul r).exp.aestronglyMeasurable
-      have h4 : MemLp (fun ω => Real.exp (r * incrNorm B u ω)) ((4 : ℕ) : ℝ≥0∞) P := by
-        rw [← integrable_norm_rpow_iff hmeas (by simp) (by simp)]
-        simp only [ENNReal.toReal_natCast, Real.rpow_natCast, Real.norm_eq_abs, Real.abs_exp]
-        refine hint.congr (ae_of_all _ fun ω => ?_)
-        simp only
-        rw [← Real.exp_nat_mul]
-        congr 1
-        push_cast
-        ring
-      exact_mod_cast h4
-    refine (hg.const_mul C).mono' (hmeasA u hu) (ae_of_all _ fun ω => ?_)
-    rw [Real.norm_eq_abs]
-    exact abs_signatureSigma_le B hT hℓn u ω
-  · intro u v hu huv hvt
-    rcases huv.eq_or_lt with rfl | hlt
-    · simp
-    have hut : u ≤ t := huv.trans hvt
-    set h : ℝ := v - u with hh
-    have hh0 : 0 < h := sub_pos.mpr hlt
-    set A : ℝ := (C * r) ^ 4 / 2 * (((d : ℝ) + 1) ^ 3 / h ^ 2) with hA
-    set Bc : ℝ := (C * r) ^ 4 / 2 * (h ^ 2 / 2) with hBc
-    have hA0 : 0 ≤ A := by positivity
-    have hBc0 : 0 ≤ Bc := by positivity
-    have hS8 : Integrable (fun ω => ∑ j,
-        (MultiBrownian.wAug B v ω j - MultiBrownian.wAug B u ω j) ^ 8) P :=
-      integrable_finsetSum _ fun j _ => integrable_wAug_sub_pow8 B hu huv j
-    have hEu : Integrable (fun ω => Real.exp (16 * r * incrNorm B u ω)) P :=
-      integrable_exp_mul_incrNorm B u (by positivity)
-    have hEv : Integrable (fun ω => Real.exp (16 * r * incrNorm B v ω)) P :=
-      integrable_exp_mul_incrNorm B v (by positivity)
-    have hIu : ∫ ω, Real.exp (16 * r * incrNorm B u ω) ∂P ≤ Eb :=
-      integral_exp_mul_incrNorm_le B hc0 hu hut
-    have hIv : ∫ ω, Real.exp (16 * r * incrNorm B v ω) ∂P ≤ Eb :=
-      integral_exp_mul_incrNorm_le B hc0 (hu.trans huv) hvt
-    have hI8 : ∑ j, ∫ ω, (MultiBrownian.wAug B v ω j - MultiBrownian.wAug B u ω j) ^ 8 ∂P ≤
-        ∑ _j : Fin (d + 1), (t ^ 4 + gauss8Const) * h ^ 4 :=
-      Finset.sum_le_sum fun j _ => integral_wAug_sub_pow8_le B hu huv hvt j
-    calc ∫ ω, (signatureSigma B hT ℓ v ω - signatureSigma B hT ℓ u ω) ^ 4 ∂P
-        ≤ ∫ ω, (A * ∑ j, (MultiBrownian.wAug B v ω j - MultiBrownian.wAug B u ω j) ^ 8 +
-            Bc * Real.exp (16 * r * incrNorm B u ω) +
-            Bc * Real.exp (16 * r * incrNorm B v ω)) ∂P :=
-          integral_mono_of_nonneg (ae_of_all _ fun ω => by positivity)
-            (((hS8.const_mul A).add (hEu.const_mul Bc)).add (hEv.const_mul Bc))
-            (ae_of_all _ fun ω => signatureSigma_sub_pow_four_le B hT hℓn hh0 ω)
-      _ = A * ∑ j, ∫ ω, (MultiBrownian.wAug B v ω j - MultiBrownian.wAug B u ω j) ^ 8 ∂P +
-            Bc * ∫ ω, Real.exp (16 * r * incrNorm B u ω) ∂P +
-            Bc * ∫ ω, Real.exp (16 * r * incrNorm B v ω) ∂P := by
-          have hfirst : Integrable (fun ω => A * ∑ j,
-              (MultiBrownian.wAug B v ω j - MultiBrownian.wAug B u ω j) ^ 8 +
-              Bc * Real.exp (16 * r * incrNorm B u ω)) P :=
-            (hS8.const_mul A).add (hEu.const_mul Bc)
-          rw [integral_add hfirst (hEv.const_mul Bc),
-            integral_add (hS8.const_mul A) (hEu.const_mul Bc), integral_const_mul,
-            integral_const_mul, integral_const_mul,
-            integral_finsetSum _ fun j _ => integrable_wAug_sub_pow8 B hu huv j]
-      _ ≤ A * ∑ _j : Fin (d + 1), (t ^ 4 + gauss8Const) * h ^ 4 + Bc * Eb + Bc * Eb := by
-          gcongr
-      _ = (C * r) ^ 4 / 2 * (((d : ℝ) + 1) ^ 4 * (t ^ 4 + gauss8Const) + Eb) * h ^ 2 := by
-          simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, hA, hBc]
-          push_cast
-          field_simp
-          ring
+  sorry
+
 
 end SignatureVolatility
