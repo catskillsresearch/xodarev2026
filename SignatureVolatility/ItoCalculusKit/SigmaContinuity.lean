@@ -68,13 +68,13 @@ theorem continuousOn_dualPairing_of_levelNorm_le {T : ℝ} {w : Weight}
           (mul_nonneg (Real.sqrt_nonneg _) (w.pos n).le)
     _ = C * (w n * M n) := by ring
 
-/-- **Almost-sure continuity of `σ = ⟨ℓ, Ŵ⟩`** on `[0, T]` (paper form: the signature
-volatility has continuous paths almost surely). Downstream code consumes this form. -/
-theorem ae_continuousOn_sigma_of_brownian {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T)
-    (w : Weight) (hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1)) (hℓ : HypH1 w ℓ) :
-    ∀ᵐ ω ∂P, ContinuousOn
-      (fun s => dualPairing ℓ ((prolongedBrownianSetup_stratonovich_of_brownian B hT).W_hat s ω))
-      (Icc 0 T) := by
+/-- **Uniform level majorant of the Brownian signature.** Almost surely there is a deterministic
+in `s` majorant `M n ≥ sup_{s ∈ [0,T]} ‖Ŵ_s^{(n)}‖` with `∑ w(n) M n < ∞`, for every admissible
+weight `w` (H2). -/
+theorem ae_levelNorm_bound_paperSig2 {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T)
+    (w : Weight) (hw : HypH2 w) :
+    ∀ᵐ ω ∂P, ∃ M : ℕ → ℝ, (∀ s ∈ Icc 0 T, ∀ n, (paperSig2 B 0 s ω).levelNorm n ≤ M n) ∧
+      Summable fun n => w n * M n := by
   obtain ⟨r, hr⟩ := hw.le_geometric
   have hr0 : 0 ≤ r := (w.pos 1).le.trans (by simpa using hr 1)
   set K8 : ℝ := (kolSupConst T ^ ((8 : ℝ)⁻¹)).toReal
@@ -220,8 +220,6 @@ theorem ae_continuousOn_sigma_of_brownian {T : ℝ} (B : MultiBrownian Ω P d) (
     simp only [F, h2, ENNReal.mul_top hw0] at h1
     exact lt_irrefl _ (h1.trans_lt hΦω)
   set M : ℕ → ℝ := fun n => ∑ I ∈ wordsOfLength (d + 1) n, (|c I 0 ω| + (S I ω).toReal)
-  have hterm : ∀ n, ContinuousOn (fun s => ℓ.levelInner (paperSig2 B 0 s ω) n) (Icc 0 T) :=
-    fun n => continuousOn_finsetSum _ fun I _ => continuousOn_const.mul (hcont I)
   have hX : ∀ s ∈ Icc 0 T, ∀ n, (paperSig2 B 0 s ω).levelNorm n ≤ M n := by
     intro s hs n
     refine (levelNorm_le_sum_abs _ n).trans (Finset.sum_le_sum fun I hI => ?_)
@@ -241,6 +239,19 @@ theorem ae_continuousOn_sigma_of_brownian {T : ℝ} (B : MultiBrownian Ω P d) (
     refine Finset.sum_congr rfl fun I hI => ?_
     rw [ENNReal.toReal_add ENNReal.ofReal_ne_top (hSfin n I hI),
       ENNReal.toReal_ofReal (abs_nonneg _)]
-  exact continuousOn_dualPairing_of_levelNorm_le hℓ hterm hX hsum
+  exact ⟨M, hX, hsum⟩
+
+/-- **Almost-sure continuity of `σ = ⟨ℓ, Ŵ⟩`** on `[0, T]` (paper form: the signature
+volatility has continuous paths almost surely). Downstream code consumes this form. -/
+theorem ae_continuousOn_sigma_of_brownian {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T)
+    (w : Weight) (hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1)) (hℓ : HypH1 w ℓ) :
+    ∀ᵐ ω ∂P, ContinuousOn
+      (fun s => dualPairing ℓ ((prolongedBrownianSetup_stratonovich_of_brownian B hT).W_hat s ω))
+      (Icc 0 T) := by
+  filter_upwards [ae_levelNorm_bound_paperSig2 B hT w hw, ae_continuousOn_paperSig2_coeff B hT.le]
+    with ω hM hcont
+  obtain ⟨M, hX, hsum⟩ := hM
+  exact continuousOn_dualPairing_of_levelNorm_le hℓ
+    (fun n => continuousOn_finsetSum _ fun I _ => continuousOn_const.mul (hcont I)) hX hsum
 
 end SignatureVolatility

@@ -2,8 +2,18 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-24T10:27:15Z
-**Holes:** 2 open+blocked · 1 open · 1 blocked · 175 done · 1 file(s) with `sorry`.
+**Updated:** 2026-11-24T10:39:37Z
+**Holes:** 2 open+blocked · 1 open · 1 blocked · 172 done · 1 file(s) with `sorry`.
+**Paper claims refuted:** 2 counterexample module(s) · 1 refuted theorem(s) · 1 partly refuted theorem(s).
+
+## Counterexamples and refuted paper claims
+
+| Status | Id | What is refuted | File |
+|---|---|---|---|
+| **counterexample** | `Lemma77ShuffleEstimateFalse` | COUNTEREXAMPLE: refutes paper Lemma 77 (weighted shuffle estimate) and Lemma 78 (local Lipschitz bound for the Riccati operator). | `SignatureVolatility/Lemma77ShuffleEstimateFalse.lean` |
+| **counterexample** | `Prop58BlackScholesDepthFalse` | COUNTEREXAMPLE: refutes paper Prop. 58 / PDF Prop. 5.5 (Black-Scholes has completeness depth 0); Black-Scholes depth is infinite under Definition 55. | `SignatureVolatility/Prop58BlackScholesDepthFalse.lean` |
+| **partly-refuted** | `TheoremD` | PARTLY REFUTED: GKW projection part proved; the residual-expansion clause assumes finite depth, which is false (vacuous). Paper kit / theorem goal. | `SignatureVolatility/TheoremD.lean` |
+| **refuted** | `TheoremC` | REFUTED: the finite-depth side of Theorem C / Thm 56 is false in every non-degenerate model (depth = infinity), incl. Black-Scholes; Prop. 58 refuted. The 'complete iff' direction awaits a Black-Scholes completeness proof. Paper kit / theorem goal. | `SignatureVolatility/TheoremC.lean` |
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
 
@@ -25,8 +35,8 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | open | `SignatureRiccatiKit.OfSetup` | yes | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
 | done | `TheoremA` | no | `SignatureVolatility/TheoremA.lean` |
 | blocked | `TheoremB` | no | `SignatureVolatility/TheoremB.lean` |
-| done | `TheoremC` | no | `SignatureVolatility/TheoremC.lean` |
-| done | `TheoremD` | no | `SignatureVolatility/TheoremD.lean` |
+| refuted | `TheoremC` | no | `SignatureVolatility/TheoremC.lean` |
+| partly-refuted | `TheoremD` | no | `SignatureVolatility/TheoremD.lean` |
 
 ## Files with `sorry`
 
@@ -126,7 +136,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `ItoCalculusKit.SubseqUniform` | `SignatureVolatility/ItoCalculusKit/SubseqUniform.lean` |
 | done | `Lemma32SignatureInTw` | `SignatureVolatility/Lemma32SignatureInTw.lean` |
 | done | `Lemma61GramPosDef` | `SignatureVolatility/Lemma61GramPosDef.lean` |
-| done | `Lemma77ShuffleEstimateFalse` | `SignatureVolatility/Lemma77ShuffleEstimateFalse.lean` |
+| counterexample | `Lemma77ShuffleEstimateFalse` | `SignatureVolatility/Lemma77ShuffleEstimateFalse.lean` |
 | done | `Letter` | `SignatureVolatility/Letter.lean` |
 | done | `MemL2w` | `SignatureVolatility/MemL2w.lean` |
 | done | `MemL2wInv` | `SignatureVolatility/MemL2wInv.lean` |
@@ -144,7 +154,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `ProjGt` | `SignatureVolatility/ProjGt.lean` |
 | done | `ProjLe` | `SignatureVolatility/ProjLe.lean` |
 | done | `ProlongedBrownianSetup` | `SignatureVolatility/ProlongedBrownianSetup.lean` |
-| done | `Prop58BlackScholesDepthFalse` | `SignatureVolatility/Prop58BlackScholesDepthFalse.lean` |
+| counterexample | `Prop58BlackScholesDepthFalse` | `SignatureVolatility/Prop58BlackScholesDepthFalse.lean` |
 | done | `Proposition311SharpnessOfH1` | `SignatureVolatility/Proposition311SharpnessOfH1.lean` |
 | done | `Proposition65NormalEquations` | `SignatureVolatility/Proposition65NormalEquations.lean` |
 | done | `PureBrownianWord` | `SignatureVolatility/PureBrownianWord.lean` |
@@ -161,6 +171,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `SignatureRiccatiKit` | `SignatureVolatility/SignatureRiccatiKit.lean` |
 | done | `SignatureRiccatiKit.CoordSemimartingale` | `SignatureVolatility/SignatureRiccatiKit/CoordSemimartingale.lean` |
 | open | `SignatureRiccatiKit.OfSetup` | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
+| done | `SignatureRiccatiKit.RiccatiExpProcess` | `SignatureVolatility/SignatureRiccatiKit/RiccatiExpProcess.lean` |
 | done | `SignatureRiccatiKit.RiccatiOp` | `SignatureVolatility/SignatureRiccatiKit/RiccatiOp.lean` |
 | done | `SignatureVolatilityModel` | `SignatureVolatility/SignatureVolatilityModel.lean` |
 | done | `SmoothIteratedIntegral` | `SignatureVolatility/SmoothIteratedIntegral.lean` |
@@ -172,8 +183,8 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `TheoremAOfBrownianSetupItoKit` | `SignatureVolatility/TheoremAOfBrownianSetupItoKit.lean` |
 | blocked | `TheoremB` | `SignatureVolatility/TheoremB.lean` |
 | done | `TheoremBOfSetupItoRiccatiKit` | `SignatureVolatility/TheoremBOfSetupItoRiccatiKit.lean` |
-| done | `TheoremC` | `SignatureVolatility/TheoremC.lean` |
-| done | `TheoremD` | `SignatureVolatility/TheoremD.lean` |
+| refuted | `TheoremC` | `SignatureVolatility/TheoremC.lean` |
+| partly-refuted | `TheoremD` | `SignatureVolatility/TheoremD.lean` |
 | done | `TimeReindex` | `SignatureVolatility/TimeReindex.lean` |
 | done | `Tw` | `SignatureVolatility/Tw.lean` |
 | done | `Weight` | `SignatureVolatility/Weight.lean` |

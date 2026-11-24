@@ -4,6 +4,7 @@ public import SignatureVolatility.ItoCalculusKit.OfMathFin
 public import SignatureVolatility.SignatureRiccatiKit
 public import SignatureVolatility.SignatureRiccatiKit.RiccatiOp
 public import SignatureVolatility.SignatureRiccatiKit.CoordSemimartingale
+public import SignatureVolatility.SignatureRiccatiKit.RiccatiExpProcess
 
 
 @[expose] public section

@@ -1,10 +1,13 @@
 {
-  "updated": "2026-11-24T10:27:15Z",
+  "updated": "2026-11-24T10:39:37Z",
   "sorryCount": 2,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
-    "done": "Verified (listed in VERIFIED and deps done)"
+    "done": "Verified (listed in VERIFIED and deps done)",
+    "counterexample": "Verified Lean counterexample refuting a paper claim",
+    "refuted": "Paper theorem refuted (see detail)",
+    "partly-refuted": "Paper theorem partly refuted (see detail)"
   },
   "notes": [
     "File-level board: one node per SignatureVolatility .lean module.",
@@ -13,7 +16,7 @@
     "Hard edge B\u2192A: A imports B (direct, submodule files only; barrel omitted).",
     "Drawn edges are transitively reduced; blocking still uses all direct imports.",
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, SignatureRiccatiKit.OfSetup, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
-    "Blue = done. Green = open. Grey = blocked.",
+    "Blue = done. Green = open. Grey = blocked. Red = counterexample / refuted. Orange = partly refuted.",
     "Regenerate with: python3 scripts/build_holes.py",
     "Open tips: SignatureRiccatiKit.OfSetup."
   ],
@@ -1112,9 +1115,9 @@
       "label": "Lemma77ShuffleEstimateFalse",
       "section": 1,
       "file": "SignatureVolatility/Lemma77ShuffleEstimateFalse.lean",
-      "status": "done",
+      "status": "counterexample",
       "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "detail": "COUNTEREXAMPLE: refutes paper Lemma 77 (weighted shuffle estimate) and Lemma 78 (local Lipschitz bound for the Riccati operator).",
       "hasSorry": false,
       "paperKitGoal": false
     },
@@ -1552,9 +1555,9 @@
       "label": "Prop58BlackScholesDepthFalse",
       "section": 1,
       "file": "SignatureVolatility/Prop58BlackScholesDepthFalse.lean",
-      "status": "done",
+      "status": "counterexample",
       "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "detail": "COUNTEREXAMPLE: refutes paper Prop. 58 / PDF Prop. 5.5 (Black-Scholes has completeness depth 0); Black-Scholes depth is infinite under Definition 55.",
       "hasSorry": false,
       "paperKitGoal": false
     },
@@ -1735,6 +1738,17 @@
       "paperKitGoal": true
     },
     {
+      "id": "SignatureRiccatiKit.RiccatiExpProcess",
+      "label": "SignatureRiccatiKit.RiccatiExpProcess",
+      "section": 1,
+      "file": "SignatureVolatility/SignatureRiccatiKit/RiccatiExpProcess.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
       "id": "SignatureRiccatiKit.RiccatiOp",
       "label": "SignatureRiccatiKit.RiccatiOp",
       "section": 1,
@@ -1871,9 +1885,9 @@
       "label": "TheoremC",
       "section": 1,
       "file": "SignatureVolatility/TheoremC.lean",
-      "status": "done",
+      "status": "refuted",
       "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Paper kit / theorem goal.",
+      "detail": "REFUTED: the finite-depth side of Theorem C / Thm 56 is false in every non-degenerate model (depth = infinity), incl. Black-Scholes; Prop. 58 refuted. The 'complete iff' direction awaits a Black-Scholes completeness proof. Paper kit / theorem goal.",
       "hasSorry": false,
       "paperKitGoal": true
     },
@@ -1882,9 +1896,9 @@
       "label": "TheoremD",
       "section": 1,
       "file": "SignatureVolatility/TheoremD.lean",
-      "status": "done",
+      "status": "partly-refuted",
       "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Paper kit / theorem goal.",
+      "detail": "PARTLY REFUTED: GKW projection part proved; the residual-expansion clause assumes finite depth, which is false (vacuous). Paper kit / theorem goal.",
       "hasSorry": false,
       "paperKitGoal": true
     },
@@ -3261,6 +3275,21 @@
     {
       "from": "SignatureRiccatiKit.CoordSemimartingale",
       "to": "SignatureRiccatiKit.OfSetup",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.RiccatiExpProcess",
+      "to": "SignatureRiccatiKit.OfSetup",
+      "kind": "hard"
+    },
+    {
+      "from": "ClassicalRiccatiSolution",
+      "to": "SignatureRiccatiKit.RiccatiExpProcess",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.SigmaContinuity",
+      "to": "SignatureRiccatiKit.RiccatiExpProcess",
       "kind": "hard"
     },
     {

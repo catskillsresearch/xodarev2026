@@ -5,6 +5,7 @@ AdmissibleGainsUnderP -hard-> TheoremBOfSetupItoRiccatiKit
 BlackScholesModel -hard-> Prop58BlackScholesDepthFalse
 ClassicalRiccatiSolution -hard-> Remark219BlackScholesRiccati
 ClassicalRiccatiSolution -hard-> SignatureRiccatiKit
+ClassicalRiccatiSolution -hard-> SignatureRiccatiKit.RiccatiExpProcess
 ClassicalRiccatiSolution -hard-> TheoremBOfSetupItoRiccatiKit
 DualPairing -hard-> DualPairingLeNormWDualMulNormW
 DualPairing -hard-> ItoCalculusKit
@@ -229,6 +230,7 @@ ItoCalculusKit.RiemannRate8 -hard-> ItoCalculusKit.SubseqUniform
 ItoCalculusKit.SigmaBounds -hard-> ItoCalculusKit.SigmaContinuity
 ItoCalculusKit.SigmaBounds -hard-> ItoCalculusKit.SigmaHolder
 ItoCalculusKit.SigmaContinuity -hard-> ItoCalculusKit.SigmaHolder
+ItoCalculusKit.SigmaContinuity -hard-> SignatureRiccatiKit.RiccatiExpProcess
 ItoCalculusKit.SigmaHolder -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.SigmaHolder -hard-> ItoCalculusKit.EighthTransform
 ItoCalculusKit.SigmaHolder8 -hard-> ItoCalculusKit.QuadIncrement
@@ -375,6 +377,7 @@ SignatureRiccatiKit -hard-> SignatureRiccatiKit.OfSetup
 SignatureRiccatiKit -hard-> TheoremBOfSetupItoRiccatiKit
 SignatureRiccatiKit.CoordSemimartingale -hard-> SignatureRiccatiKit.OfSetup
 SignatureRiccatiKit.OfSetup -hard-> TheoremB
+SignatureRiccatiKit.RiccatiExpProcess -hard-> SignatureRiccatiKit.OfSetup
 SignatureRiccatiKit.RiccatiOp -hard-> Lemma77ShuffleEstimateFalse
 SignatureRiccatiKit.RiccatiOp -hard-> SignatureRiccatiKit.OfSetup
 SignatureVolatilityModel -hard-> BlackScholesModel
