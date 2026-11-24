@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-24T20:47:40Z",
-  "sorryCount": 28,
+  "updated": "2026-11-24T20:55:33Z",
+  "sorryCount": 25,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, SignatureRiccatiKit.AffineRiccatiDualityMpr, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done (proved, counterexample or refuted; no sorry). Green = open. Grey = blocked. Counterexample / refutation labels are shown as text on the node.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: SignatureRiccatiKit.AffineRiccatiDualityMpr, SignatureRiccatiKit.BarrierU, SignatureRiccatiKit.BrownianScalingShiftedExponent, SignatureRiccatiKit.CameronMartinC2Shift, SignatureRiccatiKit.ComplexTilt, SignatureRiccatiKit.CondExpMulIndepDisintegrate, SignatureRiccatiKit.CounterexampleV1PosLe, SignatureRiccatiKit.DifferentiableAtTsum, SignatureRiccatiKit.FourierUniquenessGaussian, SignatureRiccatiKit.IteratedDerivGaussian."
+    "Open tips: SignatureRiccatiKit.AffineRiccatiDualityMpr, SignatureRiccatiKit.BrownianScalingShiftedExponent, SignatureRiccatiKit.CameronMartinC2Shift, SignatureRiccatiKit.ComplexTilt, SignatureRiccatiKit.CondExpMulIndepDisintegrate, SignatureRiccatiKit.CounterexampleV1PosLe, SignatureRiccatiKit.DifferentiableAtTsum, SignatureRiccatiKit.FourierUniquenessGaussian, SignatureRiccatiKit.IntegralExpBarrier, SignatureRiccatiKit.IteratedDerivGaussian."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -1920,7 +1920,7 @@
       "file": "SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMprCounterexample.lean",
       "status": "blocked",
       "kind": null,
-      "blocker": "needs SignatureRiccatiKit.ComplexTilt, SignatureRiccatiKit.ItoWordTiltClosedForm, SignatureRiccatiKit.CondSigPoly, SignatureRiccatiKit.CondSigPolyIdentification, SignatureRiccatiKit.SummableNormTermAndBound, SignatureRiccatiKit.DifferentiableAtTsum, SignatureRiccatiKit.FourierUniquenessGaussian, SignatureRiccatiKit.IteratedDerivGaussian (+11 more)",
+      "blocker": "needs SignatureRiccatiKit.ComplexTilt, SignatureRiccatiKit.ItoWordTiltClosedForm, SignatureRiccatiKit.CondSigPoly, SignatureRiccatiKit.CondSigPolyIdentification, SignatureRiccatiKit.SummableNormTermAndBound, SignatureRiccatiKit.DifferentiableAtTsum, SignatureRiccatiKit.FourierUniquenessGaussian, SignatureRiccatiKit.IteratedDerivGaussian (+10 more)",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -1930,11 +1930,11 @@
       "label": "B4a barrier PDE",
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit/BarrierU.lean",
-      "status": "open",
+      "status": "done",
       "kind": null,
       "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
-      "hasSorry": true,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -2158,9 +2158,9 @@
       "label": "B4b It\u00f4 + barrier bound",
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit/IntegralExpBarrier.lean",
-      "status": "blocked",
+      "status": "open",
       "kind": null,
-      "blocker": "needs SignatureRiccatiKit.BarrierU",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
       "hasSorry": true,
       "paperKitGoal": false
