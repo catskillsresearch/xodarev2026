@@ -22,7 +22,6 @@ public import SignatureVolatility.ExtTensorAlgebra.LevelNormSq
 public import SignatureVolatility.ExtTensorAlgebra.ShuffleBasis
 public import SignatureVolatility.ExtTensorAlgebra.ShuffleWords
 public import SignatureVolatility.FirstOrderBrownianVolModel
-public import SignatureVolatility.GKWDecompositionSetup
 public import SignatureVolatility.GeneratedFiltration
 public import SignatureVolatility.HypH1
 public import SignatureVolatility.HypH1OfIsFinitelySupported
@@ -35,6 +34,7 @@ public import SignatureVolatility.ItoCalculusKit
 public import SignatureVolatility.Lemma32SignatureInTw
 public import SignatureVolatility.Lemma61GramPosDef
 public import SignatureVolatility.Lemma77ShuffleEstimateFalse
+public import SignatureVolatility.Prop58BlackScholesDepthFalse
 public import SignatureVolatility.Letter
 public import SignatureVolatility.MemL2w
 public import SignatureVolatility.MemL2wInv
@@ -49,12 +49,6 @@ public import SignatureVolatility.NormW
 public import SignatureVolatility.NormWDual
 public import SignatureVolatility.Preliminaries
 public import SignatureVolatility.PriceFiltration
-public import SignatureVolatility.PriceFiltrationSignatureSpace.AugmentedMarketSpan
-public import SignatureVolatility.PriceFiltrationSignatureSpace.CompletenessDepth
-public import SignatureVolatility.PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration
-public import SignatureVolatility.PriceFiltrationSignatureSpace.VInfty
-public import SignatureVolatility.PriceFiltrationSignatureSpace.VSubspace
-public import SignatureVolatility.PriceFiltrationSignatureSpace
 public import SignatureVolatility.ProjGt
 public import SignatureVolatility.ProjLe
 public import SignatureVolatility.ProlongedBrownianSetup.BrownianFiltration
@@ -83,7 +77,6 @@ public import SignatureVolatility.Remark219BlackScholesRiccati
 public import SignatureVolatility.RiccatiOpBounded
 public import SignatureVolatility.RightShift
 public import SignatureVolatility.SatisfiesNFLVR
-public import SignatureVolatility.Section71BlackScholesCompleteness
 public import SignatureVolatility.ShuffleFinite
 public import SignatureVolatility.ShuffleIdentity
 public import SignatureVolatility.SignatureFiltrationEqBrownianFiltration
@@ -101,9 +94,7 @@ public import SignatureVolatility.TheoremAOfBrownianSetupItoKit
 public import SignatureVolatility.TheoremA
 public import SignatureVolatility.TheoremBOfSetupItoRiccatiKit
 public import SignatureVolatility.TheoremB
-public import SignatureVolatility.TheoremCOfMarketKit
 public import SignatureVolatility.TheoremC
-public import SignatureVolatility.TheoremDOfMarketKit
 public import SignatureVolatility.TheoremD
 public import SignatureVolatility.Tw
 public import SignatureVolatility.Weight.ConstOne

@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-24T09:58:21Z",
-  "sorryCount": 6,
+  "updated": "2026-11-24T10:27:15Z",
+  "sorryCount": 2,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, SignatureRiccatiKit.OfSetup, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done. Green = open. Grey = blocked.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: PriceFiltrationSignatureSpace.OfMarket, SignatureRiccatiKit.OfSetup."
+    "Open tips: SignatureRiccatiKit.OfSetup."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -327,25 +327,14 @@
       "paperKitGoal": false
     },
     {
-      "id": "GKWDecompositionSetup",
-      "label": "GKWDecompositionSetup",
-      "section": 1,
-      "file": "SignatureVolatility/GKWDecompositionSetup.lean",
-      "status": "done",
-      "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
-      "hasSorry": false,
-      "paperKitGoal": false
-    },
-    {
       "id": "GKWDecompositionSetup.OfPFS",
       "label": "GKWDecompositionSetup.OfPFS",
       "section": 1,
       "file": "SignatureVolatility/GKWDecompositionSetup/OfPFS.lean",
-      "status": "blocked",
-      "blocker": "needs PriceFiltrationSignatureSpace.OfMarket",
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap). Paper kit / theorem goal.",
-      "hasSorry": true,
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Paper kit / theorem goal.",
+      "hasSorry": false,
       "paperKitGoal": true
     },
     {
@@ -1284,81 +1273,15 @@
       "paperKitGoal": false
     },
     {
-      "id": "PriceFiltrationSignatureSpace",
-      "label": "PriceFiltrationSignatureSpace",
-      "section": 1,
-      "file": "SignatureVolatility/PriceFiltrationSignatureSpace.lean",
-      "status": "done",
-      "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
-      "hasSorry": false,
-      "paperKitGoal": false
-    },
-    {
-      "id": "PriceFiltrationSignatureSpace.AugmentedMarketSpan",
-      "label": "PriceFiltrationSignatureSpace.AugmentedMarketSpan",
-      "section": 5,
-      "file": "SignatureVolatility/PriceFiltrationSignatureSpace/AugmentedMarketSpan.lean",
-      "status": "done",
-      "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
-      "hasSorry": false,
-      "paperKitGoal": false
-    },
-    {
-      "id": "PriceFiltrationSignatureSpace.CompletenessDepth",
-      "label": "PriceFiltrationSignatureSpace.CompletenessDepth",
-      "section": 5,
-      "file": "SignatureVolatility/PriceFiltrationSignatureSpace/CompletenessDepth.lean",
-      "status": "done",
-      "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
-      "hasSorry": false,
-      "paperKitGoal": false
-    },
-    {
-      "id": "PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration",
-      "label": "PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration",
-      "section": 5,
-      "file": "SignatureVolatility/PriceFiltrationSignatureSpace/IsCompleteOnPriceFiltration.lean",
-      "status": "done",
-      "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
-      "hasSorry": false,
-      "paperKitGoal": false
-    },
-    {
       "id": "PriceFiltrationSignatureSpace.OfMarket",
       "label": "PriceFiltrationSignatureSpace.OfMarket",
       "section": 5,
       "file": "SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean",
-      "status": "open",
+      "status": "done",
       "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap). Paper kit / theorem goal.",
-      "hasSorry": true,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Paper kit / theorem goal.",
+      "hasSorry": false,
       "paperKitGoal": true
-    },
-    {
-      "id": "PriceFiltrationSignatureSpace.VInfty",
-      "label": "PriceFiltrationSignatureSpace.VInfty",
-      "section": 5,
-      "file": "SignatureVolatility/PriceFiltrationSignatureSpace/VInfty.lean",
-      "status": "done",
-      "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
-      "hasSorry": false,
-      "paperKitGoal": false
-    },
-    {
-      "id": "PriceFiltrationSignatureSpace.VSubspace",
-      "label": "PriceFiltrationSignatureSpace.VSubspace",
-      "section": 5,
-      "file": "SignatureVolatility/PriceFiltrationSignatureSpace/VSubspace.lean",
-      "status": "done",
-      "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
-      "hasSorry": false,
-      "paperKitGoal": false
     },
     {
       "id": "ProjGt",
@@ -1625,6 +1548,17 @@
       "paperKitGoal": false
     },
     {
+      "id": "Prop58BlackScholesDepthFalse",
+      "label": "Prop58BlackScholesDepthFalse",
+      "section": 1,
+      "file": "SignatureVolatility/Prop58BlackScholesDepthFalse.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
       "id": "Proposition311SharpnessOfH1",
       "label": "Proposition311SharpnessOfH1",
       "section": 1,
@@ -1706,17 +1640,6 @@
       "label": "SatisfiesNFLVR",
       "section": 1,
       "file": "SignatureVolatility/SatisfiesNFLVR.lean",
-      "status": "done",
-      "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
-      "hasSorry": false,
-      "paperKitGoal": false
-    },
-    {
-      "id": "Section71BlackScholesCompleteness",
-      "label": "Section71BlackScholesCompleteness",
-      "section": 1,
-      "file": "SignatureVolatility/Section71BlackScholesCompleteness.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
@@ -1948,44 +1871,22 @@
       "label": "TheoremC",
       "section": 1,
       "file": "SignatureVolatility/TheoremC.lean",
-      "status": "blocked",
-      "blocker": "needs PriceFiltrationSignatureSpace.OfMarket",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Paper kit / theorem goal.",
       "hasSorry": false,
       "paperKitGoal": true
-    },
-    {
-      "id": "TheoremCOfMarketKit",
-      "label": "TheoremCOfMarketKit",
-      "section": 1,
-      "file": "SignatureVolatility/TheoremCOfMarketKit.lean",
-      "status": "done",
-      "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
-      "hasSorry": false,
-      "paperKitGoal": false
     },
     {
       "id": "TheoremD",
       "label": "TheoremD",
       "section": 1,
       "file": "SignatureVolatility/TheoremD.lean",
-      "status": "blocked",
-      "blocker": "needs GKWDecompositionSetup.OfPFS",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Paper kit / theorem goal.",
       "hasSorry": false,
       "paperKitGoal": true
-    },
-    {
-      "id": "TheoremDOfMarketKit",
-      "label": "TheoremDOfMarketKit",
-      "section": 1,
-      "file": "SignatureVolatility/TheoremDOfMarketKit.lean",
-      "status": "done",
-      "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
-      "hasSorry": false,
-      "paperKitGoal": false
     },
     {
       "id": "TimeReindex",
@@ -2303,33 +2204,8 @@
       "kind": "hard"
     },
     {
-      "from": "GKWDecompositionSetup",
-      "to": "GKWDecompositionSetup.OfPFS",
-      "kind": "hard"
-    },
-    {
       "from": "PriceFiltrationSignatureSpace.OfMarket",
       "to": "GKWDecompositionSetup.OfPFS",
-      "kind": "hard"
-    },
-    {
-      "from": "MemL2wInv",
-      "to": "GKWDecompositionSetup",
-      "kind": "hard"
-    },
-    {
-      "from": "Norm2wInv",
-      "to": "GKWDecompositionSetup",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace.VSubspace",
-      "to": "GKWDecompositionSetup",
-      "kind": "hard"
-    },
-    {
-      "from": "ProjLe",
-      "to": "GKWDecompositionSetup",
       "kind": "hard"
     },
     {
@@ -3033,58 +2909,8 @@
       "kind": "hard"
     },
     {
-      "from": "PriceFiltrationSignatureSpace",
-      "to": "PriceFiltrationSignatureSpace.AugmentedMarketSpan",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace.VInfty",
-      "to": "PriceFiltrationSignatureSpace.CompletenessDepth",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace.VSubspace",
-      "to": "PriceFiltrationSignatureSpace.CompletenessDepth",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace.AugmentedMarketSpan",
-      "to": "PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration",
-      "kind": "hard"
-    },
-    {
-      "from": "ItoCalculusKit.OfMathFin",
+      "from": "TheoremA",
       "to": "PriceFiltrationSignatureSpace.OfMarket",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace",
-      "to": "PriceFiltrationSignatureSpace.OfMarket",
-      "kind": "hard"
-    },
-    {
-      "from": "SignatureVolatilityModel",
-      "to": "PriceFiltrationSignatureSpace.OfMarket",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace",
-      "to": "PriceFiltrationSignatureSpace.VInfty",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace",
-      "to": "PriceFiltrationSignatureSpace.VSubspace",
-      "kind": "hard"
-    },
-    {
-      "from": "WordsOfLength",
-      "to": "PriceFiltrationSignatureSpace.VSubspace",
-      "kind": "hard"
-    },
-    {
-      "from": "ExtTensorAlgebra.ExtTensorAlgebra",
-      "to": "PriceFiltrationSignatureSpace",
       "kind": "hard"
     },
     {
@@ -3288,6 +3114,16 @@
       "kind": "hard"
     },
     {
+      "from": "PriceFiltrationSignatureSpace.OfMarket",
+      "to": "Prop58BlackScholesDepthFalse",
+      "kind": "hard"
+    },
+    {
+      "from": "BlackScholesModel",
+      "to": "Prop58BlackScholesDepthFalse",
+      "kind": "hard"
+    },
+    {
       "from": "HypH1",
       "to": "Proposition311SharpnessOfH1",
       "kind": "hard"
@@ -3350,11 +3186,6 @@
     {
       "from": "ExtTensorAlgebra.ExtTensorAlgebra",
       "to": "RightShift",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace.CompletenessDepth",
-      "to": "Section71BlackScholesCompleteness",
       "kind": "hard"
     },
     {
@@ -3578,23 +3409,8 @@
       "kind": "hard"
     },
     {
-      "from": "PriceFiltrationSignatureSpace.OfMarket",
+      "from": "Prop58BlackScholesDepthFalse",
       "to": "TheoremC",
-      "kind": "hard"
-    },
-    {
-      "from": "TheoremCOfMarketKit",
-      "to": "TheoremC",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace.CompletenessDepth",
-      "to": "TheoremCOfMarketKit",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration",
-      "to": "TheoremCOfMarketKit",
       "kind": "hard"
     },
     {
@@ -3603,23 +3419,8 @@
       "kind": "hard"
     },
     {
-      "from": "TheoremDOfMarketKit",
+      "from": "Prop58BlackScholesDepthFalse",
       "to": "TheoremD",
-      "kind": "hard"
-    },
-    {
-      "from": "GKWDecompositionSetup",
-      "to": "TheoremDOfMarketKit",
-      "kind": "hard"
-    },
-    {
-      "from": "PriceFiltrationSignatureSpace.CompletenessDepth",
-      "to": "TheoremDOfMarketKit",
-      "kind": "hard"
-    },
-    {
-      "from": "TailNorm2wInvLeRatioMulNormW",
-      "to": "TheoremDOfMarketKit",
       "kind": "hard"
     },
     {

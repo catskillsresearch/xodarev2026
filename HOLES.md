@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-24T09:58:21Z
-**Holes:** 6 open+blocked · 2 open · 4 blocked · 180 done · 3 file(s) with `sorry`.
+**Updated:** 2026-11-24T10:27:15Z
+**Holes:** 2 open+blocked · 1 open · 1 blocked · 175 done · 1 file(s) with `sorry`.
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
 
@@ -18,34 +18,31 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 
 | Status | Id | `sorry`? | File |
 |---|---|---|---|
-| blocked | `GKWDecompositionSetup.OfPFS` | yes | `SignatureVolatility/GKWDecompositionSetup/OfPFS.lean` |
+| done | `GKWDecompositionSetup.OfPFS` | no | `SignatureVolatility/GKWDecompositionSetup/OfPFS.lean` |
 | done | `ItoCalculusKit.OfMathFin` | no | `SignatureVolatility/ItoCalculusKit/OfMathFin.lean` |
-| open | `PriceFiltrationSignatureSpace.OfMarket` | yes | `SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean` |
+| done | `PriceFiltrationSignatureSpace.OfMarket` | no | `SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean` |
 | done | `ProlongedBrownianSetup.StratonovichOfBM` | no | `SignatureVolatility/ProlongedBrownianSetup/StratonovichOfBM.lean` |
 | open | `SignatureRiccatiKit.OfSetup` | yes | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
 | done | `TheoremA` | no | `SignatureVolatility/TheoremA.lean` |
 | blocked | `TheoremB` | no | `SignatureVolatility/TheoremB.lean` |
-| blocked | `TheoremC` | no | `SignatureVolatility/TheoremC.lean` |
-| blocked | `TheoremD` | no | `SignatureVolatility/TheoremD.lean` |
+| done | `TheoremC` | no | `SignatureVolatility/TheoremC.lean` |
+| done | `TheoremD` | no | `SignatureVolatility/TheoremD.lean` |
 
 ## Files with `sorry`
 
 | Status | Id | File |
 |---|---|---|
-| blocked | `GKWDecompositionSetup.OfPFS` | `SignatureVolatility/GKWDecompositionSetup/OfPFS.lean` |
-| open | `PriceFiltrationSignatureSpace.OfMarket` | `SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean` |
 | open | `SignatureRiccatiKit.OfSetup` | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
 
 ## Open now (Layer 0)
 
 | Id | File |
 |---|---|
-| `PriceFiltrationSignatureSpace.OfMarket` | `SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean` |
 | `SignatureRiccatiKit.OfSetup` | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
 
 ## By group
 
-### Top-level modules — 5 hole(s)
+### Top-level modules — 2 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -58,8 +55,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `DualPairing` | `SignatureVolatility/DualPairing.lean` |
 | done | `DualPairingLeNormWDualMulNormW` | `SignatureVolatility/DualPairingLeNormWDualMulNormW.lean` |
 | done | `FirstOrderBrownianVolModel` | `SignatureVolatility/FirstOrderBrownianVolModel.lean` |
-| done | `GKWDecompositionSetup` | `SignatureVolatility/GKWDecompositionSetup.lean` |
-| blocked | `GKWDecompositionSetup.OfPFS` | `SignatureVolatility/GKWDecompositionSetup/OfPFS.lean` |
+| done | `GKWDecompositionSetup.OfPFS` | `SignatureVolatility/GKWDecompositionSetup/OfPFS.lean` |
 | done | `GeneratedFiltration` | `SignatureVolatility/GeneratedFiltration.lean` |
 | done | `HypH1` | `SignatureVolatility/HypH1.lean` |
 | done | `HypH1OfIsFinitelySupported` | `SignatureVolatility/HypH1OfIsFinitelySupported.lean` |
@@ -145,10 +141,10 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `NormWDual` | `SignatureVolatility/NormWDual.lean` |
 | done | `Preliminaries` | `SignatureVolatility/Preliminaries.lean` |
 | done | `PriceFiltration` | `SignatureVolatility/PriceFiltration.lean` |
-| done | `PriceFiltrationSignatureSpace` | `SignatureVolatility/PriceFiltrationSignatureSpace.lean` |
 | done | `ProjGt` | `SignatureVolatility/ProjGt.lean` |
 | done | `ProjLe` | `SignatureVolatility/ProjLe.lean` |
 | done | `ProlongedBrownianSetup` | `SignatureVolatility/ProlongedBrownianSetup.lean` |
+| done | `Prop58BlackScholesDepthFalse` | `SignatureVolatility/Prop58BlackScholesDepthFalse.lean` |
 | done | `Proposition311SharpnessOfH1` | `SignatureVolatility/Proposition311SharpnessOfH1.lean` |
 | done | `Proposition65NormalEquations` | `SignatureVolatility/Proposition65NormalEquations.lean` |
 | done | `PureBrownianWord` | `SignatureVolatility/PureBrownianWord.lean` |
@@ -157,7 +153,6 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `RiccatiOpBounded` | `SignatureVolatility/RiccatiOpBounded.lean` |
 | done | `RightShift` | `SignatureVolatility/RightShift.lean` |
 | done | `SatisfiesNFLVR` | `SignatureVolatility/SatisfiesNFLVR.lean` |
-| done | `Section71BlackScholesCompleteness` | `SignatureVolatility/Section71BlackScholesCompleteness.lean` |
 | done | `ShuffleFinite` | `SignatureVolatility/ShuffleFinite.lean` |
 | done | `ShuffleIdentity` | `SignatureVolatility/ShuffleIdentity.lean` |
 | done | `SignatureFiltrationEqBrownianFiltration` | `SignatureVolatility/SignatureFiltrationEqBrownianFiltration.lean` |
@@ -177,10 +172,8 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `TheoremAOfBrownianSetupItoKit` | `SignatureVolatility/TheoremAOfBrownianSetupItoKit.lean` |
 | blocked | `TheoremB` | `SignatureVolatility/TheoremB.lean` |
 | done | `TheoremBOfSetupItoRiccatiKit` | `SignatureVolatility/TheoremBOfSetupItoRiccatiKit.lean` |
-| blocked | `TheoremC` | `SignatureVolatility/TheoremC.lean` |
-| done | `TheoremCOfMarketKit` | `SignatureVolatility/TheoremCOfMarketKit.lean` |
-| blocked | `TheoremD` | `SignatureVolatility/TheoremD.lean` |
-| done | `TheoremDOfMarketKit` | `SignatureVolatility/TheoremDOfMarketKit.lean` |
+| done | `TheoremC` | `SignatureVolatility/TheoremC.lean` |
+| done | `TheoremD` | `SignatureVolatility/TheoremD.lean` |
 | done | `TimeReindex` | `SignatureVolatility/TimeReindex.lean` |
 | done | `Tw` | `SignatureVolatility/Tw.lean` |
 | done | `Weight` | `SignatureVolatility/Weight.lean` |
@@ -244,16 +237,11 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `ProlongedBrownianSetup.WAug` | `SignatureVolatility/ProlongedBrownianSetup/WAug.lean` |
 | done | `ProlongedBrownianSetup.WHat` | `SignatureVolatility/ProlongedBrownianSetup/WHat.lean` |
 
-### PriceFiltrationSignatureSpace — 1 hole(s)
+### PriceFiltrationSignatureSpace — 0 hole(s)
 
 | Status | Id | File |
 |---|---|---|
-| done | `PriceFiltrationSignatureSpace.AugmentedMarketSpan` | `SignatureVolatility/PriceFiltrationSignatureSpace/AugmentedMarketSpan.lean` |
-| done | `PriceFiltrationSignatureSpace.CompletenessDepth` | `SignatureVolatility/PriceFiltrationSignatureSpace/CompletenessDepth.lean` |
-| done | `PriceFiltrationSignatureSpace.IsCompleteOnPriceFiltration` | `SignatureVolatility/PriceFiltrationSignatureSpace/IsCompleteOnPriceFiltration.lean` |
-| open | `PriceFiltrationSignatureSpace.OfMarket` | `SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean` |
-| done | `PriceFiltrationSignatureSpace.VInfty` | `SignatureVolatility/PriceFiltrationSignatureSpace/VInfty.lean` |
-| done | `PriceFiltrationSignatureSpace.VSubspace` | `SignatureVolatility/PriceFiltrationSignatureSpace/VSubspace.lean` |
+| done | `PriceFiltrationSignatureSpace.OfMarket` | `SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean` |
 
 ### SignatureVolatilityModel — 0 hole(s)
 
