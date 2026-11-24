@@ -172,6 +172,7 @@ VERIFIED: set[str] = {
     "SignatureRiccatiKit.Poly4ConstOfLogBdd",
     "SignatureRiccatiKit.LintegralExpShifted",
     "SignatureRiccatiKit.CounterexampleV1PosLe",
+    "SignatureRiccatiKit.CounterexampleV1LogBound",
     "SignatureRiccatiKit.BarrierU",
     "SignatureRiccatiKit.CounterexampleTensor",
     "SignatureRiccatiKit.CounterexampleV1",
