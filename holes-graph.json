@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-24T07:50:51Z",
-  "sorryCount": 46,
+  "updated": "2026-11-24T08:00:00Z",
+  "sorryCount": 47,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -1493,6 +1493,17 @@
       "paperKitGoal": false
     },
     {
+      "id": "ProlongedBrownianSetup.PaperSigDynamics",
+      "label": "ProlongedBrownianSetup.PaperSigDynamics",
+      "section": 4,
+      "file": "SignatureVolatility/ProlongedBrownianSetup/PaperSigDynamics.lean",
+      "status": "blocked",
+      "blocker": "needs ProlongedBrownianSetup.PaperSig",
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
+      "hasSorry": true,
+      "paperKitGoal": false
+    },
+    {
       "id": "ProlongedBrownianSetup.Sig2StratAdapted",
       "label": "ProlongedBrownianSetup.Sig2StratAdapted",
       "section": 4,
@@ -1564,7 +1575,7 @@
       "section": 4,
       "file": "SignatureVolatility/ProlongedBrownianSetup/StratonovichOfBM.lean",
       "status": "blocked",
-      "blocker": "needs ProlongedBrownianSetup.PaperSig",
+      "blocker": "needs ProlongedBrownianSetup.PaperSigDynamics",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Paper kit / theorem goal.",
       "hasSorry": false,
       "paperKitGoal": true
@@ -3114,6 +3125,11 @@
       "kind": "hard"
     },
     {
+      "from": "ProlongedBrownianSetup.PaperSig",
+      "to": "ProlongedBrownianSetup.PaperSigDynamics",
+      "kind": "hard"
+    },
+    {
       "from": "GeneratedFiltration",
       "to": "ProlongedBrownianSetup.Sig2StratAdapted",
       "kind": "hard"
@@ -3184,7 +3200,7 @@
       "kind": "hard"
     },
     {
-      "from": "ProlongedBrownianSetup.PaperSig",
+      "from": "ProlongedBrownianSetup.PaperSigDynamics",
       "to": "ProlongedBrownianSetup.StratonovichOfBM",
       "kind": "hard"
     },

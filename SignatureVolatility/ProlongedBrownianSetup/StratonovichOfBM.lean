@@ -1,6 +1,6 @@
 module
 
-public import SignatureVolatility.ProlongedBrownianSetup.PaperSig
+public import SignatureVolatility.ProlongedBrownianSetup.PaperSigDynamics
 
 
 @[expose] public section

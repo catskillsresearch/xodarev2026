@@ -400,12 +400,4 @@ theorem paperSig2_factorial_moment_control (B : MultiBrownian Ω P d) (p : ℝ) 
           linarith
   exact summable_integrable_of_eLpNorm_le hY0 hYm (by omega) hb0 hbY hbs hp hpN
 
-/-- **Signature dynamics** `dŴ = Ŵ ⊗ ∘dX` for the Brownian Stratonovich signature. -/
-theorem paperSig2_dynamics (B : MultiBrownian Ω P d) (I : Word (d + 1)) (j : Fin (d + 1))
-    {t : ℝ} (ht : 0 ≤ t) :
-    TendstoInMeasure P
-      (fun n => trapezoidSum (MultiBrownian.W B) (fun s ω => (paperSig2 B 0 s ω).coeff I) j t n)
-      Filter.atTop (fun ω => (paperSig2 B 0 t ω).coeff (I ++ [j])) := by
-  sorry
-
 end SignatureVolatility

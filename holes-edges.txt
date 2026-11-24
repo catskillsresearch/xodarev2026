@@ -359,7 +359,8 @@ ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.ItoWordIntegral
 ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.Sig2StratDyadic
 ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.SignatureOfBM
 ProlongedBrownianSetup.PaperSig -hard-> ItoCalculusKit.SigmaBounds
-ProlongedBrownianSetup.PaperSig -hard-> ProlongedBrownianSetup.StratonovichOfBM
+ProlongedBrownianSetup.PaperSig -hard-> ProlongedBrownianSetup.PaperSigDynamics
+ProlongedBrownianSetup.PaperSigDynamics -hard-> ProlongedBrownianSetup.StratonovichOfBM
 ProlongedBrownianSetup.Sig2StratAdapted -hard-> ItoCalculusKit.JointPast
 ProlongedBrownianSetup.Sig2StratAdapted -hard-> ItoCalculusKit.MathFinBridge
 ProlongedBrownianSetup.SignatureFiltration -hard-> ItoCalculusKit
