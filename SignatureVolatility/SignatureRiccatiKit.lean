@@ -37,9 +37,11 @@ structure SignatureRiccatiKit (Ω : Type*) [MeasurableSpace Ω]
     IsSpecialSemimartingale ℙ setup.signatureFiltration M.T (fun t ω => (setup.W_hat t ω).coeff I)
   /-- Riccati vector field `ℛ` on `T_w` extending `riccatiOpBounded` from `𝒟_fin`. -/
   R_op : ExtTensorAlgebra (M.d + 1) → ExtTensorAlgebra (M.d + 1)
-  /-- Equivalence between global classical Riccati solvability on `[0, T]` and bounded
-  exponential-affine conditional signature transforms `E[exp(⟨u₀, Ŵ_T⟩) | ℱ^{\widehat{W}}_t] =
-  exp(⟨ψ(T - t), Ŵ_t⟩)` for `u₀ ∈ 𝒟_fin` (Theorem 4.2(4)). -/
+  /-- Abstract hypothesis: equivalence between global classical Riccati solvability on
+  `[0, T]` and bounded exponential-affine conditional signature transforms
+  `E[exp(⟨u₀, Ŵ_T⟩) | ℱ^{\widehat{W}}_t] = exp(⟨ψ(T - t), Ŵ_t⟩)` for `u₀ ∈ 𝒟_fin`.
+  The paper operator `riccatiOp` does not satisfy this (see `not_affine_riccati_duality`);
+  a `SignatureRiccatiKit` for that operator is therefore not constructed. -/
   affine_riccati_duality : ∀ (u₀ : ExtTensorAlgebra.FreeTensorAlgebra (M.d + 1)),
     SignatureTransformFinite ℙ setup u₀.1 →
     ((∃ sol : ClassicalRiccatiSolution M.w M.T R_op u₀.1,

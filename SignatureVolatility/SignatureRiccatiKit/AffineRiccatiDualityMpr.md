@@ -1,10 +1,8 @@
-# `affine_riccati_duality_mpr` — proposed counterexample
+# Affine / Riccati duality, `←` direction — counterexample notes
 
-**Status (this repository):** This file memorializes an **outside opinion**. It is **not** a verified or compiled Lean disproof in this repository. No Lean in this writeup has been added to the build. Pillars A–D remain open (`sorry`). The citation [arXiv:2606.29622](https://arxiv.org/abs/2606.29622) has **not** been verified by us.
+**Status (this repository):** The false sorry'd theorem `affine_riccati_duality_mpr` has been **removed** from the library. There is no `AffineRiccatiDualityMpr.lean`. The honest negation `not_affine_riccati_duality_mpr` is assembled in [`AffineRiccatiDualityMprCounterexample.lean`](AffineRiccatiDualityMprCounterexample.lean). `not_affine_riccati_duality` (the paper iff fails), `not_theorem_B_mpr` and `not_theorem_B` hang off that module. The proved directions `affine_riccati_duality_mp` and `theorem_B_mp` are kept. The kit constructor `signatureRiccatiKit_of_setup` has been dropped. Remaining analytic leaves of the counterexample are still open, so the negations stay blocked.
 
-**Source:** Gemini Carbon (outside opinion), 2026-11-24, pasted by Lars (t80u). The sections below are preserved verbatim-faithfully from that message: the verdict, literature context, the complete 7-step disproof, the first Lean 4 blueprint, the practical takeaway, the later filled-in Lean file (Parts 1–5), and the four-pillar roadmap.
-
-**Related Lean in this repo (unchanged):** [`AffineRiccatiDualityMpr.lean`](AffineRiccatiDualityMpr.lean) still states `affine_riccati_duality_mpr` with `sorry`. That remains the project's only `sorry` hit by `lake build`.
+**Source of the argument:** Gemini Carbon (outside opinion), 2026-11-24, pasted by Lars (t80u). The sections below are preserved as a historical memorialization of that message: the verdict, literature context, the complete 7-step disproof, the first Lean 4 blueprint, the practical takeaway, the later filled-in Lean file (Parts 1–5), and the four-pillar roadmap. Later work folded Carbon's Girsanov-free routes into the build; the text below should not be taken as a description of the current module split. The citation [arXiv:2606.29622](https://arxiv.org/abs/2606.29622) has **not** been verified by us.
 
 ---
 

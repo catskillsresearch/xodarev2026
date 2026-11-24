@@ -26,7 +26,10 @@ open MeasureTheory Set
 
 namespace SignatureVolatility
 
-/-- Kit-level Theorem B: NFLVR + Riccati transform duality relative to setup / Ito / Riccati kits. -/
+/-- Kit-level Theorem B: NFLVR + Riccati transform duality, *assuming* a `SignatureRiccatiKit`.
+This is an implication from an abstract kit whose `affine_riccati_duality` field is the paper
+iff. The paper operator `riccatiOp` does not inhabit such a kit
+(`not_affine_riccati_duality`); there is no `signatureRiccatiKit_of_setup`. -/
 theorem theorem_B_of_Setup_Ito_Riccati_Kit {Ω : Type*} [MeasurableSpace Ω]
     {ℙ : Measure Ω} [IsProbabilityMeasure ℙ]
     (M : SignatureVolatilityModel) (setup : ProlongedBrownianSetup Ω ℙ M.d M.T)

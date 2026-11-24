@@ -30,26 +30,24 @@ The other `theorem_names` entries are supporting facts: Itô/Doléans kit, Brown
 signature properties. They sit in the dependency closure of the statements above, so the
 Solution must prove them too.
 
-**Theorem B is split into three theorems.** `theorem_B_mp` (`SignatureVolatility/TheoremB.lean`)
-is everything proved: the martingale, NFLVR and special-semimartingale conclusions and the `→`
-direction of part (ii)'s Riccati equivalence; it is compared. `theorem_B_mpr` is the `←` direction
-(Riccati solution ⇒ exponential-affine conditional transform); it is `affine_riccati_duality_mpr`,
-the open problem below. `theorem_B` is the full paper statement, proved from `theorem_B_mp` and
-`theorem_B_mpr`. Both `theorem_B_mpr` and `theorem_B` are in
-`SignatureVolatility/TheoremBMpr.lean` and are not compared.
+**Theorem B is split.** `theorem_B_mp` (`SignatureVolatility/TheoremB.lean`) is everything
+proved: the martingale, NFLVR and special-semimartingale conclusions and the `→` direction of
+part (ii)'s Riccati equivalence; it is compared. The `←` direction and the full paper
+conjunction are false as universal statements. Their negations `not_theorem_B_mpr` and
+`not_theorem_B` are in `SignatureVolatility/TheoremBMpr.lean` and are not compared; they hang
+off the counterexample to the `←` direction and stay blocked until that counterexample's
+remaining analytic leaves close.
 
-**Open problem (not compared).** The affine / Riccati duality (paper Thm 4.2(ii), p. 21; proof
-§4.4, p. 23) is split. The `→` direction `affine_riccati_duality_mp` is proved and compared. The
-`←` direction `affine_riccati_duality_mpr`
-(`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.lean`) is stated at paper strength
-and is the single `sorry` in the repository: a positive local martingale
-`exp⟨ψ(T − t), Ŵ_t⟩` must be shown to be the true conditional expectation. The paper's argument
-for it is unsupported: H3 and polynomial moment bounds do not give the uniform integrability it
-claims, and its Lemma 4.10 uses the false Lemmas B.1/B.2 (our Lemma 77/78 counterexamples). No
-counterexample has been found, and the closest literature (Cuchiero–Svaluto-Ferro–Teichmann,
-arXiv:2302.01362, Thm 3.5) assumes the true-martingale property that would close it. The proved `→` direction is in
-`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMp.lean`. The iff
-`affine_riccati_duality` and `signatureRiccatiKit_of_setup` are in
-`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDuality.lean`;
-`theorem_B_mpr` and `theorem_B` are in `SignatureVolatility/TheoremBMpr.lean`. The Challenge and
-`Solution.lean` contain no `sorry`.
+**The paper's `←` duality is false (not compared).** The affine / Riccati duality (paper Thm
+4.2(ii), p. 21; proof §4.4, p. 23) is split. The `→` direction `affine_riccati_duality_mp` is
+proved and compared (`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMp.lean`).
+The `←` direction is false as a statement over all finitely supported `u₀` with finite
+signature transform: `not_affine_riccati_duality_mpr` in
+`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMprCounterexample.lean`. The
+false sorry'd theorem `affine_riccati_duality_mpr` has been removed, as have the iff
+`affine_riccati_duality`, the kit constructor `signatureRiccatiKit_of_setup`, `theorem_B_mpr`,
+and the full `theorem_B`. Their honest negations `not_affine_riccati_duality`,
+`not_theorem_B_mpr` and `not_theorem_B` hang off the counterexample. The paper's argument for
+the `←` direction was already unsupported: H3 and polynomial moment bounds do not give the
+uniform integrability it claims, and its Lemma 4.10 uses the false Lemmas B.1/B.2 (our Lemma
+77/78 counterexamples). The Challenge and `Solution.lean` contain no `sorry`.

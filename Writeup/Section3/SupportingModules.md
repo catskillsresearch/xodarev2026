@@ -11,4 +11,4 @@
 - [Stratonovich half-Laplacian](SupportingModules/StratonovichHalfLaplacian.md)
 - [Finite shuffle](SupportingModules/ShuffleFinite.md)
 - [Remark 2.19: Black–Scholes Riccati check](SupportingModules/Remark219BlackScholesRiccati.md)
-- [Affine / Riccati duality, `←` direction (proposed counterexample, unverified)](SupportingModules/AffineRiccatiDualityMpr.md)
+- [Affine / Riccati duality, `←` direction (false; counterexample assembled, analytic leaves remain)](SupportingModules/AffineRiccatiDualityMpr.md)

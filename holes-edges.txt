@@ -235,7 +235,6 @@ ItoCalculusKit.MathFinBridgeSetup -hard-> ItoCalculusKit.StoppedRaw
 ItoCalculusKit.NovikovDoob -hard-> ItoCalculusKit.DoleansStrongClass
 ItoCalculusKit.NovikovMartingale -hard-> ItoCalculusKit.DoleansEnvelope
 ItoCalculusKit.OfMathFin -hard-> SignatureRiccatiKit.AffineRiccatiDualityMp
-ItoCalculusKit.OfMathFin -hard-> SignatureRiccatiKit.AffineRiccatiDualityMpr
 ItoCalculusKit.OfMathFin -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 ItoCalculusKit.OfMathFin -hard-> SignatureRiccatiKit.ComplexTilt
 ItoCalculusKit.OfMathFin -hard-> SignatureRiccatiKit.CondExpMulIndepDisintegrate
@@ -246,6 +245,7 @@ ItoCalculusKit.OfMathFin -hard-> TheoremA
 ItoCalculusKit.PathwiseExpIto -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.PathwiseExpIto -hard-> ItoCalculusKit.LebIncrementEven
 ItoCalculusKit.PathwiseExpIto -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
+ItoCalculusKit.PathwiseExpIto -hard-> SignatureRiccatiKit.CounterexampleV1PosLe
 ItoCalculusKit.PathwiseExpIto -hard-> SignatureRiccatiKit.LintegralExpShifted
 ItoCalculusKit.QVTransform -hard-> ItoCalculusKit.GridDoob
 ItoCalculusKit.QuadIncrement -hard-> ItoCalculusKit.DoleansInputs
@@ -419,13 +419,11 @@ SignatureFiltrationEqBrownianFiltration -hard-> ItoCalculusKit.MathFinBridgeSetu
 SignaturePriceSolution -hard-> TheoremAOfBrownianSetupItoKit
 SignaturePriceSolution -hard-> TheoremBOfSetupItoRiccatiKit
 SignatureRiccatiKit -hard-> SignatureRiccatiKit.AffineRiccatiDualityMp
-SignatureRiccatiKit -hard-> SignatureRiccatiKit.AffineRiccatiDualityMpr
 SignatureRiccatiKit -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit -hard-> TheoremBOfSetupItoRiccatiKit
 SignatureRiccatiKit.AffineRiccatiDuality -hard-> TheoremBMpr
-SignatureRiccatiKit.AffineRiccatiDualityMp -hard-> SignatureRiccatiKit.AffineRiccatiDuality
 SignatureRiccatiKit.AffineRiccatiDualityMp -hard-> TheoremB
-SignatureRiccatiKit.AffineRiccatiDualityMpr -hard-> SignatureRiccatiKit.AffineRiccatiDuality
+SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample -hard-> SignatureRiccatiKit.AffineRiccatiDuality
 SignatureRiccatiKit.BarrierU -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit.BarrierU -hard-> SignatureRiccatiKit.IntegralExpBarrier
 SignatureRiccatiKit.BrownianScalingShiftedExponent -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
@@ -443,7 +441,6 @@ SignatureRiccatiKit.CondSigPoly -hard-> SignatureRiccatiKit.EntireTransfer
 SignatureRiccatiKit.CondSigPoly -hard-> SignatureRiccatiKit.SummableNormTermAndBound
 SignatureRiccatiKit.CondSigPolyIdentification -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit.CondSigPolyIdentification -hard-> SignatureRiccatiKit.EntireTransfer
-SignatureRiccatiKit.CoordSemimartingale -hard-> SignatureRiccatiKit.AffineRiccatiDuality
 SignatureRiccatiKit.CoordSemimartingale -hard-> TheoremB
 SignatureRiccatiKit.CounterexampleTensor -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit.CounterexampleTensor -hard-> SignatureRiccatiKit.ComplexTilt
@@ -485,7 +482,6 @@ SignatureRiccatiKit.LintegralExpShifted -hard-> SignatureRiccatiKit.IntegralExpB
 SignatureRiccatiKit.Poly4ConstOfLogBdd -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit.RiccatiOp -hard-> Lemma77ShuffleEstimateFalse
 SignatureRiccatiKit.RiccatiOp -hard-> SignatureRiccatiKit.AffineRiccatiDualityMp
-SignatureRiccatiKit.RiccatiOp -hard-> SignatureRiccatiKit.AffineRiccatiDualityMpr
 SignatureRiccatiKit.RiccatiOp -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit.SummableNormTermAndBound -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit.SummableNormTermAndBound -hard-> SignatureRiccatiKit.EntireTransfer

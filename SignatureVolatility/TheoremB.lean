@@ -22,8 +22,9 @@ solution.
 
 `theorem_B_mp` proves everything except the `←` direction of (ii): the martingale, NFLVR and
 special-semimartingale conclusions, and the `→` direction of the Riccati equivalence
-(`affine_riccati_duality_mp`). The `←` direction is `theorem_B_mpr`, and the full statement
-`theorem_B` (assembled from both), in `SignatureVolatility/TheoremBMpr.lean`.
+(`affine_riccati_duality_mp`). The `←` direction and the full paper conjunction are false as
+universal statements; their negations `not_theorem_B_mpr` and `not_theorem_B` are in
+`SignatureVolatility/TheoremBMpr.lean`.
 -/
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P]

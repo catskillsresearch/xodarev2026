@@ -1,9 +1,7 @@
 # Affine / Riccati duality, `←` direction
 
-Paper: Xodarev Theorem 4.2(ii), the backward direction. Lean: `affine_riccati_duality_mpr` in [`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.lean`](../../../SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.lean).
+Paper: Xodarev Theorem 4.2(ii), the backward direction. The false theorem `affine_riccati_duality_mpr` has been removed from the library. The negation `not_affine_riccati_duality_mpr` is assembled in [`AffineRiccatiDualityMprCounterexample.lean`](../../../SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMprCounterexample.lean). `not_affine_riccati_duality` lives in [`AffineRiccatiDuality.lean`](../../../SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDuality.lean); `not_theorem_B_mpr` and `not_theorem_B` live in [`TheoremBMpr.lean`](../../../SignatureVolatility/TheoremBMpr.lean). The proved directions `affine_riccati_duality_mp` and `theorem_B_mp` are kept. The kit constructor `signatureRiccatiKit_of_setup` has been dropped.
 
-This is the single remaining `sorry` in the build. The forward direction `affine_riccati_duality_mp` is proved. The paper iff and `signatureRiccatiKit_of_setup` in [`AffineRiccatiDuality.lean`](../../../SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDuality.lean), and `theorem_B_mpr` / `theorem_B` in [`TheoremBMpr.lean`](../../../SignatureVolatility/TheoremBMpr.lean), are blocked only on this lemma.
+The refutation is assembled but still blocked on remaining analytic leaves of the counterexample.
 
-**Proposed counterexample (unverified).** Gemini Carbon (outside opinion, 2026-11-24) claims the lemma is false as stated: for every model and Brownian motion there is a finitely supported family $u_0^{(\lambda)}$ meeting both hypotheses while the conclusion fails. Pillars A–D of that argument are still `sorry`. The citation arXiv:2606.29622 has not been verified by us. The writeup has not been compiled in this repository, and no Lean from it has been added to the build.
-
-Full memorialization (verdict, literature, 7-step disproof, both Lean blueprints, roadmap): [`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.md`](../../../SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.md).
+Full memorialization of the original Carbon writeup: [`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.md`](../../../SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.md).

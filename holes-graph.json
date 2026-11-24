@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-24T20:55:33Z",
-  "sorryCount": 25,
+  "updated": "2026-11-24T21:06:49Z",
+  "sorryCount": 23,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -12,15 +12,14 @@
     "Any `sorry` forces open/blocked regardless of VERIFIED.",
     "Hard edge B\u2192A: A imports B (direct, submodule files only; barrel omitted).",
     "Drawn edges are transitively reduced; blocking still uses all direct imports.",
-    "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, SignatureRiccatiKit.AffineRiccatiDualityMpr, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
+    "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done (proved, counterexample or refuted; no sorry). Green = open. Grey = blocked. Counterexample / refutation labels are shown as text on the node.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: SignatureRiccatiKit.AffineRiccatiDualityMpr, SignatureRiccatiKit.BrownianScalingShiftedExponent, SignatureRiccatiKit.CameronMartinC2Shift, SignatureRiccatiKit.ComplexTilt, SignatureRiccatiKit.CondExpMulIndepDisintegrate, SignatureRiccatiKit.CounterexampleV1PosLe, SignatureRiccatiKit.DifferentiableAtTsum, SignatureRiccatiKit.FourierUniquenessGaussian, SignatureRiccatiKit.IntegralExpBarrier, SignatureRiccatiKit.IteratedDerivGaussian."
+    "Open tips: SignatureRiccatiKit.BrownianScalingShiftedExponent, SignatureRiccatiKit.CameronMartinC2Shift, SignatureRiccatiKit.ComplexTilt, SignatureRiccatiKit.CondExpMulIndepDisintegrate, SignatureRiccatiKit.CounterexampleV1LogBound, SignatureRiccatiKit.DifferentiableAtTsum, SignatureRiccatiKit.FourierUniquenessGaussian, SignatureRiccatiKit.IntegralExpBarrier, SignatureRiccatiKit.IteratedDerivGaussian."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
     "ItoCalculusKit.OfMathFin",
-    "SignatureRiccatiKit.AffineRiccatiDualityMpr",
     "PriceFiltrationSignatureSpace.OfMarket",
     "GKWDecompositionSetup.OfPFS",
     "TheoremA",
@@ -1879,13 +1878,13 @@
     },
     {
       "id": "SignatureRiccatiKit.AffineRiccatiDuality",
-      "label": "affine_riccati_duality, kit of_setup",
+      "label": "not_affine_riccati_duality",
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDuality.lean",
       "status": "blocked",
       "kind": null,
-      "blocker": "needs SignatureRiccatiKit.AffineRiccatiDualityMpr",
-      "detail": "affine_riccati_duality (the paper iff) and signatureRiccatiKit_of_setup, assembled from affine_riccati_duality_mp (proved) and affine_riccati_duality_mpr (the single sorry). No `sorry` in this file.",
+      "blocker": "needs SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample",
+      "detail": "not_affine_riccati_duality: the paper iff fails as a statement over all finitely supported u0 with finite signature transform. Proved from not_affine_riccati_duality_mpr. The kit constructor signatureRiccatiKit_of_setup has been dropped. No `sorry` in this file.",
       "hasSorry": false,
       "paperKitGoal": false
     },
@@ -1897,21 +1896,9 @@
       "status": "done",
       "kind": null,
       "blocker": null,
-      "detail": "Proved -> direction of the affine / Riccati duality (paper Thm 4.2(ii)): an exponential-affine conditional transform through a classical Riccati solution gives a solution. Compared in comparator.json. The <- direction is the open problem (SignatureRiccatiKit.AffineRiccatiDualityMpr).",
+      "detail": "Proved -> direction of the affine / Riccati duality (paper Thm 4.2(ii)): an exponential-affine conditional transform through a classical Riccati solution gives a solution. Compared in comparator.json. The <- direction is false (`not_affine_riccati_duality_mpr`).",
       "hasSorry": false,
       "paperKitGoal": false
-    },
-    {
-      "id": "SignatureRiccatiKit.AffineRiccatiDualityMpr",
-      "label": "affine_riccati_duality_mpr",
-      "section": 1,
-      "file": "SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.lean",
-      "status": "open",
-      "kind": null,
-      "blocker": null,
-      "detail": "OPEN PROBLEM: `affine_riccati_duality_mpr`, the <- direction of the affine / Riccati duality (paper Thm 4.2(ii), p. 21; proof \u00a74.4, p. 23), is stated at paper strength with `sorry`. The -> direction `affine_riccati_duality_mp` is proved and compared (SignatureRiccatiKit.AffineRiccatiDualityMp). The paper's justification of <- is unsupported: H3 plus polynomial moments do not give uniform integrability of exp<psi(T-t), W_t>, and Lemma 4.10 uses the false Lemmas B.1/B.2 (CounterExample_Lemma77/78). No counterexample found; Cuchiero-Svaluto-Ferro-Teichmann (arXiv:2302.01362, Thm 3.5) assume the true-martingale property. affine_riccati_duality / signatureRiccatiKit_of_setup (SignatureRiccatiKit.AffineRiccatiDuality) and theorem_B_mpr / theorem_B (TheoremBMpr) depend on it. Contains `sorry` (paper gap). Paper kit / theorem goal.",
-      "hasSorry": true,
-      "paperKitGoal": true
     },
     {
       "id": "SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample",
@@ -1920,7 +1907,7 @@
       "file": "SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMprCounterexample.lean",
       "status": "blocked",
       "kind": null,
-      "blocker": "needs SignatureRiccatiKit.ComplexTilt, SignatureRiccatiKit.ItoWordTiltClosedForm, SignatureRiccatiKit.CondSigPoly, SignatureRiccatiKit.CondSigPolyIdentification, SignatureRiccatiKit.SummableNormTermAndBound, SignatureRiccatiKit.DifferentiableAtTsum, SignatureRiccatiKit.FourierUniquenessGaussian, SignatureRiccatiKit.IteratedDerivGaussian (+10 more)",
+      "blocker": "needs SignatureRiccatiKit.ComplexTilt, SignatureRiccatiKit.ItoWordTiltClosedForm, SignatureRiccatiKit.CondSigPoly, SignatureRiccatiKit.CondSigPolyIdentification, SignatureRiccatiKit.SummableNormTermAndBound, SignatureRiccatiKit.DifferentiableAtTsum, SignatureRiccatiKit.FourierUniquenessGaussian, SignatureRiccatiKit.IteratedDerivGaussian (+9 more)",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -2074,9 +2061,9 @@
       "label": "B2 quartic log lower bound",
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit/CounterexampleV1LogBound.lean",
-      "status": "blocked",
+      "status": "open",
       "kind": null,
-      "blocker": "needs SignatureRiccatiKit.CounterexampleV1PosLe",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
       "hasSorry": true,
       "paperKitGoal": false
@@ -2088,7 +2075,7 @@
       "file": "SignatureVolatility/SignatureRiccatiKit/CounterexampleV1LogNonpos.lean",
       "status": "blocked",
       "kind": null,
-      "blocker": "needs SignatureRiccatiKit.CameronMartinC2Shift, SignatureRiccatiKit.CounterexampleV1PosLe",
+      "blocker": "needs SignatureRiccatiKit.CameronMartinC2Shift",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
       "hasSorry": true,
       "paperKitGoal": false
@@ -2098,11 +2085,11 @@
       "label": "B1 0 < v\u2081 \u2264 1",
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit/CounterexampleV1PosLe.lean",
-      "status": "open",
+      "status": "done",
       "kind": null,
       "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
-      "hasSorry": true,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -2365,19 +2352,19 @@
       "status": "done",
       "kind": null,
       "blocker": null,
-      "detail": "theorem_B_mp (proved, compared): martingale on the signature filtration, NFLVR, special semimartingale coordinates, and the -> direction of the Riccati transform equivalence. theorem_B_mpr (<-, open) and the full theorem_B are in TheoremBMpr. Paper kit / theorem goal.",
+      "detail": "theorem_B_mp (proved, compared): martingale on the signature filtration, NFLVR, special semimartingale coordinates, and the -> direction of the Riccati transform equivalence. The paper's <- direction and the full iff are false; their negations are in TheoremBMpr. Paper kit / theorem goal.",
       "hasSorry": false,
       "paperKitGoal": true
     },
     {
       "id": "TheoremBMpr",
-      "label": "theorem_B_mpr, theorem_B",
+      "label": "not_theorem_B_mpr, not_theorem_B",
       "section": 1,
       "file": "SignatureVolatility/TheoremBMpr.lean",
       "status": "blocked",
       "kind": null,
       "blocker": "needs SignatureRiccatiKit.AffineRiccatiDuality",
-      "detail": "theorem_B_mpr: the <- direction of paper Theorem B's Riccati clause, open; it is affine_riccati_duality_mpr (the single sorry, SignatureRiccatiKit.AffineRiccatiDualityMpr). theorem_B: the full paper statement, proved from theorem_B_mp and theorem_B_mpr. No `sorry` in this file.",
+      "detail": "not_theorem_B_mpr and not_theorem_B: the paper's <- Riccati clause and the full Theorem B conjunction are false as universal statements. Proved from not_affine_riccati_duality_mpr / not_affine_riccati_duality. No `sorry` in this file.",
       "hasSorry": false,
       "paperKitGoal": false
     },
@@ -3805,17 +3792,7 @@
       "kind": "hard"
     },
     {
-      "from": "SignatureRiccatiKit.CoordSemimartingale",
-      "to": "SignatureRiccatiKit.AffineRiccatiDuality",
-      "kind": "hard"
-    },
-    {
-      "from": "SignatureRiccatiKit.AffineRiccatiDualityMp",
-      "to": "SignatureRiccatiKit.AffineRiccatiDuality",
-      "kind": "hard"
-    },
-    {
-      "from": "SignatureRiccatiKit.AffineRiccatiDualityMpr",
+      "from": "SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample",
       "to": "SignatureRiccatiKit.AffineRiccatiDuality",
       "kind": "hard"
     },
@@ -3832,21 +3809,6 @@
     {
       "from": "ItoCalculusKit.OfMathFin",
       "to": "SignatureRiccatiKit.AffineRiccatiDualityMp",
-      "kind": "hard"
-    },
-    {
-      "from": "SignatureRiccatiKit",
-      "to": "SignatureRiccatiKit.AffineRiccatiDualityMpr",
-      "kind": "hard"
-    },
-    {
-      "from": "SignatureRiccatiKit.RiccatiOp",
-      "to": "SignatureRiccatiKit.AffineRiccatiDualityMpr",
-      "kind": "hard"
-    },
-    {
-      "from": "ItoCalculusKit.OfMathFin",
-      "to": "SignatureRiccatiKit.AffineRiccatiDualityMpr",
       "kind": "hard"
     },
     {
