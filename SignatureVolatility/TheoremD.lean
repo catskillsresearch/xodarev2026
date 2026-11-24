@@ -1,7 +1,6 @@
 module
 
 public import SignatureVolatility.GKWDecompositionSetup.OfPFS
-public import SignatureVolatility.Prop58BlackScholesDepthFalse
 
 @[expose] public section
 
@@ -22,7 +21,8 @@ namespace SignatureVolatility
   (Kunita–Watanabe). That step is not formalised.
 * **Residual expansion part.** The expansion of `ε` is stated "if `N^*_S < ∞`". Under the
   paper's Definition 55 that hypothesis fails in every non-degenerate market (see `TheoremC`),
-  so this part is vacuous there. For Black–Scholes this is `theorem_D_residual_hypothesis_fails`.
+  so this part is vacuous there. For Black–Scholes this is `theorem_D_residual_hypothesis_fails` in
+  `TheoremDCounterExample` (board label `CounterExample_TheoremD`).
 -/
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P]
@@ -38,11 +38,5 @@ theorem theorem_D (mkt : MarketData Ω P) (X : Lp ℝ 2 P) (hX : X ∈ mkt.L2S) 
         ε' ∈ mkt.H0ᗮ → X = c • MarketData.oneLp P + G' + ε' →
           c = ∫ ω, X ω ∂P ∧ G' = G ∧ ε' = ε :=
   mkt.gkw_decomposition X hX
-
-/-- The residual-expansion hypothesis `N^*_S < ∞` of Theorem 66 fails for Black–Scholes. -/
-theorem theorem_D_residual_hypothesis_fails (T s₀ σ₀ : ℝ) (hT : 0 < T) (hs₀ : 0 < s₀)
-    (hσ₀ : σ₀ ≠ 0) (B : MultiBrownian Ω P 1) :
-    ¬ (blackScholesMarket T s₀ σ₀ hT hs₀ hσ₀ B).completenessDepth < ⊤ := by
-  rw [blackScholes_completenessDepth_eq_top]; exact lt_irrefl _
 
 end SignatureVolatility

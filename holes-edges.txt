@@ -240,6 +240,7 @@ ItoCalculusKit.StoppedRaw -hard-> ItoCalculusKit.StoppedStep
 ItoCalculusKit.StoppedStep -hard-> ItoCalculusKit.StoppedKit
 ItoCalculusKit.SubseqUniform -hard-> ItoCalculusKit.DoleansEnvelope
 Lemma32SignatureInTw -hard-> Corollary36SigmaWellDefined
+Lemma77ShuffleEstimateFalse -hard-> Lemma78RiccatiLipschitzFalse
 Letter -hard-> ExtTensorAlgebra.ExtTensorAlgebra
 Letter -hard-> ExtTensorAlgebra.ShuffleWords
 Letter -hard-> PureBrownianWord
@@ -358,7 +359,7 @@ ProlongedBrownianSetup.WHat -hard-> SignatureRiccatiKit
 ProlongedBrownianSetup.WHat -hard-> SignatureVolatilityModel.Sigma
 ProlongedBrownianSetup.WHat -hard-> TheoremBOfSetupItoRiccatiKit
 Prop58BlackScholesDepthFalse -hard-> TheoremCCounterExample
-Prop58BlackScholesDepthFalse -hard-> TheoremD
+Prop58BlackScholesDepthFalse -hard-> TheoremDCounterExample
 PureBrownianWord -hard-> SuperfactorialFunctional
 RiccatiOpBounded -hard-> ClassicalRiccatiSolution
 RiccatiOpBounded -hard-> Remark219BlackScholesRiccati

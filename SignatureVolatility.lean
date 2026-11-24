@@ -34,6 +34,7 @@ public import SignatureVolatility.ItoCalculusKit
 public import SignatureVolatility.Lemma32SignatureInTw
 public import SignatureVolatility.Lemma61GramPosDef
 public import SignatureVolatility.Lemma77ShuffleEstimateFalse
+public import SignatureVolatility.Lemma78RiccatiLipschitzFalse
 public import SignatureVolatility.Prop58BlackScholesDepthFalse
 public import SignatureVolatility.TheoremCCounterExample
 public import SignatureVolatility.Letter
@@ -97,6 +98,7 @@ public import SignatureVolatility.TheoremBOfSetupItoRiccatiKit
 public import SignatureVolatility.TheoremB
 public import SignatureVolatility.TheoremC
 public import SignatureVolatility.TheoremD
+public import SignatureVolatility.TheoremDCounterExample
 public import SignatureVolatility.Tw
 public import SignatureVolatility.Weight.ConstOne
 public import SignatureVolatility.Weight.Geometric

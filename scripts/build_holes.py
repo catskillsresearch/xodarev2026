@@ -55,8 +55,14 @@ PAPER_KIT_GOALS: list[str] = [
 # ends in "False" or contains "Counterexample" is picked up automatically.
 COUNTEREXAMPLES: dict[str, str] = {
     "Lemma77ShuffleEstimateFalse":
-        "CounterExample_Lemma77 + CounterExample_Lemma78: refutes paper Lemma 77 (weighted shuffle estimate) and Lemma 78 "
-        "(local Lipschitz bound for the Riccati operator).",
+        "CounterExample_Lemma77: refutes paper Lemma 77 (weighted shuffle estimate) for every "
+        "(H2) weight.",
+    "Lemma78RiccatiLipschitzFalse":
+        "CounterExample_Lemma78: refutes paper Lemma 78 (local Lipschitz bound for the Riccati "
+        "operator); for w = 1 the operator is unbounded on the unit ball of T_w.",
+    "TheoremDCounterExample":
+        "CounterExample_TheoremD (theorem_D_residual_hypothesis_fails): the residual-expansion "
+        "clause of Theorem 66 assumes N*_S < infinity, which fails for Black-Scholes (vacuous).",
     "Prop58BlackScholesDepthFalse":
         "CounterExample_Prop58: refutes paper Prop. 58 / PDF Prop. 5.5 (Black-Scholes has completeness "
         "depth 0); Black-Scholes depth is infinite under Definition 55.",
@@ -72,19 +78,21 @@ REFUTED_THEOREMS: dict[str, tuple[str, str]] = {
         "REFUTED (CounterExample_TheoremC, theorem_C_refuted := not_theorem_C): Black-Scholes is "
         "complete with any finite set of calls but has N*_S = infinity, so 'complete iff N*_S < "
         "infinity' fails. Also: depth is infinite in every non-degenerate model; Prop. 58 refuted."),
-    "TheoremD": ("partly-refuted",
-        "Half_TheoremD: GKW projection part proved (theorem_D). CounterExample_TheoremD: theorem_D_residual_hypothesis_fails; the residual-expansion clause assumes "
-        "finite depth, which is false (vacuous)."),
+    "TheoremD": ("half-proved",
+        "Half_TheoremD: GKW projection part proved (theorem_D). The residual-expansion clause is "
+        "refuted separately by CounterExample_TheoremD (TheoremDCounterExample)."),
 }
 
 
 # Board labels (exact strings requested by Lars) for refuting modules / headline theorems.
 REFUTATION_LABELS: dict[str, str] = {
-    "Lemma77ShuffleEstimateFalse": "CounterExample_Lemma77 + CounterExample_Lemma78",
+    "Lemma77ShuffleEstimateFalse": "CounterExample_Lemma77",
+    "Lemma78RiccatiLipschitzFalse": "CounterExample_Lemma78",
+    "TheoremDCounterExample": "CounterExample_TheoremD",
     "Prop58BlackScholesDepthFalse": "CounterExample_Prop58",
     "TheoremC": "TheoremC: refuted by CounterExample_TheoremC",
     "TheoremCCounterExample": "CounterExample_TheoremC",
-    "TheoremD": "Half_TheoremD + CounterExample_TheoremD",
+    "TheoremD": "Half_TheoremD",
 }
 
 
@@ -137,6 +145,7 @@ VERIFIED: set[str] = {
     "PriceFiltrationSignatureSpace.OfMarket",
     "GKWDecompositionSetup.OfPFS",
     "Lemma77ShuffleEstimateFalse",
+    "Lemma78RiccatiLipschitzFalse",
     "IsSpecialSemimartingale",
     "ItoCalculusKit",
     "ItoCalculusKit.BrownianQuadVarAS",
@@ -266,6 +275,7 @@ VERIFIED: set[str] = {
     "TheoremBOfSetupItoRiccatiKit",
     "TheoremC",
     "TheoremD",
+    "TheoremDCounterExample",
     "TimeReindex",
     "Tw",
     "Word",
@@ -446,21 +456,23 @@ def build() -> dict:
 
     # Display status: verified counterexample modules and refuted headline theorems get their
     # own status. Dependency logic above keeps using the internal "done".
+    # Lars: every finished node is plain blue ("done"); the kind is kept as text only.
     display: dict[str, str] = dict(status)
+    kind: dict[str, str | None] = {nid: None for nid in nodes_meta}
     for nid in nodes_meta:
         if status[nid] != "done":
             continue
         if is_counterexample(nid):
-            display[nid] = "counterexample"
+            kind[nid] = "counterexample"
         elif nid in REFUTED_THEOREMS:
-            display[nid] = REFUTED_THEOREMS[nid][0]
+            kind[nid] = REFUTED_THEOREMS[nid][0]
 
     nodes = []
     for nid, meta in nodes_meta.items():
         detail = meta.get("detail")
-        if display[nid] == "counterexample":
+        if kind[nid] == "counterexample":
             detail = COUNTEREXAMPLES.get(nid, "COUNTEREXAMPLE to a paper claim.")
-        elif display[nid] in ("refuted", "partly-refuted"):
+        elif kind[nid] is not None:
             detail = REFUTED_THEOREMS[nid][1]
         if has_sorry[nid]:
             detail = (detail or "") + (" " if detail else "") + "Contains `sorry` (paper gap)."
@@ -469,10 +481,11 @@ def build() -> dict:
         nodes.append({
             "id": nid,
             "label": REFUTATION_LABELS.get(nid, meta["label"])
-            if display[nid] in ("counterexample", "refuted", "partly-refuted") else meta["label"],
+            if kind[nid] is not None else meta["label"],
             "section": meta["section"],
             "file": meta["file"],
             "status": display[nid],
+            "kind": kind[nid],
             "blocker": None,
             "detail": detail,
             "hasSorry": has_sorry[nid],
@@ -510,9 +523,6 @@ def build() -> dict:
             "open": "No unfinished import-deps — verify / prove next (TBD)",
             "blocked": "Waiting on unfinished imported modules",
             "done": "Verified (listed in VERIFIED and deps done)",
-            "counterexample": "Verified Lean counterexample refuting a paper claim",
-            "refuted": "Paper theorem refuted (see detail)",
-            "partly-refuted": "Paper theorem partly refuted (see detail)",
         },
         "notes": [
             "File-level board: one node per SignatureVolatility .lean module.",
@@ -521,7 +531,8 @@ def build() -> dict:
             "Hard edge B→A: A imports B (direct, submodule files only; barrel omitted).",
             "Drawn edges are transitively reduced; blocking still uses all direct imports.",
             "Paper kit goals: " + ", ".join(PAPER_KIT_GOALS) + ".",
-            "Blue = done. Green = open. Grey = blocked. Red = counterexample / refuted. Orange = partly refuted.",
+            "Blue = done (proved, counterexample or refuted; no sorry). Green = open. Grey = blocked. "
+            "Counterexample / refutation labels are shown as text on the node.",
             "Regenerate with: python3 scripts/build_holes.py",
             f"Open tips: {', '.join(open_ids) if open_ids else '(none)'}.",
         ],
@@ -538,8 +549,7 @@ def write_md(data: dict) -> None:
     open_n = [n for n in data["nodes"] if n["status"] == "open"]
     blocked_n = [n for n in data["nodes"] if n["status"] == "blocked"]
     done_n = [n for n in data["nodes"] if n["status"] == "done"]
-    refute_n = [n for n in data["nodes"]
-                if n["status"] in ("counterexample", "refuted", "partly-refuted")]
+    refute_n = [n for n in data["nodes"] if n.get("kind")]
 
     sec_title = {
         0: "Basic",
@@ -567,16 +577,17 @@ def write_md(data: dict) -> None:
         f"{len(open_n)} open · {len(blocked_n)} blocked · {len(done_n)} done · "
         f"{len(sorry_n)} file(s) with `sorry`.",
         f"**Paper claims refuted:** "
-        f"{sum(1 for n in refute_n if n['status'] == 'counterexample')} counterexample module(s) · "
-        f"{sum(1 for n in refute_n if n['status'] == 'refuted')} refuted theorem(s) · "
-        f"{sum(1 for n in refute_n if n['status'] == 'partly-refuted')} partly refuted theorem(s).",
+        f"{sum(1 for n in refute_n if n['kind'] == 'counterexample')} counterexample module(s) · "
+        f"{sum(1 for n in refute_n if n['kind'] == 'refuted')} refuted theorem(s) · "
+        f"{sum(1 for n in refute_n if n['kind'] == 'half-proved')} half-proved theorem(s). "
+        "All are finished (no `sorry`) and counted as done.",
         "",
         "## Counterexamples and refuted paper claims",
         "",
-        "| Status | Label (module) | What is refuted | File |",
+        "| Kind | Label (module) | What is refuted | File |",
         "|---|---|---|---|",
-        *[f"| **{n['status']}** | **{n['label']}** (`{n['id']}`) | {n['detail']} | `{n['file']}` |"
-          for n in sorted(refute_n, key=lambda x: (x['status'], x['id']))],
+        *[f"| **{n['kind']}** | **{n['label']}** (`{n['id']}`) | {n['detail']} | `{n['file']}` |"
+          for n in sorted(refute_n, key=lambda x: (x['kind'], x['id']))],
         "",
         "**Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).",
         "",
@@ -677,7 +688,7 @@ def main() -> None:
     print(
         f"Wrote {OUT_JSON.name}, {OUT_MD.name}, embedded {OUT_HTML.name}: "
         f"{open_n} open, {blocked_n} blocked, {done_n} done, "
-        f"{sum(1 for n in data['nodes'] if n['status'] in ('counterexample', 'refuted', 'partly-refuted'))} refuting "
+        f"({sum(1 for n in data['nodes'] if n.get('kind'))} labelled counterexample/refuted/half) "
         f"(sorryCount={data['sorryCount']})"
     )
 

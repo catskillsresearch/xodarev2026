@@ -1,0 +1,68 @@
+import SignatureVolatility
+open Lean Meta Elab Command
+
+def svPrefix (n : Name) : Bool := (`SignatureVolatility).isPrefixOf n
+
+def targets : List Name := [`SignatureVolatility.theorem_A, `SignatureVolatility.theorem_B_proved,
+    `SignatureVolatility.theorem_C_refuted, `SignatureVolatility.not_theorem_C,
+    `SignatureVolatility.blackScholes_isCompleteWithCalls,
+    `SignatureVolatility.theorem_C_depth_infinite,
+    `SignatureVolatility.theorem_C_blackScholes_depth_infinite,
+    `SignatureVolatility.theorem_D, `SignatureVolatility.theorem_D_residual_hypothesis_fails,
+    `SignatureVolatility.not_prop58_blackScholes_depth_zero,
+    `SignatureVolatility.blackScholes_completenessDepth_eq_top,
+    `SignatureVolatility.not_lemma77_shuffle_estimate, `SignatureVolatility.not_lemma77_of_hypH2,
+    `SignatureVolatility.not_lemma78_local_lipschitz]
+
+/-- Strip generated suffixes to get the source-level declaration. -/
+partial def parentDecl (env : Environment) (n : Name) : Name :=
+  match n with
+  | .str p s =>
+    if s.startsWith "_proof_" || s.startsWith "match_" || s == "_unary" || s.startsWith "eq_"
+      || s == "_sunfold" || s == "_f" || s.startsWith "_cstage" || s == "proof_1" then parentDecl env p
+    else if (env.getProjectionFnInfo? n).isSome then
+      match env.getProjectionFnInfo? n with
+      | some info => match env.find? info.ctorName with
+        | some (.ctorInfo c) => c.induct
+        | _ => n
+      | none => n
+    else match env.find? n with
+      | some (.ctorInfo c) => c.induct
+      | some (.recInfo r) => r.getMajorInduct
+      | _ => n
+  | _ => n
+
+run_cmd do
+  let env ← getEnv
+  let mut seen : NameSet := {}
+  let mut work := targets
+  let mut out : Array String := #[]
+  while !work.isEmpty do
+    let n := work.head!
+    work := work.tail!
+    if seen.contains n then continue
+    seen := seen.insert n
+    let some ci := env.find? n | continue
+    let tyC := (ci.type.getUsedConstants.filter svPrefix).toList
+    let p := parentDecl env n
+    let isAux := p != n
+    let kind := match ci with
+      | .thmInfo _ => if isAux then "aux" else "thm"
+      | .defnInfo _ => if isAux then "aux" else "def"
+      | .inductInfo _ => "ind"
+      | _ => "aux"
+    match ci with
+    | .thmInfo t =>
+        if isAux then work := work ++ tyC ++ (t.value.getUsedConstants.filter svPrefix).toList
+        else work := work ++ tyC
+    | .defnInfo d => work := work ++ tyC ++ (d.value.getUsedConstants.filter svPrefix).toList
+    | .inductInfo i => work := work ++ tyC ++ i.ctors
+    | _ => work := work ++ tyC
+    if p != n then work := work ++ [p]
+    let pr ← findDeclarationRanges? p
+    let m := (env.getModuleIdxFor? p).map (fun i => (i.toNat, env.header.moduleNames[i.toNat]!))
+    match pr, m with
+    | some r, some (idx, mn) =>
+      out := out.push s!"{kind}\t{n}\t{p}\t{idx}\t{mn}\t{r.range.pos.line}\t{r.range.endPos.line}"
+    | _, _ => out := out.push s!"{kind}\t{n}\t{p}\tNA\tNA\t0\t0"
+  for l in out do IO.println l
