@@ -335,10 +335,122 @@ theorem ae_itoWordIntegral_chen (hs : 0 ≤ s) (K : Word (d + 1)) :
 
 end ItoChen
 
+/-! ## Contraction expansions respect deconcatenation -/
+
+section StratChen
+
+/-- Contraction (Stratonovich-from-Itô) expansion of a word functional. -/
+def stratC (X : Word (d + 1) → ℝ) (K : Word (d + 1)) : ℝ :=
+  ((contractions K).map (fun p => p.1 * X p.2)).sum
+
+lemma stratC_nil (X : Word (d + 1) → ℝ) : stratC X [] = X [] := by
+  simp [stratC, contractions]
+
+lemma stratC_cons (X : Word (d + 1) → ℝ) (j : Fin (d + 1)) (K : Word (d + 1)) :
+    stratC X (j :: K) = stratC (fun w => X (j :: w)) K +
+      if K.head? = some j ∧ (j : ℕ) ≠ 0 then
+        (1 / 2 : ℝ) * stratC (fun w => X ((0 : Fin (d + 1)) :: w)) K.tail else 0 := by
+  unfold stratC
+  rw [contractions_cons, List.map_append, List.sum_append, List.map_map]
+  congr 1
+  split_ifs
+  · rw [List.map_map, ← List.sum_map_mul_left]
+    congr 1
+    refine List.map_congr_left fun p _ => ?_
+    simp only [Function.comp_apply]
+    ring
+  · simp
+
+lemma stratC_add_mul (a : ℝ) (X Y : Word (d + 1) → ℝ) (K : Word (d + 1)) :
+    stratC (fun w => a * X w + Y w) K = a * stratC X K + stratC Y K := by
+  unfold stratC
+  induction contractions K with
+  | nil => simp
+  | cons p L ih => simp only [List.map_cons, List.sum_cons, ih]; ring
+
+lemma chenSum_add_left (X Y H : Word (d + 1) → ℝ) (K : Word (d + 1)) :
+    chenSum (fun A => X A + Y A) H K = chenSum X H K + chenSum Y H K := by
+  unfold chenSum
+  rw [← Finset.sum_add_distrib]
+  exact Finset.sum_congr rfl fun i _ => by ring
+
+lemma chenSum_ite_head (Z H : Word (d + 1) → ℝ) (j : Fin (d + 1)) (c : Prop) [Decidable c]
+    (K : Word (d + 1)) :
+    chenSum (fun A => if A.head? = some j ∧ c then (1 / 2 : ℝ) * Z A.tail else 0) H K =
+      if K.head? = some j ∧ c then (1 / 2 : ℝ) * chenSum Z H K.tail else 0 := by
+  cases K with
+  | nil => simp [chenSum]
+  | cons l K =>
+    rw [chenSum_cons]
+    simp only [List.head?_nil, List.head?_cons, List.tail_cons, reduceCtorEq, false_and,
+      ite_false, zero_mul, zero_add, Option.some.injEq]
+    by_cases h : l = j ∧ c
+    · simp only [h, and_self, ite_true]
+      unfold chenSum
+      rw [Finset.mul_sum]
+      exact Finset.sum_congr rfl fun i _ => by ring
+    · simp only [h, ite_false]
+      unfold chenSum
+      simp
+
+lemma stratC_chenSum_cons (G H : Word (d + 1) → ℝ) (l : Fin (d + 1)) (K : Word (d + 1)) :
+    stratC (fun w => chenSum G H (l :: w)) K =
+      G [] * stratC (fun w => H (l :: w)) K + stratC (fun w => chenSum (fun A => G (l :: A)) H w) K := by
+  rw [show (fun w => chenSum G H (l :: w)) = fun w =>
+      G [] * H (l :: w) + chenSum (fun A => G (l :: A)) H w from funext fun w => chenSum_cons G H l w,
+    stratC_add_mul]
+
+/-- **The contraction expansion is a deconcatenation morphism.** -/
+theorem stratC_chenSum : ∀ (K : Word (d + 1)) (G H : Word (d + 1) → ℝ),
+    stratC (fun w => chenSum G H w) K = chenSum (stratC G) (stratC H) K
+  | [], G, H => by simp [stratC_nil, chenSum_nil]
+  | j :: K, G, H => by
+    have e2 : (fun A => stratC G (j :: A)) = fun A => stratC (fun w => G (j :: w)) A +
+        (if A.head? = some j ∧ (j : ℕ) ≠ 0 then
+          (1 / 2 : ℝ) * stratC (fun w => G ((0 : Fin (d + 1)) :: w)) A.tail else 0) :=
+      funext fun A => stratC_cons G j A
+    rw [stratC_cons, chenSum_cons (stratC G) (stratC H), stratC_chenSum_cons,
+      stratC_chenSum_cons, stratC_chenSum K (fun A => G (j :: A)) H,
+      stratC_chenSum K.tail (fun A => G ((0 : Fin (d + 1)) :: A)) H, e2, chenSum_add_left,
+      chenSum_ite_head, stratC_nil, stratC_cons H j K]
+    split_ifs <;> ring
+  termination_by K _ _ => K.length
+  decreasing_by
+    all_goals simp only [List.length_cons, List.length_tail]
+    all_goals omega
+
+lemma chenSum_reverse (G H : Word (d + 1) → ℝ) (I : Word (d + 1)) :
+    chenSum G H I.reverse = ∑ k ∈ Finset.range (I.length + 1),
+      H ((I.take k).reverse) * G ((I.drop k).reverse) := by
+  unfold chenSum
+  rw [List.length_reverse, ← Finset.sum_range_reflect
+    (fun k => H ((I.take k).reverse) * G ((I.drop k).reverse)) (I.length + 1)]
+  refine Finset.sum_congr rfl fun k hk => ?_
+  have hk' := Finset.mem_range.1 hk
+  rw [List.take_reverse, List.drop_reverse]
+  have e : I.length - k = I.length + 1 - 1 - k := by omega
+  rw [e, mul_comm]
+
+end StratChen
+
 /-- **Chen's identity** for the Brownian Stratonovich signature (almost surely). -/
 theorem paperSig2_chen (B : MultiBrownian Ω P d) {s t : ℝ} (hs : 0 ≤ s) (hst : s ≤ t) :
     ∀ᵐ ω ∂P, paperSig2 B 0 t ω = paperSig2 B 0 s ω ⊗ₜ paperSig2 B s t ω := by
-  sorry
+  have hito : ∀ᵐ ω ∂P, ∀ K : Word (d + 1), itoWordIntegral B 0 t ω K =
+      chenSum (fun A => itoWordIntegral B s t ω A) (fun C => itoWordIntegral B 0 s ω C) K :=
+    ae_all_iff.2 fun K => (ae_itoWordIntegral_chen B hs K).mono fun ω h => h t hst
+  filter_upwards [hito] with ω h
+  ext I
+  show (paperSig2 B 0 t ω).coeff I = ∑ k ∈ Finset.range (I.length + 1),
+    (paperSig2 B 0 s ω).coeff (I.take k) * (paperSig2 B s t ω).coeff (I.drop k)
+  rw [paperSig2_coeff, stratWordIntegral_eq_list]
+  change stratC (fun w => itoWordIntegral B 0 t ω w) I.reverse = _
+  rw [show (fun w => itoWordIntegral B 0 t ω w) = fun w => chenSum
+      (fun A => itoWordIntegral B s t ω A) (fun C => itoWordIntegral B 0 s ω C) w from funext h,
+    stratC_chenSum, chenSum_reverse]
+  refine Finset.sum_congr rfl fun k _ => ?_
+  rw [paperSig2_coeff, paperSig2_coeff, stratWordIntegral_eq_list, stratWordIntegral_eq_list]
+  rfl
 
 /-- **Shuffle identity** for the Brownian Stratonovich signature (almost surely). -/
 theorem paperSig2_shuffle (B : MultiBrownian Ω P d) {t : ℝ} (ht : 0 ≤ t) (I J : Word (d + 1)) :
