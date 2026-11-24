@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Regenerate SignatureVolatilityComparator/Challenge.lean, ChallengeParts/** and
+# Regenerate SignatureVolatilityComparator/Challenge.lean, and
 # comparator.json theorem_names from the compared targets listed in
 # scripts/ComparatorClosure.lean. Requires a built SignatureVolatility library.
 set -euo pipefail

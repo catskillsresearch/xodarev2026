@@ -6,20 +6,25 @@ project:
   description: >-
     A Lean 4 / Mathlib formalization of Akmal Xodarev, "On the Structural
     Foundations of Signature Volatility Models", arXiv:2605.17142. Framing:
-    rigorous reconstruction/verification of Theorems A–D — global existence
-    and uniqueness of the strong solution of the signature SDE under H1–H3
-    (Theorem A); NFLVR / martingale pricing on the prolonged-signature
-    filtration together with Riccati transform duality (Theorem B);
-    characterisation of market completeness on the price filtration by
-    truncated signature spans and completeness depth (Theorem C); and the
-    Galtchouk–Kunita–Watanabe hedging-error decomposition with a quantitative
-    weight-tail bound (Theorem D). The Comparator family is these four
-    theorems, each proved using only propext, Quot.sound, and Classical.choice.
-    Project rule: no Lean `axiom` declarations. Akmal Xodarev did not
-    participate in or endorse this formalization. Lean was written with
-    AI-agent assistance under Lars Warren Ericson's direction and review.
-    There is no sorry in the SignatureVolatility/ development for the
-    Comparator family, and Mathlib is the only Lake dependency.
+    rigorous verification of Theorems A–D, proving what holds at paper
+    strength and refuting what does not. Proved: Theorem A (global existence
+    and uniqueness of the positive strong solution of the signature SDE under
+    H1–H3); the martingale / NFLVR / special-semimartingale part of Theorem B
+    (theorem_B_proved); the → direction of the affine / Riccati duality of
+    Theorem 4.2(ii) (affine_riccati_duality_mp); and the GKW projection part
+    of Theorem D (theorem_D, Half_TheoremD). Refuted by Lean counterexamples:
+    Theorem C (Black–Scholes is complete with finitely many calls but has
+    completeness depth N^*_S = ∞), Proposition 58 (Black–Scholes depth is ∞,
+    not 0), Lemma 77 (weighted shuffle estimate, for every (H2) weight) and
+    Lemma 78 (local Lipschitz bound for the Riccati operator); and the
+    residual-expansion hypothesis "N^*_S < ∞" of Theorem D fails for
+    Black–Scholes. One open problem remains outside the submitted library:
+    the ← direction of the Riccati duality (affine_riccati_duality_mpr), on
+    which the full Theorem B depends. Every compared theorem uses only
+    propext, Quot.sound and Classical.choice. Project rule: no Lean `axiom`
+    declarations. Akmal Xodarev did not participate in or endorse this
+    formalization. Lean was written with AI-agent assistance under Lars
+    Warren Ericson's direction and review.
   authors:
   - Lars Warren Ericson
   license: Apache-2.0
@@ -39,9 +44,17 @@ classification:
   - '68V20'
 status:
   scope: >-
-    Complete for the Comparator family in comparator.json: Theorems A–D.
-    Intermediate lemmas remain library-only. No Lean `axiom`. All library
-    proofs for the compared theorems are complete.
+    Comparator family (comparator.json): 56 theorems, all proved with no
+    sorry — the 15 headline results below (proved results, refutations and
+    counterexamples of paper claims) plus 41 supporting facts in their
+    dependency closure (Itô / Doléans kit, Brownian driver, signature
+    properties, MathFin / BrownianMotion lemmas). The submitted library
+    SignatureVolatility and SignatureVolatilityComparator/Solution.lean have
+    no sorry. The single sorry of the repository is the open ← direction of
+    the affine / Riccati duality, in the separate non-submitted OpenProblems
+    library together with what depends on it (affine_riccati_duality,
+    signatureRiccatiKit_of_setup, full theorem_B). Challenge is one file
+    importing only Lean core and Mathlib.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms:
@@ -58,7 +71,7 @@ status:
     - Quot.sound
     comparator_config: comparator.json
     literature_dependencies: []
-  - declaration: SignatureVolatility.theorem_B
+  - declaration: SignatureVolatility.theorem_B_proved
     file: SignatureVolatility/TheoremB.lean
     sorry_count: 0
     axioms:
@@ -67,7 +80,52 @@ status:
     - Quot.sound
     comparator_config: comparator.json
     literature_dependencies: []
-  - declaration: SignatureVolatility.theorem_C
+  - declaration: SignatureVolatility.affine_riccati_duality_mp
+    file: SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMp.lean
+    sorry_count: 0
+    axioms:
+    - propext
+    - Classical.choice
+    - Quot.sound
+    comparator_config: comparator.json
+    literature_dependencies: []
+  - declaration: SignatureVolatility.not_theorem_C
+    file: SignatureVolatility/TheoremCCounterExample.lean
+    sorry_count: 0
+    axioms:
+    - propext
+    - Classical.choice
+    - Quot.sound
+    comparator_config: comparator.json
+    literature_dependencies: []
+  - declaration: SignatureVolatility.theorem_C_refuted
+    file: SignatureVolatility/TheoremC.lean
+    sorry_count: 0
+    axioms:
+    - propext
+    - Classical.choice
+    - Quot.sound
+    comparator_config: comparator.json
+    literature_dependencies: []
+  - declaration: SignatureVolatility.blackScholes_isCompleteWithCalls
+    file: SignatureVolatility/TheoremCCounterExample.lean
+    sorry_count: 0
+    axioms:
+    - propext
+    - Classical.choice
+    - Quot.sound
+    comparator_config: comparator.json
+    literature_dependencies: []
+  - declaration: SignatureVolatility.theorem_C_depth_infinite
+    file: SignatureVolatility/TheoremC.lean
+    sorry_count: 0
+    axioms:
+    - propext
+    - Classical.choice
+    - Quot.sound
+    comparator_config: comparator.json
+    literature_dependencies: []
+  - declaration: SignatureVolatility.theorem_C_blackScholes_depth_infinite
     file: SignatureVolatility/TheoremC.lean
     sorry_count: 0
     axioms:
@@ -78,6 +136,60 @@ status:
     literature_dependencies: []
   - declaration: SignatureVolatility.theorem_D
     file: SignatureVolatility/TheoremD.lean
+    sorry_count: 0
+    axioms:
+    - propext
+    - Classical.choice
+    - Quot.sound
+    comparator_config: comparator.json
+    literature_dependencies: []
+  - declaration: SignatureVolatility.theorem_D_residual_hypothesis_fails
+    file: SignatureVolatility/TheoremDCounterExample.lean
+    sorry_count: 0
+    axioms:
+    - propext
+    - Classical.choice
+    - Quot.sound
+    comparator_config: comparator.json
+    literature_dependencies: []
+  - declaration: SignatureVolatility.not_prop58_blackScholes_depth_zero
+    file: SignatureVolatility/Prop58BlackScholesDepthFalse.lean
+    sorry_count: 0
+    axioms:
+    - propext
+    - Classical.choice
+    - Quot.sound
+    comparator_config: comparator.json
+    literature_dependencies: []
+  - declaration: SignatureVolatility.blackScholes_completenessDepth_eq_top
+    file: SignatureVolatility/Prop58BlackScholesDepthFalse.lean
+    sorry_count: 0
+    axioms:
+    - propext
+    - Classical.choice
+    - Quot.sound
+    comparator_config: comparator.json
+    literature_dependencies: []
+  - declaration: SignatureVolatility.not_lemma77_shuffle_estimate
+    file: SignatureVolatility/Lemma77ShuffleEstimateFalse.lean
+    sorry_count: 0
+    axioms:
+    - propext
+    - Classical.choice
+    - Quot.sound
+    comparator_config: comparator.json
+    literature_dependencies: []
+  - declaration: SignatureVolatility.not_lemma77_of_hypH2
+    file: SignatureVolatility/Lemma77ShuffleEstimateFalse.lean
+    sorry_count: 0
+    axioms:
+    - propext
+    - Classical.choice
+    - Quot.sound
+    comparator_config: comparator.json
+    literature_dependencies: []
+  - declaration: SignatureVolatility.not_lemma78_local_lipschitz
+    file: SignatureVolatility/Lemma78RiccatiLipschitzFalse.lean
     sorry_count: 0
     axioms:
     - propext
@@ -120,7 +232,22 @@ sources:
       Paper-facing write-up of this formalization, not a claim that the
       underlying theorems are original.
 
-related_formalizations: []
+related_formalizations:
+  - id: https://github.com/RemyDegenne/brownian-motion
+    relationship: builds-on
+    note: >-
+      Brownian-motion library used in Solution proofs, vendored as a Lake
+      path dependency (vendor/brownian-motion, pruned as in lyasoff2016; see
+      vendor/SOURCES). Declarations the compared statements need are copied
+      into the single-file Challenge, which imports only Mathlib; not a
+      Challenge import.
+  - id: https://github.com/formal-applied-math/formal-mathfin
+    relationship: builds-on
+    note: >-
+      Itô integral stack used in Solution proofs, vendored as a Lake path
+      dependency (vendor/formal-mathfin, same SHA as lyasoff2016's pin).
+      Needed declarations are copied into the Challenge; not a Challenge
+      import.
 
 automation:
   methods:
@@ -156,13 +283,23 @@ review:
 
 known_gaps:
   - >-
-    Challenge scaffolding for Theorems A–D is deliberately Mathlib-only and
-    uses type-only holes (`definition_names`) for library structures; Solution
-    supplies the proved library declarations.
+    Open problem (the one gap): the ← direction of the affine / Riccati
+    duality, paper Theorem 4.2(ii) p. 21, proof §4.4 p. 23
+    (SignatureVolatility.affine_riccati_duality_mpr,
+    OpenProblems/AffineRiccatiDuality.lean, sorry). It requires the positive
+    local martingale exp⟨ψ(T − t), Ŵ_t⟩ to be a true martingale. The paper's
+    argument is unsupported: H3 and polynomial moments do not give uniform
+    integrability of the exponential, and Lemma 4.10 uses Lemmas B.1/B.2,
+    which are false (not_lemma77_shuffle_estimate,
+    not_lemma78_local_lipschitz). No counterexample is known;
+    Cuchiero–Svaluto-Ferro–Teichmann (arXiv:2302.01362, Thm 3.5) assume the
+    true-martingale property. Consequently the full paper Theorem B
+    (OpenProblems/TheoremB.lean) is not compared; only theorem_B_proved is.
   - >-
-    No Lean axiom declarations or unfinished proofs remain in
-    SignatureVolatility/ for the Comparator family. Intentional Challenge
-    stubs in SignatureVolatilityComparator/Challenge.lean are unchanged.
+    Theorem C, Proposition 58 and Lemmas 77/78 are false as stated; the
+    Comparator family contains their Lean refutations, not the claims.
+    Theorem D is proved only in its GKW-projection part; its residual
+    expansion assumes N^*_S < ∞, which fails for Black–Scholes.
 
 limitations:
   - >-
@@ -175,17 +312,61 @@ alignment:
   statements:
   - source: "Thm A: unique positive strong solution of the signature SDE under H1–H3."
     lean: theorem_A
-    module: SignatureVolatility
+    module: SignatureVolatility.TheoremA
     status: proved
-  - source: "Thm B: NFLVR / martingale property and Riccati duality."
-    lean: theorem_B
-    module: SignatureVolatility
+  - source: "Thm B (partial): martingale on the signature filtration, NFLVR, special-semimartingale coordinates."
+    lean: theorem_B_proved
+    module: SignatureVolatility.TheoremB
     status: proved
-  - source: "Thm C: completeness depth characterisation on the price filtration."
-    lean: theorem_C
-    module: SignatureVolatility
+  - source: "Thm 4.2(ii), → direction of the affine / Riccati duality."
+    lean: affine_riccati_duality_mp
+    module: SignatureVolatility.SignatureRiccatiKit.AffineRiccatiDualityMp
     status: proved
-  - source: "Thm D: GKW hedging-error decomposition and weight-tail bound."
+  - source: "Thm C (Thm 56): complete with calls ⇔ N^*_S < ∞ — false for Black–Scholes (CounterExample_TheoremC)."
+    lean: not_theorem_C
+    module: SignatureVolatility.TheoremCCounterExample
+    status: proved
+  - source: "Thm C refuted (headline form)."
+    lean: theorem_C_refuted
+    module: SignatureVolatility.TheoremC
+    status: proved
+  - source: "Black–Scholes is complete on F^S_T with finitely many calls."
+    lean: blackScholes_isCompleteWithCalls
+    module: SignatureVolatility.TheoremCCounterExample
+    status: proved
+  - source: "N^*_S = ∞ whenever L²(F^S_T) is infinite-dimensional."
+    lean: theorem_C_depth_infinite
+    module: SignatureVolatility.TheoremC
+    status: proved
+  - source: "N^*_S = ∞ for Black–Scholes."
+    lean: theorem_C_blackScholes_depth_infinite
+    module: SignatureVolatility.TheoremC
+    status: proved
+  - source: "Thm D / Thm 66: GKW projection (Half_TheoremD)."
     lean: theorem_D
-    module: SignatureVolatility
+    module: SignatureVolatility.TheoremD
+    status: proved
+  - source: "Thm D residual expansion: hypothesis N^*_S < ∞ fails for Black–Scholes (CounterExample_TheoremD)."
+    lean: theorem_D_residual_hypothesis_fails
+    module: SignatureVolatility.TheoremDCounterExample
+    status: proved
+  - source: "Prop 58 refuted: Black–Scholes depth is not 0 (CounterExample_Prop58)."
+    lean: not_prop58_blackScholes_depth_zero
+    module: SignatureVolatility.Prop58BlackScholesDepthFalse
+    status: proved
+  - source: "Black–Scholes completeness depth is ∞."
+    lean: blackScholes_completenessDepth_eq_top
+    module: SignatureVolatility.Prop58BlackScholesDepthFalse
+    status: proved
+  - source: "Lemma 77 (B.1) weighted shuffle estimate refuted (CounterExample_Lemma77)."
+    lean: not_lemma77_shuffle_estimate
+    module: SignatureVolatility.Lemma77ShuffleEstimateFalse
+    status: proved
+  - source: "Lemma 77 refuted for every (H2) weight."
+    lean: not_lemma77_of_hypH2
+    module: SignatureVolatility.Lemma77ShuffleEstimateFalse
+    status: proved
+  - source: "Lemma 78 (B.2 / 2.20) local Lipschitz bound for ℛ refuted (CounterExample_Lemma78)."
+    lean: not_lemma78_local_lipschitz
+    module: SignatureVolatility.Lemma78RiccatiLipschitzFalse
     status: proved

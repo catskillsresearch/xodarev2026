@@ -1,5 +1,5 @@
 name = "xodarev2026"
-defaultTargets = ["SignatureVolatility", "SignatureVolatilityChallenge", "SignatureVolatilitySolution"]
+defaultTargets = ["SignatureVolatility", "SignatureVolatilityChallenge", "SignatureVolatilitySolution", "OpenProblems"]
 
 # Module-system port: privateInPublic keeps transitional private decls visible
 # from public sections (same pattern as nowakowska1982 / lyasoff2016).
@@ -36,8 +36,16 @@ globs = ["SignatureVolatility", "SignatureVolatility.+"]
 [[lean_lib]]
 name = "SignatureVolatilityChallenge"
 roots = ["SignatureVolatilityComparator.Challenge"]
-globs = ["SignatureVolatilityComparator.Challenge", "SignatureVolatilityComparator.ChallengeParts.+"]
+
 
 [[lean_lib]]
 name = "SignatureVolatilitySolution"
 roots = ["SignatureVolatilityComparator.Solution"]
+
+
+# Not submitted to Palomar: the single open problem (`affine_riccati_duality_mpr`, `sorry`) and
+# the results that depend on it (`affine_riccati_duality`, `signatureRiccatiKit_of_setup`,
+# full `theorem_B`). Its root `OpenProblems.lean` imports every module under `OpenProblems/`.
+[[lean_lib]]
+name = "OpenProblems"
+globs = ["OpenProblems", "OpenProblems.+"]

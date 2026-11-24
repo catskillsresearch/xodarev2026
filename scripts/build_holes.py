@@ -22,6 +22,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = ROOT / "SignatureVolatility"
+# Separate, non-submitted library holding the open problem and what depends on it.
+OPEN_ROOT = ROOT / "OpenProblems"
 OUT_JSON = ROOT / "holes-graph.json"
 OUT_HTML = ROOT / "holes.html"
 HTML_EMBED_MARKER = "/*HOLES_GRAPH_JSON*/"
@@ -29,7 +31,7 @@ OUT_MD = ROOT / "HOLES.md"
 OUT_EDGES = ROOT / "holes-edges.txt"
 
 IMPORT_RE = re.compile(
-    r"^(?:public\s+)?(?:meta\s+)?import\s+(?:all\s+)?(SignatureVolatility(?:\.\S+)?)"
+    r"^(?:public\s+)?(?:meta\s+)?import\s+(?:all\s+)?((?:SignatureVolatility|OpenProblems)(?:\.\S+)?)"
 )
 
 SORRY_RE = re.compile(r"(?<![A-Za-z0-9_])sorry(?![A-Za-z0-9_])")
@@ -40,7 +42,7 @@ SORRY_RE = re.compile(r"(?<![A-Za-z0-9_])sorry(?![A-Za-z0-9_])")
 PAPER_KIT_GOALS: list[str] = [
     "ProlongedBrownianSetup.StratonovichOfBM",
     "ItoCalculusKit.OfMathFin",
-    "SignatureRiccatiKit.OfSetup",
+    "OpenProblems.AffineRiccatiDuality",
     "PriceFiltrationSignatureSpace.OfMarket",
     "GKWDecompositionSetup.OfPFS",
     # Paper entry theorems (instance wrappers; blocked until the kits above are done):
@@ -86,27 +88,38 @@ REFUTED_THEOREMS: dict[str, tuple[str, str]] = {
 
 # Documented open problems (the only remaining `sorry`s). Value: detail text.
 OPEN_PROBLEMS: dict[str, str] = {
-    "SignatureRiccatiKit.OfSetup":
-        "OPEN PROBLEM: `affine_riccati_duality` (paper Thm 4.2(ii), p. 21; proof §4.4, p. 23) is "
-        "stated at paper strength with `sorry`. The paper's justification is unsupported: H3 plus "
-        "polynomial moments do not give uniform integrability of exp<psi(T-t), W_t>, and Lemma 4.10 "
-        "uses the false Lemmas B.1/B.2 (CounterExample_Lemma77/78). No counterexample found; "
-        "Cuchiero-Svaluto-Ferro-Teichmann (arXiv:2302.01362, Thm 3.5) assume the true-martingale "
-        "property. Theorem B's Riccati clause depends on it.",
+    "OpenProblems.AffineRiccatiDuality":
+        "OPEN PROBLEM (not submitted; `OpenProblems` library): `affine_riccati_duality_mpr`, the "
+        "<- direction of the affine / Riccati duality (paper Thm 4.2(ii), p. 21; proof §4.4, p. 23), "
+        "is stated at paper strength with `sorry`. The -> direction `affine_riccati_duality_mp` is "
+        "proved and compared (SignatureRiccatiKit.AffineRiccatiDualityMp). The paper's justification "
+        "of <- is unsupported: H3 plus polynomial moments do not give uniform integrability of "
+        "exp<psi(T-t), W_t>, and Lemma 4.10 uses the false Lemmas B.1/B.2 (CounterExample_Lemma77/78). "
+        "No counterexample found; Cuchiero-Svaluto-Ferro-Teichmann (arXiv:2302.01362, Thm 3.5) assume "
+        "the true-martingale property. The full theorem_B (OpenProblems.TheoremB) depends on it.",
 }
 
 
 # Labels shown on unfinished nodes (always applied).
 STATUS_LABELS: dict[str, str] = {
-    "SignatureRiccatiKit.OfSetup": "OPEN: affine_riccati_duality (sorry)",
+    "OpenProblems.AffineRiccatiDuality": "OPEN: affine_riccati_duality_mpr (sorry)",
+    "OpenProblems.TheoremB": "theorem_B (needs affine_riccati_duality_mpr)",
+    "SignatureRiccatiKit.AffineRiccatiDualityMp": "affine_riccati_duality_mp (-> proved)",
     "TheoremB": "Partial_TheoremB (theorem_B_proved)",
 }
 STATUS_DETAILS: dict[str, str] = {
     "TheoremB":
-        "Partial_TheoremB. No `sorry` in this file. theorem_B_proved (martingale on the signature "
-        "filtration, NFLVR, special semimartingale coordinates) is sorry-free and compared. The full "
-        "theorem_B's Riccati clause comes from affine_riccati_duality (SignatureRiccatiKit.OfSetup), "
-        "so the module shows as blocked; it is not a second sorry.",
+        "Partial_TheoremB. theorem_B_proved (martingale on the signature filtration, NFLVR, special "
+        "semimartingale coordinates) is sorry-free and compared. The full theorem_B is in the "
+        "non-submitted OpenProblems library (OpenProblems.TheoremB).",
+    "SignatureRiccatiKit.AffineRiccatiDualityMp":
+        "Proved -> direction of the affine / Riccati duality (paper Thm 4.2(ii)): an exponential-"
+        "affine conditional transform through a classical Riccati solution gives a solution. "
+        "Compared in comparator.json. The <- direction is the open problem "
+        "(OpenProblems.AffineRiccatiDuality).",
+    "OpenProblems.TheoremB":
+        "Full paper Theorem B (not submitted). Its Riccati clause uses signatureRiccatiKit_of_setup, "
+        "whose duality field rests on the open affine_riccati_duality_mpr. No `sorry` in this file.",
 }
 
 
@@ -130,6 +143,8 @@ def is_counterexample(nid: str) -> bool:
 # marked done once all hard predecessors are done. Empty ⇒ everything TBD.
 # Do NOT list paper-kit goal modules here until they are sorry-free at paper strength.
 VERIFIED: set[str] = {
+    "SignatureRiccatiKit.AffineRiccatiDualityMp",
+    "OpenProblems.TheoremB",
     "AdmissibleGainsUnderP",
     "BanachAlgebraConcatBound",
     "BlackScholesModel",
@@ -360,6 +375,8 @@ def file_has_sorry(path: Path) -> bool:
 def file_to_mod(path: Path) -> str:
     if path == ROOT / "SignatureVolatility.lean":
         return "SignatureVolatility"
+    if path.is_relative_to(OPEN_ROOT):
+        return "OpenProblems." + path.relative_to(OPEN_ROOT).with_suffix("").as_posix().replace("/", ".")
     rel = path.relative_to(LEAN_ROOT).with_suffix("").as_posix().replace("/", ".")
     return f"SignatureVolatility.{rel}"
 
@@ -393,7 +410,7 @@ def transitive_reduction(edges: list[tuple[str, str]]) -> list[tuple[str, str]]:
 def discover() -> tuple[dict[str, dict], list[tuple[str, str]]]:
     """Return nodes meta by short id, and hard edges (dep → importer)."""
     # Omit SignatureVolatility.lean: it imports every submodule and only adds noise.
-    files = sorted(LEAN_ROOT.rglob("*.lean"))
+    files = sorted(LEAN_ROOT.rglob("*.lean")) + sorted(OPEN_ROOT.rglob("*.lean"))
     mod_to_file: dict[str, str] = {}
     imports: list[tuple[str, str]] = []  # (importer_mod, dep_mod)
 
@@ -416,6 +433,8 @@ def discover() -> tuple[dict[str, dict], list[tuple[str, str]]]:
 
     # Ensure every imported SignatureVolatility.* appears even if somehow missing.
     for _importer, dep in imports:
+        if dep.startswith("OpenProblems") and dep not in mod_to_file:
+            mod_to_file[dep] = dep.replace(".", "/") + ".lean"
         if dep.startswith("SignatureVolatility") and dep not in mod_to_file:
             # Placeholder path from module name.
             if dep == "SignatureVolatility":
@@ -569,11 +588,14 @@ def build() -> dict:
 
     # True number of `sorry` occurrences in the library (not the number of unfinished modules).
     sorry_count = sum(file_sorry_count(ROOT / n["file"]) for n in nodes)
+    submitted_sorry = sum(file_sorry_count(ROOT / n["file"]) for n in nodes
+                          if not n["id"].startswith("OpenProblems"))
     open_ids = [n["id"] for n in nodes if n["status"] == "open"]
 
     return {
         "updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "sorryCount": sorry_count,
+        "submittedSorryCount": submitted_sorry,
         "legend": {
             "open": "No unfinished import-deps — verify / prove next (TBD)",
             "blocked": "Waiting on unfinished imported modules",
@@ -628,7 +650,8 @@ def write_md(data: dict) -> None:
         "file contains no `sorry`.",
         "",
         f"**Updated:** {data['updated']}",
-        f"**`sorry` occurrences:** {data['sorryCount']} · "
+        f"**`sorry` occurrences:** {data['sorryCount']} (submitted library: "
+        f"{data['submittedSorryCount']}; the rest in the non-submitted `OpenProblems` library) · "
         f"{len(open_n)} open · {len(blocked_n)} blocked · {len(done_n)} done · "
         f"{len(sorry_n)} file(s) with `sorry`.",
         f"**Paper claims refuted:** "
@@ -640,8 +663,10 @@ def write_md(data: dict) -> None:
         "## Open problem (the single remaining `sorry`)",
         "",
         *[f"- **`{nid}`**: {txt}" for nid, txt in OPEN_PROBLEMS.items()],
-        "- `TheoremB` is blocked only because it imports this module; `theorem_B_proved` (martingale, "
-        "NFLVR, special semimartingale) is sorry-free and compared in `comparator.json`.",
+        "- `OpenProblems.TheoremB` (full `theorem_B`) is blocked only because it imports this module. "
+        "The submitted library (`SignatureVolatility`, `Solution.lean`) has **0** `sorry`: "
+        "`theorem_B_proved` (martingale, NFLVR, special semimartingale) and the `->` direction "
+        "`affine_riccati_duality_mp` are sorry-free and compared in `comparator.json`.",
         "",
         "## Counterexamples and refuted paper claims",
         "",

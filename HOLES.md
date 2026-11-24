@@ -2,14 +2,14 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-24T11:56:33Z
-**`sorry` occurrences:** 1 · 1 open · 1 blocked · 179 done · 1 file(s) with `sorry`.
+**Updated:** 2026-11-24T13:38:05Z
+**`sorry` occurrences:** 1 (submitted library: 0; the rest in the non-submitted `OpenProblems` library) · 1 open · 1 blocked · 181 done · 1 file(s) with `sorry`.
 **Paper claims refuted:** 5 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
 
 ## Open problem (the single remaining `sorry`)
 
-- **`SignatureRiccatiKit.OfSetup`**: OPEN PROBLEM: `affine_riccati_duality` (paper Thm 4.2(ii), p. 21; proof §4.4, p. 23) is stated at paper strength with `sorry`. The paper's justification is unsupported: H3 plus polynomial moments do not give uniform integrability of exp<psi(T-t), W_t>, and Lemma 4.10 uses the false Lemmas B.1/B.2 (CounterExample_Lemma77/78). No counterexample found; Cuchiero-Svaluto-Ferro-Teichmann (arXiv:2302.01362, Thm 3.5) assume the true-martingale property. Theorem B's Riccati clause depends on it.
-- `TheoremB` is blocked only because it imports this module; `theorem_B_proved` (martingale, NFLVR, special semimartingale) is sorry-free and compared in `comparator.json`.
+- **`OpenProblems.AffineRiccatiDuality`**: OPEN PROBLEM (not submitted; `OpenProblems` library): `affine_riccati_duality_mpr`, the <- direction of the affine / Riccati duality (paper Thm 4.2(ii), p. 21; proof §4.4, p. 23), is stated at paper strength with `sorry`. The -> direction `affine_riccati_duality_mp` is proved and compared (SignatureRiccatiKit.AffineRiccatiDualityMp). The paper's justification of <- is unsupported: H3 plus polynomial moments do not give uniform integrability of exp<psi(T-t), W_t>, and Lemma 4.10 uses the false Lemmas B.1/B.2 (CounterExample_Lemma77/78). No counterexample found; Cuchiero-Svaluto-Ferro-Teichmann (arXiv:2302.01362, Thm 3.5) assume the true-martingale property. The full theorem_B (OpenProblems.TheoremB) depends on it.
+- `OpenProblems.TheoremB` (full `theorem_B`) is blocked only because it imports this module. The submitted library (`SignatureVolatility`, `Solution.lean`) has **0** `sorry`: `theorem_B_proved` (martingale, NFLVR, special semimartingale) and the `->` direction `affine_riccati_duality_mp` are sorry-free and compared in `comparator.json`.
 
 ## Counterexamples and refuted paper claims
 
@@ -38,11 +38,11 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 |---|---|---|---|
 | done | `GKWDecompositionSetup.OfPFS` | no | `SignatureVolatility/GKWDecompositionSetup/OfPFS.lean` |
 | done | `ItoCalculusKit.OfMathFin` | no | `SignatureVolatility/ItoCalculusKit/OfMathFin.lean` |
+| open | `OpenProblems.AffineRiccatiDuality` | yes | `OpenProblems/AffineRiccatiDuality.lean` |
 | done | `PriceFiltrationSignatureSpace.OfMarket` | no | `SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean` |
 | done | `ProlongedBrownianSetup.StratonovichOfBM` | no | `SignatureVolatility/ProlongedBrownianSetup/StratonovichOfBM.lean` |
-| open | `SignatureRiccatiKit.OfSetup` | yes | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
 | done | `TheoremA` | no | `SignatureVolatility/TheoremA.lean` |
-| blocked | `TheoremB` | no | `SignatureVolatility/TheoremB.lean` |
+| done | `TheoremB` | no | `SignatureVolatility/TheoremB.lean` |
 | done | `TheoremC` | no | `SignatureVolatility/TheoremC.lean` |
 | done | `TheoremD` | no | `SignatureVolatility/TheoremD.lean` |
 
@@ -50,13 +50,13 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 
 | Status | Id | File |
 |---|---|---|
-| open | `SignatureRiccatiKit.OfSetup` | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
+| open | `OpenProblems.AffineRiccatiDuality` | `OpenProblems/AffineRiccatiDuality.lean` |
 
 ## Open now (Layer 0)
 
 | Id | File |
 |---|---|
-| `SignatureRiccatiKit.OfSetup` | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
+| `OpenProblems.AffineRiccatiDuality` | `OpenProblems/AffineRiccatiDuality.lean` |
 
 ## By group
 
@@ -158,6 +158,8 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `Norm2wInv` | `SignatureVolatility/Norm2wInv.lean` |
 | done | `NormW` | `SignatureVolatility/NormW.lean` |
 | done | `NormWDual` | `SignatureVolatility/NormWDual.lean` |
+| open | `OpenProblems.AffineRiccatiDuality` | `OpenProblems/AffineRiccatiDuality.lean` |
+| blocked | `OpenProblems.TheoremB` | `OpenProblems/TheoremB.lean` |
 | done | `Preliminaries` | `SignatureVolatility/Preliminaries.lean` |
 | done | `PriceFiltration` | `SignatureVolatility/PriceFiltration.lean` |
 | done | `ProjGt` | `SignatureVolatility/ProjGt.lean` |
@@ -178,8 +180,8 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `SignatureHestonLevel2Model` | `SignatureVolatility/SignatureHestonLevel2Model.lean` |
 | done | `SignaturePriceSolution` | `SignatureVolatility/SignaturePriceSolution.lean` |
 | done | `SignatureRiccatiKit` | `SignatureVolatility/SignatureRiccatiKit.lean` |
+| done | `SignatureRiccatiKit.AffineRiccatiDualityMp` | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMp.lean` |
 | done | `SignatureRiccatiKit.CoordSemimartingale` | `SignatureVolatility/SignatureRiccatiKit/CoordSemimartingale.lean` |
-| open | `SignatureRiccatiKit.OfSetup` | `SignatureVolatility/SignatureRiccatiKit/OfSetup.lean` |
 | done | `SignatureRiccatiKit.RiccatiExpProcess` | `SignatureVolatility/SignatureRiccatiKit/RiccatiExpProcess.lean` |
 | done | `SignatureRiccatiKit.RiccatiOp` | `SignatureVolatility/SignatureRiccatiKit/RiccatiOp.lean` |
 | done | `SignatureVolatilityModel` | `SignatureVolatility/SignatureVolatilityModel.lean` |
@@ -190,7 +192,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `TailNorm2wInvLeRatioMulNormW` | `SignatureVolatility/TailNorm2wInvLeRatioMulNormW.lean` |
 | done | `TheoremA` | `SignatureVolatility/TheoremA.lean` |
 | done | `TheoremAOfBrownianSetupItoKit` | `SignatureVolatility/TheoremAOfBrownianSetupItoKit.lean` |
-| blocked | `TheoremB` | `SignatureVolatility/TheoremB.lean` |
+| done | `TheoremB` | `SignatureVolatility/TheoremB.lean` |
 | done | `TheoremBOfSetupItoRiccatiKit` | `SignatureVolatility/TheoremBOfSetupItoRiccatiKit.lean` |
 | done | `TheoremC` | `SignatureVolatility/TheoremC.lean` |
 | done | `TheoremCCounterExample` | `SignatureVolatility/TheoremCCounterExample.lean` |

@@ -1,9 +1,12 @@
 import SignatureVolatility
 open Lean Meta Elab Command
 
-def svPrefix (n : Name) : Bool := (`SignatureVolatility).isPrefixOf n
+def localMods : List Name := [`SignatureVolatility, `MathFin, `BrownianMotion, `KolmogorovExtension4]
+
+def isLocalMod (m : Name) : Bool := localMods.any (·.isPrefixOf m)
 
 def targets : List Name := [`SignatureVolatility.theorem_A, `SignatureVolatility.theorem_B_proved,
+  `SignatureVolatility.affine_riccati_duality_mp,
     `SignatureVolatility.theorem_C_refuted, `SignatureVolatility.not_theorem_C,
     `SignatureVolatility.blackScholes_isCompleteWithCalls,
     `SignatureVolatility.theorem_C_depth_infinite,
@@ -34,6 +37,10 @@ partial def parentDecl (env : Environment) (n : Name) : Name :=
 
 run_cmd do
   let env ← getEnv
+  let svPrefix : Name → Bool := fun n =>
+    match env.getModuleIdxFor? n with
+    | some i => isLocalMod env.header.moduleNames[i.toNat]!
+    | none => false
   let mut seen : NameSet := {}
   let mut work := targets
   let mut out : Array String := #[]
