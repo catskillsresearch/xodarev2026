@@ -50,6 +50,34 @@ PAPER_KIT_GOALS: list[str] = [
     "TheoremD",
 ]
 
+# Modules that REFUTE a paper claim (Lean counterexample to the paper's English statement).
+# Shown with status "counterexample" once verified and sorry-free. Any future module whose id
+# ends in "False" or contains "Counterexample" is picked up automatically.
+COUNTEREXAMPLES: dict[str, str] = {
+    "Lemma77ShuffleEstimateFalse":
+        "COUNTEREXAMPLE: refutes paper Lemma 77 (weighted shuffle estimate) and Lemma 78 "
+        "(local Lipschitz bound for the Riccati operator).",
+    "Prop58BlackScholesDepthFalse":
+        "COUNTEREXAMPLE: refutes paper Prop. 58 / PDF Prop. 5.5 (Black-Scholes has completeness "
+        "depth 0); Black-Scholes depth is infinite under Definition 55.",
+}
+
+# Headline theorem modules whose paper statement is (partly) refuted. Value: (status, detail).
+REFUTED_THEOREMS: dict[str, tuple[str, str]] = {
+    "TheoremC": ("refuted",
+        "REFUTED: the finite-depth side of Theorem C / Thm 56 is false in every non-degenerate "
+        "model (depth = infinity), incl. Black-Scholes; Prop. 58 refuted. The 'complete iff' "
+        "direction awaits a Black-Scholes completeness proof."),
+    "TheoremD": ("partly-refuted",
+        "PARTLY REFUTED: GKW projection part proved; the residual-expansion clause assumes "
+        "finite depth, which is false (vacuous)."),
+}
+
+
+def is_counterexample(nid: str) -> bool:
+    return nid in COUNTEREXAMPLES or nid.endswith("False") or "Counterexample" in nid
+
+
 # Module ids (short paths) that have been human-verified / sorry-free and may be
 # marked done once all hard predecessors are done. Empty ⇒ everything TBD.
 # Do NOT list paper-kit goal modules here until they are sorry-free at paper strength.
@@ -156,6 +184,7 @@ VERIFIED: set[str] = {
     "ItoCalculusKit.OfMathFin",
     "SignatureRiccatiKit.RiccatiOp",
     "SignatureRiccatiKit.CoordSemimartingale",
+    "SignatureRiccatiKit.RiccatiExpProcess",
     "ItoCalculusKit.PathwiseExpIto",
     "Letter",
     "MemL2w",
@@ -400,9 +429,24 @@ def build() -> dict:
         if not changed:
             break
 
+    # Display status: verified counterexample modules and refuted headline theorems get their
+    # own status. Dependency logic above keeps using the internal "done".
+    display: dict[str, str] = dict(status)
+    for nid in nodes_meta:
+        if status[nid] != "done":
+            continue
+        if is_counterexample(nid):
+            display[nid] = "counterexample"
+        elif nid in REFUTED_THEOREMS:
+            display[nid] = REFUTED_THEOREMS[nid][0]
+
     nodes = []
     for nid, meta in nodes_meta.items():
         detail = meta.get("detail")
+        if display[nid] == "counterexample":
+            detail = COUNTEREXAMPLES.get(nid, "COUNTEREXAMPLE to a paper claim.")
+        elif display[nid] in ("refuted", "partly-refuted"):
+            detail = REFUTED_THEOREMS[nid][1]
         if has_sorry[nid]:
             detail = (detail or "") + (" " if detail else "") + "Contains `sorry` (paper gap)."
         if nid in PAPER_KIT_GOALS:
@@ -412,7 +456,7 @@ def build() -> dict:
             "label": meta["label"],
             "section": meta["section"],
             "file": meta["file"],
-            "status": status[nid],
+            "status": display[nid],
             "blocker": None,
             "detail": detail,
             "hasSorry": has_sorry[nid],
@@ -425,7 +469,7 @@ def build() -> dict:
             continue
         unfinished = [
             p for p in hard_preds[n["id"]]
-            if by_id.get(p, {}).get("status") != "done"
+            if status.get(p) != "done"
         ]
         if unfinished:
             # Cap blocker text for modules with huge import sets.
@@ -450,6 +494,9 @@ def build() -> dict:
             "open": "No unfinished import-deps — verify / prove next (TBD)",
             "blocked": "Waiting on unfinished imported modules",
             "done": "Verified (listed in VERIFIED and deps done)",
+            "counterexample": "Verified Lean counterexample refuting a paper claim",
+            "refuted": "Paper theorem refuted (see detail)",
+            "partly-refuted": "Paper theorem partly refuted (see detail)",
         },
         "notes": [
             "File-level board: one node per SignatureVolatility .lean module.",
@@ -458,7 +505,7 @@ def build() -> dict:
             "Hard edge B→A: A imports B (direct, submodule files only; barrel omitted).",
             "Drawn edges are transitively reduced; blocking still uses all direct imports.",
             "Paper kit goals: " + ", ".join(PAPER_KIT_GOALS) + ".",
-            "Blue = done. Green = open. Grey = blocked.",
+            "Blue = done. Green = open. Grey = blocked. Red = counterexample / refuted. Orange = partly refuted.",
             "Regenerate with: python3 scripts/build_holes.py",
             f"Open tips: {', '.join(open_ids) if open_ids else '(none)'}.",
         ],
@@ -475,6 +522,8 @@ def write_md(data: dict) -> None:
     open_n = [n for n in data["nodes"] if n["status"] == "open"]
     blocked_n = [n for n in data["nodes"] if n["status"] == "blocked"]
     done_n = [n for n in data["nodes"] if n["status"] == "done"]
+    refute_n = [n for n in data["nodes"]
+                if n["status"] in ("counterexample", "refuted", "partly-refuted")]
 
     sec_title = {
         0: "Basic",
@@ -501,6 +550,17 @@ def write_md(data: dict) -> None:
         f"**Holes:** {data['sorryCount']} open+blocked · "
         f"{len(open_n)} open · {len(blocked_n)} blocked · {len(done_n)} done · "
         f"{len(sorry_n)} file(s) with `sorry`.",
+        f"**Paper claims refuted:** "
+        f"{sum(1 for n in refute_n if n['status'] == 'counterexample')} counterexample module(s) · "
+        f"{sum(1 for n in refute_n if n['status'] == 'refuted')} refuted theorem(s) · "
+        f"{sum(1 for n in refute_n if n['status'] == 'partly-refuted')} partly refuted theorem(s).",
+        "",
+        "## Counterexamples and refuted paper claims",
+        "",
+        "| Status | Id | What is refuted | File |",
+        "|---|---|---|---|",
+        *[f"| **{n['status']}** | `{n['id']}` | {n['detail']} | `{n['file']}` |"
+          for n in sorted(refute_n, key=lambda x: (x['status'], x['id']))],
         "",
         "**Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).",
         "",
@@ -545,7 +605,7 @@ def write_md(data: dict) -> None:
     lines += ["", "## By group", ""]
     for sec in sorted(by_sec):
         rows = sorted(by_sec[sec], key=lambda x: x["id"])
-        holes = sum(1 for n in rows if n["status"] != "done")
+        holes = sum(1 for n in rows if n["status"] in ("open", "blocked"))
         title = sec_title.get(sec, f"group {sec}")
         lines.append(f"### {title} — {holes} hole(s)")
         lines.append("")
@@ -600,7 +660,8 @@ def main() -> None:
     done_n = sum(1 for n in data["nodes"] if n["status"] == "done")
     print(
         f"Wrote {OUT_JSON.name}, {OUT_MD.name}, embedded {OUT_HTML.name}: "
-        f"{open_n} open, {blocked_n} blocked, {done_n} done "
+        f"{open_n} open, {blocked_n} blocked, {done_n} done, "
+        f"{sum(1 for n in data['nodes'] if n['status'] in ('counterexample', 'refuted', 'partly-refuted'))} refuting "
         f"(sorryCount={data['sorryCount']})"
     )
 
