@@ -149,4 +149,213 @@ theorem indepFun_pathFiltration_wnnIncr (B : MultiBrownian Ω P d) (k : Fin d) {
   rw [IndepFun_iff_Indep]
   exact (indep_of_indep_of_le_right (indep_wnnIncr_pathFiltration B k hsu) hg.comap_le).symm
 
+/-! ## Two coordinates at once -/
+
+/-- Block independence: if `a, o ≤ X`, `a', o' ≤ Y`, `a ⟂ o`, `a' ⟂ o'`, `X ⟂ (Y ⊔ r)` and
+`Y ⟂ r`, then `(a ⊔ a') ⟂ (o ⊔ o' ⊔ r)`. -/
+theorem indep_sup_sup_of_blocks {Ω : Type*} {a o a' o' r X Y m0 : MeasurableSpace Ω}
+    {μ : Measure[m0] Ω} [IsZeroOrProbabilityMeasure μ] (ha : a ≤ X) (ho : o ≤ X) (ha' : a' ≤ Y)
+    (ho' : o' ≤ Y) (hX : X ≤ m0) (hY : Y ≤ m0) (hr : r ≤ m0)
+    (hao : Indep a o μ) (hao' : Indep a' o' μ) (hXYr : Indep X (Y ⊔ r) μ) (hYr : Indep Y r μ) :
+    Indep (a ⊔ a') (o ⊔ o' ⊔ r) μ := by
+  set p1 : Set (Set Ω) :=
+    {t | ∃ t₁ t₂, MeasurableSet[a] t₁ ∧ MeasurableSet[a'] t₂ ∧ t = t₁ ∩ t₂}
+  set p2 : Set (Set Ω) :=
+    {t | ∃ t₁ t₂ t₃, MeasurableSet[o] t₁ ∧ MeasurableSet[o'] t₂ ∧ MeasurableSet[r] t₃ ∧
+      t = t₁ ∩ t₂ ∩ t₃}
+  have hp1 : IsPiSystem p1 := by
+    rintro _ ⟨a₁, a₂, ha₁, ha₂, rfl⟩ _ ⟨b₁, b₂, hb₁, hb₂, rfl⟩ _
+    exact ⟨a₁ ∩ b₁, a₂ ∩ b₂, ha₁.inter hb₁, ha₂.inter hb₂, by
+      ext x; simp only [Set.mem_inter_iff]; tauto⟩
+  have hp2 : IsPiSystem p2 := by
+    rintro _ ⟨a₁, a₂, a₃, ha₁, ha₂, ha₃, rfl⟩ _ ⟨b₁, b₂, b₃, hb₁, hb₂, hb₃, rfl⟩ _
+    exact ⟨a₁ ∩ b₁, a₂ ∩ b₂, a₃ ∩ b₃, ha₁.inter hb₁, ha₂.inter hb₂, ha₃.inter hb₃, by
+      ext x; simp only [Set.mem_inter_iff]; tauto⟩
+  have hg1 : a ⊔ a' = generateFrom p1 := by
+    refine le_antisymm (sup_le ?_ ?_) (generateFrom_le ?_)
+    · intro t ht
+      exact measurableSet_generateFrom ⟨t, Set.univ, ht, MeasurableSet.univ, by simp⟩
+    · intro t ht
+      exact measurableSet_generateFrom ⟨Set.univ, t, MeasurableSet.univ, ht, by simp⟩
+    · rintro _ ⟨t₁, t₂, ht₁, ht₂, rfl⟩
+      exact MeasurableSet.inter (le_sup_left (a := a) (b := a') _ ht₁)
+        (le_sup_right (a := a) (b := a') _ ht₂)
+  have hg2 : o ⊔ o' ⊔ r = generateFrom p2 := by
+    refine le_antisymm (sup_le (sup_le ?_ ?_) ?_) (generateFrom_le ?_)
+    · intro t ht
+      exact measurableSet_generateFrom ⟨t, Set.univ, Set.univ, ht, MeasurableSet.univ,
+        MeasurableSet.univ, by simp⟩
+    · intro t ht
+      exact measurableSet_generateFrom ⟨Set.univ, t, Set.univ, MeasurableSet.univ, ht,
+        MeasurableSet.univ, by simp⟩
+    · intro t ht
+      exact measurableSet_generateFrom ⟨Set.univ, Set.univ, t, MeasurableSet.univ,
+        MeasurableSet.univ, ht, by simp⟩
+    · rintro _ ⟨t₁, t₂, t₃, ht₁, ht₂, ht₃, rfl⟩
+      have h1 : MeasurableSet[o ⊔ o' ⊔ r] t₁ :=
+        le_sup_left (a := o ⊔ o') (b := r) _ (le_sup_left (a := o) (b := o') _ ht₁)
+      have h2 : MeasurableSet[o ⊔ o' ⊔ r] t₂ :=
+        le_sup_left (a := o ⊔ o') (b := r) _ (le_sup_right (a := o) (b := o') _ ht₂)
+      have h3 : MeasurableSet[o ⊔ o' ⊔ r] t₃ := le_sup_right (a := o ⊔ o') (b := r) _ ht₃
+      exact (h1.inter h2).inter h3
+  refine IndepSets.indep (sup_le (ha.trans hX) (ha'.trans hY))
+    (sup_le (sup_le (ho.trans hX) (ho'.trans hY)) hr) hp1 hp2 hg1 hg2 ?_
+  rw [IndepSets_iff]
+  rintro _ _ ⟨s₁, s₂, hs₁, hs₂, rfl⟩ ⟨t₁, t₂, t₃, ht₁, ht₂, ht₃, rfl⟩
+  have hYsup : ∀ {z}, MeasurableSet[Y] z → MeasurableSet[Y ⊔ r] z :=
+    fun hz => le_sup_left (a := Y) (b := r) _ hz
+  have hrsup : ∀ {z}, MeasurableSet[r] z → MeasurableSet[Y ⊔ r] z :=
+    fun hz => le_sup_right (a := Y) (b := r) _ hz
+  have hX1 : MeasurableSet[X] (s₁ ∩ t₁) := (ha _ hs₁).inter (ho _ ht₁)
+  have hY2 : MeasurableSet[Y] (s₂ ∩ t₂) := (ha' _ hs₂).inter (ho' _ ht₂)
+  have e1 : μ (s₁ ∩ s₂ ∩ (t₁ ∩ t₂ ∩ t₃)) = μ ((s₁ ∩ t₁) ∩ ((s₂ ∩ t₂) ∩ t₃)) := by
+    congr 1; ext x; simp only [Set.mem_inter_iff]; tauto
+  have e2 : μ ((s₁ ∩ t₁) ∩ ((s₂ ∩ t₂) ∩ t₃)) = μ (s₁ ∩ t₁) * μ ((s₂ ∩ t₂) ∩ t₃) :=
+    (Indep_iff _ _ _).mp hXYr _ _ hX1 ((hYsup hY2).inter (hrsup ht₃))
+  have e3 : μ ((s₂ ∩ t₂) ∩ t₃) = μ (s₂ ∩ t₂) * μ t₃ :=
+    (Indep_iff _ _ _).mp hYr _ _ hY2 ht₃
+  have e4 : μ (s₁ ∩ t₁) = μ s₁ * μ t₁ := (Indep_iff _ _ _).mp hao _ _ hs₁ ht₁
+  have e5 : μ (s₂ ∩ t₂) = μ s₂ * μ t₂ := (Indep_iff _ _ _).mp hao' _ _ hs₂ ht₂
+  have e6 : μ (s₁ ∩ s₂) = μ s₁ * μ s₂ :=
+    (Indep_iff _ _ _).mp hXYr _ _ (ha _ hs₁) (hYsup (ha' _ hs₂))
+  have e7 : μ (t₁ ∩ t₂ ∩ t₃) = μ t₁ * μ (t₂ ∩ t₃) := by
+    rw [Set.inter_assoc]
+    exact (Indep_iff _ _ _).mp hXYr _ _ (ho _ ht₁) ((hYsup (ho' _ ht₂)).inter (hrsup ht₃))
+  have e8 : μ (t₂ ∩ t₃) = μ t₂ * μ t₃ := (Indep_iff _ _ _).mp hYr _ _ (ho' _ ht₂) ht₃
+  rw [e1, e2, e3, e4, e5, e6, e7, e8]
+  ring
+
+/-- Future increments of coordinate `i` after `s`. -/
+abbrev futAlg (B : MultiBrownian Ω P d) (i : Fin d) (s : ℝ) : MeasurableSpace Ω :=
+  MeasurableSpace.comap (fun ω (t : ℝ≥0) => B.Wnn (Real.toNNReal s + t) ω i -
+    B.Wnn (Real.toNNReal s) ω i) inferInstance
+
+/-- Past of coordinate `i` up to `s`. -/
+abbrev ownAlg (B : MultiBrownian Ω P d) (i : Fin d) (s : ℝ) : MeasurableSpace Ω :=
+  MeasurableSpace.comap (fun ω (t : Set.Iic (Real.toNNReal s)) => B.Wnn t ω i) inferInstance
+
+/-- σ-algebra of the whole path of coordinate `i`. -/
+abbrev coordAlg (B : MultiBrownian Ω P d) (i : Fin d) : MeasurableSpace Ω :=
+  MeasurableSpace.comap (fun ω (t : ℝ≥0) => B.Wnn t ω i) inferInstance
+
+lemma coordAlg_le (B : MultiBrownian Ω P d) (i : Fin d) :
+    coordAlg B i ≤ ‹MeasurableSpace Ω› :=
+  (measurable_pi_iff.mpr fun t => B.Wnn_meas t i).comap_le
+
+lemma futAlg_le_coordAlg (B : MultiBrownian Ω P d) (i : Fin d) (s : ℝ) :
+    futAlg B i s ≤ coordAlg B i := by
+  have hΦ : Measurable fun (p : ℝ≥0 → ℝ) (t : ℝ≥0) => p (Real.toNNReal s + t) - p (Real.toNNReal s) :=
+    measurable_pi_iff.mpr fun t => (measurable_pi_apply _).sub (measurable_pi_apply _)
+  exact (hΦ.comp (comap_measurable (fun ω (t : ℝ≥0) => B.Wnn t ω i))).comap_le
+
+lemma ownAlg_le_coordAlg (B : MultiBrownian Ω P d) (i : Fin d) (s : ℝ) :
+    ownAlg B i s ≤ coordAlg B i := by
+  have hΨ : Measurable fun (p : ℝ≥0 → ℝ) (t : Set.Iic (Real.toNNReal s)) => p t :=
+    measurable_pi_iff.mpr fun t => measurable_pi_apply _
+  exact (hΨ.comp (comap_measurable (fun ω (t : ℝ≥0) => B.Wnn t ω i))).comap_le
+
+lemma indep_futAlg_ownAlg (B : MultiBrownian Ω P d) (i : Fin d) (s : ℝ) :
+    Indep (futAlg B i s) (ownAlg B i s) P :=
+  (IndepFun_iff_Indep _ _ _).mp
+    ((B.isBrownian i).toIsPreBrownianReal.indepFun_shift (Real.toNNReal s))
+
+lemma measurable_wnnIncr_futAlg (B : MultiBrownian Ω P d) (i : Fin d) {s u : ℝ} (hsu : s ≤ u) :
+    Measurable[futAlg B i s] (fun ω => wnnIncr B i s u ω) := by
+  have he : (fun ω => wnnIncr B i s u ω) = fun ω =>
+      (fun ω (t : ℝ≥0) => B.Wnn (Real.toNNReal s + t) ω i - B.Wnn (Real.toNNReal s) ω i) ω
+        (Real.toNNReal u - Real.toNNReal s) := by
+    funext ω
+    simp only [wnnIncr]
+    rw [add_tsub_cancel_of_le (Real.toNNReal_le_toNNReal hsu)]
+  rw [he]
+  exact (measurable_pi_apply _).comp (comap_measurable (m := inferInstance)
+    (fun ω (t : ℝ≥0) => B.Wnn (Real.toNNReal s + t) ω i - B.Wnn (Real.toNNReal s) ω i))
+
+lemma measurable_W_ownAlg (B : MultiBrownian Ω P d) (i : Fin d) {s r : ℝ} (hr : r ≤ s) :
+    Measurable[ownAlg B i s] (fun ω => MultiBrownian.W B r ω i) := by
+  have hr' : Real.toNNReal r ∈ Set.Iic (Real.toNNReal s) := Real.toNNReal_le_toNNReal hr
+  have h2 : Measurable[ownAlg B i s]
+      (fun ω => (fun ω (t : Set.Iic (Real.toNNReal s)) => B.Wnn t ω i) ω ⟨Real.toNNReal r, hr'⟩) :=
+    (measurable_pi_apply (⟨Real.toNNReal r, hr'⟩ : Set.Iic (Real.toNNReal s))).comp
+      (comap_measurable (m := inferInstance)
+        (fun ω (t : Set.Iic (Real.toNNReal s)) => B.Wnn t ω i))
+  exact h2
+
+lemma measurable_W_coordAlg (B : MultiBrownian Ω P d) (i : Fin d) (r : ℝ) :
+    Measurable[coordAlg B i] (fun ω => MultiBrownian.W B r ω i) := by
+  have h2 : Measurable[coordAlg B i]
+      (fun ω => (fun ω (t : ℝ≥0) => B.Wnn t ω i) ω (Real.toNNReal r)) :=
+    (measurable_pi_apply (Real.toNNReal r)).comp
+      (comap_measurable (m := inferInstance) (fun ω (t : ℝ≥0) => B.Wnn t ω i))
+  exact h2
+
+lemma indep_coordAlg_iSup_compl (B : MultiBrownian Ω P d) (i : Fin d) :
+    Indep (coordAlg B i) (⨆ l ∈ ({i}ᶜ : Set (Fin d)), coordAlg B l) P := by
+  have hI : iIndep (coordAlg B) P := (iIndepFun_iff_iIndep _ _ _).mp B.coordsIndep
+  have h := indep_iSup_of_disjoint (coordAlg_le B) hI (S := {i}) (T := ({i}ᶜ : Set (Fin d)))
+    (Set.disjoint_compl_right_iff_subset.mpr subset_rfl)
+  rw [iSup_singleton] at h
+  exact h
+
+/-- σ-algebra of the coordinates other than `k, k'`. -/
+abbrev restAlg (B : MultiBrownian Ω P d) (k k' : Fin d) : MeasurableSpace Ω :=
+  ⨆ l ∈ ({k, k'}ᶜ : Set (Fin d)), coordAlg B l
+
+/-- **Two driver increments are jointly independent of the joint past.** -/
+theorem indep_wnnIncr_pair_pathFiltration (B : MultiBrownian Ω P d) {k k' : Fin d}
+    (hkk : k ≠ k') {s u : ℝ} (hsu : s ≤ u) :
+    Indep (MeasurableSpace.comap (fun ω => (wnnIncr B k s u ω, wnnIncr B k' s u ω))
+      inferInstance) ((pathFiltration B).σAlg s) P := by
+  classical
+  have hr : restAlg B k k' ≤ ‹MeasurableSpace Ω› := iSup₂_le fun l _ => coordAlg_le B l
+  have hXYr : Indep (coordAlg B k) (coordAlg B k' ⊔ restAlg B k k') P := by
+    refine indep_of_indep_of_le_right (indep_coordAlg_iSup_compl B k) (sup_le ?_ ?_)
+    · exact le_iSup₂_of_le k' (by simpa using hkk.symm) le_rfl
+    · exact iSup₂_le fun l hl => le_iSup₂_of_le l (by simp at hl ⊢; exact hl.1) le_rfl
+  have hYr : Indep (coordAlg B k') (restAlg B k k') P := by
+    refine indep_of_indep_of_le_right (indep_coordAlg_iSup_compl B k') ?_
+    exact iSup₂_le fun l hl => le_iSup₂_of_le l (by simp at hl ⊢; exact hl.2) le_rfl
+  have hmain := indep_sup_sup_of_blocks (futAlg_le_coordAlg B k s) (ownAlg_le_coordAlg B k s)
+    (futAlg_le_coordAlg B k' s) (ownAlg_le_coordAlg B k' s) (coordAlg_le B k) (coordAlg_le B k')
+    hr (indep_futAlg_ownAlg B k s) (indep_futAlg_ownAlg B k' s) hXYr hYr
+  refine indep_of_indep_of_le hmain ?_ ?_
+  · have h : Measurable[futAlg B k s ⊔ futAlg B k' s]
+        (fun ω => (wnnIncr B k s u ω, wnnIncr B k' s u ω)) :=
+      ((measurable_wnnIncr_futAlg B k hsu).mono le_sup_left le_rfl).prodMk
+        ((measurable_wnnIncr_futAlg B k' hsu).mono le_sup_right le_rfl)
+    exact h.comap_le
+  · refine iSup_le fun ρ => iSup_le fun i => ?_
+    by_cases hik : i = k
+    · subst hik
+      exact le_sup_of_le_left (le_sup_of_le_left (measurable_W_ownAlg B i ρ.2.2).comap_le)
+    by_cases hik' : i = k'
+    · subst hik'
+      exact le_sup_of_le_left (le_sup_of_le_right (measurable_W_ownAlg B i ρ.2.2).comap_le)
+    · refine le_sup_of_le_right (le_iSup₂_of_le i (by simp [hik, hik']) ?_)
+      exact (measurable_W_coordAlg B i ρ.1).comap_le
+
+/-- Any `𝓕_s`-measurable random variable is independent of the pair of increments. -/
+theorem indepFun_pathFiltration_wnnIncr_pair (B : MultiBrownian Ω P d) {k k' : Fin d}
+    (hkk : k ≠ k') {s u : ℝ} (hsu : s ≤ u) {β : Type*} [MeasurableSpace β] {g : Ω → β}
+    (hg : Measurable[(pathFiltration B).σAlg s] g) :
+    IndepFun g (fun ω => (wnnIncr B k s u ω, wnnIncr B k' s u ω)) P := by
+  rw [IndepFun_iff_Indep]
+  exact (indep_of_indep_of_le_right (indep_wnnIncr_pair_pathFiltration B hkk hsu)
+    hg.comap_le).symm
+
+/-- Increments of two different coordinates over the same interval are independent. -/
+theorem indepFun_wnnIncr_wnnIncr (B : MultiBrownian Ω P d) {k k' : Fin d} (hkk : k ≠ k')
+    (s u : ℝ) : IndepFun (fun ω => wnnIncr B k s u ω) (fun ω => wnnIncr B k' s u ω) P := by
+  have h : Indep (coordAlg B k) (coordAlg B k') P :=
+    indep_of_indep_of_le_right (indep_coordAlg_iSup_compl B k)
+      (le_iSup₂_of_le k' (by simpa using hkk.symm) le_rfl)
+  have hm : ∀ i, Measurable[coordAlg B i] (fun ω => wnnIncr B i s u ω) := fun i => by
+    have h1 := (measurable_pi_apply (Real.toNNReal u)).comp
+      (comap_measurable (m := inferInstance) (fun ω (t : ℝ≥0) => B.Wnn t ω i))
+    have h2 := (measurable_pi_apply (Real.toNNReal s)).comp
+      (comap_measurable (m := inferInstance) (fun ω (t : ℝ≥0) => B.Wnn t ω i))
+    exact h1.sub h2
+  rw [IndepFun_iff_Indep]
+  exact indep_of_indep_of_le h (hm k).comap_le (hm k').comap_le
+
 end SignatureVolatility
