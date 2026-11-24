@@ -201,7 +201,8 @@ ItoCalculusKit.KitRaw -hard-> ItoCalculusKit.RiemannConvergence
 ItoCalculusKit.KolmogorovIto -hard-> ItoCalculusKit.DoleansQV
 ItoCalculusKit.KolmogorovIto -hard-> ItoCalculusKit.HolderPath
 ItoCalculusKit.LebIncrementEven -hard-> ItoCalculusKit.LevelBounds
-ItoCalculusKit.LevelBounds -hard-> ProlongedBrownianSetup.PaperSig
+ItoCalculusKit.LevelBounds -hard-> ItoCalculusKit.LevelDecay
+ItoCalculusKit.LevelDecay -hard-> ProlongedBrownianSetup.PaperSig
 ItoCalculusKit.LogDoleansIncrement -hard-> ItoCalculusKit.NovikovMartingale
 ItoCalculusKit.MartingaleTransform -hard-> ItoCalculusKit.RiemannConvergence
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.ConstVol
@@ -367,7 +368,9 @@ ProlongedBrownianSetup.SignatureFiltration -hard-> SignatureRiccatiKit
 ProlongedBrownianSetup.SignatureFiltration -hard-> TheoremAOfBrownianSetupItoKit
 ProlongedBrownianSetup.SignatureFiltration -hard-> TheoremBOfSetupItoRiccatiKit
 ProlongedBrownianSetup.SignatureOfBM -hard-> ItoCalculusKit.SigmaHolder
+ProlongedBrownianSetup.StratItoCoeffBounds -hard-> ProlongedBrownianSetup.PaperSig
 ProlongedBrownianSetup.StratonovichItoConversion -hard-> ProlongedBrownianSetup.Sig2StratAdapted
+ProlongedBrownianSetup.StratonovichItoConversion -hard-> ProlongedBrownianSetup.StratItoCoeffBounds
 ProlongedBrownianSetup.StratonovichOfBM -hard-> ItoCalculusKit.MathFinBridgeSetup
 ProlongedBrownianSetup.StratonovichOfBM -hard-> ItoCalculusKit.SigmaContinuity
 ProlongedBrownianSetup.WHat -hard-> ItoCalculusKit

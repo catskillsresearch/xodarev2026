@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T06:49:41Z",
+  "updated": "2026-11-24T07:06:18Z",
   "sorryCount": 45,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -855,6 +855,17 @@
       "paperKitGoal": false
     },
     {
+      "id": "ItoCalculusKit.LevelDecay",
+      "label": "ItoCalculusKit.LevelDecay",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/LevelDecay.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
       "id": "ItoCalculusKit.LogDoleansIncrement",
       "label": "ItoCalculusKit.LogDoleansIncrement",
       "section": 1,
@@ -1508,6 +1519,17 @@
       "label": "ProlongedBrownianSetup.SignatureOfBM",
       "section": 4,
       "file": "SignatureVolatility/ProlongedBrownianSetup/SignatureOfBM.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ProlongedBrownianSetup.StratItoCoeffBounds",
+      "label": "ProlongedBrownianSetup.StratItoCoeffBounds",
+      "section": 4,
+      "file": "SignatureVolatility/ProlongedBrownianSetup/StratItoCoeffBounds.lean",
       "status": "done",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
@@ -2571,6 +2593,11 @@
       "kind": "hard"
     },
     {
+      "from": "ItoCalculusKit.LevelBounds",
+      "to": "ItoCalculusKit.LevelDecay",
+      "kind": "hard"
+    },
+    {
       "from": "ItoCalculusKit.QuadIncrement",
       "to": "ItoCalculusKit.LogDoleansIncrement",
       "kind": "hard"
@@ -3056,7 +3083,12 @@
       "kind": "hard"
     },
     {
-      "from": "ItoCalculusKit.LevelBounds",
+      "from": "ItoCalculusKit.LevelDecay",
+      "to": "ProlongedBrownianSetup.PaperSig",
+      "kind": "hard"
+    },
+    {
+      "from": "ProlongedBrownianSetup.StratItoCoeffBounds",
       "to": "ProlongedBrownianSetup.PaperSig",
       "kind": "hard"
     },
@@ -3113,6 +3145,11 @@
     {
       "from": "ProlongedBrownianSetup.OfBrownian",
       "to": "ProlongedBrownianSetup.SignatureOfBM",
+      "kind": "hard"
+    },
+    {
+      "from": "ProlongedBrownianSetup.StratonovichItoConversion",
+      "to": "ProlongedBrownianSetup.StratItoCoeffBounds",
       "kind": "hard"
     },
     {
