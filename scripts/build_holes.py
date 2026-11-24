@@ -108,6 +108,8 @@ STATUS_LABELS: dict[str, str] = {
     "SignatureRiccatiKit.AffineRiccatiDualityMp": "affine_riccati_duality_mp",
     "TheoremB": "theorem_B_mp",
     "SignatureRiccatiKit.FawcettHermite": "C1 Hermite combinatorial core",
+    "SignatureRiccatiKit.FawcettEntireBound":
+        "C1b counting, bound, and entire type ≤ 1",
     "SignatureRiccatiKit.GirsanovFawcett": "C2 Girsanov–Fawcett identification",
     "SignatureRiccatiKit.EntireTransfer": "C3 transfer to f (Pillar C)",
     "SignatureRiccatiKit.CounterexampleV1": "v₁ (shared)",

@@ -28,6 +28,7 @@ public import SignatureVolatility.ItoCalculusKit.PathwiseExpIto
 public import SignatureVolatility.ItoCalculusKit.DoleansIdentify
 public import SignatureVolatility.ItoCalculusKit.BrownianQuadVarAS
 public import SignatureVolatility.SignatureRiccatiKit.FawcettHermite
+public import SignatureVolatility.SignatureRiccatiKit.FawcettEntireBound
 public import SignatureVolatility.SignatureRiccatiKit.CounterexampleTensor
 public import SignatureVolatility.SignatureRiccatiKit.CounterexampleV1
 public import SignatureVolatility.SignatureRiccatiKit.GirsanovFawcett

@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-24T20:15:47Z
-**`sorry` occurrences:** 8 · 8 open · 3 blocked · 184 done · 8 file(s) with `sorry`.
+**Updated:** 2026-11-24T20:18:27Z
+**`sorry` occurrences:** 12 · 8 open · 4 blocked · 184 done · 9 file(s) with `sorry`.
 **Paper claims refuted:** 5 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
 
 ## Open problem (the single remaining `sorry`)
@@ -56,7 +56,8 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | open | `SignatureRiccatiKit.CounterexampleV1LogBound` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1LogBound.lean` |
 | open | `SignatureRiccatiKit.CounterexampleV1Monotone` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1Monotone.lean` |
 | open | `SignatureRiccatiKit.CounterexampleV1PosLe` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1PosLe.lean` |
-| open | `SignatureRiccatiKit.EntireTransfer` | `SignatureVolatility/SignatureRiccatiKit/EntireTransfer.lean` |
+| blocked | `SignatureRiccatiKit.EntireTransfer` | `SignatureVolatility/SignatureRiccatiKit/EntireTransfer.lean` |
+| open | `SignatureRiccatiKit.FawcettEntireBound` | `SignatureVolatility/SignatureRiccatiKit/FawcettEntireBound.lean` |
 | open | `SignatureRiccatiKit.GirsanovFawcett` | `SignatureVolatility/SignatureRiccatiKit/GirsanovFawcett.lean` |
 
 ## Open now (Layer 0)
@@ -69,12 +70,12 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | `SignatureRiccatiKit.CounterexampleV1LogBound` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1LogBound.lean` |
 | `SignatureRiccatiKit.CounterexampleV1Monotone` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1Monotone.lean` |
 | `SignatureRiccatiKit.CounterexampleV1PosLe` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1PosLe.lean` |
-| `SignatureRiccatiKit.EntireTransfer` | `SignatureVolatility/SignatureRiccatiKit/EntireTransfer.lean` |
+| `SignatureRiccatiKit.FawcettEntireBound` | `SignatureVolatility/SignatureRiccatiKit/FawcettEntireBound.lean` |
 | `SignatureRiccatiKit.GirsanovFawcett` | `SignatureVolatility/SignatureRiccatiKit/GirsanovFawcett.lean` |
 
 ## By group
 
-### Top-level modules — 11 hole(s)
+### Top-level modules — 12 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -204,7 +205,8 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | open | `SignatureRiccatiKit.CounterexampleV1LogBound` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1LogBound.lean` |
 | open | `SignatureRiccatiKit.CounterexampleV1Monotone` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1Monotone.lean` |
 | open | `SignatureRiccatiKit.CounterexampleV1PosLe` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1PosLe.lean` |
-| open | `SignatureRiccatiKit.EntireTransfer` | `SignatureVolatility/SignatureRiccatiKit/EntireTransfer.lean` |
+| blocked | `SignatureRiccatiKit.EntireTransfer` | `SignatureVolatility/SignatureRiccatiKit/EntireTransfer.lean` |
+| open | `SignatureRiccatiKit.FawcettEntireBound` | `SignatureVolatility/SignatureRiccatiKit/FawcettEntireBound.lean` |
 | done | `SignatureRiccatiKit.FawcettHermite` | `SignatureVolatility/SignatureRiccatiKit/FawcettHermite.lean` |
 | open | `SignatureRiccatiKit.GirsanovFawcett` | `SignatureVolatility/SignatureRiccatiKit/GirsanovFawcett.lean` |
 | done | `SignatureRiccatiKit.RiccatiExpProcess` | `SignatureVolatility/SignatureRiccatiKit/RiccatiExpProcess.lean` |

@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-24T20:15:47Z",
-  "sorryCount": 8,
+  "updated": "2026-11-24T20:18:27Z",
+  "sorryCount": 12,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, SignatureRiccatiKit.AffineRiccatiDualityMpr, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done (proved, counterexample or refuted; no sorry). Green = open. Grey = blocked. Counterexample / refutation labels are shown as text on the node.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: SignatureRiccatiKit.AffineRiccatiDualityMpr, SignatureRiccatiKit.CounterexampleV1CondExp, SignatureRiccatiKit.CounterexampleV1Decay, SignatureRiccatiKit.CounterexampleV1LogBound, SignatureRiccatiKit.CounterexampleV1Monotone, SignatureRiccatiKit.CounterexampleV1PosLe, SignatureRiccatiKit.EntireTransfer, SignatureRiccatiKit.GirsanovFawcett."
+    "Open tips: SignatureRiccatiKit.AffineRiccatiDualityMpr, SignatureRiccatiKit.CounterexampleV1CondExp, SignatureRiccatiKit.CounterexampleV1Decay, SignatureRiccatiKit.CounterexampleV1LogBound, SignatureRiccatiKit.CounterexampleV1Monotone, SignatureRiccatiKit.CounterexampleV1PosLe, SignatureRiccatiKit.FawcettEntireBound, SignatureRiccatiKit.GirsanovFawcett."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -1920,7 +1920,7 @@
       "file": "SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMprCounterexample.lean",
       "status": "blocked",
       "kind": null,
-      "blocker": "needs SignatureRiccatiKit.GirsanovFawcett, SignatureRiccatiKit.EntireTransfer, SignatureRiccatiKit.CounterexampleV1PosLe, SignatureRiccatiKit.CounterexampleV1LogBound, SignatureRiccatiKit.CounterexampleV1Monotone, SignatureRiccatiKit.CounterexampleV1Decay, SignatureRiccatiKit.CounterexampleV1CondExp",
+      "blocker": "needs SignatureRiccatiKit.FawcettEntireBound, SignatureRiccatiKit.GirsanovFawcett, SignatureRiccatiKit.EntireTransfer, SignatureRiccatiKit.CounterexampleV1PosLe, SignatureRiccatiKit.CounterexampleV1LogBound, SignatureRiccatiKit.CounterexampleV1Monotone, SignatureRiccatiKit.CounterexampleV1Decay, SignatureRiccatiKit.CounterexampleV1CondExp",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -2026,6 +2026,18 @@
       "label": "C3 transfer to f (Pillar C)",
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit/EntireTransfer.lean",
+      "status": "blocked",
+      "kind": null,
+      "blocker": "needs SignatureRiccatiKit.FawcettEntireBound",
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
+      "hasSorry": true,
+      "paperKitGoal": false
+    },
+    {
+      "id": "SignatureRiccatiKit.FawcettEntireBound",
+      "label": "C1b counting, bound, and entire type \u2264 1",
+      "section": 1,
+      "file": "SignatureVolatility/SignatureRiccatiKit/FawcettEntireBound.lean",
       "status": "open",
       "kind": null,
       "blocker": null,
@@ -3787,7 +3799,7 @@
       "kind": "hard"
     },
     {
-      "from": "SignatureRiccatiKit.FawcettHermite",
+      "from": "SignatureRiccatiKit.FawcettEntireBound",
       "to": "SignatureRiccatiKit.EntireTransfer",
       "kind": "hard"
     },
@@ -3799,6 +3811,11 @@
     {
       "from": "SignatureVolatilityModel",
       "to": "SignatureRiccatiKit.EntireTransfer",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.FawcettHermite",
+      "to": "SignatureRiccatiKit.FawcettEntireBound",
       "kind": "hard"
     },
     {

@@ -1,6 +1,7 @@
 module
 
 public import SignatureVolatility.SignatureRiccatiKit.FawcettHermite
+public import SignatureVolatility.SignatureRiccatiKit.FawcettEntireBound
 public import SignatureVolatility.ItoCalculusKit.OfMathFin
 public import SignatureVolatility.MemTw
 public import SignatureVolatility.DualPairing

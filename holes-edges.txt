@@ -283,6 +283,7 @@ MemTw -hard-> Lemma77ShuffleEstimateFalse
 MemTw -hard-> MemL2wInvOfMemTw
 MemTw -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 MemTw -hard-> SignatureRiccatiKit.EntireTransfer
+MemTw -hard-> SignatureRiccatiKit.FawcettEntireBound
 MemTw -hard-> SignatureRiccatiKit.FawcettHermite
 MemTw -hard-> TailNorm2wInvLeRatioMulNormW
 MemTw -hard-> Tw
@@ -427,8 +428,11 @@ SignatureRiccatiKit.CounterexampleV1LogBound -hard-> SignatureRiccatiKit.AffineR
 SignatureRiccatiKit.CounterexampleV1Monotone -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit.CounterexampleV1PosLe -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit.EntireTransfer -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
+SignatureRiccatiKit.FawcettEntireBound -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
+SignatureRiccatiKit.FawcettEntireBound -hard-> SignatureRiccatiKit.EntireTransfer
 SignatureRiccatiKit.FawcettHermite -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit.FawcettHermite -hard-> SignatureRiccatiKit.EntireTransfer
+SignatureRiccatiKit.FawcettHermite -hard-> SignatureRiccatiKit.FawcettEntireBound
 SignatureRiccatiKit.FawcettHermite -hard-> SignatureRiccatiKit.GirsanovFawcett
 SignatureRiccatiKit.GirsanovFawcett -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit.RiccatiOp -hard-> Lemma77ShuffleEstimateFalse
