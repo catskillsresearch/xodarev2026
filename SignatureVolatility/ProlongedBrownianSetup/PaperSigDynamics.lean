@@ -1,6 +1,7 @@
 module
 
 public import SignatureVolatility.ProlongedBrownianSetup.PaperSig
+public import SignatureVolatility.ItoCalculusKit.CrossVariation
 
 @[expose] public section
 

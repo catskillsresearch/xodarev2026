@@ -157,6 +157,7 @@ ItoCalculusKit.BrownianQuadVarAS -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.BrownianQuadVarAS -hard-> ItoCalculusKit.MartingaleTransform
 ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.DoleansSigma
 ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.GBMMartingale
+ItoCalculusKit.CrossVariation -hard-> ProlongedBrownianSetup.PaperSigDynamics
 ItoCalculusKit.DoleansEnvelope -hard-> ItoCalculusKit.NovikovDoob
 ItoCalculusKit.DoleansEnvelope -hard-> ItoCalculusKit.StoppedRaw
 ItoCalculusKit.DoleansErrorPathwise -hard-> ItoCalculusKit.DoleansInputs
@@ -173,10 +174,12 @@ ItoCalculusKit.EighthMoment -hard-> ItoCalculusKit.EighthTransform
 ItoCalculusKit.EighthMoment -hard-> ItoCalculusKit.EvenMoment
 ItoCalculusKit.EighthTransform -hard-> ItoCalculusKit.ItoIncrement8
 ItoCalculusKit.EvenMoment -hard-> ItoCalculusKit.EvenTransform
+ItoCalculusKit.EvenTransform -hard-> ItoCalculusKit.CrossVariation
 ItoCalculusKit.EvenTransform -hard-> ItoCalculusKit.ItoIncrementEven
 ItoCalculusKit.ExpSupermartingale -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.FourthMoment -hard-> ItoCalculusKit.BrownianQuadVarAS
 ItoCalculusKit.FourthMoment -hard-> ItoCalculusKit.EighthMoment
+ItoCalculusKit.FrozenIncrement4 -hard-> ItoCalculusKit.CrossVariation
 ItoCalculusKit.FrozenIncrement4 -hard-> ItoCalculusKit.StoppedRaw
 ItoCalculusKit.FrozenIncrement8 -hard-> ItoCalculusKit.FrozenOrthogonal
 ItoCalculusKit.FrozenIncrement8 -hard-> ItoCalculusKit.RiemannRate8
