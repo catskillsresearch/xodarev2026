@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-24T11:48:17Z",
-  "sorryCount": 2,
+  "updated": "2026-11-24T11:56:33Z",
+  "sorryCount": 1,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -1891,7 +1891,7 @@
     },
     {
       "id": "SignatureRiccatiKit.OfSetup",
-      "label": "SignatureRiccatiKit.OfSetup",
+      "label": "OPEN: affine_riccati_duality (sorry)",
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit/OfSetup.lean",
       "status": "open",
@@ -2035,13 +2035,13 @@
     },
     {
       "id": "TheoremB",
-      "label": "TheoremB",
+      "label": "Partial_TheoremB (theorem_B_proved)",
       "section": 1,
       "file": "SignatureVolatility/TheoremB.lean",
       "status": "blocked",
       "kind": null,
       "blocker": "needs SignatureRiccatiKit.OfSetup",
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Paper kit / theorem goal.",
+      "detail": "Partial_TheoremB. No `sorry` in this file. theorem_B_proved (martingale on the signature filtration, NFLVR, special semimartingale coordinates) is sorry-free and compared. The full theorem_B's Riccati clause comes from affine_riccati_duality (SignatureRiccatiKit.OfSetup), so the module shows as blocked; it is not a second sorry. Paper kit / theorem goal.",
       "hasSorry": false,
       "paperKitGoal": true
     },

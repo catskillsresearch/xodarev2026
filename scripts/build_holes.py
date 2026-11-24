@@ -96,6 +96,20 @@ OPEN_PROBLEMS: dict[str, str] = {
 }
 
 
+# Labels shown on unfinished nodes (always applied).
+STATUS_LABELS: dict[str, str] = {
+    "SignatureRiccatiKit.OfSetup": "OPEN: affine_riccati_duality (sorry)",
+    "TheoremB": "Partial_TheoremB (theorem_B_proved)",
+}
+STATUS_DETAILS: dict[str, str] = {
+    "TheoremB":
+        "Partial_TheoremB. No `sorry` in this file. theorem_B_proved (martingale on the signature "
+        "filtration, NFLVR, special semimartingale coordinates) is sorry-free and compared. The full "
+        "theorem_B's Riccati clause comes from affine_riccati_duality (SignatureRiccatiKit.OfSetup), "
+        "so the module shows as blocked; it is not a second sorry.",
+}
+
+
 # Board labels (exact strings requested by Lars) for refuting modules / headline theorems.
 REFUTATION_LABELS: dict[str, str] = {
     "Lemma77ShuffleEstimateFalse": "CounterExample_Lemma77",
@@ -307,17 +321,40 @@ def short_mod(mod: str) -> str:
     return mod
 
 
-def file_has_sorry(path: Path) -> bool:
-    """True if the Lean file contains a `sorry` token (not in a comment-only line heuristically)."""
+def strip_lean_comments(text: str) -> str:
+    """Remove nested `/- ... -/` block comments (incl. docstrings), `--` line comments and
+    string literals, so only real code remains."""
+    out: list[str] = []
+    i, depth, n = 0, 0, len(text)
+    while i < n:
+        if text.startswith("/-", i):
+            depth += 1; i += 2; continue
+        if depth and text.startswith("-/", i):
+            depth -= 1; i += 2; continue
+        if depth:
+            i += 1; continue
+        if text.startswith("--", i):
+            j = text.find("\n", i); i = n if j < 0 else j; continue
+        if text[i] == '"':
+            j = i + 1
+            while j < n and text[j] != '"':
+                j += 2 if text[j] == "\\" else 1
+            i = j + 1; continue
+        out.append(text[i]); i += 1
+    return "".join(out)
+
+
+def file_sorry_count(path: Path) -> int:
+    """Number of real `sorry` tokens in a Lean file (comments, docstrings, strings ignored)."""
     try:
         text = path.read_text(encoding="utf-8")
     except OSError:
-        return False
-    for line in text.splitlines():
-        code = line.split("--", 1)[0]
-        if SORRY_RE.search(code):
-            return True
-    return False
+        return 0
+    return len(SORRY_RE.findall(strip_lean_comments(text)))
+
+
+def file_has_sorry(path: Path) -> bool:
+    return file_sorry_count(path) > 0
 
 
 def file_to_mod(path: Path) -> str:
@@ -488,13 +525,16 @@ def build() -> dict:
             detail = REFUTED_THEOREMS[nid][1]
         if nid in OPEN_PROBLEMS:
             detail = OPEN_PROBLEMS[nid]
+        if nid in STATUS_DETAILS:
+            detail = STATUS_DETAILS[nid]
         if has_sorry[nid]:
             detail = (detail or "") + (" " if detail else "") + "Contains `sorry` (paper gap)."
         if nid in PAPER_KIT_GOALS:
             detail = (detail or "") + (" " if detail else "") + "Paper kit / theorem goal."
         nodes.append({
             "id": nid,
-            "label": REFUTATION_LABELS.get(nid, meta["label"])
+            "label": STATUS_LABELS[nid] if nid in STATUS_LABELS
+            else REFUTATION_LABELS.get(nid, meta["label"])
             if kind[nid] is not None else meta["label"],
             "section": meta["section"],
             "file": meta["file"],
@@ -527,7 +567,8 @@ def build() -> dict:
         if frm in nodes_meta and to in nodes_meta
     ]
 
-    sorry_count = sum(1 for n in nodes if n["status"] in ("open", "blocked"))
+    # True number of `sorry` occurrences in the library (not the number of unfinished modules).
+    sorry_count = sum(file_sorry_count(ROOT / n["file"]) for n in nodes)
     open_ids = [n["id"] for n in nodes if n["status"] == "open"]
 
     return {
@@ -587,7 +628,7 @@ def write_md(data: dict) -> None:
         "file contains no `sorry`.",
         "",
         f"**Updated:** {data['updated']}",
-        f"**Holes:** {data['sorryCount']} open+blocked · "
+        f"**`sorry` occurrences:** {data['sorryCount']} · "
         f"{len(open_n)} open · {len(blocked_n)} blocked · {len(done_n)} done · "
         f"{len(sorry_n)} file(s) with `sorry`.",
         f"**Paper claims refuted:** "
