@@ -25,12 +25,12 @@ variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasur
 `limUnder` of left Riemann sums of `σ²` on the uniform grids is `∫₀ᵗ σ_s² ds` (H1–H2 give
 pathwise continuity of `σ`). -/
 lemma kitQuadVarRaw_signatureSigma {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0 < d) (hT : 0 < T)
-    (w : Weight) (hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1)) (hℓ : HypH1 w ℓ) {t : ℝ}
-    (ht : t ∈ Icc 0 T) (ω : Ω) :
+    (ℓ : ExtTensorAlgebra (d + 1)) {t : ℝ}
+    (ht : t ∈ Icc 0 T) {ω : Ω} (hω : ContinuousOn (fun s => signatureSigma B hT ℓ s ω) (Icc 0 T)) :
     kitQuadVarRaw B (signatureSigma B hT ℓ) t ω =
       ∫ s in (0 : ℝ)..t, (signatureSigma B hT ℓ s ω) ^ 2 := by
   have hcont : ContinuousOn (fun s => signatureSigma B hT ℓ s ω) (Icc 0 t) :=
-    (continuousOn_sigma_of_brownian B hT w hw ℓ hℓ ω).mono (Icc_subset_Icc_right ht.2)
+    hω.mono (Icc_subset_Icc_right ht.2)
   have hlim := tendsto_lebRiemann_of_continuousOn ht.1 (hcont.pow 2)
   have hRn : ∀ n, lebRiemann_process
       (fun s ω' => forceMeasurableProcess (signatureSigma B hT ℓ) s ω' *
@@ -56,9 +56,9 @@ lemma integrable_kitQuadVarRaw_signatureSigma {T : ℝ} (B : MultiBrownian Ω P 
     Integrable (kitQuadVarRaw B (signatureSigma B hT ℓ) t) P := by
   refine Integrable.mono' (h3 1 one_pos)
     (measurable_kitQuadVarRaw B (signatureSigma B hT ℓ) t).aestronglyMeasurable
-    (ae_of_all _ fun ω => ?_)
-  have hcontT := (continuousOn_sigma_of_brownian B hT w hw ℓ hℓ ω).pow 2
-  rw [kitQuadVarRaw_signatureSigma B hd hT w hw ℓ hℓ ht ω, Real.norm_eq_abs,
+    ((ae_continuousOn_sigma_of_brownian B hT w hw ℓ hℓ).mono fun ω hω => ?_)
+  have hcontT := hω.pow 2
+  rw [kitQuadVarRaw_signatureSigma B hd hT ℓ ht hω, Real.norm_eq_abs,
     abs_of_nonneg (intervalIntegral.integral_nonneg ht.1 fun s _ => sq_nonneg _), one_mul]
   calc ∫ s in (0 : ℝ)..t, (signatureSigma B hT ℓ s ω) ^ 2
       ≤ ∫ s in (0 : ℝ)..T, (signatureSigma B hT ℓ s ω) ^ 2 :=
@@ -73,7 +73,8 @@ once the raw Itô limit of `σ` is integrable, `condExp` is the identity on both
 lemma kitDoleansExp_signatureSigma {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0 < d) (hT : 0 < T)
     (w : Weight) (hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1)) (hℓ : HypH1 w ℓ)
     (h3 : HypH3 P T (signatureSigma B hT ℓ)) {t : ℝ} (ht : t ∈ Icc 0 T)
-    (hI : Integrable (kitItoIntRaw B (signatureSigma B hT ℓ) t) P) (ω : Ω) :
+    (hI : Integrable (kitItoIntRaw B (signatureSigma B hT ℓ) t) P) {ω : Ω}
+    (hω : ContinuousOn (fun s => signatureSigma B hT ℓ s ω) (Icc 0 T)) :
     kitDoleansExp B (signatureSigma B hT ℓ) t ω =
       Real.exp (kitItoIntRaw B (signatureSigma B hT ℓ) t ω -
         (1 / 2 : ℝ) * ∫ s in (0 : ℝ)..t, (signatureSigma B hT ℓ s ω) ^ 2) := by
@@ -83,19 +84,20 @@ lemma kitDoleansExp_signatureSigma {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0 
       Measurable[(pathFiltration B).σAlg t] (signatureSigma B hT ℓ u) :=
     fun u h0 hu => measurable_signatureSigma_path B hT ℓ t ⟨u, h0, hu⟩
   rw [kitDoleansExp_def, kitItoInt_eq_raw B ht.1 had hpair, kitQuadVar_eq_raw B ht.1 had hpair,
-    kitQuadVarRaw_signatureSigma B hd hT w hw ℓ hℓ ht ω]
+    kitQuadVarRaw_signatureSigma B hd hT ℓ ht hω]
 
 /-- Under H1–H3 the kit Doléans exponential of the signature volatility is, for every `ω`,
 `Z_t = exp (limUnder ∑ σ ΔW - ½ ∫₀ᵗ σ²)` (the integrability gate is discharged by
 `kitItoIntRaw_signatureSigma`). -/
 lemma kitDoleansExp_signatureSigma_eq {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0 < d)
     (hT : 0 < T) (w : Weight) (hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1)) (hℓ : HypH1 w ℓ)
-    (h3 : HypH3 P T (signatureSigma B hT ℓ)) {t : ℝ} (ht : t ∈ Icc 0 T) (ω : Ω) :
+    (h3 : HypH3 P T (signatureSigma B hT ℓ)) {t : ℝ} (ht : t ∈ Icc 0 T) {ω : Ω}
+    (hω : ContinuousOn (fun s => signatureSigma B hT ℓ s ω) (Icc 0 T)) :
     kitDoleansExp B (signatureSigma B hT ℓ) t ω =
       Real.exp (kitItoIntRaw B (signatureSigma B hT ℓ) t ω -
         (1 / 2 : ℝ) * ∫ s in (0 : ℝ)..t, (signatureSigma B hT ℓ s ω) ^ 2) :=
   kitDoleansExp_signatureSigma B hd hT w hw ℓ hℓ h3 ht
-    (kitItoIntRaw_signatureSigma B hd hT hw hℓ ht.1).2.2 ω
+    (kitItoIntRaw_signatureSigma B hd hT hw hℓ ht.1).2.2 hω
 
 /-- **All `Lⁿ` moments of the Doléans exponential of the signature volatility** (H1–H3). -/
 theorem memLp_kitDoleansExp_signatureSigma {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0 < d)
@@ -111,10 +113,12 @@ theorem memLp_kitDoleansExp_signatureSigma {T : ℝ} (B : MultiBrownian Ω P d) 
     rw [← integrable_norm_rpow_iff hmeas (by simpa using (by omega : n ≠ 0)) (by simp)]
     simp only [ENNReal.toReal_natCast, Real.rpow_natCast]
     refine ⟨hmeas.norm.pow n, ?_⟩
-    refine lt_of_eq_of_lt (lintegral_congr fun ω => ?_) hlt
+    refine lt_of_eq_of_lt (lintegral_congr_ae
+      ((ae_continuousOn_sigma_of_brownian B hT w hw ℓ hℓ).mono fun ω hω => ?_)) hlt
+    show ‖‖kitDoleansExp B (signatureSigma B hT ℓ) t ω‖ ^ n‖ₑ = _
     rw [Real.enorm_eq_ofReal (by positivity)]
     simp only [Real.norm_eq_abs]
-    rw [kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 ht ω, Real.abs_exp,
+    rw [kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 ht hω, Real.abs_exp,
       ← Real.exp_nat_mul]
   exact_mod_cast h4
 end SignatureVolatility

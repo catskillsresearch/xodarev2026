@@ -45,6 +45,16 @@ lemma memLp_bdd_mul {a X : Ω → ℝ} (ham : AEStronglyMeasurable a P) (ha0 : �
     exact mul_le_of_le_one_left (norm_nonneg _)
       (by rw [Real.norm_eq_abs, abs_of_nonneg (ha0 ω)]; exact ha1 ω))
 
+omit [IsProbabilityMeasure P] in
+lemma memLp_bdd_mul_ae {a X : Ω → ℝ} (ham : AEStronglyMeasurable a P)
+    (ha0 : ∀ᵐ ω ∂P, 0 ≤ a ω) (ha1 : ∀ᵐ ω ∂P, a ω ≤ 1) (hX : MemLp X 2 P) :
+    MemLp (fun ω => a ω * X ω) 2 P :=
+  hX.of_le (ham.mul hX.aestronglyMeasurable) (by
+    filter_upwards [ha0, ha1] with ω h0 h1
+    rw [norm_mul]
+    exact mul_le_of_le_one_left (norm_nonneg _)
+      (by rw [Real.norm_eq_abs, abs_of_nonneg h0]; exact h1))
+
 lemma sqrt_le_mul_pow' {x α s : ℝ} {k : ℕ} (hα : 0 ≤ α) (hs : 0 ≤ s)
     (h : x ≤ α * s ^ (2 * k)) : Real.sqrt x ≤ Real.sqrt α * s ^ k := by
   calc Real.sqrt x ≤ Real.sqrt (α * (s ^ k) ^ 2) :=
@@ -287,5 +297,57 @@ theorem weighted_step_le {a Iu Iv G W Q s2 : Ω → ℝ} {s M cR cI cQ cE cW : �
   linarith [hcan, B3, B4, B6, B7, B8, a3, a6, a7]
 
 end Abstract
+
+/-- `weighted_step_le` with the bounds `0 ≤ a ≤ 1`, `0 ≤ Q` required only almost surely. -/
+theorem weighted_step_le_ae {a Iu Iv G W Q s2 : Ω → ℝ} {s M cR cI cQ cE cW : ℝ}
+    (hs : 0 ≤ s) (hM : 0 ≤ M) (hcR : 0 ≤ cR) (hcI : 0 ≤ cI) (hcQ : 0 ≤ cQ) (hcE : 0 ≤ cE)
+    (hcW : 0 ≤ cW)
+    (ha0 : ∀ᵐ ω ∂P, 0 ≤ a ω) (ha1 : ∀ᵐ ω ∂P, a ω ≤ 1) (ham : AEStronglyMeasurable a P)
+    (hIu : MemLp Iu 4 P) (hIv : MemLp Iv 4 P) (hG : MemLp G 4 P) (hW : MemLp W 4 P)
+    (hGW : MemLp (fun ω => G ω * W ω) 4 P) (hQ : MemLp Q 4 P) (hs2 : MemLp s2 2 P)
+    (hQ0 : ∀ᵐ ω ∂P, 0 ≤ Q ω)
+    (horth : ∫ ω, a ω * Iu ω * (Iv ω - Iu ω) ∂P = 0)
+    (hind : ∫ ω, a ω * G ω ^ 2 * W ω ^ 2 ∂P = s ^ 2 * ∫ ω, a ω * G ω ^ 2 ∂P)
+    (hGs : ∀ᵐ ω ∂P, G ω ^ 2 = Iu ω ^ 2 * s2 ω)
+    (hR : ∫ ω, (Iv ω - Iu ω - G ω * W ω) ^ 4 ∂P ≤ cR * s ^ 8)
+    (hdI : ∫ ω, (Iv ω - Iu ω) ^ 4 ∂P ≤ cI * s ^ 4)
+    (hIu4 : ∫ ω, Iu ω ^ 4 ∂P ≤ M) (hIv4 : ∫ ω, Iv ω ^ 4 ∂P ≤ M) (hG4 : ∫ ω, G ω ^ 4 ∂P ≤ M)
+    (hW4 : ∫ ω, W ω ^ 4 ∂P ≤ cW * s ^ 4) (hQ4 : ∫ ω, Q ω ^ 4 ∂P ≤ cQ * s ^ 8)
+    (hE : ∫ ω, (Q ω - s ^ 2 * s2 ω) ^ 2 ∂P ≤ cE * s ^ 6) :
+    ∫ ω, Iv ω ^ 2 * (a ω * Real.exp (-Q ω)) ∂P - ∫ ω, Iu ω ^ 2 * a ω ∂P ≤
+      (2 * (Real.sqrt (Real.sqrt M * Real.sqrt cW) * Real.sqrt (Real.sqrt cR)) +
+          Real.sqrt (Real.sqrt cI) * Real.sqrt (4 * Real.sqrt M * Real.sqrt cQ) +
+          Real.sqrt M * Real.sqrt cE) * s ^ 3 +
+        (Real.sqrt cR + Real.sqrt M * Real.sqrt cQ) * s ^ 4 := by
+  set a' : Ω → ℝ := fun ω => max 0 (min (a ω) 1) with ha'
+  set Q' : Ω → ℝ := fun ω => max 0 (Q ω) with hQ'
+  have hea : a =ᵐ[P] a' := by
+    filter_upwards [ha0, ha1] with ω h0 h1
+    simp only [ha', min_eq_left h1, max_eq_right h0]
+  have heQ : Q =ᵐ[P] Q' := by
+    filter_upwards [hQ0] with ω h0
+    simp only [hQ', max_eq_right h0]
+  have h1 := weighted_step_le (P := P) (a := a') (Q := Q') hs hM hcR hcI hcQ hcE hcW
+    (fun ω => le_max_left _ _) (fun ω => max_le zero_le_one (min_le_right _ _))
+    (ham.congr hea) hIu hIv hG hW hGW (hQ.ae_eq heQ) hs2 (fun ω => le_max_left _ _)
+    (by rw [← horth]; exact integral_congr_ae (by filter_upwards [hea] with ω h; rw [h]))
+    (by
+      rw [integral_congr_ae (show (fun ω => a' ω * G ω ^ 2 * W ω ^ 2) =ᵐ[P]
+          fun ω => a ω * G ω ^ 2 * W ω ^ 2 by filter_upwards [hea] with ω h; rw [h]),
+        integral_congr_ae (show (fun ω => a' ω * G ω ^ 2) =ᵐ[P] fun ω => a ω * G ω ^ 2 by
+          filter_upwards [hea] with ω h; rw [h])]
+      exact hind)
+    hGs hR hdI hIu4 hIv4 hG4 hW4
+    (by rw [← integral_congr_ae (show (fun ω => Q ω ^ 4) =ᵐ[P] fun ω => Q' ω ^ 4 by
+          filter_upwards [heQ] with ω h; rw [h])]; exact hQ4)
+    (by rw [← integral_congr_ae (show (fun ω => (Q ω - s ^ 2 * s2 ω) ^ 2) =ᵐ[P]
+          fun ω => (Q' ω - s ^ 2 * s2 ω) ^ 2 by filter_upwards [heQ] with ω h; rw [h])]
+        exact hE)
+  rw [integral_congr_ae (show (fun ω => Iv ω ^ 2 * (a ω * Real.exp (-Q ω))) =ᵐ[P]
+      fun ω => Iv ω ^ 2 * (a' ω * Real.exp (-Q' ω)) by
+        filter_upwards [hea, heQ] with ω h h'; rw [h, h']),
+    integral_congr_ae (show (fun ω => Iu ω ^ 2 * a ω) =ᵐ[P] fun ω => Iu ω ^ 2 * a' ω by
+      filter_upwards [hea] with ω h; rw [h])]
+  exact h1
 
 end SignatureVolatility

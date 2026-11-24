@@ -83,11 +83,11 @@ theorem exists_integral_kitDoleansExp_pow_eight_le (hd : 0 < d) (hT : 0 < T) {w 
   refine ⟨hL, ?_⟩
   have hint := integrable_pow_of_memLp_eight hL (k := 8) le_rfl
   have hlin := lintegral_exp_mul_signatureSigma_le B hd hT hw hℓ h3 hs (p := 8) (by norm_num)
-  have hpt : ∀ ω, kitDoleansExp B (signatureSigma B hT ℓ) s ω ^ 8 =
-      Real.exp (8 * (kitItoIntRaw B (signatureSigma B hT ℓ) s ω -
-        (1 / 2 : ℝ) * ∫ u in (0 : ℝ)..s, (signatureSigma B hT ℓ u ω) ^ 2)) := by
-    intro ω
-    rw [kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 hs ω, ← Real.exp_nat_mul]
+  have hpt : ∀ᵐ ω ∂P, ENNReal.ofReal (kitDoleansExp B (signatureSigma B hT ℓ) s ω ^ 8) =
+      ENNReal.ofReal (Real.exp (8 * (kitItoIntRaw B (signatureSigma B hT ℓ) s ω -
+        (1 / 2 : ℝ) * ∫ u in (0 : ℝ)..s, (signatureSigma B hT ℓ u ω) ^ 2))) := by
+    filter_upwards [ae_continuousOn_sigma_of_brownian B hT w hw ℓ hℓ] with ω hω
+    rw [kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 hs hω, ← Real.exp_nat_mul]
     norm_num
   have h1 : ENNReal.ofReal (∫ ω, kitDoleansExp B (signatureSigma B hT ℓ) s ω ^ 8 ∂P) =
       ∫⁻ ω, ENNReal.ofReal (kitDoleansExp B (signatureSigma B hT ℓ) s ω ^ 8) ∂P :=
@@ -95,7 +95,7 @@ theorem exists_integral_kitDoleansExp_pow_eight_le (hd : 0 < d) (hT : 0 < T) {w 
   have h2 : ENNReal.ofReal (∫ ω, kitDoleansExp B (signatureSigma B hT ℓ) s ω ^ 8 ∂P) ≤
       ENNReal.ofReal (1 + R) := by
     rw [h1, ENNReal.ofReal_add zero_le_one hR0, ENNReal.ofReal_one]
-    simp_rw [hpt]
+    rw [lintegral_congr_ae hpt]
     exact hlin
   exact (ENNReal.ofReal_le_ofReal_iff (by linarith)).mp h2
 

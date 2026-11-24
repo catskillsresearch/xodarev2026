@@ -264,15 +264,19 @@ theorem kitEnergy_step {G : ℝ → Ω → ℝ} {K : ℝ} (hG : HolderAdapted B 
   have hs2 : s ^ 2 = v - u := Real.sq_sqrt (sub_nonneg.mpr huv)
   -- the weight
   set a : Ω → ℝ := fun ω => Real.exp (-kitQuadVarRaw B (signatureSigma B hT ℓ) u ω) with ha
-  have hQf : ∀ t ∈ Icc 0 T, ∀ ω, kitQuadVarRaw B (signatureSigma B hT ℓ) t ω =
+  have hσc := ae_continuousOn_sigma_of_brownian B hT w hw ℓ hℓ
+  have hQf : ∀ t ∈ Icc 0 T, ∀ ω,
+      ContinuousOn (fun s => signatureSigma B hT ℓ s ω) (Icc 0 T) →
+      kitQuadVarRaw B (signatureSigma B hT ℓ) t ω =
       ∫ r in (0 : ℝ)..t, signatureSigma B hT ℓ r ω ^ 2 :=
-    fun t ht ω => kitQuadVarRaw_signatureSigma B hd hT w hw ℓ hℓ ht ω
-  have hQf0 : ∀ ω, 0 ≤ kitQuadVarRaw B (signatureSigma B hT ℓ) u ω := fun ω => by
-    rw [hQf u ⟨hu, huT⟩ ω]
-    exact intervalIntegral.integral_nonneg hu fun r _ => sq_nonneg _
-  have ha0 : ∀ ω, 0 ≤ a ω := fun ω => (Real.exp_pos _).le
-  have ha1 : ∀ ω, a ω ≤ 1 := fun ω => by
-    simp only [ha]; rw [Real.exp_le_one_iff]; linarith [hQf0 ω]
+    fun t ht _ hω => kitQuadVarRaw_signatureSigma B hd hT ℓ ht hω
+  have hQf0 : ∀ᵐ ω ∂P, 0 ≤ kitQuadVarRaw B (signatureSigma B hT ℓ) u ω :=
+    hσc.mono fun ω hω => by
+      rw [hQf u ⟨hu, huT⟩ ω hω]
+      exact intervalIntegral.integral_nonneg hu fun r _ => sq_nonneg _
+  have ha0 : ∀ᵐ ω ∂P, 0 ≤ a ω := ae_of_all _ fun ω => (Real.exp_pos _).le
+  have ha1 : ∀ᵐ ω ∂P, a ω ≤ 1 := hQf0.mono fun ω h => by
+    simp only [ha]; rw [Real.exp_le_one_iff]; linarith
   have hamF : Measurable[(pathFiltration B).σAlg u] a :=
     Real.measurable_exp.comp (measurable_kitQuadVarRaw_path B (signatureSigma B hT ℓ) hu
       (fun r h0 hr => measurable_signatureSigma_path B hT ℓ u ⟨r, h0, hr⟩)).neg
@@ -280,17 +284,17 @@ theorem kitEnergy_step {G : ℝ → Ω → ℝ} {K : ℝ} (hG : HolderAdapted B 
     (hamF.mono ((pathFiltration B).le_ambient u) le_rfl).aestronglyMeasurable
   -- the increments
   set ΔQ : Ω → ℝ := fun ω => ∫ r in u..v, signatureSigma B hT ℓ r ω ^ 2 with hΔQ
-  have hsplit : ∀ ω, Real.exp (-kitQuadVarRaw B (signatureSigma B hT ℓ) v ω) =
+  have hsplit : ∀ᵐ ω ∂P, Real.exp (-kitQuadVarRaw B (signatureSigma B hT ℓ) v ω) =
       a ω * Real.exp (-ΔQ ω) := by
-    intro ω
-    have hc := ((continuousOn_sigma_of_brownian B hT w hw ℓ hℓ ω).pow 2)
+    filter_upwards [hσc] with ω hω
+    have hc := hω.pow 2
     have i1 : IntervalIntegrable (fun r => signatureSigma B hT ℓ r ω ^ 2) volume 0 u :=
       (hc.mono (Icc_subset_Icc_right huT)).intervalIntegrable_of_Icc hu
     have i2 : IntervalIntegrable (fun r => signatureSigma B hT ℓ r ω ^ 2) volume u v :=
       (hc.mono (Icc_subset_Icc hu hvT)).intervalIntegrable_of_Icc huv
-    rw [hQf v ⟨hv0, hvT⟩ ω, ← intervalIntegral.integral_add_adjacent_intervals i1 i2,
+    rw [hQf v ⟨hv0, hvT⟩ ω hω, ← intervalIntegral.integral_add_adjacent_intervals i1 i2,
       neg_add, Real.exp_add]
-    simp only [ha, hΔQ, hQf u ⟨hu, huT⟩ ω]
+    simp only [ha, hΔQ, hQf u ⟨hu, huT⟩ ω hω]
   have hIv := kitItoIntRaw_of_holderAdapted B hd hv0 (hG.mono hvT)
   have hIu := kitItoIntRaw_of_holderAdapted B hd hu (hG.mono huT)
   have hIuF : Measurable[(pathFiltration B).σAlg u] (kitItoIntRaw B G u) :=
@@ -311,7 +315,7 @@ theorem kitEnergy_step {G : ℝ → Ω → ℝ} {K : ℝ} (hG : HolderAdapted B 
   have horth : ∫ ω, a ω * kitItoIntRaw B G u ω * (kitItoIntRaw B G v ω - kitItoIntRaw B G u ω) ∂P
       = 0 :=
     integral_mul_kitItoIntRaw_sub_eq_zero B hd hG hu huv hvT (hamF.mul hIuF)
-      (memLp_bdd_mul ham ha0 ha1 (hIu.2.1.mono_exponent (by norm_num)))
+      (memLp_bdd_mul_ae ham ha0 ha1 (hIu.2.1.mono_exponent (by norm_num)))
   -- independence
   have hind : ∫ ω, a ω * G u ω ^ 2 * wnnIncr B k u v ω ^ 2 ∂P =
       s ^ 2 * ∫ ω, a ω * G u ω ^ 2 ∂P := by
@@ -354,18 +358,18 @@ theorem kitEnergy_step {G : ℝ → Ω → ℝ} {K : ℝ} (hG : HolderAdapted B 
     apply le_of_eq; rw [hc4]; ring
   have hE := hEb u v hu huv hvT
   rw [← hs2] at hE
-  have key := weighted_step_le (P := P) (a := a) (Iu := kitItoIntRaw B G u)
+  have key := weighted_step_le_ae (P := P) (a := a) (Iu := kitItoIntRaw B G u)
     (Iv := kitItoIntRaw B G v) (G := G u) (W := fun ω => wnnIncr B k u v ω) (Q := ΔQ)
     (s2 := fun ω => signatureSigma B hT ℓ u ω ^ 2) (s := s) (M := M) (cR := cR) (cI := cI)
     (cQ := cQ) (cE := cE) (cW := c4) hs hM0 hcR0 hcI0 hcQ hcE hc40 ha0 ha1 ham hIu.2.1 hIv.2.1
-    hGu hW hGW hQL hs2L hQ0 horth hind (hGs u ⟨hu, huT⟩)
+    hGu hW hGW hQL hs2L (ae_of_all _ hQ0) horth hind (hGs u ⟨hu, huT⟩)
     (hR.trans_eq (by rw [hcR, ← hs2]; ring)) (hdI.trans_eq (by rw [hcI, ← hs2]; ring))
     (hI4 u hu huT) (hI4 v hv0 hvT) (hG4.trans (by rw [hM]; nlinarith)) hW4
     (hQ4.trans_eq (by rw [← hs2]; ring)) (hE.trans_eq (by ring))
   have hEv : kitEnergy B hT ℓ G v =
       ∫ ω, kitItoIntRaw B G v ω ^ 2 * (a ω * Real.exp (-ΔQ ω)) ∂P := by
     simp only [kitEnergy]
-    congr 1; funext ω; rw [hsplit ω]
+    exact integral_congr_ae (hsplit.mono fun ω h => by simp only; rw [h])
   have hEu : kitEnergy B hT ℓ G u = ∫ ω, kitItoIntRaw B G u ω ^ 2 * a ω ∂P := rfl
   rw [hEv, hEu]
   exact key
@@ -444,9 +448,10 @@ theorem eq_zero_of_eq_kitItoIntRaw {H : ℝ → Ω → ℝ} {K : ℝ}
   have h0 : kitEnergy B hT ℓ G 0 = 0 := by simp [kitEnergy, kitItoIntRaw_zero]
   have hle := le_zero_of_step_bound ht.1 h0 fun u v hu huv hvt =>
     hstep u v hu huv (hvt.trans ht.2)
-  have hQ0 : ∀ ω, 0 ≤ kitQuadVarRaw B (signatureSigma B hT ℓ) t ω := fun ω => by
-    rw [kitQuadVarRaw_signatureSigma B hd hT w hw ℓ hℓ ht ω]
-    exact intervalIntegral.integral_nonneg ht.1 fun r _ => sq_nonneg _
+  have hQ0 : ∀ᵐ ω ∂P, 0 ≤ kitQuadVarRaw B (signatureSigma B hT ℓ) t ω :=
+    (ae_continuousOn_sigma_of_brownian B hT w hw ℓ hℓ).mono fun ω hω => by
+      rw [kitQuadVarRaw_signatureSigma B hd hT ℓ ht hω]
+      exact intervalIntegral.integral_nonneg ht.1 fun r _ => sq_nonneg _
   have hIL := (kitItoIntRaw_of_holderAdapted B hd ht.1 (hG.mono ht.2)).2.1
   have hbm : AEStronglyMeasurable
       (fun ω => Real.exp (-kitQuadVarRaw B (signatureSigma B hT ℓ) t ω)) P :=
@@ -454,9 +459,9 @@ theorem eq_zero_of_eq_kitItoIntRaw {H : ℝ → Ω → ℝ} {K : ℝ}
   have hi : Integrable (fun ω => kitItoIntRaw B G t ω ^ 2 *
       Real.exp (-kitQuadVarRaw B (signatureSigma B hT ℓ) t ω)) P :=
     integrable_mul_of_memLp_two (memLp_sq_two_of_four hIL)
-      (MemLp.of_bound hbm 1 (ae_of_all _ fun ω => by
+      (MemLp.of_bound hbm 1 (hQ0.mono fun ω h => by
         rw [Real.norm_eq_abs, abs_of_nonneg (Real.exp_pos _).le, Real.exp_le_one_iff]
-        linarith [hQ0 ω]))
+        linarith))
   have hnn : 0 ≤ᵐ[P] fun ω => kitItoIntRaw B G t ω ^ 2 *
       Real.exp (-kitQuadVarRaw B (signatureSigma B hT ℓ) t ω) :=
     ae_of_all _ fun ω => mul_nonneg (sq_nonneg _) (Real.exp_pos _).le

@@ -89,9 +89,9 @@ theorem exists_envelope_kitDoleansExp_signatureSigma (hd : 0 < d) (hT : 0 < T) {
     filter_upwards [hY (Real.toNNReal (dyadicGrid T n j))
       (by rw [Real.coe_toNNReal _ hq.1]; exact hq.2)] with ω hω
     rw [hω, Real.coe_toNNReal _ hq.1]
-  have hXtc : ∀ ω, ContinuousOn (fun t => Xt t ω) (Icc 0 T) := by
-    intro ω
-    have hσc := continuousOn_sigma_of_brownian B hT w hw ℓ hℓ ω
+  have hXtc : ∀ ω, ContinuousOn (fun s => σ s ω) (Icc 0 T) →
+      ContinuousOn (fun t => Xt t ω) (Icc 0 T) := by
+    intro ω hσc
     have hint : IntervalIntegrable (fun s => (σ s ω) ^ 2) volume 0 T :=
       (hσc.pow 2).intervalIntegrable_of_Icc hT.le
     have hprim := intervalIntegral.continuousOn_primitive_interval' hint
@@ -102,19 +102,20 @@ theorem exists_envelope_kitDoleansExp_signatureSigma (hd : 0 < d) (hT : 0 < T) {
         (continuousOn_const.mul hprim))
   have hXtae : ∀ᵐ ω ∂P, ContinuousOn (fun t => Xt t ω) (Icc 0 T) ∧
       ∀ n j, Z (dyadicGrid T n j) ω = Xt (dyadicGrid T n j) ω := by
-    filter_upwards [hgrid] with ω hω
-    refine ⟨hXtc ω, fun n j => ?_⟩
+    filter_upwards [hgrid, ae_continuousOn_sigma_of_brownian B hT w hw ℓ hℓ] with ω hω hσω
+    refine ⟨hXtc ω hσω, fun n j => ?_⟩
     have hq := dyadicGrid_mem hT.le n j
-    rw [hZ, kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 hq ω, ← hω n j]
+    rw [hZ, kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 hq hσω, ← hω n j]
   obtain ⟨E, hEm, hE0, hEL, hEdom⟩ := exists_envelope_of_dyadic_martingale B hT
     (fun t => measurable_kitDoleansExp B σ t) hX hL2 hXtae
   refine ⟨fun ω => E ω + Real.exp junkReal, hEm.add_const _, hEL.add (memLp_const _), ?_⟩
-  filter_upwards [hEdom, hsub] with ω hdom hs
+  filter_upwards [hEdom, hsub, ae_continuousOn_sigma_of_brownian B hT w hw ℓ hℓ]
+    with ω hdom hs hσω
   intro t ht
   have hQ : 0 ≤ ∫ s in (0 : ℝ)..t, (σ s ω) ^ 2 :=
     intervalIntegral.integral_nonneg ht.1 fun s _ => sq_nonneg _
   have hexp0 : 0 < Real.exp junkReal := Real.exp_pos _
-  rw [hZ, kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 ht ω,
+  rw [hZ, kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 ht hσω,
     kitItoIntRaw_eq_limUnder B hd hK ht ω]
   by_cases hc : ∃ x, Tendsto (fun n : ℕ => unifRiemann B (kitDriver hd) σ t (n + 1) ω) atTop (𝓝 x)
   · obtain ⟨x, hx⟩ := hc

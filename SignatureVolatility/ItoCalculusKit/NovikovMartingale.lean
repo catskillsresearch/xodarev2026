@@ -84,22 +84,22 @@ theorem exists_integral_kitDoleansExp_pow_le (hd : 0 < d) (hT : 0 < T) {w : Weig
     have := hL.integrable_norm_pow (by omega)
     refine this.congr (ae_of_all _ fun ω => ?_)
     simp only [Real.norm_eq_abs]
-    rw [abs_of_pos (by rw [kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 hs ω]; positivity)]
+    rw [abs_of_pos (show (0:ℝ) < kitDoleansExp B (signatureSigma B hT ℓ) s ω from Real.exp_pos _)]
   have hlin := lintegral_exp_mul_signatureSigma_le B hd hT hw hℓ h3 hs (p := p)
     (by exact_mod_cast hp)
-  have hpt : ∀ ω, kitDoleansExp B (signatureSigma B hT ℓ) s ω ^ p =
+  have hpt : ∀ᵐ ω ∂P, kitDoleansExp B (signatureSigma B hT ℓ) s ω ^ p =
       Real.exp (p * (kitItoIntRaw B (signatureSigma B hT ℓ) s ω -
         (1 / 2 : ℝ) * ∫ u in (0 : ℝ)..s, (signatureSigma B hT ℓ u ω) ^ 2)) := by
-    intro ω
-    rw [kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 hs ω, ← Real.exp_nat_mul]
+    filter_upwards [ae_continuousOn_sigma_of_brownian B hT w hw ℓ hℓ] with ω hω
+    rw [kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 hs hω, ← Real.exp_nat_mul]
   have h1 : ENNReal.ofReal (∫ ω, kitDoleansExp B (signatureSigma B hT ℓ) s ω ^ p ∂P) =
       ∫⁻ ω, ENNReal.ofReal (kitDoleansExp B (signatureSigma B hT ℓ) s ω ^ p) ∂P :=
     ofReal_integral_eq_lintegral_ofReal hint (ae_of_all _ fun ω => by
-      simp only [Pi.zero_apply]; rw [hpt]; positivity)
+      simp only [Pi.zero_apply]; exact pow_nonneg (Real.exp_pos _).le _)
   have h2 : ENNReal.ofReal (∫ ω, kitDoleansExp B (signatureSigma B hT ℓ) s ω ^ p ∂P) ≤
       ENNReal.ofReal (1 + R) := by
     rw [h1, ENNReal.ofReal_add zero_le_one hR0, ENNReal.ofReal_one]
-    simp_rw [hpt]
+    rw [lintegral_congr_ae (hpt.mono fun ω h => by rw [h])]
     exact hlin
   exact (ENNReal.ofReal_le_ofReal_iff (by linarith)).mp h2
 
@@ -120,9 +120,11 @@ theorem holderAdapted_kitDoleansExp_mul (hd : 0 < d) (hT : 0 < T) {w : Weight}
   obtain ⟨K8, hH8⟩ := holderAdapted8_signatureSigma B hT hw hℓ T
   obtain ⟨KL, hKL0, hKL⟩ := integral_logDoleans_incr_pow_eight_le (B := B) (hT := hT) (ℓ := ℓ)
     hd hw hℓ
-  have hZX : ∀ s ∈ Set.Icc 0 T, ∀ ω, kitDoleansExp B (signatureSigma B hT ℓ) s ω =
-      Real.exp (logDoleans B hT ℓ s ω) := fun s hs ω =>
-    kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 hs ω
+  have hZX : ∀ s ∈ Set.Icc 0 T, ∀ ω,
+      ContinuousOn (fun s => signatureSigma B hT ℓ s ω) (Set.Icc 0 T) →
+      kitDoleansExp B (signatureSigma B hT ℓ) s ω =
+      Real.exp (logDoleans B hT ℓ s ω) := fun s hs _ hω =>
+    kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 hs hω
   set σ := signatureSigma B hT ℓ with hσ
   set Z := kitDoleansExp B σ with hZ
   set C2 : ℝ := (2 ^ 15 * (Cz16 + Cz16) + Cσ) / 2 with hC2
@@ -138,24 +140,25 @@ theorem holderAdapted_kitDoleansExp_mul (hd : 0 < d) (hT : 0 < T) {w : Weight}
   have hvT : v ∈ Set.Icc 0 T := ⟨h0.trans huv, hv⟩
   -- the pieces
   set x : Ω → ℝ := fun ω => Real.log (Z v ω) - Real.log (Z u ω) with hx
-  have hxeq : ∀ ω, x ω = logDoleans B hT ℓ v ω - logDoleans B hT ℓ u ω := fun ω => by
-    simp only [hx]; rw [hZX v hvT ω, hZX u huT ω, Real.log_exp, Real.log_exp]
+  have hxeq : ∀ᵐ ω ∂P, x ω = logDoleans B hT ℓ v ω - logDoleans B hT ℓ u ω :=
+    (ae_continuousOn_sigma_of_brownian B hT w hw ℓ hℓ).mono fun ω hω => by
+      simp only [hx]; rw [hZX v hvT ω hω, hZX u huT ω hω, Real.log_exp, Real.log_exp]
   have hxm : Measurable x :=
     (Real.measurable_log.comp (hZm v)).sub (Real.measurable_log.comp (hZm u))
   obtain ⟨hx8i, hx8b⟩ := hKL u v h0 huv hv
   have hx8i' : Integrable (fun ω => x ω ^ 8) P :=
-    hx8i.congr (ae_of_all _ fun ω => by simp only; rw [hxeq])
+    hx8i.congr (hxeq.mono fun ω h => by simp only; rw [h])
   have hx8b' : ∫ ω, x ω ^ 8 ∂P ≤ KL * (v - u) ^ 4 := by
     have e : ∫ ω, x ω ^ 8 ∂P =
         ∫ ω, (logDoleans B hT ℓ v ω - logDoleans B hT ℓ u ω) ^ 8 ∂P :=
-      integral_congr_ae (ae_of_all _ fun ω => by simp only [hxeq ω])
+      integral_congr_ae (hxeq.mono fun ω h => by simp only [h])
     rw [e]; exact hx8b
   have hx4 : MemLp (fun ω => x ω ^ 4) 2 P :=
     memLp_pow_four_two (memLp_eight_of_integrable_pow_eight hxm.aestronglyMeasurable hx8i')
   set W : Ω → ℝ := fun ω => (Z u ω + Z v ω) * σ v ω with hW
   have hWm : Measurable W := ((hZm u).add (hZm v)).mul (hσm v hvT)
   have hZ0 : ∀ s ∈ Set.Icc 0 T, ∀ ω, 0 ≤ Z s ω := fun s hs ω => by
-    rw [hZX s hs ω]; exact (Real.exp_pos _).le
+    exact (Real.exp_pos _).le
   have hZ16 : ∀ s ∈ Set.Icc 0 T, Integrable (fun ω => Z s ω ^ 16) P := fun s hs =>
     integrable_pow_of_memLp_even (by norm_num) ⟨8, rfl⟩ (hCz16 s hs).1
   have hσ16 := (hCσ v hvT).1
@@ -206,8 +209,8 @@ theorem holderAdapted_kitDoleansExp_mul (hd : 0 < d) (hT : 0 < T) {w : Weight}
       8 * (x ω ^ 4 * W ω ^ 4) + 8 * (Z u ω ^ 4 * (σ v ω - σ u ω) ^ 4) := by
     intro ω
     have ha : |Z v ω - Z u ω| ≤ |x ω| * (Z u ω + Z v ω) := by
-      have hpu : 0 < Z u ω := by rw [hZX u huT ω]; exact Real.exp_pos _
-      have hpv : 0 < Z v ω := by rw [hZX v hvT ω]; exact Real.exp_pos _
+      have hpu : 0 < Z u ω := Real.exp_pos _
+      have hpv : 0 < Z v ω := Real.exp_pos _
       have := abs_exp_sub_exp_le (Real.log (Z u ω)) (Real.log (Z v ω))
       rwa [Real.exp_log hpu, Real.exp_log hpv] at this
     have he : Even 4 := ⟨2, rfl⟩

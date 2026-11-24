@@ -160,9 +160,9 @@ theorem integrable_kitQuadVarRaw_doleans (hd : 0 < d) (hT : 0 < T) {w : Weight} 
       rw [hω, hc]
     · exact ae_of_all _ fun ω h => absurd h hj
   refine integrable_of_ae_tendsto_of_integral_le hRm hR0 hRi ?_ hRC
-  filter_upwards [hgood] with ω hω
+  filter_upwards [hgood, ae_continuousOn_sigma_of_brownian B hT w hw ℓ hℓ] with ω hω hσω
   have hσc : ContinuousOn (fun s => σ s ω) (Set.Icc 0 t) :=
-    (continuousOn_sigma_of_brownian B hT w hw ℓ hℓ ω).mono (Set.Icc_subset_Icc_right ht.2)
+    hσω.mono (Set.Icc_subset_Icc_right ht.2)
   have hprim : ContinuousOn (fun s => ∫ u in (0 : ℝ)..s, σ u ω ^ 2) (Set.Icc 0 t) := by
     have hc2 : ContinuousOn (fun u => σ u ω ^ 2) (Set.uIcc 0 t) := by
       rw [Set.uIcc_of_le ht.1]; exact hσc.pow 2
@@ -185,7 +185,7 @@ theorem integrable_kitQuadVarRaw_doleans (hd : 0 < d) (hT : 0 < T) {w : Weight} 
     have e : Z (τ n j) ω = Real.exp (Y (Real.toNNReal (τ n j)) ω -
         (1 / 2 : ℝ) * ∫ u in (0 : ℝ)..(τ n j), σ u ω ^ 2) := by
       rw [hω n j hjl]
-      exact kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 (hτT n j hjl) ω
+      exact kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 (hτT n j hjl) hσω
     show (s₀ * Z (τ n j) ω * σ (τ n j) ω) ^ 2 * (t / ((n : ℝ) + 1)) = _
     rw [e]
   have hR' : Tendsto (fun n => R n ω) atTop _ := hlim.congr fun n => (heq n).symm

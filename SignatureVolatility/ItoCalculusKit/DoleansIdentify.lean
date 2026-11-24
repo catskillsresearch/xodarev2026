@@ -95,20 +95,21 @@ theorem ae_tendsto_sum_wnnIncr_sq (k : Fin d) {t : ℝ} (ht : 0 ≤ t) :
 `Z(τᵢ₊₁) = Z(τᵢ) exp (σ(τᵢ) ΔWᵢ + aᵢ - ½ ∫_{τᵢ}^{τᵢ₊₁} σ²)`. -/
 lemma kitDoleansExp_step (hd : 0 < d) (hT : 0 < T) {w : Weight} (hw : HypH2 w)
     {ℓ : ExtTensorAlgebra (d + 1)} (hℓ : HypH1 w ℓ) (h3 : HypH3 P T (signatureSigma B hT ℓ))
-    {u v : ℝ} (hu : u ∈ Set.Icc 0 T) (hv : v ∈ Set.Icc 0 T) (ω : Ω) :
+    {u v : ℝ} (hu : u ∈ Set.Icc 0 T) (hv : v ∈ Set.Icc 0 T) {ω : Ω}
+    (hω : ContinuousOn (fun s => signatureSigma B hT ℓ s ω) (Set.Icc 0 T)) :
     kitDoleansExp B (signatureSigma B hT ℓ) v ω =
       kitDoleansExp B (signatureSigma B hT ℓ) u ω *
         Real.exp (signatureSigma B hT ℓ u ω * wnnIncr B (kitDriver hd) u v ω +
           frozenIncr B hd (signatureSigma B hT ℓ) u v ω -
           (∫ s in u..v, signatureSigma B hT ℓ s ω ^ 2) / 2) := by
-  have hc := (continuousOn_sigma_of_brownian B hT w hw ℓ hℓ ω).pow 2
+  have hc := hω.pow 2
   have h0 : (0 : ℝ) ∈ Set.Icc 0 T := ⟨le_rfl, hT.le⟩
   have hi1 : IntervalIntegrable (fun s => signatureSigma B hT ℓ s ω ^ 2) MeasureTheory.volume 0 u :=
     (hc.mono (Set.uIcc_subset_Icc h0 hu)).intervalIntegrable
   have hi2 : IntervalIntegrable (fun s => signatureSigma B hT ℓ s ω ^ 2) MeasureTheory.volume u v :=
     (hc.mono (Set.uIcc_subset_Icc hu hv)).intervalIntegrable
-  rw [kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 hv ω,
-    kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 hu ω, ← Real.exp_add,
+  rw [kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 hv hω,
+    kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 hu hω, ← Real.exp_add,
     ← intervalIntegral.integral_add_adjacent_intervals hi1 hi2]
   congr 1
   unfold frozenIncr
@@ -116,8 +117,9 @@ lemma kitDoleansExp_step (hd : 0 < d) (hT : 0 < T) {w : Weight} (hw : HypH2 w)
 
 lemma kitDoleansExp_signatureSigma_zero (hd : 0 < d) (hT : 0 < T) {w : Weight} (hw : HypH2 w)
     {ℓ : ExtTensorAlgebra (d + 1)} (hℓ : HypH1 w ℓ) (h3 : HypH3 P T (signatureSigma B hT ℓ))
-    (ω : Ω) : kitDoleansExp B (signatureSigma B hT ℓ) 0 ω = 1 := by
-  rw [kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 ⟨le_rfl, hT.le⟩ ω, kitItoIntRaw_zero]
+    {ω : Ω} (hω : ContinuousOn (fun s => signatureSigma B hT ℓ s ω) (Set.Icc 0 T)) :
+    kitDoleansExp B (signatureSigma B hT ℓ) 0 ω = 1 := by
+  rw [kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 ⟨le_rfl, hT.le⟩ hω, kitItoIntRaw_zero]
   simp
 
 /-- **Almost-sure identification**: the left Itô–Riemann sums of `s₀ Z σ` on the uniform grids
@@ -134,12 +136,13 @@ theorem ae_tendsto_unifRiemann_doleans (hd : 0 < d) (hT : 0 < T) {w : Weight} (h
     ae_tendsto_sum_wnnIncr_sq B (kitDriver hd) ht.1,
     ae_tendsto_sum_frozenIncr_sq B hd hT hw hℓ ht.1,
     ae_tendsto_sum_kitDoleansExp_mul_frozenIncr B hd hT hw hℓ h3 ht,
-    ae_tendsto_sum_kitDoleansExp_mul_qvIncrR B hd hT hw hℓ h3 ht] with ω hbdd hW hA h1 h2
+    ae_tendsto_sum_kitDoleansExp_mul_qvIncrR B hd hT hw hℓ h3 ht,
+    ae_continuousOn_sigma_of_brownian B hT w hw ℓ hℓ] with ω hbdd hW hA h1 h2 hω
   obtain ⟨M, hM⟩ := hbdd
   set σ := signatureSigma B hT ℓ with hσ
   set Z := kitDoleansExp B σ with hZ
   have hcσ : ContinuousOn (fun s => σ s ω) (Set.Icc 0 T) :=
-    continuousOn_sigma_of_brownian B hT w hw ℓ hℓ ω
+    hω
   obtain ⟨G, hG⟩ := isCompact_Icc.exists_bound_of_continuousOn hcσ
   have hG0 : 0 ≤ G := (norm_nonneg _).trans (hG 0 ⟨le_rfl, hT.le⟩)
   obtain ⟨ε, hε0, hε, hεb⟩ := exists_modulus_of_continuousOn ht.1
@@ -179,7 +182,7 @@ theorem ae_tendsto_unifRiemann_doleans (hd : 0 < d) (hT : 0 < T) {w : Weight} (h
       refine ⟨(Real.exp_pos _).le, ?_⟩
       have hMi : |kitItoIntRaw B σ (gridPt t n i) ω| ≤ M := hM (n + 1) (Nat.succ_pos n) i hi.le
       simp only [hZ]
-      rw [kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 (hgT n i hi.le) ω]
+      rw [kitDoleansExp_signatureSigma_eq B hd hT w hw ℓ hℓ h3 (hgT n i hi.le) hω]
       refine Real.exp_le_exp.mpr ?_
       have hq : 0 ≤ ∫ s in (0 : ℝ)..gridPt t n i, σ s ω ^ 2 :=
         intervalIntegral.integral_nonneg (hgt n i hi.le).1 fun s _ => sq_nonneg _
@@ -240,7 +243,7 @@ theorem ae_tendsto_unifRiemann_doleans (hd : 0 < d) (hT : 0 < T) {w : Weight} (h
         Z t ω - 1 := by
       rw [sum_range_sub (fun i => Z (gridPt t n i) ω), gridPt_last]
       have h0 : gridPt t n 0 = 0 := by simp [gridPt]
-      rw [h0, show Z 0 ω = 1 from kitDoleansExp_signatureSigma_zero B hd hT hw hℓ h3 ω]
+      rw [h0, show Z 0 ω = 1 from kitDoleansExp_signatureSigma_zero B hd hT hw hℓ h3 hω]
     have hE : ∑ i ∈ range (n + 1), Z (gridPt t n i) ω *
         (Real.exp (σ (gridPt t n i) ω * wnnIncr B (kitDriver hd) (gridPt t n i) (gridPt t n (i + 1)) ω +
           frozenIncr B hd σ (gridPt t n i) (gridPt t n (i + 1)) ω -
@@ -251,7 +254,7 @@ theorem ae_tendsto_unifRiemann_doleans (hd : 0 < d) (hT : 0 < T) {w : Weight} (h
       rw [← htel, ← sum_sub_distrib]
       refine sum_congr rfl fun i hi => ?_
       rw [show Z (gridPt t n (i + 1)) ω = _ from kitDoleansExp_step B hd hT hw hℓ h3
-        (hgT n i (mem_range.mp hi).le) (hgT n (i + 1) (Nat.succ_le_of_lt (mem_range.mp hi))) ω]
+        (hgT n i (mem_range.mp hi).le) (hgT n (i + 1) (Nat.succ_le_of_lt (mem_range.mp hi))) hω]
       ring
     have hU : unifRiemann B (kitDriver hd) (fun s ω' => (s₀ * Z s ω') * σ s ω') t (n + 1) ω =
         s₀ * ∑ i ∈ range (n + 1), Z (gridPt t n i) ω * σ (gridPt t n i) ω *
