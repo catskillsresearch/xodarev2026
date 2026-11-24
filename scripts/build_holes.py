@@ -176,6 +176,8 @@ VERIFIED: set[str] = {
     "SignatureRiccatiKit.DifferentiableAtTsum",
     "SignatureRiccatiKit.FourierUniquenessGaussian",
     "SignatureRiccatiKit.ComplexTilt",
+    "SignatureRiccatiKit.IteratedDerivGaussian",
+    "SignatureRiccatiKit.CondSigPoly",
     "SignatureRiccatiKit.BarrierU",
     "SignatureRiccatiKit.CounterexampleTensor",
     "SignatureRiccatiKit.CounterexampleV1",

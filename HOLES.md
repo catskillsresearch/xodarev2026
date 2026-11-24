@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-24T22:04:54Z
-**`sorry` occurrences:** 13 · 7 open · 9 blocked · 192 done · 13 file(s) with `sorry`.
+**Updated:** 2026-11-24T22:11:06Z
+**`sorry` occurrences:** 11 · 6 open · 8 blocked · 194 done · 11 file(s) with `sorry`.
 **Paper claims refuted:** 5 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
 
 ## Open analytic leaves of the affine / Riccati counterexample
@@ -52,16 +52,14 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | open | `SignatureRiccatiKit.BrownianScalingShiftedExponent` | `SignatureVolatility/SignatureRiccatiKit/BrownianScalingShiftedExponent.lean` |
 | open | `SignatureRiccatiKit.CameronMartinC2Shift` | `SignatureVolatility/SignatureRiccatiKit/CameronMartinC2Shift.lean` |
 | open | `SignatureRiccatiKit.CondExpMulIndepDisintegrate` | `SignatureVolatility/SignatureRiccatiKit/CondExpMulIndepDisintegrate.lean` |
-| open | `SignatureRiccatiKit.CondSigPoly` | `SignatureVolatility/SignatureRiccatiKit/CondSigPoly.lean` |
 | blocked | `SignatureRiccatiKit.CondSigPolyIdentification` | `SignatureVolatility/SignatureRiccatiKit/CondSigPolyIdentification.lean` |
 | blocked | `SignatureRiccatiKit.CounterexampleV1CondExp` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1CondExp.lean` |
 | blocked | `SignatureRiccatiKit.CounterexampleV1Decay` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1Decay.lean` |
 | blocked | `SignatureRiccatiKit.CounterexampleV1LogNonpos` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1LogNonpos.lean` |
 | blocked | `SignatureRiccatiKit.EntireTransfer` | `SignatureVolatility/SignatureRiccatiKit/EntireTransfer.lean` |
 | open | `SignatureRiccatiKit.IntegralExpBarrier` | `SignatureVolatility/SignatureRiccatiKit/IntegralExpBarrier.lean` |
-| open | `SignatureRiccatiKit.IteratedDerivGaussian` | `SignatureVolatility/SignatureRiccatiKit/IteratedDerivGaussian.lean` |
 | open | `SignatureRiccatiKit.ItoWordTiltClosedForm` | `SignatureVolatility/SignatureRiccatiKit/ItoWordTiltClosedForm.lean` |
-| blocked | `SignatureRiccatiKit.SummableNormTermAndBound` | `SignatureVolatility/SignatureRiccatiKit/SummableNormTermAndBound.lean` |
+| open | `SignatureRiccatiKit.SummableNormTermAndBound` | `SignatureVolatility/SignatureRiccatiKit/SummableNormTermAndBound.lean` |
 
 ## Open now (Layer 0)
 
@@ -70,14 +68,13 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | `SignatureRiccatiKit.BrownianScalingShiftedExponent` | `SignatureVolatility/SignatureRiccatiKit/BrownianScalingShiftedExponent.lean` |
 | `SignatureRiccatiKit.CameronMartinC2Shift` | `SignatureVolatility/SignatureRiccatiKit/CameronMartinC2Shift.lean` |
 | `SignatureRiccatiKit.CondExpMulIndepDisintegrate` | `SignatureVolatility/SignatureRiccatiKit/CondExpMulIndepDisintegrate.lean` |
-| `SignatureRiccatiKit.CondSigPoly` | `SignatureVolatility/SignatureRiccatiKit/CondSigPoly.lean` |
 | `SignatureRiccatiKit.IntegralExpBarrier` | `SignatureVolatility/SignatureRiccatiKit/IntegralExpBarrier.lean` |
-| `SignatureRiccatiKit.IteratedDerivGaussian` | `SignatureVolatility/SignatureRiccatiKit/IteratedDerivGaussian.lean` |
 | `SignatureRiccatiKit.ItoWordTiltClosedForm` | `SignatureVolatility/SignatureRiccatiKit/ItoWordTiltClosedForm.lean` |
+| `SignatureRiccatiKit.SummableNormTermAndBound` | `SignatureVolatility/SignatureRiccatiKit/SummableNormTermAndBound.lean` |
 
 ## By group
 
-### Top-level modules — 16 hole(s)
+### Top-level modules — 14 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -203,7 +200,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | open | `SignatureRiccatiKit.CameronMartinC2Shift` | `SignatureVolatility/SignatureRiccatiKit/CameronMartinC2Shift.lean` |
 | done | `SignatureRiccatiKit.ComplexTilt` | `SignatureVolatility/SignatureRiccatiKit/ComplexTilt.lean` |
 | open | `SignatureRiccatiKit.CondExpMulIndepDisintegrate` | `SignatureVolatility/SignatureRiccatiKit/CondExpMulIndepDisintegrate.lean` |
-| open | `SignatureRiccatiKit.CondSigPoly` | `SignatureVolatility/SignatureRiccatiKit/CondSigPoly.lean` |
+| done | `SignatureRiccatiKit.CondSigPoly` | `SignatureVolatility/SignatureRiccatiKit/CondSigPoly.lean` |
 | blocked | `SignatureRiccatiKit.CondSigPolyIdentification` | `SignatureVolatility/SignatureRiccatiKit/CondSigPolyIdentification.lean` |
 | done | `SignatureRiccatiKit.CoordSemimartingale` | `SignatureVolatility/SignatureRiccatiKit/CoordSemimartingale.lean` |
 | done | `SignatureRiccatiKit.CounterexampleTensor` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleTensor.lean` |
@@ -218,13 +215,13 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `SignatureRiccatiKit.FawcettHermite` | `SignatureVolatility/SignatureRiccatiKit/FawcettHermite.lean` |
 | done | `SignatureRiccatiKit.FourierUniquenessGaussian` | `SignatureVolatility/SignatureRiccatiKit/FourierUniquenessGaussian.lean` |
 | open | `SignatureRiccatiKit.IntegralExpBarrier` | `SignatureVolatility/SignatureRiccatiKit/IntegralExpBarrier.lean` |
-| open | `SignatureRiccatiKit.IteratedDerivGaussian` | `SignatureVolatility/SignatureRiccatiKit/IteratedDerivGaussian.lean` |
+| done | `SignatureRiccatiKit.IteratedDerivGaussian` | `SignatureVolatility/SignatureRiccatiKit/IteratedDerivGaussian.lean` |
 | open | `SignatureRiccatiKit.ItoWordTiltClosedForm` | `SignatureVolatility/SignatureRiccatiKit/ItoWordTiltClosedForm.lean` |
 | done | `SignatureRiccatiKit.LintegralExpShifted` | `SignatureVolatility/SignatureRiccatiKit/LintegralExpShifted.lean` |
 | done | `SignatureRiccatiKit.Poly4ConstOfLogBdd` | `SignatureVolatility/SignatureRiccatiKit/Poly4ConstOfLogBdd.lean` |
 | done | `SignatureRiccatiKit.RiccatiExpProcess` | `SignatureVolatility/SignatureRiccatiKit/RiccatiExpProcess.lean` |
 | done | `SignatureRiccatiKit.RiccatiOp` | `SignatureVolatility/SignatureRiccatiKit/RiccatiOp.lean` |
-| blocked | `SignatureRiccatiKit.SummableNormTermAndBound` | `SignatureVolatility/SignatureRiccatiKit/SummableNormTermAndBound.lean` |
+| open | `SignatureRiccatiKit.SummableNormTermAndBound` | `SignatureVolatility/SignatureRiccatiKit/SummableNormTermAndBound.lean` |
 | done | `SignatureVolatilityModel` | `SignatureVolatility/SignatureVolatilityModel.lean` |
 | done | `SmoothIteratedIntegral` | `SignatureVolatility/SmoothIteratedIntegral.lean` |
 | done | `SmoothSignature` | `SignatureVolatility/SmoothSignature.lean` |

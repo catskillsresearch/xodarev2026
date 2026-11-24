@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-24T22:04:54Z",
-  "sorryCount": 13,
+  "updated": "2026-11-24T22:11:06Z",
+  "sorryCount": 11,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done (proved, counterexample or refuted; no sorry). Green = open. Grey = blocked. Counterexample / refutation labels are shown as text on the node.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: SignatureRiccatiKit.BrownianScalingShiftedExponent, SignatureRiccatiKit.CameronMartinC2Shift, SignatureRiccatiKit.CondExpMulIndepDisintegrate, SignatureRiccatiKit.CondSigPoly, SignatureRiccatiKit.IntegralExpBarrier, SignatureRiccatiKit.IteratedDerivGaussian, SignatureRiccatiKit.ItoWordTiltClosedForm."
+    "Open tips: SignatureRiccatiKit.BrownianScalingShiftedExponent, SignatureRiccatiKit.CameronMartinC2Shift, SignatureRiccatiKit.CondExpMulIndepDisintegrate, SignatureRiccatiKit.IntegralExpBarrier, SignatureRiccatiKit.ItoWordTiltClosedForm, SignatureRiccatiKit.SummableNormTermAndBound."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -1907,7 +1907,7 @@
       "file": "SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMprCounterexample.lean",
       "status": "blocked",
       "kind": null,
-      "blocker": "needs SignatureRiccatiKit.ItoWordTiltClosedForm, SignatureRiccatiKit.CondSigPoly, SignatureRiccatiKit.CondSigPolyIdentification, SignatureRiccatiKit.SummableNormTermAndBound, SignatureRiccatiKit.IteratedDerivGaussian, SignatureRiccatiKit.EntireTransfer, SignatureRiccatiKit.IntegralExpBarrier, SignatureRiccatiKit.CameronMartinC2Shift (+5 more)",
+      "blocker": "needs SignatureRiccatiKit.ItoWordTiltClosedForm, SignatureRiccatiKit.CondSigPolyIdentification, SignatureRiccatiKit.SummableNormTermAndBound, SignatureRiccatiKit.EntireTransfer, SignatureRiccatiKit.IntegralExpBarrier, SignatureRiccatiKit.CameronMartinC2Shift, SignatureRiccatiKit.BrownianScalingShiftedExponent, SignatureRiccatiKit.CondExpMulIndepDisintegrate (+3 more)",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -1977,11 +1977,11 @@
       "label": "C2b condSigPoly via contractions",
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit/CondSigPoly.lean",
-      "status": "open",
+      "status": "done",
       "kind": null,
       "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
-      "hasSorry": true,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -1991,7 +1991,7 @@
       "file": "SignatureVolatility/SignatureRiccatiKit/CondSigPolyIdentification.lean",
       "status": "blocked",
       "kind": null,
-      "blocker": "needs SignatureRiccatiKit.CondSigPoly, SignatureRiccatiKit.ItoWordTiltClosedForm",
+      "blocker": "needs SignatureRiccatiKit.ItoWordTiltClosedForm",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
       "hasSorry": true,
       "paperKitGoal": false
@@ -2111,7 +2111,7 @@
       "file": "SignatureVolatility/SignatureRiccatiKit/EntireTransfer.lean",
       "status": "blocked",
       "kind": null,
-      "blocker": "needs SignatureRiccatiKit.CondSigPoly, SignatureRiccatiKit.CondSigPolyIdentification, SignatureRiccatiKit.SummableNormTermAndBound, SignatureRiccatiKit.IteratedDerivGaussian",
+      "blocker": "needs SignatureRiccatiKit.CondSigPolyIdentification, SignatureRiccatiKit.SummableNormTermAndBound",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
       "hasSorry": true,
       "paperKitGoal": false
@@ -2157,11 +2157,11 @@
       "label": "C3c Gaussian product derivatives",
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit/IteratedDerivGaussian.lean",
-      "status": "open",
+      "status": "done",
       "kind": null,
       "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
-      "hasSorry": true,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -2229,9 +2229,9 @@
       "label": "C1b contraction sum bound, type \u2264 1",
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit/SummableNormTermAndBound.lean",
-      "status": "blocked",
+      "status": "open",
       "kind": null,
-      "blocker": "needs SignatureRiccatiKit.CondSigPoly",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
       "hasSorry": true,
       "paperKitGoal": false

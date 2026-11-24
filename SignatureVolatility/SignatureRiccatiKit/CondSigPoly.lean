@@ -37,7 +37,14 @@ lemma differentiable_condSigPoly {d : ℕ} (hd : 0 < d) (t : ℝ)
     (I : Word (d + 1)) :
     Differentiable ℂ (condSigPoly hd t I) := by
   unfold condSigPoly hermitePoly
-  -- Each summand is a constant times `monicHermite`, which is entire.
-  sorry
+  induction contractions I.reverse with
+  | nil => simpa using differentiable_const (0 : ℂ)
+  | cons p L ih =>
+    simp only [List.map_cons, List.sum_cons]
+    refine Differentiable.add ?_ ih
+    split_ifs
+    · exact ((differentiable_const _).mul (differentiable_const _)).mul
+        (monicHermite_differentiable _ t)
+    · exact differentiable_const 0
 
 end SignatureVolatility
