@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T10:41:21Z",
+  "updated": "2026-11-24T10:43:16Z",
   "sorryCount": 2,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -1893,12 +1893,12 @@
     },
     {
       "id": "TheoremD",
-      "label": "TheoremD",
+      "label": "Half_TheoremD + CounterExample_TheoremD",
       "section": 1,
       "file": "SignatureVolatility/TheoremD.lean",
       "status": "partly-refuted",
       "blocker": null,
-      "detail": "PARTLY REFUTED: GKW projection part proved; the residual-expansion clause assumes finite depth, which is false (vacuous). Paper kit / theorem goal.",
+      "detail": "Half_TheoremD: GKW projection part proved (theorem_D). CounterExample_TheoremD: theorem_D_residual_hypothesis_fails; the residual-expansion clause assumes finite depth, which is false (vacuous). Paper kit / theorem goal.",
       "hasSorry": false,
       "paperKitGoal": true
     },

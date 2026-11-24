@@ -70,7 +70,7 @@ REFUTED_THEOREMS: dict[str, tuple[str, str]] = {
         "model (depth = infinity), incl. Black-Scholes; Prop. 58 refuted. The 'complete iff' "
         "direction awaits a Black-Scholes completeness proof."),
     "TheoremD": ("partly-refuted",
-        "PARTLY REFUTED: GKW projection part proved; the residual-expansion clause assumes "
+        "Half_TheoremD: GKW projection part proved (theorem_D). CounterExample_TheoremD: theorem_D_residual_hypothesis_fails; the residual-expansion clause assumes "
         "finite depth, which is false (vacuous)."),
 }
 
@@ -80,6 +80,7 @@ REFUTATION_LABELS: dict[str, str] = {
     "Lemma77ShuffleEstimateFalse": "CounterExample_Lemma77 + CounterExample_Lemma78",
     "Prop58BlackScholesDepthFalse": "CounterExample_Prop58",
     "TheoremC": "CounterExample_TheoremC (pending)",
+    "TheoremD": "Half_TheoremD + CounterExample_TheoremD",
 }
 
 
