@@ -32,7 +32,10 @@ lemma condExp_mul_indep_disintegrate (M : SignatureVolatilityModel)
       fun ω =>
         Real.exp (dualPairing (counterexampleU0 M.hd lam)
           ((paperSetup B M.hT).W_hat t ω)) *
-        counterexampleV1 B M.hd (M.T - t)
+        -- After scaling the λ-exponent over `[t, T]`, the time argument of
+        -- `counterexampleV1` is `λ^{2/3}(T - t)`, not `T - t`. At the assembly
+        -- time `t = T - λ^{-2/3}(T/2)` this equals `T/2`, i.e. `v₁`.
+        counterexampleV1 B M.hd (lam ^ (2 / 3 : ℝ) * (M.T - t))
           (lam ^ (1 / 3 : ℝ) * MultiBrownian.W B t ω ⟨0, M.hd⟩) := by
   sorry
 

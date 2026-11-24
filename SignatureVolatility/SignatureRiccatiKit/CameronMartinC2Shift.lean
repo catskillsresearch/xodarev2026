@@ -31,7 +31,10 @@ combination of the shifted exponent with the Cameron–Martin weight, then
 lemma cameronMartin_C2_shift {d : ℕ} (B : MultiBrownian Ω P d) (hd : 0 < d)
     {s₀ : ℝ} (hs₀ : 0 ≤ s₀) (h : ℝ → ℝ) (x : ℝ) (Ψ : Ω → ℝ)
     (hh0 : h 0 = 0)
-    (hdiff : ContDiffOn ℝ 2 h (Set.Icc 0 s₀))
+    -- `ContDiffOn` on the closed interval does not constrain the two-sided
+    -- `deriv h s₀`. We require `C²` on an open neighborhood of `[0, s₀]`,
+    -- which the explicit shift `h(r) = x² r / (1 - x r)` on `(-∞, 0]` satisfies.
+    (hdiff : ∃ U : Set ℝ, IsOpen U ∧ Set.Icc 0 s₀ ⊆ U ∧ ContDiffOn ℝ 2 h U)
     (hpath : ∀ ω,
       let w := fun r => MultiBrownian.W B r ω ⟨0, hd⟩
       pathExponent (fun r => w r + h r) x s₀
