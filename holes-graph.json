@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T03:50:01Z",
+  "updated": "2026-11-24T03:52:15Z",
   "sorryCount": 8,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -861,8 +861,8 @@
       "file": "SignatureVolatility/ItoCalculusKit/OfMathFin.lean",
       "status": "open",
       "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Paper kit / theorem goal.",
-      "hasSorry": false,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap). Paper kit / theorem goal.",
+      "hasSorry": true,
       "paperKitGoal": true
     },
     {

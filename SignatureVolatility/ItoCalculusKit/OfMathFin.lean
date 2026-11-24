@@ -1,30 +1,24 @@
 module
 
-public import SignatureVolatility.ItoCalculusKit
 public import SignatureVolatility.ItoCalculusKit.DoleansSDE
-public import SignatureVolatility.ItoCalculusKit.ItoQuadDoleans
-public import SignatureVolatility.ItoCalculusKit.NovikovDoob
 public import SignatureVolatility.ItoCalculusKit.StoppedL2
 public import SignatureVolatility.ItoCalculusKit.DoleansStrongClass
-public import SignatureVolatility.ProlongedBrownianSetup.StratonovichOfBM
 
 
 @[expose] public section
 
-open MeasureTheory Set
+open MeasureTheory
 
 namespace SignatureVolatility
 
 /-!
 # Paper-strength `ItoCalculusKit` from MathFin (Phase 2)
 
-**Status: ASSEMBLED.** Process fields from the dyadic limUnder bridge (`MathFinBridge` /
-`ItoQuadDoleans`). `doleans_sde` (signature volatility under H1–H3 + pathwise continuity) is
-proved for `d = 0` and, for `0 < d`, for constant `σ` (Black–Scholes: pathwise Föllmer–Itô +
-almost-sure quadratic variation); the non-constant `0 < d` leaf is the axiom
-`kit_doleans_sde_of_driver`. Analytic obligations `stopped_l2_localisation` and
-`novikov_doob_l2_martingale` remain named axioms (envelope is a.e.; driver is
-everywhere-continuous with independent coordinate *processes*).
+**Status: PROVED (no axioms, no `sorry`).** Process fields from the dyadic limUnder bridge
+(`MathFinBridge` / `ItoQuadDoleans`). Every analytic field is a theorem: `doleans_sde`
+(`DoleansSDE`), `stopped_l2_localisation` (`StoppedL2`, weighted-energy uniqueness),
+`novikov_doob_l2_martingale` (`NovikovDoob`), `doleans_strong_class` (`DoleansStrongClass`).
+`#print axioms itoCalculusKit_of_mathfin` reports only `propext`, `Classical.choice`, `Quot.sound`.
 -/
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}
