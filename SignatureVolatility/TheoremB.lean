@@ -28,6 +28,7 @@ theorem theorem_B (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
           (paperSetup B M.hT).signatureFiltration M.T
           (fun t ω => ((paperSetup B M.hT).W_hat t ω).coeff I))) ∧
       (∀ u₀ : ExtTensorAlgebra.FreeTensorAlgebra (M.d + 1),
+        SignatureTransformFinite P (paperSetup B M.hT) u₀.1 →
         Nonempty (ClassicalRiccatiSolution M.w M.T
           (signatureRiccatiKit_of_setup M B).R_op u₀.1) →
         ∃ rSol : ClassicalRiccatiSolution M.w M.T

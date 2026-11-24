@@ -20,6 +20,15 @@ open MeasureTheory Set
 
 namespace SignatureVolatility
 
+/-- **Transform finiteness** (paper Theorem 44(2) hypothesis), for one initial datum `u₀`: the
+signature transform `𝔼 exp⟨u₀, Ŵ_t⟩` is finite on `[0, T]`. The paper quantifies this over *all*
+`u₀ ∈ 𝒟_fin`; that global version fails for Brownian signatures (`u₀ = c e_{11}` gives
+`𝔼 exp(c W_t² / 2) = ∞` once `c t ≥ 1`), so it is imposed per initial datum. -/
+def SignatureTransformFinite {Ω : Type*} [MeasurableSpace Ω] (ℙ : Measure Ω) {d : ℕ} {T : ℝ}
+    [IsProbabilityMeasure ℙ] (setup : ProlongedBrownianSetup Ω ℙ d T) (u₀ : ExtTensorAlgebra (d + 1)) :
+    Prop :=
+  ∀ t ∈ Icc 0 T, Integrable (fun ω => Real.exp (dualPairing u₀ (setup.W_hat t ω))) ℙ
+
 structure SignatureRiccatiKit (Ω : Type*) [MeasurableSpace Ω]
     (ℙ : Measure Ω) [IsProbabilityMeasure ℙ]
     (M : SignatureVolatilityModel) (setup : ProlongedBrownianSetup Ω ℙ M.d M.T) where
@@ -32,12 +41,13 @@ structure SignatureRiccatiKit (Ω : Type*) [MeasurableSpace Ω]
   exponential-affine conditional signature transforms `E[exp(⟨u₀, Ŵ_T⟩) | ℱ^{\widehat{W}}_t] =
   exp(⟨ψ(T - t), Ŵ_t⟩)` for `u₀ ∈ 𝒟_fin` (Theorem 4.2(4)). -/
   affine_riccati_duality : ∀ (u₀ : ExtTensorAlgebra.FreeTensorAlgebra (M.d + 1)),
-    (∃ sol : ClassicalRiccatiSolution M.w M.T R_op u₀.1,
+    SignatureTransformFinite ℙ setup u₀.1 →
+    ((∃ sol : ClassicalRiccatiSolution M.w M.T R_op u₀.1,
       ∀ t ∈ Icc 0 M.T,
         Integrable (fun ω => Real.exp (dualPairing u₀.1 (setup.W_hat M.T ω))) ℙ ∧
         ℙ[fun ω => Real.exp (dualPairing u₀.1 (setup.W_hat M.T ω)) |
           setup.signatureFiltration.σAlg t] =ᵐ[ℙ]
           fun ω => Real.exp (dualPairing (sol.ψ (M.T - t)) (setup.W_hat t ω))) ↔
-    Nonempty (ClassicalRiccatiSolution M.w M.T R_op u₀.1)
+    Nonempty (ClassicalRiccatiSolution M.w M.T R_op u₀.1))
 
 end SignatureVolatility
