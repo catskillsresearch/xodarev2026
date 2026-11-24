@@ -100,8 +100,8 @@ OPEN_PROBLEMS: dict[str, str] = {
 
 # Labels shown on unfinished nodes (always applied).
 STATUS_LABELS: dict[str, str] = {
-    "SignatureRiccatiKit.AffineRiccatiDuality": "OPEN: theorem_B_mpr via affine_riccati_duality_mpr (sorry)",
-    "TheoremBMpr": "theorem_B_mpr (via affine_riccati_duality_mpr), theorem_B",
+    "SignatureRiccatiKit.AffineRiccatiDuality": "affine_riccati_duality_mpr",
+    "TheoremBMpr": "theorem_B_mpr, theorem_B",
     "SignatureRiccatiKit.AffineRiccatiDualityMp": "affine_riccati_duality_mp (-> proved)",
     "TheoremB": "theorem_B_mp",
 }

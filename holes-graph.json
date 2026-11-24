@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T15:14:07Z",
+  "updated": "2026-11-24T15:23:00Z",
   "sorryCount": 1,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -1879,7 +1879,7 @@
     },
     {
       "id": "SignatureRiccatiKit.AffineRiccatiDuality",
-      "label": "OPEN: theorem_B_mpr via affine_riccati_duality_mpr (sorry)",
+      "label": "affine_riccati_duality_mpr",
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDuality.lean",
       "status": "open",
@@ -2059,7 +2059,7 @@
     },
     {
       "id": "TheoremBMpr",
-      "label": "theorem_B_mpr (via affine_riccati_duality_mpr), theorem_B",
+      "label": "theorem_B_mpr, theorem_B",
       "section": 1,
       "file": "SignatureVolatility/TheoremBMpr.lean",
       "status": "blocked",
