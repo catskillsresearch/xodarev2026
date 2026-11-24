@@ -101,9 +101,8 @@ theorem kit_novikov_doob_l2_martingale {T : ℝ} (B : MultiBrownian Ω P d) (hT 
     (∀ᵐ ω ∂P, IntegrableOn (fun s => (σ s ω) ^ 2) (Icc 0 T) volume) := by
   intro setup σ S h3
   have hint : ∀ᵐ ω ∂P, IntegrableOn (fun s => (σ s ω) ^ 2) (Icc 0 T) volume :=
-    ae_of_all P fun ω =>
-      ((continuousOn_sigma_of_brownian B hT w _hw ℓ _hℓ ω).pow 2).integrableOn_compact
-        isCompact_Icc
+    (ae_continuousOn_sigma_of_brownian B hT w _hw ℓ _hℓ).mono fun _ hω =>
+      (hω.pow 2).integrableOn_compact isCompact_Icc
   by_cases hd : 0 < d
   · by_cases hconst : ∃ c : ℝ, ∀ s ∈ Icc 0 T, ∀ ω, σ s ω = c
     · obtain ⟨c, hc⟩ := hconst

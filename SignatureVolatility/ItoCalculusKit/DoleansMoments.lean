@@ -39,14 +39,14 @@ theorem kitItoIntRaw_signatureSigma {T : ℝ} (B : MultiBrownian Ω P d) (hd : 0
 
 /-- Pathwise convergence of the uniform-grid Lebesgue sums of `σ²` to `∫₀ᵗ σ²`. -/
 lemma tendsto_sum_sq_signatureSigma {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T)
-    {w : Weight} (hw : HypH2 w) {ℓ : ExtTensorAlgebra (d + 1)} (hℓ : HypH1 w ℓ) {t : ℝ}
-    (ht : t ∈ Icc 0 T) (ω : Ω) :
+    {ℓ : ExtTensorAlgebra (d + 1)} {t : ℝ} (ht : t ∈ Icc 0 T) {ω : Ω}
+    (hω : ContinuousOn (fun s => signatureSigma B hT ℓ s ω) (Icc 0 T)) :
     Tendsto (fun n : ℕ => ∑ i ∈ Finset.range (n + 1),
       signatureSigma B hT ℓ ((i : ℝ) * (t / ((n + 1 : ℕ) : ℝ))) ω ^ 2 *
         (t / ((n + 1 : ℕ) : ℝ))) atTop
       (𝓝 (∫ s in (0 : ℝ)..t, (signatureSigma B hT ℓ s ω) ^ 2)) := by
   have hcont : ContinuousOn (fun s => signatureSigma B hT ℓ s ω) (Icc 0 t) :=
-    (continuousOn_sigma_of_brownian B hT w hw ℓ hℓ ω).mono (Icc_subset_Icc_right ht.2)
+    hω.mono (Icc_subset_Icc_right ht.2)
   have h := tendsto_lebRiemann_of_continuousOn ht.1 (hcont.pow 2)
   simpa only [Nat.cast_add, Nat.cast_one, Pi.pow_apply] using h
 
@@ -59,7 +59,8 @@ theorem lintegral_exp_signatureSigma_le_one {T : ℝ} (B : MultiBrownian Ω P d)
   lintegral_exp_ito_le_one B (kitDriver hd) ht.1
     (fun u h0 _ => measurable_signatureSigma_path B hT ℓ u ⟨u, h0, le_rfl⟩) q
     (kitItoIntRaw_signatureSigma B hd hT hw hℓ ht.1).1
-    (ae_of_all _ fun ω => tendsto_sum_sq_signatureSigma B hT hw hℓ ht ω)
+    ((ae_continuousOn_sigma_of_brownian B hT w hw ℓ hℓ).mono fun _ hω =>
+      tendsto_sum_sq_signatureSigma B hT ht hω)
 
 /-- **All moments of the Doléans exponential** (H1–H3): for `p ≥ 1`,
 `E exp (p (I_t - ½ ∫₀ᵗ σ²)) ≤ 1 + E exp ((2p² - p) ∫₀ᵀ σ²) < ∞`. -/
@@ -76,13 +77,14 @@ theorem lintegral_exp_mul_signatureSigma_le {T : ℝ} (B : MultiBrownian Ω P d)
   set lam : ℝ := 2 * p ^ 2 - p with hlam
   have hlam0 : 0 < lam := by nlinarith
   have hH3 := h3 lam hlam0
-  have hQle : ∀ ω, Qt ω ≤ QT ω := fun ω =>
-    intervalIntegral.integral_mono_interval le_rfl ht.1 ht.2 (ae_of_all _ fun s => sq_nonneg _)
-      (((continuousOn_sigma_of_brownian B hT w hw ℓ hℓ ω).pow 2).intervalIntegrable_of_Icc hT.le)
-  have hpt : ∀ ω, ENNReal.ofReal (Real.exp (p * (I ω - (1 / 2 : ℝ) * Qt ω))) ≤
+  have hQle : ∀ᵐ ω ∂P, Qt ω ≤ QT ω :=
+    (ae_continuousOn_sigma_of_brownian B hT w hw ℓ hℓ).mono fun ω hω =>
+      intervalIntegral.integral_mono_interval le_rfl ht.1 ht.2 (ae_of_all _ fun s => sq_nonneg _)
+        ((hω.pow 2).intervalIntegrable_of_Icc hT.le)
+  have hpt : ∀ᵐ ω ∂P, ENNReal.ofReal (Real.exp (p * (I ω - (1 / 2 : ℝ) * Qt ω))) ≤
       ENNReal.ofReal (Real.exp ((2 * p) * I ω - (2 * p) ^ 2 / 2 * Qt ω)) +
         ENNReal.ofReal (Real.exp (lam * QT ω)) := by
-    intro ω
+    filter_upwards [hQle] with ω hQω
     rw [← ENNReal.ofReal_add (Real.exp_pos _).le (Real.exp_pos _).le]
     refine ENNReal.ofReal_le_ofReal ?_
     set x := Real.exp (p * I ω - p ^ 2 * Qt ω)
@@ -96,7 +98,7 @@ theorem lintegral_exp_mul_signatureSigma_le {T : ℝ} (B : MultiBrownian Ω P d)
       refine Real.exp_le_exp.mpr ?_
       have : (↑(2 : ℕ) : ℝ) * ((p ^ 2 - p / 2) * Qt ω) = lam * Qt ω := by push_cast; ring
       rw [this]
-      exact mul_le_mul_of_nonneg_left (hQle ω) hlam0.le
+      exact mul_le_mul_of_nonneg_left hQω hlam0.le
     rw [hxy, hx2]
     have hx0 : 0 ≤ x := (Real.exp_pos _).le
     have hy0 : 0 ≤ y := (Real.exp_pos _).le
@@ -105,7 +107,7 @@ theorem lintegral_exp_mul_signatureSigma_le {T : ℝ} (B : MultiBrownian Ω P d)
     ENNReal.measurable_ofReal.comp_aemeasurable hH3.aemeasurable
   calc ∫⁻ ω, ENNReal.ofReal (Real.exp (p * (I ω - (1 / 2 : ℝ) * Qt ω))) ∂P
       ≤ ∫⁻ ω, (ENNReal.ofReal (Real.exp ((2 * p) * I ω - (2 * p) ^ 2 / 2 * Qt ω)) +
-          ENNReal.ofReal (Real.exp (lam * QT ω))) ∂P := lintegral_mono hpt
+          ENNReal.ofReal (Real.exp (lam * QT ω))) ∂P := lintegral_mono_ae hpt
     _ = ∫⁻ ω, ENNReal.ofReal (Real.exp ((2 * p) * I ω - (2 * p) ^ 2 / 2 * Qt ω)) ∂P +
           ∫⁻ ω, ENNReal.ofReal (Real.exp (lam * QT ω)) ∂P := lintegral_add_right' _ hmeasR
     _ ≤ 1 + ENNReal.ofReal (∫ ω, Real.exp (lam * QT ω) ∂P) := by
