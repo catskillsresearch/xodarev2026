@@ -109,6 +109,7 @@ ExtTensorAlgebra.TensorExp -hard-> ExtTensorAlgebra.TensorExpShuffle
 ExtTensorAlgebra.TensorExpLevelNorm -hard-> ExtTensorAlgebra.TensorExpLipschitz
 ExtTensorAlgebra.TensorExpLevelNorm -hard-> ProlongedBrownianSetup.SignatureOfBM
 ExtTensorAlgebra.TensorExpNeg -hard-> ProlongedBrownianSetup.SignatureOfBM
+ExtTensorAlgebra.TensorExpShuffle -hard-> ProlongedBrownianSetup.PaperSigChen
 ExtTensorAlgebra.TensorExpShuffle -hard-> ProlongedBrownianSetup.Sig2StratDyadic
 ExtTensorAlgebra.TensorExpShuffle -hard-> ProlongedBrownianSetup.SignatureOfBM
 GKWDecompositionSetup -hard-> GKWDecompositionSetup.OfPFS
