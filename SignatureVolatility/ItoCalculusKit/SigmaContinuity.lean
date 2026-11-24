@@ -94,4 +94,13 @@ theorem continuousOn_sigma_of_brownian {T : ℝ} (B : MultiBrownian Ω P d) (hT 
         exact div_le_div_of_nonneg_right (pow_le_pow_left₀ hi0 (hR s hs) n) (Nat.cast_nonneg _)
     _ = C * (w n * (R ^ n / (n.factorial : ℝ))) := by ring
 
+/-- **Almost-sure continuity of `σ = ⟨ℓ, Ŵ⟩`** on `[0, T]` (paper form: the signature
+volatility has continuous paths almost surely). Downstream code should consume this form. -/
+theorem ae_continuousOn_sigma_of_brownian {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T)
+    (w : Weight) (hw : HypH2 w) (ℓ : ExtTensorAlgebra (d + 1)) (hℓ : HypH1 w ℓ) :
+    ∀ᵐ ω ∂P, ContinuousOn
+      (fun s => dualPairing ℓ ((prolongedBrownianSetup_stratonovich_of_brownian B hT).W_hat s ω))
+      (Icc 0 T) :=
+  ae_of_all P fun ω => continuousOn_sigma_of_brownian B hT w hw ℓ hℓ ω
+
 end SignatureVolatility

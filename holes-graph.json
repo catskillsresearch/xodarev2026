@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-24T03:58:03Z",
-  "sorryCount": 6,
+  "updated": "2026-11-24T04:51:56Z",
+  "sorryCount": 7,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, SignatureRiccatiKit.OfSetup, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done. Green = open. Grey = blocked.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: PriceFiltrationSignatureSpace.OfMarket, SignatureRiccatiKit.OfSetup."
+    "Open tips: PriceFiltrationSignatureSpace.OfMarket, ProlongedBrownianSetup.PaperSig, SignatureRiccatiKit.OfSetup."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -1377,6 +1377,17 @@
       "section": 4,
       "file": "SignatureVolatility/ProlongedBrownianSetup/OfBrownian.lean",
       "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ProlongedBrownianSetup.PaperSig",
+      "label": "ProlongedBrownianSetup.PaperSig",
+      "section": 4,
+      "file": "SignatureVolatility/ProlongedBrownianSetup/PaperSig.lean",
+      "status": "open",
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
@@ -2963,6 +2974,11 @@
     {
       "from": "TimeReindex",
       "to": "ProlongedBrownianSetup.OfBrownian",
+      "kind": "hard"
+    },
+    {
+      "from": "ProlongedBrownianSetup.Sig2StratAdapted",
+      "to": "ProlongedBrownianSetup.PaperSig",
       "kind": "hard"
     },
     {

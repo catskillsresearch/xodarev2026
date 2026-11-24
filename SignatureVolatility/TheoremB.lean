@@ -42,7 +42,7 @@ theorem theorem_B (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
                 ((paperSetup B M.hT).W_hat t ω))) :=
   theorem_B_of_Setup_Ito_Riccati_Kit M (paperSetup B M.hT)
     (itoCalculusKit_of_mathfin B M.hT) h3
-    (ae_of_all P fun ω => continuousOn_sigma_of_brownian B M.hT M.w M.h2 M.ℓ M.h1 ω)
+    (ae_continuousOn_sigma_of_brownian B M.hT M.w M.h2 M.ℓ M.h1)
     (signatureRiccatiKit_of_setup M B)
 
 end SignatureVolatility

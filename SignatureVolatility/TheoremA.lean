@@ -31,6 +31,6 @@ theorem theorem_A (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
         ∀ t ∈ Icc 0 M.T, ∀ᵐ ω ∂P, S_tilde t ω = sol.S t ω :=
   theorem_A_of_Brownian_Setup_Ito_Kit M (paperSetup B M.hT)
     (itoCalculusKit_of_mathfin B M.hT) h3
-    (ae_of_all P fun ω => continuousOn_sigma_of_brownian B M.hT M.w M.h2 M.ℓ M.h1 ω)
+    (ae_continuousOn_sigma_of_brownian B M.hT M.w M.h2 M.ℓ M.h1)
 
 end SignatureVolatility

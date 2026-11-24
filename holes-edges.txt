@@ -371,6 +371,7 @@ ProlongedBrownianSetup.Sig2Strat -hard-> ProlongedBrownianSetup.Sig2StratMoments
 ProlongedBrownianSetup.Sig2Strat -hard-> ProlongedBrownianSetup.StratonovichOfBM
 ProlongedBrownianSetup.Sig2StratAdapted -hard-> ItoCalculusKit.JointPast
 ProlongedBrownianSetup.Sig2StratAdapted -hard-> ItoCalculusKit.MathFinBridge
+ProlongedBrownianSetup.Sig2StratAdapted -hard-> ProlongedBrownianSetup.PaperSig
 ProlongedBrownianSetup.Sig2StratChenShuffle -hard-> ProlongedBrownianSetup.StratonovichOfBM
 ProlongedBrownianSetup.Sig2StratDyadic -hard-> ProlongedBrownianSetup.Sig2StratChenShuffle
 ProlongedBrownianSetup.Sig2StratMoments -hard-> ProlongedBrownianSetup.StratonovichOfBM
