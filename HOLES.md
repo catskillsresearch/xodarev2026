@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-24T08:07:56Z
-**Holes:** 47 open+blocked · 1 open · 46 blocked · 136 done · 5 file(s) with `sorry`.
+**Updated:** 2026-11-24T08:16:14Z
+**Holes:** 44 open+blocked · 1 open · 43 blocked · 139 done · 5 file(s) with `sorry`.
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
 
@@ -46,7 +46,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 
 ## By group
 
-### Top-level modules — 43 hole(s)
+### Top-level modules — 40 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -88,18 +88,18 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `ItoCalculusKit.EvenTransform` | `SignatureVolatility/ItoCalculusKit/EvenTransform.lean` |
 | done | `ItoCalculusKit.ExpSupermartingale` | `SignatureVolatility/ItoCalculusKit/ExpSupermartingale.lean` |
 | done | `ItoCalculusKit.FourthMoment` | `SignatureVolatility/ItoCalculusKit/FourthMoment.lean` |
-| blocked | `ItoCalculusKit.FrozenIncrement4` | `SignatureVolatility/ItoCalculusKit/FrozenIncrement4.lean` |
+| done | `ItoCalculusKit.FrozenIncrement4` | `SignatureVolatility/ItoCalculusKit/FrozenIncrement4.lean` |
 | blocked | `ItoCalculusKit.FrozenIncrement8` | `SignatureVolatility/ItoCalculusKit/FrozenIncrement8.lean` |
 | blocked | `ItoCalculusKit.FrozenOrthogonal` | `SignatureVolatility/ItoCalculusKit/FrozenOrthogonal.lean` |
 | done | `ItoCalculusKit.GBMEnvelope` | `SignatureVolatility/ItoCalculusKit/GBMEnvelope.lean` |
 | done | `ItoCalculusKit.GBMMartingale` | `SignatureVolatility/ItoCalculusKit/GBMMartingale.lean` |
-| blocked | `ItoCalculusKit.GridChange` | `SignatureVolatility/ItoCalculusKit/GridChange.lean` |
+| done | `ItoCalculusKit.GridChange` | `SignatureVolatility/ItoCalculusKit/GridChange.lean` |
 | blocked | `ItoCalculusKit.GridDoob` | `SignatureVolatility/ItoCalculusKit/GridDoob.lean` |
 | blocked | `ItoCalculusKit.HolderPath` | `SignatureVolatility/ItoCalculusKit/HolderPath.lean` |
 | done | `ItoCalculusKit.ItoIncrement` | `SignatureVolatility/ItoCalculusKit/ItoIncrement.lean` |
 | blocked | `ItoCalculusKit.ItoIncrement8` | `SignatureVolatility/ItoCalculusKit/ItoIncrement8.lean` |
 | done | `ItoCalculusKit.ItoIncrementEven` | `SignatureVolatility/ItoCalculusKit/ItoIncrementEven.lean` |
-| blocked | `ItoCalculusKit.ItoOrthogonal` | `SignatureVolatility/ItoCalculusKit/ItoOrthogonal.lean` |
+| done | `ItoCalculusKit.ItoOrthogonal` | `SignatureVolatility/ItoCalculusKit/ItoOrthogonal.lean` |
 | blocked | `ItoCalculusKit.ItoQuadDoleans` | `SignatureVolatility/ItoCalculusKit/ItoQuadDoleans.lean` |
 | done | `ItoCalculusKit.JointPast` | `SignatureVolatility/ItoCalculusKit/JointPast.lean` |
 | done | `ItoCalculusKit.KitRaw` | `SignatureVolatility/ItoCalculusKit/KitRaw.lean` |

@@ -186,9 +186,10 @@ ItoCalculusKit.GBMMartingale -hard-> ItoCalculusKit.GBMEnvelope
 ItoCalculusKit.GridChange -hard-> ItoCalculusKit.ItoOrthogonal
 ItoCalculusKit.GridDoob -hard-> ItoCalculusKit.DoleansErrorPathwise
 ItoCalculusKit.HolderPath -hard-> ItoCalculusKit.SubseqUniform
+ItoCalculusKit.ItoIncrement -hard-> ItoCalculusKit.GridChange
 ItoCalculusKit.ItoIncrement -hard-> ItoCalculusKit.ItoIncrement8
 ItoCalculusKit.ItoIncrement -hard-> ItoCalculusKit.ItoIncrementEven
-ItoCalculusKit.ItoIncrement8 -hard-> ItoCalculusKit.GridChange
+ItoCalculusKit.ItoIncrement8 -hard-> ItoCalculusKit.FrozenIncrement8
 ItoCalculusKit.ItoIncrement8 -hard-> ItoCalculusKit.SigmaHolder8
 ItoCalculusKit.ItoIncrementEven -hard-> ItoCalculusKit.LebIncrementEven
 ItoCalculusKit.ItoOrthogonal -hard-> ItoCalculusKit.FrozenIncrement4

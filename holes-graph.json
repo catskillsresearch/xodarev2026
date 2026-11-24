@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-24T08:07:56Z",
-  "sorryCount": 47,
+  "updated": "2026-11-24T08:16:14Z",
+  "sorryCount": 44,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -661,8 +661,8 @@
       "label": "ItoCalculusKit.FrozenIncrement4",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/FrozenIncrement4.lean",
-      "status": "blocked",
-      "blocker": "needs ItoCalculusKit.ItoOrthogonal",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -673,7 +673,7 @@
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/FrozenIncrement8.lean",
       "status": "blocked",
-      "blocker": "needs ItoCalculusKit.ItoOrthogonal",
+      "blocker": "needs ItoCalculusKit.ItoIncrement8",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -716,8 +716,8 @@
       "label": "ItoCalculusKit.GridChange",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/GridChange.lean",
-      "status": "blocked",
-      "blocker": "needs ItoCalculusKit.ItoIncrement8",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -782,8 +782,8 @@
       "label": "ItoCalculusKit.ItoOrthogonal",
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/ItoOrthogonal.lean",
-      "status": "blocked",
-      "blocker": "needs ItoCalculusKit.GridChange",
+      "status": "done",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -1069,7 +1069,7 @@
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/StoppedRaw.lean",
       "status": "blocked",
-      "blocker": "needs ItoCalculusKit.MathFinBridgeSetup, ItoCalculusKit.FrozenIncrement4, ItoCalculusKit.DoleansEnvelope",
+      "blocker": "needs ItoCalculusKit.MathFinBridgeSetup, ItoCalculusKit.DoleansEnvelope",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -2510,6 +2510,11 @@
       "kind": "hard"
     },
     {
+      "from": "ItoCalculusKit.ItoIncrement8",
+      "to": "ItoCalculusKit.FrozenIncrement8",
+      "kind": "hard"
+    },
+    {
       "from": "ItoCalculusKit.FrozenIncrement8",
       "to": "ItoCalculusKit.FrozenOrthogonal",
       "kind": "hard"
@@ -2535,7 +2540,7 @@
       "kind": "hard"
     },
     {
-      "from": "ItoCalculusKit.ItoIncrement8",
+      "from": "ItoCalculusKit.ItoIncrement",
       "to": "ItoCalculusKit.GridChange",
       "kind": "hard"
     },

@@ -1,6 +1,7 @@
 module
 
 public import SignatureVolatility.ItoCalculusKit.ItoOrthogonal
+public import SignatureVolatility.ItoCalculusKit.ItoIncrement8
 
 @[expose] public section
 
@@ -17,6 +18,63 @@ For an adapted `L⁸`-Hölder integrand `H` and `0 ≤ u ≤ v ≤ t`,
 -/
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}
+
+section FineFatou8
+
+variable (B : MultiBrownian Ω P d) (k : Fin d)
+
+/-- **Fatou along fine grids (eighth moments).** -/
+theorem integral_pow_eight_le_of_fineSums {v c : ℝ} (hv : 0 < v) (D : ℝ → Ω → ℝ)
+    (hD : ∀ s, 0 ≤ s → s < v → Measurable[(pathFiltration B).σAlg s] (D s) ∧ MemLp (D s) 8 P)
+    (hc : ∀ s, 0 ≤ s → s < v → root4 (∫ ω, D s ω ^ 8 ∂P) ≤ c) {X : Ω → ℝ}
+    (hX : AEStronglyMeasurable X P)
+    (hlim : ∀ᵐ ω ∂P, Tendsto (fun M : ℕ => ∑ i ∈ Finset.range (M + 1),
+      D ((i : ℝ) * (v / ((M + 1 : ℕ) : ℝ))) ω *
+        wnnIncr B k ((i : ℝ) * (v / ((M + 1 : ℕ) : ℝ)))
+          (((i + 1 : ℕ) : ℝ) * (v / ((M + 1 : ℕ) : ℝ))) ω) atTop (𝓝 (X ω))) :
+    Integrable (fun ω => X ω ^ 8) P ∧
+      ∫ ω, X ω ^ 8 ∂P ≤ (14 * root4 gauss8Const * (c * v)) ^ 4 := by
+  set δ : ℕ → ℝ := fun M => v / ((M + 1 : ℕ) : ℝ) with hδdef
+  have hδ : ∀ M, 0 < δ M := fun M => div_pos hv (by positivity)
+  set F : ℕ → Ω → ℝ := fun M ω => ∑ i ∈ Finset.range (M + 1),
+    D ((i : ℝ) * δ M) ω * wnnIncr B k ((i : ℝ) * δ M) (((i + 1 : ℕ) : ℝ) * δ M) ω with hFdef
+  have hFL : ∀ M, MemLp (F M) 8 P := by
+    intro M
+    have h := memLp_finsetSum' (p := 8) (μ := P) (Finset.range (M + 1))
+      (f := fun i ω => D ((i : ℝ) * δ M) ω *
+        wnnIncr B k ((i : ℝ) * δ M) (((i + 1 : ℕ) : ℝ) * δ M) ω) fun i hi => by
+      have hg := fine_grid_mem hv M i (Finset.mem_range.mp hi)
+      exact memLp_mul_wnnIncr_eight B k hg.1 (fine_grid_mono hv M (Nat.le_succ i))
+        (hD _ hg.1 hg.2).1 (hD _ hg.1 hg.2).2
+    have hfun : (∑ i ∈ Finset.range (M + 1), fun ω => D ((i : ℝ) * δ M) ω *
+        wnnIncr B k ((i : ℝ) * δ M) (((i + 1 : ℕ) : ℝ) * δ M) ω) = F M := by
+      funext ω; simp [hFdef]
+    rwa [hfun] at h
+  have hc0 : 0 ≤ c := (root4_nonneg _).trans (hc 0 le_rfl hv)
+  have hbound : ∀ M, ∫ ω, F M ω ^ 8 ∂P ≤ (14 * root4 gauss8Const * (c * v)) ^ 4 := by
+    intro M
+    have hT := integral_transform_pow_eight_le B k (τ := fun i : ℕ => (i : ℝ) * δ M)
+      (by simp) (fine_grid_mono hv M) (fun i => D ((i : ℝ) * δ M)) (M + 1)
+      (fun j hj => (hD _ (fine_grid_mem hv M j hj).1 (fine_grid_mem hv M j hj).2).1)
+      (fun j hj => (hD _ (fine_grid_mem hv M j hj).1 (fine_grid_mem hv M j hj).2).2)
+    refine hT.trans ?_
+    have hg8 := root4_nonneg gauss8Const
+    refine pow_le_pow_left₀ (mul_nonneg (by positivity) (Finset.sum_nonneg fun i _ =>
+      mul_nonneg (root4_nonneg _) (sub_nonneg.mpr (fine_grid_mono hv M (Nat.le_succ i))))) ?_ 4
+    refine mul_le_mul_of_nonneg_left ?_ (by positivity)
+    calc ∑ i ∈ Finset.range (M + 1), root4 (∫ ω, D ((i : ℝ) * δ M) ω ^ 8 ∂P) *
+          (((i + 1 : ℕ) : ℝ) * δ M - (i : ℝ) * δ M)
+        ≤ ∑ i ∈ Finset.range (M + 1), c * (((i + 1 : ℕ) : ℝ) * δ M - (i : ℝ) * δ M) :=
+          Finset.sum_le_sum fun i hi => mul_le_mul_of_nonneg_right
+            (hc _ (fine_grid_mem hv M i (Finset.mem_range.mp hi)).1
+              (fine_grid_mem hv M i (Finset.mem_range.mp hi)).2)
+            (sub_nonneg.mpr (fine_grid_mono hv M (Nat.le_succ i)))
+      _ = c * v := fine_grid_sum M
+  exact integral_pow_eight_le_of_tendsto hX (fun M => (hFL M).aestronglyMeasurable.aemeasurable)
+    hlim (fun M => integrable_pow_of_memLp_eight (hFL M) (k := 8) le_rfl) hbound
+    tendsto_const_nhds
+
+end FineFatou8
 
 section Frozen8
 
