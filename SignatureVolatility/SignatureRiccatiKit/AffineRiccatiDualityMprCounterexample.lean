@@ -20,17 +20,19 @@ public import SignatureVolatility.RightShift
 public import SignatureVolatility.ShuffleFinite
 public import SignatureVolatility.StratonovichHalfLaplacian
 public import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
+public import Mathlib.Analysis.Complex.PhragmenLindelof
+public import Mathlib.Analysis.Complex.Liouville
+public import Mathlib.Analysis.Calculus.DSlope
 
 /-!
 # Proposed counterexample to `affine_riccati_duality_mpr`
 
 Source: Gemini Carbon (outside opinion, 2026-11-24), filled-in Lean (Parts 1–5).
-Parts 1–3 are intended to be sorry-free. Part 5 assembles
-`not_affine_riccati_duality_mpr` from four analytic pillars (A–D), which remain
-`sorry`. This file has not yet been independently proof-checked; names and
-tactics are being aligned with the library definitions.
+Parts 1–3 are sorry-free. Pillar D is sorry-free. Part 5 assembles
+`not_affine_riccati_duality_mpr` from pillars A–D; A, B and C remain
+`sorry`. This file has not yet been independently proof-checked.
 
-This module is not a completed refutation until A–D are proved.
+This module is not a completed refutation until A–C are proved as well.
 -/
 
 @[expose] public section
@@ -682,6 +684,200 @@ lemma exists_entire_expTypeOne_of_memTw (M : SignatureVolatilityModel)
       (∀ᵐ x : ℝ ∂volume, G x = (f x : ℂ)) := by
   sorry
 
+section PillarD
+open Complex Metric
+
+/-! ### Helpers for Pillar D -/
+
+/-- On `[0, ∞)`, `1 + r ^ 4` is dominated by `C * exp (ε * r)` for every `ε > 0`. -/
+private lemma one_add_rpow4_le_exp {ε : ℝ} (hε : 0 < ε) :
+    ∃ C : ℝ, 0 ≤ C ∧ ∀ r : ℝ, 0 ≤ r → 1 + r ^ 4 ≤ C * Real.exp (ε * r) := by
+  have hpow : Tendsto (fun r : ℝ => r ^ 4 * Real.exp (-(ε * r))) atTop (𝓝 0) := by
+    have h0 := Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero 4
+    have hscale : Tendsto (fun r : ℝ => ε * r) atTop atTop := tendsto_id.const_mul_atTop hε
+    have heq : (fun r : ℝ => r ^ 4 * Real.exp (-(ε * r))) =
+        fun r => (ε ^ 4)⁻¹ * ((ε * r) ^ 4 * Real.exp (-(ε * r))) := by
+      funext r
+      have hr : r ^ 4 = (ε ^ 4)⁻¹ * (ε * r) ^ 4 := by
+        rw [← inv_pow, ← mul_pow, inv_mul_cancel_left₀ hε.ne']
+      rw [hr, mul_assoc]
+    simpa [heq] using (h0.comp hscale).const_mul ((ε ^ 4)⁻¹)
+  have hone : Tendsto (fun r : ℝ => Real.exp (-(ε * r))) atTop (𝓝 0) := by
+    have hneg : (fun r : ℝ => Real.exp (-(ε * r))) = fun r => Real.exp (-ε * r) :=
+      funext fun _ => by ring_nf
+    rw [hneg]
+    exact Real.tendsto_exp_atBot.comp
+      (tendsto_id.const_mul_atTop_of_neg (neg_lt_zero.mpr hε))
+  have hlim : Tendsto (fun r : ℝ => (1 + r ^ 4) * Real.exp (-(ε * r))) atTop (𝓝 0) := by
+    simpa [add_mul] using hone.add hpow
+  have hlt : ∀ᶠ r : ℝ in atTop, (1 + r ^ 4) * Real.exp (-(ε * r)) < 1 := by
+    filter_upwards [hlim.eventually (Metric.ball_mem_nhds (0 : ℝ) one_pos),
+      eventually_ge_atTop (0 : ℝ)] with r hr hr0
+    have hnn : 0 ≤ (1 + r ^ 4) * Real.exp (-(ε * r)) :=
+      mul_nonneg (add_nonneg zero_le_one (pow_nonneg hr0 4)) (Real.exp_nonneg _)
+    have habs : |(1 + r ^ 4) * Real.exp (-(ε * r))| < 1 := by
+      simpa [Real.dist_eq, sub_zero] using hr
+    rwa [abs_of_nonneg hnn] at habs
+  rw [Filter.eventually_atTop] at hlt
+  obtain ⟨R, hR⟩ := hlt
+  set R0 := max R 0
+  refine ⟨1 + R0 ^ 4,
+    add_nonneg zero_le_one (pow_nonneg (le_max_of_le_right le_rfl) 4), fun r hr => ?_⟩
+  rcases le_or_gt r R0 with hle | hgt
+  · have hmono : 1 + r ^ 4 ≤ 1 + R0 ^ 4 := by gcongr
+    exact hmono.trans
+      (le_mul_of_one_le_right
+        (add_nonneg zero_le_one (pow_nonneg (le_max_of_le_right le_rfl) 4))
+        (Real.one_le_exp (mul_nonneg hε.le hr)))
+  · have hRR : R ≤ r := (le_max_left R 0).trans hgt.le
+    have hle_exp : 1 + r ^ 4 ≤ Real.exp (ε * r) := by
+      calc 1 + r ^ 4
+          = ((1 + r ^ 4) * Real.exp (-(ε * r))) * Real.exp (ε * r) := by
+              rw [mul_assoc, Real.exp_neg, inv_mul_cancel₀ (Real.exp_pos _).ne', mul_one]
+        _ ≤ 1 * Real.exp (ε * r) := by gcongr; exact le_of_lt (hR r hRR)
+        _ = Real.exp (ε * r) := one_mul _
+    exact hle_exp.trans
+      (le_mul_of_one_le_left (Real.exp_nonneg _)
+        (le_add_of_nonneg_right (pow_nonneg (le_max_of_le_right le_rfl) 4)))
+
+/-- Exponential type zero is preserved by precomposition with multiplication by `I` or `-I`. -/
+private lemma expTypeZero_comp_mul_I {H : ℂ → ℂ} {u : ℂ} (hu : u = I ∨ u = -I)
+    (htype0 : ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, 0 ≤ C ∧ ∀ z : ℂ, ‖H z‖ ≤ C * Real.exp (ε * ‖z‖)) :
+    ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, 0 ≤ C ∧ ∀ z : ℂ, ‖H (u * z)‖ ≤ C * Real.exp (ε * ‖z‖) := by
+  intro ε hε
+  obtain ⟨C, hC0, hC⟩ := htype0 ε hε
+  have hu1 : ‖u‖ = 1 := by rcases hu with rfl | rfl <;> simp
+  refine ⟨C, hC0, fun z => ?_⟩
+  simpa [norm_mul, hu1, one_mul] using hC (u * z)
+
+/-- After rotating so the real axis becomes the imaginary axis, Phragmén–Lindelöf in the
+right half-plane (applied to a damped function) lifts the real bound of `H`. -/
+private lemma norm_le_mul_exp_of_damped_PL {H : ℂ → ℂ} (hH : Differentiable ℂ H)
+    (htype0 : ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, 0 ≤ C ∧ ∀ z : ℂ, ‖H z‖ ≤ C * Real.exp (ε * ‖z‖))
+    {M : ℝ} (_hM0 : 0 ≤ M) (hM : ∀ x : ℝ, ‖H x‖ ≤ M) {u : ℂ} (hu : u = I ∨ u = -I)
+    {z : ℂ} (hz : 0 ≤ z.re) {η : ℝ} (hη : 0 < η) :
+    ‖H (u * z)‖ ≤ M * Real.exp (η * z.re) := by
+  set K : ℂ → ℂ := fun ζ => H (u * ζ)
+  have hK : Differentiable ℂ K := hH.comp (differentiable_id.const_mul u)
+  have hK_type0 := expTypeZero_comp_mul_I (H := H) hu htype0
+  set g : ℂ → ℂ := fun ζ => exp ((-η : ℂ) * ζ) * K ζ
+  have hg : Differentiable ℂ g := (differentiable_id.const_mul _).cexp.mul hK
+  have hgnorm : ∀ ζ : ℂ, ‖g ζ‖ = Real.exp (-(η * ζ.re)) * ‖K ζ‖ := by
+    intro ζ
+    rw [norm_mul, norm_exp]
+    have : ((-η : ℂ) * ζ).re = -(η * ζ.re) := by
+      simp [mul_re, ofReal_re, ofReal_im]
+    rw [this]
+  obtain ⟨C₁, hC₁0, hC₁⟩ := hK_type0 1 one_pos
+  have hexp : ∃ c < (2 : ℝ), ∃ B,
+      g =O[Bornology.cobounded ℂ ⊓ 𝓟 {ζ : ℂ | 0 < ζ.re}]
+        fun ζ => Real.exp (B * ‖ζ‖ ^ c) := by
+    refine ⟨(1 : ℝ), (by norm_num : (1 : ℝ) < 2), (1 : ℝ), ?_⟩
+    refine Asymptotics.IsBigO.of_bound C₁ ?_
+    rw [Filter.eventually_inf_principal]
+    refine Eventually.of_forall fun ζ (hζ : 0 < ζ.re) => ?_
+    have hexp1 : ‖Real.exp (1 * ‖ζ‖ ^ (1 : ℝ))‖ = Real.exp ‖ζ‖ := by
+      rw [one_mul, Real.rpow_one, Real.norm_of_nonneg (Real.exp_nonneg _)]
+    have hle : Real.exp (-(η * ζ.re)) ≤ 1 :=
+      Real.exp_le_one_iff.mpr (neg_nonpos.mpr (mul_nonneg hη.le hζ.le))
+    rw [hexp1, hgnorm]
+    exact (mul_le_of_le_one_left (norm_nonneg _) hle).trans (by simpa [one_mul] using hC₁ ζ)
+  have hre : Tendsto (fun x : ℝ => g x) atTop (𝓝 0) := by
+    rw [tendsto_zero_iff_norm_tendsto_zero]
+    obtain ⟨Cη, hCη0, hCη⟩ := hK_type0 (η / 2) (half_pos hη)
+    have hbound : ∀ᶠ x : ℝ in atTop, ‖g x‖ ≤ Cη * Real.exp (-(η / 2) * x) := by
+      filter_upwards [eventually_ge_atTop (0 : ℝ)] with x hx
+      have hKx : ‖K x‖ ≤ Cη * Real.exp ((η / 2) * x) := by
+        have := hCη (x : ℂ)
+        simpa [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hx] using this
+      rw [hgnorm, ofReal_re]
+      calc Real.exp (-(η * x)) * ‖K x‖
+          ≤ Real.exp (-(η * x)) * (Cη * Real.exp ((η / 2) * x)) := by gcongr
+        _ = Cη * (Real.exp (-(η * x)) * Real.exp ((η / 2) * x)) := by ring
+        _ = Cη * Real.exp (-(η / 2) * x) := by
+            rw [← Real.exp_add]
+            congr 2
+            ring
+    have hzero : Tendsto (fun x : ℝ => Cη * Real.exp (-(η / 2) * x)) atTop (𝓝 0) := by
+      have hscale : Tendsto (fun x : ℝ => -(η / 2) * x) atTop atBot :=
+        tendsto_id.const_mul_atTop_of_neg (neg_lt_zero.mpr (half_pos hη))
+      simpa [Function.comp_def] using
+        tendsto_const_nhds.mul (Real.tendsto_exp_atBot.comp hscale)
+    exact tendsto_of_tendsto_of_tendsto_of_le_of_le'
+      tendsto_const_nhds hzero (Eventually.of_forall fun _ => norm_nonneg _) hbound
+  have him : ∀ t : ℝ, ‖g (t * I)‖ ≤ M := by
+    intro t
+    have hre0 : (t * I).re = 0 := by simp
+    rw [hgnorm, hre0, mul_zero, neg_zero, Real.exp_zero, one_mul]
+    -- `K (t * I) = H (u * t * I)` and `u * I` is real of modulus 1.
+    have hKti : K (t * I) = H ((u * I) * (t : ℂ)) := by
+      simp only [K]
+      rw [mul_comm (t : ℂ) I, mul_assoc]
+    have huI : u * I = -1 ∨ u * I = 1 := by
+      rcases hu with rfl | rfl <;> simp [I_mul_I]
+    rw [hKti]
+    rcases huI with h | h
+    · rw [h, neg_one_mul, ← ofReal_neg]
+      simpa using hM (-t)
+    · rw [h, one_mul]
+      simpa using hM t
+  have hg_le : ‖g z‖ ≤ M :=
+    PhragmenLindelof.right_half_plane_of_tendsto_zero_on_real hg.diffContOnCl hexp hre him hz
+  have hKz : ‖K z‖ = Real.exp (η * z.re) * ‖g z‖ := by
+    rw [hgnorm]
+    have hpos : Real.exp (-(η * z.re)) * Real.exp (η * z.re) = 1 := by
+      rw [← Real.exp_add, neg_add_cancel, Real.exp_zero]
+    calc ‖K z‖
+        = (Real.exp (-(η * z.re)) * ‖K z‖) * Real.exp (η * z.re) := by
+            rw [mul_assoc, mul_comm (‖K z‖), ← mul_assoc, hpos, one_mul]
+      _ = Real.exp (η * z.re) * (Real.exp (-(η * z.re)) * ‖K z‖) := by ring
+  rw [hKz, mul_comm M]
+  exact mul_le_mul_of_nonneg_left hg_le (Real.exp_nonneg _)
+
+/-- An entire function of exponential type zero that is bounded on the real line
+is bounded on the whole plane by the same constant. -/
+private lemma entire_expTypeZero_bounded_of_bounded_on_real {H : ℂ → ℂ}
+    (hH : Differentiable ℂ H)
+    (htype0 : ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, 0 ≤ C ∧ ∀ z : ℂ, ‖H z‖ ≤ C * Real.exp (ε * ‖z‖))
+    {M : ℝ} (hM0 : 0 ≤ M) (hM : ∀ x : ℝ, ‖H x‖ ≤ M) :
+    ∀ z : ℂ, ‖H z‖ ≤ M := by
+  have hhalf : ∀ u : ℂ, u = I ∨ u = -I → ∀ z : ℂ, 0 ≤ z.re → ‖H (u * z)‖ ≤ M := by
+    intro u hu z hz
+    have hdamped : ∀ η : ℝ, 0 < η → ‖H (u * z)‖ ≤ M * Real.exp (η * z.re) :=
+      fun η hη => norm_le_mul_exp_of_damped_PL hH htype0 hM0 hM hu hz hη
+    have hlim : Tendsto (fun η : ℝ => M * Real.exp (η * z.re)) (𝓝[>] 0) (𝓝 M) := by
+      have hcont : Continuous (fun η : ℝ => M * Real.exp (η * z.re)) := by fun_prop
+      simpa [Real.exp_zero, mul_one] using (hcont.tendsto 0).mono_left nhdsWithin_le_nhds
+    exact le_of_tendsto_of_tendsto tendsto_const_nhds hlim
+      (eventually_of_mem self_mem_nhdsWithin fun η hη => hdamped η (mem_Ioi.mp hη))
+  intro w
+  rcases le_or_gt 0 w.im with him | him
+  · -- upper half-plane (including the real axis): `w = I * z` with `z = (-I) * w`.
+    have hz : I * ((-I) * w) = w := by
+      calc I * ((-I) * w) = (I * (-I)) * w := (mul_assoc _ _ _).symm
+        _ = (-(I * I)) * w := by rw [mul_neg]
+        _ = (-(-1)) * w := by rw [I_mul_I]
+        _ = w := by simp
+    have hre : 0 ≤ ((-I) * w).re := by
+      have : ((-I) * w).re = w.im := by simp [mul_re, neg_re, I_re, I_im]
+      rwa [this]
+    have hbound := hhalf I (Or.inl rfl) ((-I) * w) hre
+    rwa [hz] at hbound
+  · -- lower half-plane: `w = (-I) * z` with `z = I * w`.
+    have hz : (-I) * (I * w) = w := by
+      calc (-I) * (I * w) = ((-I) * I) * w := (mul_assoc _ _ _).symm
+        _ = (-(I * I)) * w := by rw [neg_mul]
+        _ = (-(-1)) * w := by rw [I_mul_I]
+        _ = w := by simp
+    have hre : 0 ≤ (I * w).re := by
+      have : (I * w).re = -w.im := by simp [mul_re, I_re, I_im]
+      rw [this]
+      exact le_of_lt (neg_pos.mpr him)
+    have hbound := hhalf (-I) (Or.inr rfl) (I * w) hre
+    rwa [hz] at hbound
+
+
+
 /-- **Pillar D (Phragmén–Lindelöf + Liouville)**:
 An entire function of exponential type zero with quartic growth on `ℝ` is a polynomial
 of degree `≤ 4`. -/
@@ -690,7 +886,239 @@ lemma entire_expTypeZero_polyBound_is_poly4 {F : ℂ → ℂ} (hF : Differentiab
     (hpoly : ∃ C : ℝ, 0 ≤ C ∧ ∀ x : ℝ, ‖F x‖ ≤ C * (1 + |x| ^ 4)) :
     ∃ a₀ a₁ a₂ a₃ a₄ : ℂ, ∀ z : ℂ,
       F z = a₀ + a₁ * z + a₂ * z ^ 2 + a₃ * z ^ 3 + a₄ * z ^ 4 := by
-  sorry
+  -- Remainder after the degree-`≤ 4` Taylor polynomial, written via iterated `dslope`.
+  set H1 : ℂ → ℂ := dslope F 0
+  set H2 : ℂ → ℂ := dslope H1 0
+  set H3 : ℂ → ℂ := dslope H2 0
+  set H4 : ℂ → ℂ := dslope H3 0
+  set H : ℂ → ℂ := dslope H4 0
+  have hF_an : AnalyticOnNhd ℂ F univ := fun _ _ => hF.analyticAt _
+  have hH1_an : AnalyticOnNhd ℂ H1 univ := hF_an.dslope 0
+  have hH2_an : AnalyticOnNhd ℂ H2 univ := hH1_an.dslope 0
+  have hH3_an : AnalyticOnNhd ℂ H3 univ := hH2_an.dslope 0
+  have hH4_an : AnalyticOnNhd ℂ H4 univ := hH3_an.dslope 0
+  have hH_an : AnalyticOnNhd ℂ H univ := hH4_an.dslope 0
+  have hH : Differentiable ℂ H := fun z => (hH_an z (mem_univ z)).differentiableAt
+  have hexpand : ∀ z : ℂ,
+      F z = F 0 + z * H1 0 + z ^ 2 * H2 0 + z ^ 3 * H3 0 + z ^ 4 * H4 0 + z ^ 5 * H z := by
+    intro z
+    have e1 : F z = F 0 + z * H1 z := by
+      have h := sub_smul_dslope F (0 : ℂ) z
+      simp only [smul_eq_mul, sub_zero] at h
+      rw [h]; abel
+    have e2 : H1 z = H1 0 + z * H2 z := by
+      have h := sub_smul_dslope H1 (0 : ℂ) z
+      simp only [smul_eq_mul, sub_zero] at h
+      rw [h]; abel
+    have e3 : H2 z = H2 0 + z * H3 z := by
+      have h := sub_smul_dslope H2 (0 : ℂ) z
+      simp only [smul_eq_mul, sub_zero] at h
+      rw [h]; abel
+    have e4 : H3 z = H3 0 + z * H4 z := by
+      have h := sub_smul_dslope H3 (0 : ℂ) z
+      simp only [smul_eq_mul, sub_zero] at h
+      rw [h]; abel
+    have e5 : H4 z = H4 0 + z * H z := by
+      have h := sub_smul_dslope H4 (0 : ℂ) z
+      simp only [smul_eq_mul, sub_zero] at h
+      rw [h]; abel
+    calc F z = F 0 + z * H1 z := e1
+      _ = F 0 + z * (H1 0 + z * H2 z) := by rw [e2]
+      _ = F 0 + z * H1 0 + z ^ 2 * H2 z := by ring
+      _ = F 0 + z * H1 0 + z ^ 2 * (H2 0 + z * H3 z) := by rw [e3]
+      _ = F 0 + z * H1 0 + z ^ 2 * H2 0 + z ^ 3 * H3 z := by ring
+      _ = F 0 + z * H1 0 + z ^ 2 * H2 0 + z ^ 3 * (H3 0 + z * H4 z) := by rw [e4]
+      _ = F 0 + z * H1 0 + z ^ 2 * H2 0 + z ^ 3 * H3 0 + z ^ 4 * H4 z := by ring
+      _ = F 0 + z * H1 0 + z ^ 2 * H2 0 + z ^ 3 * H3 0 + z ^ 4 * (H4 0 + z * H z) := by
+          rw [e5]
+      _ = F 0 + z * H1 0 + z ^ 2 * H2 0 + z ^ 3 * H3 0 + z ^ 4 * H4 0 + z ^ 5 * H z := by
+          ring
+  set P : ℂ → ℂ :=
+    fun z => F 0 + z * H1 0 + z ^ 2 * H2 0 + z ^ 3 * H3 0 + z ^ 4 * H4 0
+  have hFP : ∀ z, F z = P z + z ^ 5 * H z := hexpand
+  set A : ℝ := ‖F 0‖ + ‖H1 0‖ + ‖H2 0‖ + ‖H3 0‖ + ‖H4 0‖
+  have hA0 : 0 ≤ A := by positivity
+  have hP_le : ∀ z : ℂ, ‖P z‖ ≤ A * (1 + ‖z‖ ^ 4) := by
+    intro z
+    have hpow : ∀ k : ℕ, k ≤ 4 → ‖z‖ ^ k ≤ 1 + ‖z‖ ^ 4 := fun k hk => by
+      rcases le_or_gt ‖z‖ 1 with h | h
+      · exact (pow_le_one₀ (norm_nonneg _) h).trans
+          (le_add_of_nonneg_right (pow_nonneg (norm_nonneg _) 4))
+      · exact (pow_le_pow_right₀ (le_of_lt h) hk).trans (le_add_of_nonneg_left zero_le_one)
+    have htri :
+        ‖P z‖ ≤ ‖F 0‖ + ‖H1 0‖ * ‖z‖ + ‖H2 0‖ * ‖z‖ ^ 2 +
+          ‖H3 0‖ * ‖z‖ ^ 3 + ‖H4 0‖ * ‖z‖ ^ 4 := by
+      simp only [P]
+      refine le_trans (norm_add_le _ _) ?_
+      refine le_trans (add_le_add (norm_add_le _ _) le_rfl) ?_
+      refine le_trans (add_le_add (add_le_add (norm_add_le _ _) le_rfl) le_rfl) ?_
+      refine le_trans (add_le_add (add_le_add (add_le_add (norm_add_le _ _) le_rfl) le_rfl) le_rfl) ?_
+      simp [norm_pow]
+      exact le_of_eq (by ring)
+    have h1 : (1 : ℝ) ≤ 1 + ‖z‖ ^ 4 := le_add_of_nonneg_right (pow_nonneg (norm_nonneg _) 4)
+    calc ‖P z‖
+        ≤ ‖F 0‖ + ‖H1 0‖ * ‖z‖ + ‖H2 0‖ * ‖z‖ ^ 2 +
+            ‖H3 0‖ * ‖z‖ ^ 3 + ‖H4 0‖ * ‖z‖ ^ 4 := htri
+      _ ≤ ‖F 0‖ * (1 + ‖z‖ ^ 4) + ‖H1 0‖ * (1 + ‖z‖ ^ 4) +
+            ‖H2 0‖ * (1 + ‖z‖ ^ 4) + ‖H3 0‖ * (1 + ‖z‖ ^ 4) +
+            ‖H4 0‖ * (1 + ‖z‖ ^ 4) := by
+          gcongr
+          · exact le_mul_of_one_le_right (norm_nonneg _) h1
+          · simpa using hpow 1 (by norm_num)
+          · exact hpow 2 (by norm_num)
+          · exact hpow 3 (by norm_num)
+          · exact hpow 4 (by norm_num)
+      _ = A * (1 + ‖z‖ ^ 4) := by ring
+  -- `H` still has exponential type zero.
+  have hH_type0 : ∀ ε : ℝ, 0 < ε →
+      ∃ C : ℝ, 0 ≤ C ∧ ∀ z : ℂ, ‖H z‖ ≤ C * Real.exp (ε * ‖z‖) := by
+    intro ε hε
+    obtain ⟨CF, hCF0, hCF⟩ := htype0 ε hε
+    obtain ⟨Cexp, hCexp0, hCexp⟩ := one_add_rpow4_le_exp hε
+    have hH_ball : ∃ Mb : ℝ, 0 ≤ Mb ∧ ∀ z : ℂ, ‖z‖ ≤ 1 → ‖H z‖ ≤ Mb := by
+      have hc : IsCompact (closedBall (0 : ℂ) 1) := isCompact_closedBall _ _
+      obtain ⟨z0, hz0, hzmax⟩ :=
+        hc.exists_isMaxOn (nonempty_closedBall.mpr zero_le_one)
+          (hH.continuous.norm.continuousOn)
+      exact ⟨‖H z0‖, norm_nonneg _, fun z hz =>
+        hzmax (mem_closedBall.mpr (by simpa using hz))⟩
+    obtain ⟨Mb, hMb0, hMb⟩ := hH_ball
+    refine ⟨CF + A * Cexp + Mb,
+      add_nonneg (add_nonneg hCF0 (mul_nonneg hA0 hCexp0)) hMb0, fun z => ?_⟩
+    rcases le_or_gt ‖z‖ 1 with hle | hgt
+    · have hexp : 1 ≤ Real.exp (ε * ‖z‖) :=
+        Real.one_le_exp (mul_nonneg hε.le (norm_nonneg _))
+      have hC : Mb ≤ CF + A * Cexp + Mb :=
+        le_add_of_nonneg_left (add_nonneg hCF0 (mul_nonneg hA0 hCexp0))
+      exact (hMb z hle).trans
+        (hC.trans (le_mul_of_one_le_right
+          (add_nonneg (add_nonneg hCF0 (mul_nonneg hA0 hCexp0)) hMb0) hexp))
+    · have hz1 : 1 ≤ ‖z‖ := hgt.le
+      have hz_ne : z ≠ 0 := by
+        intro hz; subst hz; rw [norm_zero] at hgt; linarith
+      have hdiv : ‖H z‖ = ‖F z - P z‖ / ‖z‖ ^ 5 := by
+        have hsub : F z - P z = z ^ 5 * H z := by rw [hFP z]; ring
+        rw [hsub, norm_mul, norm_pow]
+        exact (mul_div_cancel_left₀ _ (pow_ne_zero 5 (norm_ne_zero_iff.mpr hz_ne))).symm
+      have hnum : ‖F z - P z‖ ≤ (CF + A * Cexp) * Real.exp (ε * ‖z‖) := by
+        calc ‖F z - P z‖ ≤ ‖F z‖ + ‖P z‖ := norm_sub_le _ _
+          _ ≤ CF * Real.exp (ε * ‖z‖) + A * (1 + ‖z‖ ^ 4) := by
+              gcongr
+              · exact hCF z
+              · exact hP_le z
+          _ ≤ CF * Real.exp (ε * ‖z‖) + A * (Cexp * Real.exp (ε * ‖z‖)) := by
+              gcongr; exact hCexp ‖z‖ (norm_nonneg _)
+          _ = (CF + A * Cexp) * Real.exp (ε * ‖z‖) := by ring
+      have hden : 1 ≤ ‖z‖ ^ 5 := one_le_pow₀ hz1
+      rw [hdiv]
+      have hle' : ‖F z - P z‖ / ‖z‖ ^ 5 ≤ ‖F z - P z‖ :=
+        div_le_self (norm_nonneg _) hden
+      exact hle'.trans
+        (hnum.trans (mul_le_mul_of_nonneg_right (le_add_of_nonneg_right hMb0)
+          (Real.exp_nonneg _)))
+  obtain ⟨Cpoly, hCpoly0, hCpoly⟩ := hpoly
+  -- `H` is bounded on the real line.
+  have hH_real : ∃ M : ℝ, 0 ≤ M ∧ ∀ x : ℝ, ‖H x‖ ≤ M := by
+    have hH_Icc : ∃ Mb : ℝ, 0 ≤ Mb ∧ ∀ x : ℝ, |x| ≤ 1 → ‖H x‖ ≤ Mb := by
+      have hc : IsCompact (Icc (-1 : ℝ) 1) := isCompact_Icc
+      have hcont : ContinuousOn (fun x : ℝ => ‖H x‖) (Icc (-1) 1) :=
+        (hH.continuous.comp Complex.continuous_ofReal).norm.continuousOn
+      obtain ⟨x0, hx0, hxmax⟩ := hc.exists_isMaxOn (by simp) hcont
+      exact ⟨‖H x0‖, norm_nonneg _, fun x hx => hxmax (abs_le.mp hx)⟩
+    obtain ⟨Mb, hMb0, hMb⟩ := hH_Icc
+    refine ⟨Mb + 2 * (Cpoly + A),
+      add_nonneg hMb0 (mul_nonneg (by positivity : (0 : ℝ) ≤ 2) (add_nonneg hCpoly0 hA0)),
+      fun x => ?_⟩
+    rcases le_or_gt |x| 1 with hle | hgt
+    · exact (hMb x hle).trans (le_add_of_nonneg_right (by positivity))
+    · have hxpos : 0 < |x| := lt_trans zero_lt_one hgt
+      have hx_ne : (x : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr (abs_pos.mp hxpos)
+      have hdiv : ‖H x‖ = ‖F x - P x‖ / |x| ^ 5 := by
+        have hsub : F (x : ℂ) - P (x : ℂ) = (x : ℂ) ^ 5 * H x := by rw [hFP x]; ring
+        rw [hsub, norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs]
+        exact (mul_div_cancel_left₀ _ (pow_ne_zero 5 hxpos.ne')).symm
+      have hnum : ‖F x - P x‖ ≤ (Cpoly + A) * (1 + |x| ^ 4) := by
+        calc ‖F (x : ℂ) - P (x : ℂ)‖ ≤ ‖F (x : ℂ)‖ + ‖P (x : ℂ)‖ := norm_sub_le _ _
+          _ ≤ Cpoly * (1 + |x| ^ 4) + A * (1 + ‖(x : ℂ)‖ ^ 4) := by
+              gcongr
+              · exact hCpoly x
+              · exact hP_le x
+          _ = (Cpoly + A) * (1 + |x| ^ 4) := by
+              simp [Complex.norm_real, Real.norm_eq_abs]
+              ring
+      have h14 : 1 + |x| ^ 4 ≤ 2 * |x| ^ 4 := by
+        have : (1 : ℝ) ≤ |x| ^ 4 := one_le_pow₀ hgt.le
+        linarith
+      rw [hdiv, div_le_iff₀ (pow_pos hxpos 5)]
+      have hpow45 : |x| ^ 4 ≤ |x| ^ 5 :=
+        pow_le_pow_right₀ hgt.le (by norm_num : 4 ≤ 5)
+      calc ‖F x - P x‖
+          ≤ (Cpoly + A) * (1 + |x| ^ 4) := hnum
+        _ ≤ (Cpoly + A) * (2 * |x| ^ 4) := by gcongr
+        _ = 2 * (Cpoly + A) * |x| ^ 4 := by ring
+        _ ≤ 2 * (Cpoly + A) * |x| ^ 5 := by gcongr
+        _ ≤ (Mb + 2 * (Cpoly + A)) * |x| ^ 5 := by
+            gcongr
+            exact le_add_of_nonneg_left hMb0
+  obtain ⟨M, hM0, hM⟩ := hH_real
+  have hH_all : ∀ z : ℂ, ‖H z‖ ≤ M :=
+    entire_expTypeZero_bounded_of_bounded_on_real hH hH_type0 hM0 hM
+  have hbdd : Bornology.IsBounded (Set.range H) :=
+    (isBounded_iff_subset_closedBall (0 : ℂ)).2
+      ⟨M, fun z hz => by
+        obtain ⟨w, rfl⟩ := hz
+        simpa [mem_closedBall, dist_zero_right] using hH_all w⟩
+  obtain ⟨c, hc⟩ := hH.exists_const_forall_eq_of_bounded hbdd
+  -- The constant vanishes because `H` tends to `0` at real infinity.
+  have hH_atTop : Tendsto (fun x : ℝ => H x) atTop (𝓝 0) := by
+    rw [tendsto_zero_iff_norm_tendsto_zero]
+    have hbound : ∀ᶠ x : ℝ in atTop, ‖H x‖ ≤ 2 * (Cpoly + A) / x := by
+      filter_upwards [eventually_ge_atTop (1 : ℝ)] with x hx
+      have hxpos : 0 < x := lt_of_lt_of_le zero_lt_one hx
+      have hdiv : ‖H x‖ = ‖F x - P x‖ / x ^ 5 := by
+        have hsub : F (x : ℂ) - P (x : ℂ) = (x : ℂ) ^ 5 * H x := by rw [hFP x]; ring
+        have habs : |x| = x := abs_of_nonneg (le_of_lt hxpos)
+        rw [hsub, norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, habs]
+        exact (mul_div_cancel_left₀ _ (pow_ne_zero 5 hxpos.ne')).symm
+      have hnum : ‖F x - P x‖ ≤ (Cpoly + A) * (1 + x ^ 4) := by
+        calc ‖F (x : ℂ) - P (x : ℂ)‖ ≤ ‖F (x : ℂ)‖ + ‖P (x : ℂ)‖ := norm_sub_le _ _
+          _ ≤ Cpoly * (1 + |x| ^ 4) + A * (1 + ‖(x : ℂ)‖ ^ 4) := by
+              gcongr
+              · exact hCpoly x
+              · exact hP_le x
+          _ = (Cpoly + A) * (1 + x ^ 4) := by
+              simp [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (le_of_lt hxpos)]
+              ring
+      have h14 : 1 + x ^ 4 ≤ 2 * x ^ 4 := by
+        have : (1 : ℝ) ≤ x ^ 4 := one_le_pow₀ hx
+        linarith
+      rw [hdiv, div_le_iff₀ (pow_pos hxpos 5)]
+      calc ‖F x - P x‖
+          ≤ (Cpoly + A) * (1 + x ^ 4) := hnum
+        _ ≤ (Cpoly + A) * (2 * x ^ 4) := by gcongr
+        _ = 2 * (Cpoly + A) * x ^ 4 := by ring
+        _ = (2 * (Cpoly + A) / x) * x ^ 5 := by
+            have : x ^ 5 = x ^ 4 * x := by ring
+            field_simp [hxpos.ne']
+    have hzero : Tendsto (fun x : ℝ => 2 * (Cpoly + A) / x) atTop (𝓝 0) := by
+      simpa [div_eq_mul_inv] using
+        tendsto_inv_atTop_zero.const_mul (2 * (Cpoly + A))
+    exact tendsto_of_tendsto_of_tendsto_of_le_of_le'
+      tendsto_const_nhds hzero
+      (Eventually.of_forall fun _ => norm_nonneg _) hbound
+  have hc0 : c = 0 := by
+    have hconst : Tendsto (fun n : ℕ => H (n : ℝ)) atTop (𝓝 c) :=
+      tendsto_const_nhds.congr fun n => (hc (n : ℂ)).symm
+    have hzero : Tendsto (fun n : ℕ => H (n : ℝ)) atTop (𝓝 0) :=
+      hH_atTop.comp tendsto_natCast_atTop_atTop
+    exact tendsto_nhds_unique hconst hzero
+  refine ⟨F 0, H1 0, H2 0, H3 0, H4 0, fun z => ?_⟩
+  have := hFP z
+  simp only [P] at this
+  rw [this, hc z, hc0, mul_zero, add_zero]
+  ring
+
+end PillarD
 
 /-! ## Part 5: Complete assembly of `not_affine_riccati_duality_mpr` (sorry-free modulo A–D) -/
 
