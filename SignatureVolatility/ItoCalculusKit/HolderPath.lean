@@ -21,7 +21,7 @@ variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasur
 /-- **Almost-sure `7/20`-Hölder paths from an eighth-moment bound.** -/
 theorem ae_holder_of_moment8 {X : ℝ → Ω → ℝ} {T K : ℝ} (hT : 0 ≤ T) (hK : 0 ≤ K)
     (hmeas : ∀ s, 0 ≤ s → s ≤ T → Measurable (X s))
-    (hcont : ∀ ω, ContinuousOn (fun s => X s ω) (Set.Icc 0 T))
+    (hcont : ∀ᵐ ω ∂P, ContinuousOn (fun s => X s ω) (Set.Icc 0 T))
     (hint : ∀ u v, 0 ≤ u → u ≤ v → v ≤ T → Integrable (fun ω => (X v ω - X u ω) ^ 8) P)
     (hmom : ∀ u v, 0 ≤ u → u ≤ v → v ≤ T → ∫ ω, (X v ω - X u ω) ^ 8 ∂P ≤ K * (v - u) ^ 4) :
     ∀ᵐ ω ∂P, ∃ L : ℝ, ∀ s ∈ Set.Icc 0 T, ∀ s' ∈ Set.Icc 0 T,
@@ -85,10 +85,10 @@ theorem ae_holder_of_moment8 {X : ℝ → Ω → ℝ} {T K : ℝ} (hT : 0 ≤ T)
   obtain ⟨D, hDc, hDd⟩ := TopologicalSpace.exists_countable_dense ℝ≥0
   have hae : ∀ᵐ ω ∂P, ∀ q ∈ U ∩ D, Y q ω = Xn q ω :=
     (ae_ball_iff (hDc.mono Set.inter_subset_right)).2 fun q hq => hYeq q hq.1
-  filter_upwards [hae] with ω hω
+  filter_upwards [hae, hcont] with ω hω hcω
   obtain ⟨C, hC⟩ := hYh (7 / 20) (by norm_num) (by norm_num) ω
   have hXc : ContinuousOn (fun s => Xn s ω) U :=
-    ((hcont ω).comp_continuous (continuous_subtype_val.min continuous_const)
+    (hcω.comp_continuous (continuous_subtype_val.min continuous_const)
       (fun s => ⟨le_min s.2 hT, min_le_right _ _⟩)).continuousOn
   have heq : Set.EqOn (fun s => Y s ω) (fun s => Xn s ω) U :=
     Set.EqOn.of_subset_closure (fun q hq => hω q hq) (hC.continuousOn (by norm_num)) hXc
@@ -119,7 +119,7 @@ theorem ae_holder_wnn (B : MultiBrownian Ω P d) (k : Fin d) {T : ℝ} (hT : 0 �
         L * |s' - s| ^ (7 / 20 : ℝ) :=
   ae_holder_of_moment8 (X := fun s ω => B.Wnn (Real.toNNReal s) ω k) hT gauss8Const_nonneg
     (fun _ _ _ => B.Wnn_meas _ k)
-    (fun ω => ((B.pathContinuous k ω).comp continuous_real_toNNReal).continuousOn)
+    (ae_of_all _ fun ω => ((B.pathContinuous k ω).comp continuous_real_toNNReal).continuousOn)
     (fun _ _ hu huv _ => integrable_wnnIncr_pow8 B k hu huv)
     (fun _ _ hu huv _ => (integral_wnnIncr_pow8 B k hu huv).le)
 
@@ -132,7 +132,7 @@ theorem ae_holder_signatureSigma {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < 
   obtain ⟨K, hK⟩ := holderAdapted8_signatureSigma B hT hw hℓ T
   exact ae_holder_of_moment8 hT.le hK.K_nonneg
     (fun s h0 hs => (hK.meas s h0 hs).mono ((pathFiltration B).le_ambient _) le_rfl)
-    (fun ω => continuousOn_sigma_of_brownian B hT w hw ℓ hℓ ω)
+    (ae_continuousOn_sigma_of_brownian B hT w hw ℓ hℓ)
     (fun u v hu huv hv => integrable_pow_of_memLp_eight
       ((hK.memLp v (hu.trans huv) hv).sub (hK.memLp u hu (huv.trans hv))) le_rfl)
     (fun u v hu huv hv => hK.holder u v hu huv hv)

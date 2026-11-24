@@ -23,13 +23,11 @@ variable {T : ℝ} (B : MultiBrownian Ω P d) (hT : 0 < T) {w : Weight} (hw : Hy
   {ℓ : ExtTensorAlgebra (d + 1)} (hℓ : HypH1 w ℓ)
 
 include hw hℓ in
-lemma measurable_quadIncr {u v : ℝ} (hu : 0 ≤ u) (huv : u ≤ v) (hvT : v ≤ T) :
-    Measurable fun ω => ∫ s in u..v, signatureSigma B hT ℓ s ω ^ 2 := by
-  have : (fun ω => ∫ s in u..v, signatureSigma B hT ℓ s ω ^ 2) =
-      fun ω => ∫ s in u..v, sigmaExt B hT ℓ s ω ^ 2 :=
-    funext fun ω => intervalIntegral_sigma_eq_sigmaExt hu huv hvT 2 ω
-  rw [this]
-  exact measurable_intervalIntegral_sigmaExt hw hℓ huv 2
+lemma aestronglyMeasurable_quadIncr {u v : ℝ} (hu : 0 ≤ u) (huv : u ≤ v) (hvT : v ≤ T) :
+    AEStronglyMeasurable (fun ω => ∫ s in u..v, signatureSigma B hT ℓ s ω ^ 2) P :=
+  (measurable_intervalIntegral_sigmaExt huv 2).aestronglyMeasurable.congr
+    ((ae_not_mem_sigmaBad hw hℓ).mono fun _ hω =>
+      (intervalIntegral_sigma_eq_sigmaExt hu huv hvT 2 hω).symm)
 
 include hw hℓ in
 /-- Fourth moments of `ΔQ = ∫_u^v σ²`. -/
@@ -40,16 +38,16 @@ theorem quadIncr_pow_four_le : ∃ cQ, 0 ≤ cQ ∧ ∀ u v, 0 ≤ u → u ≤ v
   refine ⟨Real.sqrt M, Real.sqrt_nonneg _, fun u v hu huv hvT => ?_⟩
   obtain ⟨hi8, hb8⟩ := h8 u v hu huv hvT
   set X : Ω → ℝ := fun ω => ∫ s in u..v, signatureSigma B hT ℓ s ω ^ 2 with hX
-  have hXm : Measurable X := measurable_quadIncr B hT hw hℓ hu huv hvT
+  have hXm : AEStronglyMeasurable X P := aestronglyMeasurable_quadIncr B hT hw hℓ hu huv hvT
   have hi4 : Integrable (fun ω => X ω ^ 4) P := by
-    refine Integrable.mono' ((integrable_const 1).add hi8) (hXm.pow_const 4).aestronglyMeasurable
+    refine Integrable.mono' ((integrable_const 1).add hi8) (hXm.pow 4)
       (ae_of_all _ fun ω => ?_)
     rw [Real.norm_eq_abs, abs_of_nonneg (by positivity)]
     simp only [Pi.add_apply]
     nlinarith [sq_nonneg (X ω ^ 4 - 1), pow_two_nonneg (X ω ^ 4)]
-  have hL4 : MemLp X 4 P := memLp_four_of_integrable_pow_four hXm.aestronglyMeasurable hi4
+  have hL4 : MemLp X 4 P := memLp_four_of_integrable_pow_four hXm hi4
   have hL4' : MemLp (fun ω => X ω ^ 2) 4 P :=
-    memLp_four_of_integrable_pow_four (hXm.pow_const 2).aestronglyMeasurable
+    memLp_four_of_integrable_pow_four (hXm.pow 2)
       (hi8.congr (ae_of_all _ fun ω => by simp only [hX]; ring))
   refine ⟨hL4, ?_⟩
   have j := sq_integral_sq_le_integral_pow_four hL4'
@@ -124,9 +122,9 @@ theorem quadIncr_sub_frozen_sq_le : ∃ cE, 0 ≤ cE ∧ ∀ u v, 0 ≤ u → u 
   set σ := signatureSigma B hT ℓ with hσ
   have huT : u ≤ T := huv.trans hvT
   obtain ⟨f, hfm, hfc, hfe⟩ : ∃ f : ℝ → Ω → ℝ, Measurable (Function.uncurry f) ∧
-      (∀ ω, Continuous fun r => f r ω) ∧ ∀ r ∈ Icc 0 T, ∀ ω, f r ω = σ r ω :=
-    ⟨sigmaExt B hT ℓ, measurable_uncurry_sigmaExt hw hℓ, fun ω => continuous_sigmaExt hw hℓ ω,
-      fun r hr ω => sigmaExt_of_mem B hT ℓ hr ω⟩
+      (∀ ω, Continuous fun r => f r ω) ∧ ∀ᵐ ω ∂P, ∀ r ∈ Icc 0 T, f r ω = σ r ω :=
+    ⟨sigmaExt B hT ℓ, measurable_uncurry_sigmaExt, continuous_sigmaExt,
+      (ae_not_mem_sigmaBad hw hℓ).mono fun ω hω r hr => sigmaExt_of_mem B hT ℓ hr hω⟩
   set Y : Ω → ℝ := fun ω => ∫ r in u..v, (f r ω ^ 2 - f u ω ^ 2) ^ 2 with hY
   have hcont : ∀ ω, Continuous fun r => (f r ω ^ 2 - f u ω ^ 2) ^ 2 := fun ω =>
     (((hfc ω).pow 2).sub continuous_const).pow 2
@@ -165,9 +163,9 @@ theorem quadIncr_sub_frozen_sq_le : ∃ cE, 0 ≤ cE ∧ ∀ u v, 0 ≤ u → u 
           refine setLIntegral_mono measurable_const fun r hr => ?_
           have hr' : r ∈ Icc 0 T := ⟨hu.trans hr.1.le, hr.2.trans hvT⟩
           have hu' : u ∈ Icc 0 T := ⟨hu, huT⟩
-          have hfun : (fun ω => ENNReal.ofReal ((f r ω ^ 2 - f u ω ^ 2) ^ 2)) =
-              fun ω => ENNReal.ofReal ((σ r ω ^ 2 - σ u ω ^ 2) ^ 2) := by
-            funext ω; rw [hfe r hr' ω, hfe u hu' ω]
+          have hfun : (fun ω => ENNReal.ofReal ((f r ω ^ 2 - f u ω ^ 2) ^ 2)) =ᵐ[P]
+              fun ω => ENNReal.ofReal ((σ r ω ^ 2 - σ u ω ^ 2) ^ 2) :=
+            hfe.mono fun ω h => by simp only; rw [h r hr', h u hu']
           obtain ⟨K, hK⟩ := holderAdapted_signatureSigma B hT hw hℓ T
           have hi : Integrable (fun ω => (σ r ω ^ 2 - σ u ω ^ 2) ^ 2) P := by
             have := integrable_pow_mul_pow_of_memLp_four ((hK.memLp r hr'.1 hr'.2).sub
@@ -175,7 +173,7 @@ theorem quadIncr_sub_frozen_sq_le : ∃ cE, 0 ≤ cE ∧ ∀ u v, 0 ≤ u → u 
               (p := 2) (q := 2) rfl
             refine this.congr (ae_of_all _ fun ω => ?_)
             simp only [Pi.sub_apply, Pi.add_apply]; ring
-          rw [hfun, ← ofReal_integral_eq_lintegral_ofReal hi
+          rw [lintegral_congr_ae hfun, ← ofReal_integral_eq_lintegral_ofReal hi
             (ae_of_all _ fun ω => by positivity)]
           refine ENNReal.ofReal_le_ofReal (((hS u r hu hr.1.le (hr.2.trans hvT)).trans ?_))
           exact mul_le_mul_of_nonneg_left (by linarith [hr.2]) hcS
@@ -191,8 +189,8 @@ theorem quadIncr_sub_frozen_sq_le : ∃ cE, 0 ≤ cE ∧ ∀ u v, 0 ≤ u → u 
       ofReal_integral_eq_lintegral_ofReal hYi (ae_of_all _ hY0)]
     exact hlint
   -- pointwise Cauchy–Schwarz
-  have hpt : ∀ ω, ((∫ s in u..v, σ s ω ^ 2) - (v - u) * σ u ω ^ 2) ^ 2 ≤ (v - u) * Y ω := by
-    intro ω
+  have hpt : ∀ᵐ ω ∂P, ((∫ s in u..v, σ s ω ^ 2) - (v - u) * σ u ω ^ 2) ^ 2 ≤ (v - u) * Y ω := by
+    filter_upwards [hfe] with ω hfe
     have hc : ContinuousOn (fun r => f r ω ^ 2 - f u ω ^ 2) (Icc u v) :=
       (((hfc ω).pow 2).sub continuous_const).continuousOn
     have hcs := sq_intervalIntegral_le huv hc
@@ -200,18 +198,18 @@ theorem quadIncr_sub_frozen_sq_le : ∃ cE, 0 ≤ cE ∧ ∀ u v, 0 ≤ u → u 
     have h1 : ∫ s in u..v, σ s ω ^ 2 = ∫ r in u..v, f r ω ^ 2 :=
       intervalIntegral.integral_congr fun r hr => by
         rw [uIcc_of_le huv] at hr
-        simp only [hfe r ⟨hu.trans hr.1, hr.2.trans hvT⟩ ω]
+        simp only [hfe r ⟨hu.trans hr.1, hr.2.trans hvT⟩]
     have e : (∫ s in u..v, σ s ω ^ 2) - (v - u) * σ u ω ^ 2 =
         ∫ r in u..v, (f r ω ^ 2 - f u ω ^ 2) := by
       rw [intervalIntegral.integral_sub (hc2.intervalIntegrable _ _) intervalIntegrable_const,
-        intervalIntegral.integral_const, smul_eq_mul, h1, hfe u ⟨hu, huT⟩ ω]
+        intervalIntegral.integral_const, smul_eq_mul, h1, hfe u ⟨hu, huT⟩]
     rw [e]
     exact hcs
   have hvu0 : 0 ≤ v - u := sub_nonneg.mpr huv
   calc ∫ ω, ((∫ s in u..v, σ s ω ^ 2) - (v - u) * σ u ω ^ 2) ^ 2 ∂P
       ≤ ∫ ω, (v - u) * Y ω ∂P :=
         integral_mono_of_nonneg (ae_of_all _ fun ω => sq_nonneg _) (hYi.const_mul _)
-          (ae_of_all _ hpt)
+          hpt
     _ = (v - u) * ∫ ω, Y ω ∂P := integral_const_mul _ _
     _ ≤ (v - u) * (cS * (v - u) * (v - u)) := mul_le_mul_of_nonneg_left hYle hvu0
     _ = cS * (v - u) ^ 3 := by ring
