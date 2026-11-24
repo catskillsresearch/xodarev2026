@@ -1,6 +1,7 @@
 module
 
 public import SignatureVolatility.ItoCalculusKit.ItoIncrement8
+public import SignatureVolatility.ItoCalculusKit.SixteenthTransform
 
 
 @[expose] public section
@@ -19,47 +20,6 @@ and is adapted: `HolderAdapted8 B σ t K` (`holderAdapted8_signatureSigma`). Sam
 -/
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}
-
-/-- `𝔼[G¹⁶]` for a standard Gaussian (only finiteness is used). -/
-noncomputable def gauss16Const : ℝ := ∫ y, y ^ 16 ∂(gaussianReal 0 1)
-
-lemma gauss16Const_nonneg : 0 ≤ gauss16Const :=
-  integral_nonneg fun y => by positivity
-
-lemma integrable_pow16_gaussianReal (v : ℝ≥0) :
-    Integrable (fun x : ℝ => x ^ 16) (gaussianReal 0 v) := by
-  have h := (memLp_id_gaussianReal' (μ := 0) (v := v) ((16 : ℕ) : ℝ≥0∞) (by simp)).integrable_norm_pow
-    (by norm_num)
-  refine h.congr (ae_of_all _ fun x => ?_)
-  simp only [id_eq, Real.norm_eq_abs]
-  rw [pow_abs, abs_of_nonneg (by positivity)]
-
-lemma integral_pow16_gaussianReal (v : ℝ≥0) :
-    ∫ x, x ^ 16 ∂(gaussianReal 0 v) = gauss16Const * (v : ℝ) ^ 8 := by
-  have hmap : (gaussianReal 0 1).map (fun x => Real.sqrt v * x) = gaussianReal 0 v := by
-    rw [gaussianReal_map_const_mul]
-    congr 1
-    · simp
-    · ext
-      simp [Real.sq_sqrt]
-  rw [← hmap, integral_map (by fun_prop) (by fun_prop)]
-  have hpt : ∀ y : ℝ, (Real.sqrt v * y) ^ 16 = (v : ℝ) ^ 8 * y ^ 16 := by
-    intro y
-    rw [mul_pow, show Real.sqrt v ^ 16 = (Real.sqrt v ^ 2) ^ 8 by ring,
-      Real.sq_sqrt v.coe_nonneg]
-  simp_rw [hpt]
-  rw [integral_const_mul, gauss16Const, mul_comm]
-
-lemma integrable_wnnIncr_pow16 (B : MultiBrownian Ω P d) (k : Fin d) {a b : ℝ} (ha : 0 ≤ a)
-    (hab : a ≤ b) : Integrable (fun ω => wnnIncr B k a b ω ^ 16) P :=
-  (hasLaw_wnnIncr B k ha hab).integrable_comp (integrable_pow16_gaussianReal _)
-
-lemma integral_wnnIncr_pow16 (B : MultiBrownian Ω P d) (k : Fin d) {a b : ℝ} (ha : 0 ≤ a)
-    (hab : a ≤ b) : ∫ ω, wnnIncr B k a b ω ^ 16 ∂P = gauss16Const * (b - a) ^ 8 := by
-  have hcomp := (hasLaw_wnnIncr B k ha hab).integral_comp (f := fun x : ℝ => x ^ 16)
-    (measurable_id.pow_const 16).aestronglyMeasurable
-  simp only [Function.comp_def] at hcomp
-  rw [hcomp, integral_pow16_gaussianReal, Real.coe_toNNReal _ (sub_nonneg.mpr hab)]
 
 lemma integrable_wAug_sub_pow16 (B : MultiBrownian Ω P d) {u v : ℝ} (hu : 0 ≤ u) (huv : u ≤ v)
     (j : Fin (d + 1)) :

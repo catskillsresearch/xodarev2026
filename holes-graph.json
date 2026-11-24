@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-24T05:57:36Z",
-  "sorryCount": 53,
+  "updated": "2026-11-24T06:07:15Z",
+  "sorryCount": 54,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -948,9 +948,31 @@
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/SigmaHolder8.lean",
       "status": "blocked",
-      "blocker": "needs ItoCalculusKit.ItoIncrement8",
+      "blocker": "needs ItoCalculusKit.ItoIncrement8, ItoCalculusKit.SixteenthTransform",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
       "hasSorry": true,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.SixteenthMoment",
+      "label": "ItoCalculusKit.SixteenthMoment",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/SixteenthMoment.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.SixteenthTransform",
+      "label": "ItoCalculusKit.SixteenthTransform",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/SixteenthTransform.lean",
+      "status": "blocked",
+      "blocker": "needs ItoCalculusKit.EighthTransform",
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -2597,6 +2619,26 @@
     {
       "from": "ItoCalculusKit.ItoIncrement8",
       "to": "ItoCalculusKit.SigmaHolder8",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.SixteenthTransform",
+      "to": "ItoCalculusKit.SigmaHolder8",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.EighthMoment",
+      "to": "ItoCalculusKit.SixteenthMoment",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.SixteenthMoment",
+      "to": "ItoCalculusKit.SixteenthTransform",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.EighthTransform",
+      "to": "ItoCalculusKit.SixteenthTransform",
       "kind": "hard"
     },
     {
