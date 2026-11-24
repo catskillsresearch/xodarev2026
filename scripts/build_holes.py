@@ -84,6 +84,18 @@ REFUTED_THEOREMS: dict[str, tuple[str, str]] = {
 }
 
 
+# Documented open problems (the only remaining `sorry`s). Value: detail text.
+OPEN_PROBLEMS: dict[str, str] = {
+    "SignatureRiccatiKit.OfSetup":
+        "OPEN PROBLEM: `affine_riccati_duality` (paper Thm 4.2(ii), p. 21; proof §4.4, p. 23) is "
+        "stated at paper strength with `sorry`. The paper's justification is unsupported: H3 plus "
+        "polynomial moments do not give uniform integrability of exp<psi(T-t), W_t>, and Lemma 4.10 "
+        "uses the false Lemmas B.1/B.2 (CounterExample_Lemma77/78). No counterexample found; "
+        "Cuchiero-Svaluto-Ferro-Teichmann (arXiv:2302.01362, Thm 3.5) assume the true-martingale "
+        "property. Theorem B's Riccati clause depends on it.",
+}
+
+
 # Board labels (exact strings requested by Lars) for refuting modules / headline theorems.
 REFUTATION_LABELS: dict[str, str] = {
     "Lemma77ShuffleEstimateFalse": "CounterExample_Lemma77",
@@ -474,6 +486,8 @@ def build() -> dict:
             detail = COUNTEREXAMPLES.get(nid, "COUNTEREXAMPLE to a paper claim.")
         elif kind[nid] is not None:
             detail = REFUTED_THEOREMS[nid][1]
+        if nid in OPEN_PROBLEMS:
+            detail = OPEN_PROBLEMS[nid]
         if has_sorry[nid]:
             detail = (detail or "") + (" " if detail else "") + "Contains `sorry` (paper gap)."
         if nid in PAPER_KIT_GOALS:
@@ -581,6 +595,12 @@ def write_md(data: dict) -> None:
         f"{sum(1 for n in refute_n if n['kind'] == 'refuted')} refuted theorem(s) · "
         f"{sum(1 for n in refute_n if n['kind'] == 'half-proved')} half-proved theorem(s). "
         "All are finished (no `sorry`) and counted as done.",
+        "",
+        "## Open problem (the single remaining `sorry`)",
+        "",
+        *[f"- **`{nid}`**: {txt}" for nid, txt in OPEN_PROBLEMS.items()],
+        "- `TheoremB` is blocked only because it imports this module; `theorem_B_proved` (martingale, "
+        "NFLVR, special semimartingale) is sorry-free and compared in `comparator.json`.",
         "",
         "## Counterexamples and refuted paper claims",
         "",

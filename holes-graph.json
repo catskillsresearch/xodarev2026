@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T11:26:46Z",
+  "updated": "2026-11-24T11:48:17Z",
   "sorryCount": 2,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -1897,7 +1897,7 @@
       "status": "open",
       "kind": null,
       "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap). Paper kit / theorem goal.",
+      "detail": "OPEN PROBLEM: `affine_riccati_duality` (paper Thm 4.2(ii), p. 21; proof \u00a74.4, p. 23) is stated at paper strength with `sorry`. The paper's justification is unsupported: H3 plus polynomial moments do not give uniform integrability of exp<psi(T-t), W_t>, and Lemma 4.10 uses the false Lemmas B.1/B.2 (CounterExample_Lemma77/78). No counterexample found; Cuchiero-Svaluto-Ferro-Teichmann (arXiv:2302.01362, Thm 3.5) assume the true-martingale property. Theorem B's Riccati clause depends on it. Contains `sorry` (paper gap). Paper kit / theorem goal.",
       "hasSorry": true,
       "paperKitGoal": true
     },

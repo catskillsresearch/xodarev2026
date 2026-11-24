@@ -28,3 +28,11 @@ Solution must prove them too.
 clause. That clause rests on the open hole `signatureRiccatiKit_of_setup.affine_riccati_duality`,
 so `theorem_B` depends on `sorryAx` and is deliberately **not** compared. Only the proved conjuncts
 (`theorem_B_proved`) are compared.
+
+**Open problem.** `affine_riccati_duality` (`SignatureRiccatiKit/OfSetup.lean`, paper Thm 4.2(ii),
+p. 21; proof §4.4, p. 23) is stated at paper strength and left as the single `sorry` in the
+library. The paper's argument for it is unsupported: H3 and polynomial moment bounds do not give
+the uniform integrability it claims, and its Lemma 4.10 uses the false Lemmas B.1/B.2 (our
+Lemma 77/78 counterexamples). No counterexample has been found, and the closest literature
+(Cuchiero–Svaluto-Ferro–Teichmann, arXiv:2302.01362, Thm 3.5) assumes the true-martingale property
+that would close it. Because `theorem_B` depends on it, `theorem_B` is not compared.

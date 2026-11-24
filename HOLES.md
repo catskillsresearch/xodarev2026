@@ -2,9 +2,14 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-24T11:26:46Z
+**Updated:** 2026-11-24T11:48:17Z
 **Holes:** 2 open+blocked · 1 open · 1 blocked · 179 done · 1 file(s) with `sorry`.
 **Paper claims refuted:** 5 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
+
+## Open problem (the single remaining `sorry`)
+
+- **`SignatureRiccatiKit.OfSetup`**: OPEN PROBLEM: `affine_riccati_duality` (paper Thm 4.2(ii), p. 21; proof §4.4, p. 23) is stated at paper strength with `sorry`. The paper's justification is unsupported: H3 plus polynomial moments do not give uniform integrability of exp<psi(T-t), W_t>, and Lemma 4.10 uses the false Lemmas B.1/B.2 (CounterExample_Lemma77/78). No counterexample found; Cuchiero-Svaluto-Ferro-Teichmann (arXiv:2302.01362, Thm 3.5) assume the true-martingale property. Theorem B's Riccati clause depends on it.
+- `TheoremB` is blocked only because it imports this module; `theorem_B_proved` (martingale, NFLVR, special semimartingale) is sorry-free and compared in `comparator.json`.
 
 ## Counterexamples and refuted paper claims
 
