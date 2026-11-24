@@ -1,7 +1,7 @@
 module
 
 public import SignatureVolatility.ItoCalculusKit.ItoIncrement8
-public import SignatureVolatility.ItoCalculusKit.SixteenthTransform
+public import SignatureVolatility.ItoCalculusKit.EvenTransform
 
 
 @[expose] public section

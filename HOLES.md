@@ -2,7 +2,7 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-24T06:07:15Z
+**Updated:** 2026-11-24T06:16:50Z
 **Holes:** 54 open+blocked · 1 open · 53 blocked · 121 done · 8 file(s) with `sorry`.
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
@@ -87,6 +87,8 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | blocked | `ItoCalculusKit.DoobEnvelope` | `SignatureVolatility/ItoCalculusKit/DoobEnvelope.lean` |
 | done | `ItoCalculusKit.EighthMoment` | `SignatureVolatility/ItoCalculusKit/EighthMoment.lean` |
 | blocked | `ItoCalculusKit.EighthTransform` | `SignatureVolatility/ItoCalculusKit/EighthTransform.lean` |
+| done | `ItoCalculusKit.EvenMoment` | `SignatureVolatility/ItoCalculusKit/EvenMoment.lean` |
+| blocked | `ItoCalculusKit.EvenTransform` | `SignatureVolatility/ItoCalculusKit/EvenTransform.lean` |
 | blocked | `ItoCalculusKit.ExpSupermartingale` | `SignatureVolatility/ItoCalculusKit/ExpSupermartingale.lean` |
 | done | `ItoCalculusKit.FourthMoment` | `SignatureVolatility/ItoCalculusKit/FourthMoment.lean` |
 | blocked | `ItoCalculusKit.FrozenIncrement4` | `SignatureVolatility/ItoCalculusKit/FrozenIncrement4.lean` |
@@ -118,8 +120,6 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | blocked | `ItoCalculusKit.SigmaContinuity` | `SignatureVolatility/ItoCalculusKit/SigmaContinuity.lean` |
 | blocked | `ItoCalculusKit.SigmaHolder` | `SignatureVolatility/ItoCalculusKit/SigmaHolder.lean` |
 | blocked | `ItoCalculusKit.SigmaHolder8` | `SignatureVolatility/ItoCalculusKit/SigmaHolder8.lean` |
-| done | `ItoCalculusKit.SixteenthMoment` | `SignatureVolatility/ItoCalculusKit/SixteenthMoment.lean` |
-| blocked | `ItoCalculusKit.SixteenthTransform` | `SignatureVolatility/ItoCalculusKit/SixteenthTransform.lean` |
 | blocked | `ItoCalculusKit.StoppedKit` | `SignatureVolatility/ItoCalculusKit/StoppedKit.lean` |
 | blocked | `ItoCalculusKit.StoppedL2` | `SignatureVolatility/ItoCalculusKit/StoppedL2.lean` |
 | blocked | `ItoCalculusKit.StoppedRaw` | `SignatureVolatility/ItoCalculusKit/StoppedRaw.lean` |

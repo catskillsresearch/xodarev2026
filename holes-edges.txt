@@ -170,9 +170,11 @@ ItoCalculusKit.DoleansSigma -hard-> ItoCalculusKit.DoleansInputs
 ItoCalculusKit.DoleansStrongClass -hard-> ItoCalculusKit.OfMathFin
 ItoCalculusKit.DoobEnvelope -hard-> ItoCalculusKit.DoleansEnvelope
 ItoCalculusKit.EighthMoment -hard-> ItoCalculusKit.EighthTransform
-ItoCalculusKit.EighthMoment -hard-> ItoCalculusKit.SixteenthMoment
+ItoCalculusKit.EighthMoment -hard-> ItoCalculusKit.EvenMoment
+ItoCalculusKit.EighthTransform -hard-> ItoCalculusKit.EvenTransform
 ItoCalculusKit.EighthTransform -hard-> ItoCalculusKit.ItoIncrement8
-ItoCalculusKit.EighthTransform -hard-> ItoCalculusKit.SixteenthTransform
+ItoCalculusKit.EvenMoment -hard-> ItoCalculusKit.EvenTransform
+ItoCalculusKit.EvenTransform -hard-> ItoCalculusKit.SigmaHolder8
 ItoCalculusKit.ExpSupermartingale -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.FourthMoment -hard-> ItoCalculusKit.BrownianQuadVarAS
 ItoCalculusKit.FourthMoment -hard-> ItoCalculusKit.EighthMoment
@@ -219,8 +221,6 @@ ItoCalculusKit.SigmaContinuity -hard-> ItoCalculusKit.SigmaHolder
 ItoCalculusKit.SigmaHolder -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.SigmaHolder -hard-> ItoCalculusKit.EighthTransform
 ItoCalculusKit.SigmaHolder8 -hard-> ItoCalculusKit.QuadIncrement
-ItoCalculusKit.SixteenthMoment -hard-> ItoCalculusKit.SixteenthTransform
-ItoCalculusKit.SixteenthTransform -hard-> ItoCalculusKit.SigmaHolder8
 ItoCalculusKit.StoppedKit -hard-> ItoCalculusKit.StoppedL2
 ItoCalculusKit.StoppedL2 -hard-> ItoCalculusKit.OfMathFin
 ItoCalculusKit.StoppedRaw -hard-> ItoCalculusKit.StoppedStep

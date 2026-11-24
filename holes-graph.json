@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T06:07:15Z",
+  "updated": "2026-11-24T06:16:50Z",
   "sorryCount": 54,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -613,6 +613,28 @@
       "paperKitGoal": false
     },
     {
+      "id": "ItoCalculusKit.EvenMoment",
+      "label": "ItoCalculusKit.EvenMoment",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/EvenMoment.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "ItoCalculusKit.EvenTransform",
+      "label": "ItoCalculusKit.EvenTransform",
+      "section": 1,
+      "file": "SignatureVolatility/ItoCalculusKit/EvenTransform.lean",
+      "status": "blocked",
+      "blocker": "needs ItoCalculusKit.EighthTransform",
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
       "id": "ItoCalculusKit.ExpSupermartingale",
       "label": "ItoCalculusKit.ExpSupermartingale",
       "section": 1,
@@ -948,31 +970,9 @@
       "section": 1,
       "file": "SignatureVolatility/ItoCalculusKit/SigmaHolder8.lean",
       "status": "blocked",
-      "blocker": "needs ItoCalculusKit.ItoIncrement8, ItoCalculusKit.SixteenthTransform",
+      "blocker": "needs ItoCalculusKit.ItoIncrement8, ItoCalculusKit.EvenTransform",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
       "hasSorry": true,
-      "paperKitGoal": false
-    },
-    {
-      "id": "ItoCalculusKit.SixteenthMoment",
-      "label": "ItoCalculusKit.SixteenthMoment",
-      "section": 1,
-      "file": "SignatureVolatility/ItoCalculusKit/SixteenthMoment.lean",
-      "status": "done",
-      "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
-      "hasSorry": false,
-      "paperKitGoal": false
-    },
-    {
-      "id": "ItoCalculusKit.SixteenthTransform",
-      "label": "ItoCalculusKit.SixteenthTransform",
-      "section": 1,
-      "file": "SignatureVolatility/ItoCalculusKit/SixteenthTransform.lean",
-      "status": "blocked",
-      "blocker": "needs ItoCalculusKit.EighthTransform",
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
-      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -2402,6 +2402,21 @@
       "kind": "hard"
     },
     {
+      "from": "ItoCalculusKit.EighthMoment",
+      "to": "ItoCalculusKit.EvenMoment",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.EvenMoment",
+      "to": "ItoCalculusKit.EvenTransform",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.EighthTransform",
+      "to": "ItoCalculusKit.EvenTransform",
+      "kind": "hard"
+    },
+    {
       "from": "ItoCalculusKit.RiemannConvergence",
       "to": "ItoCalculusKit.ExpSupermartingale",
       "kind": "hard"
@@ -2622,23 +2637,8 @@
       "kind": "hard"
     },
     {
-      "from": "ItoCalculusKit.SixteenthTransform",
+      "from": "ItoCalculusKit.EvenTransform",
       "to": "ItoCalculusKit.SigmaHolder8",
-      "kind": "hard"
-    },
-    {
-      "from": "ItoCalculusKit.EighthMoment",
-      "to": "ItoCalculusKit.SixteenthMoment",
-      "kind": "hard"
-    },
-    {
-      "from": "ItoCalculusKit.SixteenthMoment",
-      "to": "ItoCalculusKit.SixteenthTransform",
-      "kind": "hard"
-    },
-    {
-      "from": "ItoCalculusKit.EighthTransform",
-      "to": "ItoCalculusKit.SixteenthTransform",
       "kind": "hard"
     },
     {
