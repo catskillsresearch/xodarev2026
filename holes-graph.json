@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T08:22:58Z",
+  "updated": "2026-11-24T08:44:01Z",
   "sorryCount": 44,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -1510,8 +1510,8 @@
       "file": "SignatureVolatility/ProlongedBrownianSetup/PaperSigDynamics.lean",
       "status": "blocked",
       "blocker": "needs ProlongedBrownianSetup.PaperSig",
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
-      "hasSorry": true,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {

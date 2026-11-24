@@ -291,4 +291,56 @@ theorem levelBound_itoWordIntegral (B : MultiBrownian Ω P d) {T : ℝ} (hT : 0 
         rw [he, hc, hi]
         exact levelBound_itoStep B hT ih j hj hadapt
 
+/-- At each fixed time the dyadic continuous version agrees a.s. with the raw process. -/
+theorem contVersion_ae_eq_of_incr {T : ℝ} (hT : 0 ≤ T) {R : ℝ → Ω → ℝ}
+    (hmeasR : ∀ u, Measurable (R u)) {L : ℕ → ℝ} (hL : ∀ q, 2 ≤ q → 0 ≤ L q)
+    (hLp : ∀ q, 2 ≤ q → ∀ u, 0 ≤ u → u ≤ T → MemLp (R u) (2 * q : ℕ) P)
+    (hincr : ∀ q, 2 ≤ q → ∀ u v, 0 ≤ u → u ≤ v → v ≤ T →
+      nrm q (∫ ω, (R v ω - R u ω) ^ (2 * q) ∂P) ≤ L q * (v - u)) :
+    ∀ u, 0 ≤ u → u ≤ T → contVersion R u =ᵐ[P] R u := by
+  have hL4 := hL 4 (by norm_num)
+  have hL4b := hincr 4 (by norm_num)
+  have hK := contVersion_kolmogorov (P := P) (X := R) (C := L 4 ^ 4) hT (by positivity)
+    (fun s _ _ => hmeasR s) (fun u v hu huv hvT => by
+      have hm : MemLp (fun ω => R v ω - R u ω) (2 * 4 : ℕ) P :=
+        (hLp 4 (by norm_num) v (hu.trans huv) hvT).sub (hLp 4 (by norm_num) u hu (huv.trans hvT))
+      have hi := integrable_pow_of_memLp_evenDeg (N := 2 * 4) ⟨4, by norm_num⟩ hm
+      refine ⟨by simpa using hi, ?_⟩
+      have h0 : 0 ≤ ∫ ω, (R v ω - R u ω) ^ (2 * 4) ∂P :=
+        integral_nonneg fun ω => Even.pow_nonneg ⟨4, by norm_num⟩ _
+      have hb := hL4b u v hu huv hvT
+      have := pow_le_pow_left₀ (nrm_nonneg 4 h0) hb 4
+      rw [nrm_pow (by norm_num) h0, mul_pow] at this
+      simpa using this)
+  exact hK.2
+
+/-- The Itô letter coordinate is, at each fixed time, a.s. the raw Itô integral of the previous
+coordinate. -/
+theorem ae_itoWordIntegral_space_cons (B : MultiBrownian Ω P d) {T : ℝ} (hT : 0 ≤ T) (k : Fin d)
+    {I : Word (d + 1)} (hI : I ≠ []) {u : ℝ} (hu : 0 ≤ u) (huT : u ≤ T) :
+    (fun ω => itoWordIntegral B 0 u ω (k.succ :: I)) =ᵐ[P]
+      fun ω => itoIntegral_process B k (fun s ω' => itoWordIntegral B 0 s ω' I) 0 u ω := by
+  have hX := levelBound_itoWordIntegral B hT I hI
+  set X : ℝ → Ω → ℝ := fun s ω' => itoWordIntegral B 0 s ω' I
+  have hj : ((k.succ : Fin (d + 1)) : ℕ) ≠ 0 := by simp
+  have hk : spaceLetterIndex k.succ hj = k := by ext; simp [spaceLetterIndex]
+  have hR : ∀ u, 0 ≤ u → itoWordStep B k.succ X 0 u = itoIntegral_process B k X 0 u := by
+    intro u hu; funext ω; simp [itoWordStep, itoWordIntegral_cons_long, hu, hk]
+  have he : (fun ω => itoWordIntegral B 0 u ω (k.succ :: I)) =
+      contVersion (itoWordStep B k.succ X 0) u := by
+    funext ω; simp [itoWordIntegral, hI, X]
+  rw [he, ← hR u hu]
+  refine contVersion_ae_eq_of_incr hT (fun u => measurable_itoWordStep B _ X hX.meas_all 0 u)
+    (L := fun q => itoEvenConst q * (wordConst q I * T ^ wordExp I))
+    (fun q hq => mul_nonneg (itoEvenConst_nonneg hq)
+      (mul_nonneg (hX.A_nonneg q hq) (pow_nonneg hT _)))
+    (fun q hq u hu huT => ?_) (fun q hq => ?_) u hu huT
+  · obtain ⟨L, hH⟩ := hX.holderAdaptedEven hq
+    rw [hR u hu]
+    exact (nrm_itoIntegral_process_le B k hq hH (hX.A_nonneg q hq) (hX.mom q hq) hu huT).1
+  · obtain ⟨L, hH⟩ := hX.holderAdaptedEven hq
+    intro u v hu huv hvT
+    rw [hR v (hu.trans huv), hR u hu]
+    exact nrm_itoIntegral_process_sub_le B k hq hH (hX.mom_le_T hq) hu huv hvT
+
 end SignatureVolatility
