@@ -182,6 +182,7 @@ VERIFIED: set[str] = {
     "SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample",
     "SignatureRiccatiKit.FawcettHermite",
     "SignatureRiccatiKit.Poly4ConstOfLogBdd",
+    "SignatureRiccatiKit.LintegralExpShifted",
     "SignatureRiccatiKit.CounterexampleTensor",
     "SignatureRiccatiKit.CounterexampleV1",
     "TheoremBMpr",

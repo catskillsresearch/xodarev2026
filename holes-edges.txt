@@ -177,6 +177,7 @@ ItoCalculusKit.DoleansEnvelope -hard-> ItoCalculusKit.StoppedRaw
 ItoCalculusKit.DoleansErrorPathwise -hard-> ItoCalculusKit.DoleansInputs
 ItoCalculusKit.DoleansIdentify -hard-> ItoCalculusKit.KolmogorovIto
 ItoCalculusKit.DoleansIdentify -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
+ItoCalculusKit.DoleansIdentify -hard-> SignatureRiccatiKit.LintegralExpShifted
 ItoCalculusKit.DoleansInputs -hard-> ItoCalculusKit.DoleansIdentify
 ItoCalculusKit.DoleansMoments -hard-> ItoCalculusKit.DoleansSigma
 ItoCalculusKit.DoleansQV -hard-> ItoCalculusKit.DoleansSDE
@@ -245,6 +246,7 @@ ItoCalculusKit.OfMathFin -hard-> TheoremA
 ItoCalculusKit.PathwiseExpIto -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.PathwiseExpIto -hard-> ItoCalculusKit.LebIncrementEven
 ItoCalculusKit.PathwiseExpIto -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
+ItoCalculusKit.PathwiseExpIto -hard-> SignatureRiccatiKit.LintegralExpShifted
 ItoCalculusKit.QVTransform -hard-> ItoCalculusKit.GridDoob
 ItoCalculusKit.QuadIncrement -hard-> ItoCalculusKit.DoleansInputs
 ItoCalculusKit.QuadIncrement -hard-> ItoCalculusKit.LogDoleansIncrement
