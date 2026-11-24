@@ -18,7 +18,7 @@
    "inherited": false,
    "dir": "vendor/formal-mathfin",
    "copy": false,
-   "configFile": "lakefile.lean"},
+   "configFile": "lakefile.toml"},
   {"type": "path",
    "scope": "",
    "name": "BrownianMotion",

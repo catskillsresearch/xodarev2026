@@ -245,7 +245,8 @@ related_formalizations:
     relationship: builds-on
     note: >-
       Itô integral stack used in Solution proofs, vendored as a Lake path
-      dependency (vendor/formal-mathfin, same SHA as lyasoff2016's pin).
+      dependency (vendor/formal-mathfin, same SHA as lyasoff2016's pin,
+      trimmed to the MathFin library; see vendor/SOURCES).
       Needed declarations are copied into the Challenge; not a Challenge
       import.
 

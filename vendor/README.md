@@ -7,12 +7,9 @@
   (as lyasoff2016 does); do **not** `lake build BrownianMotion` as an umbrella —
   some StochasticIntegral files still reference removed decls.
 - `formal-mathfin/` — **Lake path dependency**. Pin matching lyasoff2016
-  (Itô / Girsanov / MR / SDE / NFLVR scaffolding).
-- `Stochastic-Process-lean-lib/` — **parked** (Lean 4.33). Semimartingale /
-  Novikov / Girsanov depth if MathFin’s Novikov hole blocks us; not on the
-  Lake graph until toolchain-aligned.
-- `LeanRoughPaths/` — **parked** (Lean 4.35.0-rc3). Signature / shuffle /
-  rough-path algebra; not on the Lake graph until toolchain-aligned.
+  (Itô / Girsanov / MR / SDE / NFLVR scaffolding). Only the `MathFin` library
+  is kept (lakefile.toml); non-module upstream extras were removed (see `SOURCES`).
 - `palomar-policy/` — editorial policy pin (unchanged).
 
-Prune parked trees later if unused. Pins and upstream SHAs: `SOURCES`.
+The parked Stochastic-Process-lean-lib and LeanRoughPaths copies were removed
+(unused). Pins and upstream SHAs: `SOURCES`.

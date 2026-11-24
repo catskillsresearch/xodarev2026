@@ -1,8 +1,0 @@
-import StochLean.Probability.Process.Semimartingale.SemanticRegression
-
-#print axioms MeasureTheory.condExp_stoppingTime_eq_min_of_stronglyMeasurable
-#print axioms MeasureTheory.condExp_condExp_stoppingTime_eq_min
-#print axioms MeasureTheory.condExp_stoppingTime_comm
-#print axioms StochLean.SemimartingaleRegression.stopping_condExp_commutes_without_order
-#print axioms StochLean.SemimartingaleRegression.stopping_condExp_at_infinity_keeps_terminal_projection
-#print axioms StochLean.SemimartingaleRegression.stopping_condExp_retains_non_L2_initial

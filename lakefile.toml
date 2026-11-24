@@ -14,9 +14,8 @@ autoImplicit = false
 relaxedAutoImplicit = false
 
 # Prefer lyasoff2016’s pruned BM path pin over upstream RemyDegenne (unused
-# BM `sorry`s poison Palomar). MathFin path pin matches lyasoff’s Git SHA.
-# Stochastic-Process-lean-lib and LeanRoughPaths live under vendor/ but are
-# not Lake requires until their toolchains match (see vendor/SOURCES).
+# BM `sorry`s poison Palomar). MathFin path pin matches lyasoff’s Git SHA
+# (see vendor/SOURCES).
 [[require]]
 name = "BrownianMotion"
 path = "vendor/brownian-motion"

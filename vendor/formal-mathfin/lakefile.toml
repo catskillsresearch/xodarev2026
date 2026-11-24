@@ -1,0 +1,30 @@
+# Converted from upstream lakefile.lean for the xodarev2026 vendored copy (Palomar: every
+# tracked `.lean` file uses the module system). Only the `MathFin` library is kept; the
+# upstream example / test / frontier / Challenge / Solution libraries and tool executables
+# were removed from this copy (see ../SOURCES).
+name = "MathFin"
+defaultTargets = ["MathFin"]
+
+[leanOptions]
+autoImplicit = false
+relaxedAutoImplicit = false
+weak.linter.mathlibStandardSet = true
+
+[[lean_lib]]
+name = "MathFin"
+globs = ["MathFin", "MathFin.+"]
+
+[[require]]
+name = "LeanArchitect"
+git = "https://github.com/hanwenzhu/LeanArchitect.git"
+rev = "v4.35.0"
+
+[[require]]
+name = "BrownianMotion"
+git = "https://github.com/RemyDegenne/brownian-motion.git"
+rev = "497e5e2a60450796f75ab920e6c33addae4d644d"
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4"
+rev = "e91b128082cc221d6432a6a5aadcd3243af8e76c"

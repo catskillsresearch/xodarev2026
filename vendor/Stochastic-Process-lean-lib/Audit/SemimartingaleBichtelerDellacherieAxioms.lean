@@ -1,7 +1,0 @@
-import StochLean.Probability.Process.Semimartingale.BichtelerDellacherie
-
-#print axioms ProbabilityTheory.yan
-#print axioms ProbabilityTheory.EquivalentIntegrabilityMeasure.isClassicalSemimartingale_deterministicStoppedProcess
-#print axioms ProbabilityTheory.isClassicalSemimartingale_of_deterministic_stoppedProcess
-#print axioms ProbabilityTheory.IsSemimartingale.isClassicalSemimartingale
-#print axioms ProbabilityTheory.isSemimartingale_iff_isClassicalSemimartingale

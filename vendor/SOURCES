@@ -25,24 +25,14 @@ formal-mathfin
   note: >-
     Same commit as lyasoff2016’s Lake Git pin; vendored as a path dep.
     Slim copy excludes .git / .lake / .github / docker / benchmarks.
-
-Stochastic-Process-lean-lib
-  path:   vendor/Stochastic-Process-lean-lib
-  url:    https://github.com/FredericaBernkastel1/Stochastic-Process-lean-lib.git
-  rev:    main @ clone 2026-11-21 (depth 1)
-  toolchain: leanprover/lean4:v4.33.0
-  note: >-
-    Parked only — not a Lake require. Candidate for Novikov / semimartingale
-    if MathFin is insufficient; needs toolchain alignment before wiring.
-
-LeanRoughPaths
-  path:   vendor/LeanRoughPaths
-  url:    https://github.com/daniil-shmelev/LeanRoughPaths.git
-  rev:    main @ clone 2026-11-21 (depth 1)
-  toolchain: leanprover/lean4:v4.35.0-rc3
-  note: >-
-    Parked only — not a Lake require. Candidate for signature / shuffle /
-    Hopf word algebra; needs toolchain alignment before wiring.
+    2026-11-24: for Palomar (every tracked `.lean` file uses the module
+    system) the upstream lakefile.lean was converted to lakefile.toml keeping
+    only the `MathFin` library and its requires; the non-module MathFin.lean
+    umbrella was converted to `module` / `public import`; the non-module
+    upstream extras were removed from this copy: Challenge.lean,
+    Solution.lean, comparator.json, MathFinExamples, MathFinFrontier,
+    MathFinTest, MathFinTools, MathFin/AxiomAudit*.lean,
+    scripts/zz_necessity_batch.lean, tests/hammer_pilot/*.lean.
 
 mathlib
   url:    https://github.com/leanprover-community/mathlib4
@@ -51,3 +41,7 @@ mathlib
   note: >-
     Prefer Mathlib’s Probability/BrownianMotion predicates where they already
     cover IsBrownianReal / IsPreBrownianReal; path BM supplies the rest.
+
+Removed 2026-11-24 (unused: never Lake requires, never imported):
+  Stochastic-Process-lean-lib (github.com/FredericaBernkastel1/Stochastic-Process-lean-lib)
+  LeanRoughPaths (github.com/daniil-shmelev/LeanRoughPaths)

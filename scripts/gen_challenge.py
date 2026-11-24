@@ -7,7 +7,7 @@ vendored `MathFin` / `BrownianMotion` libraries is copied verbatim into one file
 Mathlib modules.
 
 Input: a TSV closure (kind, name, parent, modIdx, module, startLine, endLine) produced by
-scripts/ComparatorClosure.lean. Needed source declarations are copied verbatim; compared
+scripts/ComparatorClosure.lean.in. Needed source declarations are copied verbatim; compared
 theorems (kind `thm`) get their proof replaced by `sorry`. Context commands (namespace, section,
 open, variable, ...) of each source file are kept so copied declarations elaborate identically.
 """

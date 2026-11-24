@@ -1,9 +1,0 @@
-import StochLean.Probability.Process.Semimartingale.SemanticRegression
-
-#print axioms StochLean.stieltjesMeasure_real_singleton
-#print axioms StochLean.variationStieltjes_measure_singleton_sub
-#print axioms StochLean.pathStieltjesIntegral_sub_leftLim
-#print axioms ProbabilityTheory.jumpProcess_finiteVariationIntegral
-#print axioms ProbabilityTheory.jumpProcess_finiteVariationIntegral_of_caglad
-#print axioms ProbabilityTheory.ae_jumpProcess_finiteVariationIntegral
-#print axioms StochLean.SemimartingaleRegression.finiteVariation_source_initial_jump

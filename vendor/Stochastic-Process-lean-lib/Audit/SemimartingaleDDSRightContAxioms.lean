@@ -1,5 +1,0 @@
-import StochLean.Probability.Process.Semimartingale.SemanticRegression
-
-#print axioms ProbabilityTheory.HasRightContinuousPaths.indep_increment_rightCont
-#print axioms ProbabilityTheory.IsContinuousLocalMartingale.dambis_dubins_schwarz_rightCont
-#print axioms StochLean.SemimartingaleRegression.rightCont_increment_equal_endpoints
