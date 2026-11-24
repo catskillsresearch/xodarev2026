@@ -357,7 +357,7 @@ ProlongedBrownianSetup.WHat -hard-> SignaturePriceSolution
 ProlongedBrownianSetup.WHat -hard-> SignatureRiccatiKit
 ProlongedBrownianSetup.WHat -hard-> SignatureVolatilityModel.Sigma
 ProlongedBrownianSetup.WHat -hard-> TheoremBOfSetupItoRiccatiKit
-Prop58BlackScholesDepthFalse -hard-> TheoremC
+Prop58BlackScholesDepthFalse -hard-> TheoremCCounterExample
 Prop58BlackScholesDepthFalse -hard-> TheoremD
 PureBrownianWord -hard-> SuperfactorialFunctional
 RiccatiOpBounded -hard-> ClassicalRiccatiSolution
@@ -401,6 +401,7 @@ TheoremA -hard-> PriceFiltrationSignatureSpace.OfMarket
 TheoremAOfBrownianSetupItoKit -hard-> TheoremA
 TheoremAOfBrownianSetupItoKit -hard-> TheoremBOfSetupItoRiccatiKit
 TheoremBOfSetupItoRiccatiKit -hard-> TheoremB
+TheoremCCounterExample -hard-> TheoremC
 TimeReindex -hard-> ProlongedBrownianSetup.ItoIntegralAgainstBM
 TimeReindex -hard-> ProlongedBrownianSetup.OfBrownian
 Weight -hard-> BanachAlgebraConcatBound
