@@ -23,16 +23,20 @@ public import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
 public import Mathlib.Analysis.Complex.PhragmenLindelof
 public import Mathlib.Analysis.Complex.Liouville
 public import Mathlib.Analysis.Calculus.DSlope
+public import SignatureVolatility.ItoCalculusKit.ExpSupermartingale
+public import SignatureVolatility.ItoCalculusKit.PathwiseExpIto
+public import SignatureVolatility.ItoCalculusKit.DoleansIdentify
+public import SignatureVolatility.ItoCalculusKit.BrownianQuadVarAS
 
 /-!
 # Proposed counterexample to `affine_riccati_duality_mpr`
 
 Source: Gemini Carbon (outside opinion, 2026-11-24), filled-in Lean (Parts 1–5).
-Parts 1–3 are sorry-free. Pillar D is sorry-free. Part 5 assembles
-`not_affine_riccati_duality_mpr` from pillars A–D; A, B and C remain
+Parts 1–3 are sorry-free. Pillars A and D are sorry-free. Part 5 assembles
+`not_affine_riccati_duality_mpr` from pillars A–D; B and C remain
 `sorry`. This file has not yet been independently proof-checked.
 
-This module is not a completed refutation until A–C are proved as well.
+This module is not a completed refutation until B and C are proved as well.
 -/
 
 @[expose] public section
@@ -632,7 +636,306 @@ private lemma poly4_const_of_bdd_nonpos {a₀ a₁ a₂ a₃ a₄ L : ℝ}
     simpa [abs_neg] using le_antisymm hle (abs_nonneg _)
   exact And.intro ha1 ⟨rfl, rfl, rfl⟩
 
-/-! ## Part 4: Four isolated analytic/probabilistic pillars (open sub-goals) -/
+/-! ## Part 4: Four isolated analytic/probabilistic pillars -/
+
+section PillarA
+
+variable {d : ℕ}
+
+/-- Algebraic rearrangement of the cubic increment, for the left Riemann sum of `W²`. -/
+lemma mul_sq_sub_eq (a b : ℝ) :
+    a ^ 2 * (b - a) =
+      (1 / 3 : ℝ) * (b ^ 3 - a ^ 3) - a * (b - a) ^ 2 - (1 / 3 : ℝ) * (b - a) ^ 3 := by
+  ring
+
+lemma unifGrid_last (t : ℝ) (n : ℕ) :
+    ((n + 1 : ℕ) : ℝ) * (t / ((n + 1 : ℕ) : ℝ)) = t := by
+  have : ((n + 1 : ℕ) : ℝ) ≠ 0 := by positivity
+  field_simp
+
+lemma unifGrid_last_cast (t : ℝ) (n : ℕ) :
+    ((n : ℝ) + 1) * (t / ((n : ℝ) + 1)) = t := by
+  have : (n : ℝ) + 1 ≠ 0 := by positivity
+  field_simp
+
+lemma gridPt_cast (t : ℝ) (n i : ℕ) :
+    gridPt t n i = (i : ℝ) * (t / ((n : ℝ) + 1)) := by
+  simp [gridPt, Nat.cast_add, Nat.cast_one]
+
+lemma gridPt_succ_cast (t : ℝ) (n i : ℕ) :
+    gridPt t n (i + 1) = ((i : ℝ) + 1) * (t / ((n : ℝ) + 1)) := by
+  simp [gridPt, Nat.cast_add, Nat.cast_one]
+
+lemma unifRiemann_W_sq_eq (B : MultiBrownian Ω P d) (k : Fin d) {t : ℝ}
+    (_ht : 0 ≤ t) (n : ℕ) (ω : Ω) :
+    unifRiemann B k (fun s ω' => MultiBrownian.W B s ω' k ^ 2) t (n + 1) ω =
+      (1 / 3 : ℝ) * MultiBrownian.W B t ω k ^ 3
+      - ∑ i ∈ Finset.range (n + 1),
+          MultiBrownian.W B (gridPt t n i) ω k *
+            wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω ^ 2
+      - (1 / 3 : ℝ) * ∑ i ∈ Finset.range (n + 1),
+          wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω ^ 3 := by
+  set Δ : ℝ := t / ((n + 1 : ℕ) : ℝ)
+  have hNΔ : ((n + 1 : ℕ) : ℝ) * Δ = t := unifGrid_last t n
+  have hinc : ∀ i : ℕ,
+      wnnIncr B k ((i : ℝ) * Δ) (((i + 1 : ℕ) : ℝ) * Δ) ω =
+        MultiBrownian.W B (((i + 1 : ℕ) : ℝ) * Δ) ω k -
+          MultiBrownian.W B ((i : ℝ) * Δ) ω k := fun _ => rfl
+  have hgrid : ∀ i, gridPt t n i = (i : ℝ) * Δ := fun i => by
+    simp [gridPt, Δ]
+  have hgrid' : ∀ i, gridPt t n (i + 1) = ((i + 1 : ℕ) : ℝ) * Δ := fun i => by
+    simp [gridPt, Δ]
+  have hterm : ∀ i ∈ Finset.range (n + 1),
+      MultiBrownian.W B ((i : ℝ) * Δ) ω k ^ 2 *
+          (MultiBrownian.W B (((i + 1 : ℕ) : ℝ) * Δ) ω k -
+            MultiBrownian.W B ((i : ℝ) * Δ) ω k) =
+        (1 / 3 : ℝ) *
+            (MultiBrownian.W B (((i + 1 : ℕ) : ℝ) * Δ) ω k ^ 3 -
+              MultiBrownian.W B ((i : ℝ) * Δ) ω k ^ 3)
+          - MultiBrownian.W B (gridPt t n i) ω k *
+              wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω ^ 2
+          - (1 / 3 : ℝ) *
+              wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω ^ 3 := by
+    intro i _
+    have hi := mul_sq_sub_eq (MultiBrownian.W B ((i : ℝ) * Δ) ω k)
+      (MultiBrownian.W B (((i + 1 : ℕ) : ℝ) * Δ) ω k)
+    rw [hgrid i, hgrid' i, hinc i]
+    exact hi
+  have htel : ∑ i ∈ Finset.range (n + 1),
+      (MultiBrownian.W B (((i + 1 : ℕ) : ℝ) * Δ) ω k ^ 3 -
+        MultiBrownian.W B ((i : ℝ) * Δ) ω k ^ 3) =
+      MultiBrownian.W B t ω k ^ 3 := by
+    have h := Finset.sum_range_sub
+      (fun i : ℕ => MultiBrownian.W B ((i : ℝ) * Δ) ω k ^ 3) (n + 1)
+    have hNΔ' : ((n : ℝ) + 1) * Δ = t := by
+      simpa [Nat.cast_add, Nat.cast_one] using hNΔ
+    simpa [hNΔ', MultiBrownian.W_zero, zero_mul,
+      zero_pow (by norm_num : (3 : ℕ) ≠ 0), sub_zero] using h
+  calc unifRiemann B k (fun s ω' => MultiBrownian.W B s ω' k ^ 2) t (n + 1) ω
+      = ∑ i ∈ Finset.range (n + 1),
+          MultiBrownian.W B ((i : ℝ) * Δ) ω k ^ 2 *
+            (MultiBrownian.W B (((i + 1 : ℕ) : ℝ) * Δ) ω k -
+              MultiBrownian.W B ((i : ℝ) * Δ) ω k) := by
+        simp only [unifRiemann, Δ]
+        exact Finset.sum_congr rfl fun i _ => by rw [hinc i]
+    _ = ∑ i ∈ Finset.range (n + 1),
+          ((1 / 3 : ℝ) *
+              (MultiBrownian.W B (((i + 1 : ℕ) : ℝ) * Δ) ω k ^ 3 -
+                MultiBrownian.W B ((i : ℝ) * Δ) ω k ^ 3)
+            - MultiBrownian.W B (gridPt t n i) ω k *
+                wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω ^ 2
+            - (1 / 3 : ℝ) *
+                wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω ^ 3) :=
+        Finset.sum_congr rfl hterm
+    _ = (1 / 3 : ℝ) * ∑ i ∈ Finset.range (n + 1),
+            (MultiBrownian.W B (((i + 1 : ℕ) : ℝ) * Δ) ω k ^ 3 -
+              MultiBrownian.W B ((i : ℝ) * Δ) ω k ^ 3)
+        - ∑ i ∈ Finset.range (n + 1),
+            MultiBrownian.W B (gridPt t n i) ω k *
+              wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω ^ 2
+        - (1 / 3 : ℝ) * ∑ i ∈ Finset.range (n + 1),
+            wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω ^ 3 := by
+        rw [Finset.sum_sub_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum,
+          ← Finset.mul_sum]
+    _ = (1 / 3 : ℝ) * MultiBrownian.W B t ω k ^ 3
+        - ∑ i ∈ Finset.range (n + 1),
+            MultiBrownian.W B (gridPt t n i) ω k *
+              wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω ^ 2
+        - (1 / 3 : ℝ) * ∑ i ∈ Finset.range (n + 1),
+            wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω ^ 3 := by
+        rw [htel]
+
+/-- The cubic variation along uniform grids vanishes, given a.s. quadratic variation
+and path continuity of `W`. -/
+lemma tendsto_sum_wnnIncr_cube (B : MultiBrownian Ω P d) (k : Fin d) {t : ℝ}
+    (ht : 0 ≤ t) {ω : Ω}
+    (hsq : Tendsto (fun n => ∑ i ∈ Finset.range (n + 1),
+      wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω ^ 2) atTop (𝓝 t)) :
+    Tendsto (fun n => ∑ i ∈ Finset.range (n + 1),
+      wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω ^ 3) atTop (𝓝 0) := by
+  have hx : Continuous (fun s : ℝ => MultiBrownian.W B s ω k) := continuous_W_coord B k ω
+  have huc := isCompact_Icc.uniformContinuousOn_of_continuous
+    (hx.continuousOn (s := Icc 0 t))
+  rw [Metric.uniformContinuousOn_iff_le] at huc
+  refine Metric.tendsto_nhds.2 fun ε hε => ?_
+  set θ : ℝ := ε / (t + 1)
+  have hθ : 0 < θ := div_pos hε (by positivity)
+  obtain ⟨δ, hδ, hδx⟩ := huc θ hθ
+  have hΔ : Tendsto (fun n : ℕ => t / ((n + 1 : ℕ) : ℝ)) atTop (𝓝 0) := by
+    simpa [Nat.cast_add, Nat.cast_one] using
+      (tendsto_const_nhds (x := t)).div_atTop
+        (tendsto_atTop_add_const_right atTop (1 : ℝ) tendsto_natCast_atTop_atTop)
+  filter_upwards [hΔ.eventually (ge_mem_nhds hδ),
+    (Metric.tendsto_nhds.mp hsq) 1 one_pos] with n hnΔ hsqn
+  have hn1 : (0 : ℝ) < ((n + 1 : ℕ) : ℝ) := by positivity
+  have hΔ0 : 0 ≤ t / ((n + 1 : ℕ) : ℝ) := div_nonneg ht hn1.le
+  have hgrid : ∀ i, i ≤ n + 1 → gridPt t n i ∈ Icc 0 t := by
+    intro i hi
+    refine ⟨by simp [gridPt]; positivity, ?_⟩
+    have hle : (i : ℝ) * (t / ((n : ℝ) + 1)) ≤
+        ((n : ℝ) + 1) * (t / ((n : ℝ) + 1)) :=
+      mul_le_mul_of_nonneg_right (by exact_mod_cast hi)
+        (by simpa [Nat.cast_add, Nat.cast_one] using hΔ0)
+    simpa [gridPt, Nat.cast_add, Nat.cast_one, unifGrid_last_cast t n] using hle
+  have hinc_le : ∀ i < n + 1,
+      |wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω| ≤ θ := by
+    intro i hi
+    change |MultiBrownian.W B (gridPt t n (i + 1)) ω k -
+      MultiBrownian.W B (gridPt t n i) ω k| ≤ θ
+    have m1 := hgrid i hi.le
+    have m2 := hgrid (i + 1) (Nat.succ_le_of_lt hi)
+    have hd : dist (gridPt t n (i + 1)) (gridPt t n i) ≤ δ := by
+      have hdiff : gridPt t n (i + 1) - gridPt t n i = t / ((n + 1 : ℕ) : ℝ) := by
+        simp [gridPt]; ring
+      rw [Real.dist_eq, hdiff, abs_of_nonneg hΔ0]
+      exact hnΔ
+    have h := hδx _ m2 _ m1 hd
+    rwa [Real.dist_eq] at h
+  have habs : |∑ i ∈ Finset.range (n + 1),
+      wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω ^ 3| ≤
+      θ * ∑ i ∈ Finset.range (n + 1),
+        wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω ^ 2 := by
+    have hz : ∀ z : ℝ, |z ^ 3| = |z| * z ^ 2 := fun z => by
+      rw [abs_pow, pow_succ, sq_abs, mul_comm]
+    calc |∑ i ∈ Finset.range (n + 1),
+            wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω ^ 3|
+        ≤ ∑ i ∈ Finset.range (n + 1),
+            |wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω ^ 3| :=
+          Finset.abs_sum_le_sum_abs _ _
+      _ = ∑ i ∈ Finset.range (n + 1),
+            |wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω| *
+              wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω ^ 2 := by
+          refine Finset.sum_congr rfl fun i _ => hz _
+      _ ≤ ∑ i ∈ Finset.range (n + 1),
+            θ * wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω ^ 2 := by
+          refine Finset.sum_le_sum fun i hi =>
+            mul_le_mul_of_nonneg_right
+              (hinc_le i (Finset.mem_range.mp hi)) (sq_nonneg _)
+      _ = θ * ∑ i ∈ Finset.range (n + 1),
+            wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω ^ 2 := by
+          rw [← Finset.mul_sum]
+  have hsqlt : ∑ i ∈ Finset.range (n + 1),
+      wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω ^ 2 < t + 1 := by
+    rw [Real.dist_eq] at hsqn
+    linarith [(abs_lt.mp hsqn).2]
+  rw [Real.dist_eq, sub_zero]
+  have hθt : θ * (t + 1) = ε :=
+    div_mul_cancel₀ ε (by positivity : (t + 1 : ℝ) ≠ 0)
+  refine (lt_of_le_of_lt habs ?_).trans_eq hθt
+  exact mul_lt_mul_of_pos_left hsqlt hθ
+
+/-- `∑ W_{t_i} (ΔW_i)² → ∫ W` almost surely, by Föllmer weighted quadratic variation
+plus ordinary Riemann sums. -/
+lemma ae_tendsto_sum_W_mul_wnnIncr_sq (B : MultiBrownian Ω P d) (k : Fin d) {t : ℝ}
+    (ht : 0 ≤ t) :
+    ∀ᵐ ω ∂P, Tendsto (fun n => ∑ i ∈ Finset.range (n + 1),
+      MultiBrownian.W B (gridPt t n i) ω k *
+        wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω ^ 2) atTop
+      (𝓝 (∫ r in (0 : ℝ)..t, MultiBrownian.W B r ω k)) := by
+  filter_upwards [ae_tendsto_qvBlocks B k ht] with ω hω
+  have hW0 : Tendsto (fun n => ∑ j ∈ Finset.range (n + 1),
+      MultiBrownian.W B ((j : ℝ) * (t / ((n : ℝ) + 1))) ω k *
+        qvIncr B k t n j ω) atTop (𝓝 0) := by
+    refine tendsto_weighted_qv ht (continuous_W_coord B k ω).continuousOn
+      (fun n j => wnnIncr B k ((j : ℝ) * (t / ((n : ℝ) + 1)))
+        (((j : ℝ) + 1) * (t / ((n : ℝ) + 1))) ω ^ 2)
+      (fun _ _ => sq_nonneg _) ?_
+    intro K i
+    simpa [qvIncr] using hω K i
+  have hR := tendsto_lebRiemann_of_continuousOn ht
+    (continuous_W_coord B k ω).continuousOn
+  have hsum : ∀ n,
+      ∑ i ∈ Finset.range (n + 1),
+        MultiBrownian.W B (gridPt t n i) ω k *
+          wnnIncr B k (gridPt t n i) (gridPt t n (i + 1)) ω ^ 2 =
+      (∑ j ∈ Finset.range (n + 1),
+        MultiBrownian.W B ((j : ℝ) * (t / ((n : ℝ) + 1))) ω k * qvIncr B k t n j ω) +
+      ∑ j ∈ Finset.range (n + 1),
+        MultiBrownian.W B ((j : ℝ) * (t / ((n : ℝ) + 1))) ω k *
+          (t / ((n : ℝ) + 1)) := by
+    intro n
+    have hinc : ∀ j,
+        wnnIncr B k (gridPt t n j) (gridPt t n (j + 1)) ω =
+          wnnIncr B k ((j : ℝ) * (t / ((n : ℝ) + 1)))
+            (((j : ℝ) + 1) * (t / ((n : ℝ) + 1))) ω := fun j => by
+      simp [gridPt_cast]
+    simp only [qvIncr, gridPt_cast, mul_sub, Finset.sum_sub_distrib, Nat.cast_add,
+      Nat.cast_one]
+    abel
+  have h := hW0.add hR
+  simpa [hsum, zero_add] using h
+
+/-- The left Itô–Riemann sums of `W²` converge a.s. to `(1/3) W_t³ - ∫ W`. -/
+theorem ae_tendsto_unifRiemann_W_sq (B : MultiBrownian Ω P d) (k : Fin d) {t : ℝ}
+    (ht : 0 ≤ t) :
+    ∀ᵐ ω ∂P, Tendsto (fun n : ℕ =>
+      unifRiemann B k (fun s ω' => MultiBrownian.W B s ω' k ^ 2) t (n + 1) ω)
+      atTop (𝓝 ((1 / 3 : ℝ) * MultiBrownian.W B t ω k ^ 3
+        - ∫ r in (0 : ℝ)..t, MultiBrownian.W B r ω k)) := by
+  filter_upwards [ae_tendsto_sum_wnnIncr_sq B k ht,
+    ae_tendsto_sum_W_mul_wnnIncr_sq B k ht] with ω hsq hW
+  have hcube := tendsto_sum_wnnIncr_cube B k ht hsq
+  have hconst :
+      Tendsto (fun _ : ℕ => (1 / 3 : ℝ) * MultiBrownian.W B t ω k ^ 3)
+        atTop (𝓝 ((1 / 3 : ℝ) * MultiBrownian.W B t ω k ^ 3)) :=
+    tendsto_const_nhds
+  have h := (hconst.sub hW).sub (hcube.const_mul (1 / 3 : ℝ))
+  have hlim :
+      ((1 / 3 : ℝ) * MultiBrownian.W B t ω k ^ 3
+        - ∫ r in (0 : ℝ)..t, MultiBrownian.W B r ω k)
+        - (1 / 3 : ℝ) * 0 =
+      (1 / 3 : ℝ) * MultiBrownian.W B t ω k ^ 3
+        - ∫ r in (0 : ℝ)..t, MultiBrownian.W B r ω k := by ring
+  rw [← hlim]
+  exact h.congr fun n => (unifRiemann_W_sq_eq B k ht n ω).symm
+
+lemma tendsto_sum_W_pow_four (B : MultiBrownian Ω P d) (k : Fin d) {t : ℝ}
+    (ht : 0 ≤ t) (ω : Ω) :
+    Tendsto (fun n : ℕ => ∑ i ∈ Finset.range (n + 1),
+      (MultiBrownian.W B ((i : ℝ) * (t / ((n + 1 : ℕ) : ℝ))) ω k ^ 2) ^ 2 *
+        (t / ((n + 1 : ℕ) : ℝ))) atTop
+      (𝓝 (∫ r in (0 : ℝ)..t, MultiBrownian.W B r ω k ^ 4)) := by
+  have h := tendsto_lebRiemann_of_continuousOn ht
+    ((((continuous_pow 2).comp ((continuous_pow 2).comp
+      (continuous_W_coord B k ω)))).continuousOn)
+  have hint : (∫ r in (0 : ℝ)..t, (MultiBrownian.W B r ω k ^ 2) ^ 2) =
+      ∫ r in (0 : ℝ)..t, MultiBrownian.W B r ω k ^ 4 :=
+    intervalIntegral.integral_congr fun r _ => by ring
+  simpa [Nat.cast_add, Nat.cast_one, Function.comp_apply, hint] using h
+
+lemma measurable_W_sq_path (B : MultiBrownian Ω P d) (k : Fin d) {u : ℝ}
+    (h0 : 0 ≤ u) :
+    Measurable[(pathFiltration B).σAlg u] (fun ω => MultiBrownian.W B u ω k ^ 2) :=
+  (measurable_W_pathFiltration B (T := u) ⟨u, h0, le_rfl⟩ k).pow_const 2
+
+lemma paperSetup_W_hat_eq (B : MultiBrownian Ω P d) {T : ℝ} (hT : 0 < T) (t : ℝ)
+    (ω : Ω) : (paperSetup B hT).W_hat t ω = paperSig2 B 0 t ω :=
+  rfl
+
+lemma measurable_dualPairing_counterexampleU0 (B : MultiBrownian Ω P d) (hd : 0 < d)
+    (lam : ℝ) (t : ℝ) :
+    Measurable fun ω =>
+      dualPairing (counterexampleU0 hd lam) (paperSig2 B 0 t ω) := by
+  simp only [dualPairing_counterexampleU0]
+  exact (((measurable_paperSig2_coeff B 0 t _).const_mul _).sub
+    ((measurable_paperSig2_coeff B 0 t _).const_mul _)).sub
+    ((measurable_paperSig2_coeff B 0 t _).const_mul _)
+
+/-- Exponential supermartingale bound: `E exp(λ I_t - λ²/2 ∫ W⁴) ≤ 1`, where
+`I_t = (1/3) W_t³ - ∫ W` is the Itô integral `∫ W² dW`. -/
+lemma lintegral_exp_counterexampleU0_pairing_le_one (B : MultiBrownian Ω P d)
+    (hd : 0 < d) (lam : ℝ) {t : ℝ} (ht : 0 ≤ t) :
+    ∫⁻ ω, ENNReal.ofReal (Real.exp
+      (lam * ((1 / 3 : ℝ) * MultiBrownian.W B t ω ⟨0, hd⟩ ^ 3
+          - ∫ r in (0 : ℝ)..t, MultiBrownian.W B r ω ⟨0, hd⟩)
+        - lam ^ 2 / 2 * ∫ r in (0 : ℝ)..t,
+            MultiBrownian.W B r ω ⟨0, hd⟩ ^ 4)) ∂P ≤ 1 :=
+  lintegral_exp_ito_le_one B ⟨0, hd⟩ ht
+    (fun _u h0 _hu => measurable_W_sq_path B ⟨0, hd⟩ h0) lam
+    (ae_tendsto_unifRiemann_W_sq B ⟨0, hd⟩ ht)
+    (ae_of_all _ fun ω => tendsto_sum_W_pow_four B ⟨0, hd⟩ ht ω)
+
+end PillarA
 
 /-- **Pillar A (Doléans–Dade supermartingale bound)**:
 `exp ⟨u₀^(λ), Ŵ_t⟩ = ℰ(∫ λ W_r² dW_r)_t` is a positive local martingale starting at `1`,
@@ -640,7 +943,41 @@ hence `𝔼[exp ⟨u₀^(λ), Ŵ_t⟩] ≤ 1 < ∞` for all `t ∈ [0, T]`. -/
 lemma signatureTransformFinite_counterexampleU0 (M : SignatureVolatilityModel)
     (B : MultiBrownian Ω P M.d) (lam : ℝ) :
     SignatureTransformFinite P (paperSetup B M.hT) (counterexampleU0 M.hd lam) := by
-  sorry
+  intro t ht
+  set k : Fin M.d := ⟨0, M.hd⟩
+  set I : Ω → ℝ := fun ω =>
+    (1 / 3 : ℝ) * MultiBrownian.W B t ω k ^ 3
+      - ∫ r in (0 : ℝ)..t, MultiBrownian.W B r ω k
+  set Q : Ω → ℝ := fun ω =>
+    ∫ r in (0 : ℝ)..t, MultiBrownian.W B r ω k ^ 4
+  have hpair : (fun ω => dualPairing (counterexampleU0 M.hd lam)
+      ((paperSetup B M.hT).W_hat t ω)) =ᵐ[P]
+      fun ω => lam * I ω - lam ^ 2 / 2 * Q ω := by
+    filter_upwards [ae_dualPairing_counterexampleU0_eq B M.hd lam ht.1] with ω hω
+    rw [paperSetup_W_hat_eq B M.hT t ω, hω]
+    ring
+  have hlin : ∫⁻ ω, ENNReal.ofReal (Real.exp (lam * I ω - lam ^ 2 / 2 * Q ω)) ∂P ≤ 1 := by
+    simpa [I, Q] using lintegral_exp_counterexampleU0_pairing_le_one B M.hd lam ht.1
+  have hlin' : ∫⁻ ω, ENNReal.ofReal (Real.exp (dualPairing (counterexampleU0 M.hd lam)
+      ((paperSetup B M.hT).W_hat t ω))) ∂P ≤ 1 := by
+    have : (fun ω => ENNReal.ofReal (Real.exp (dualPairing (counterexampleU0 M.hd lam)
+        ((paperSetup B M.hT).W_hat t ω)))) =ᵐ[P]
+        fun ω => ENNReal.ofReal (Real.exp (lam * I ω - lam ^ 2 / 2 * Q ω)) :=
+      hpair.mono fun _ h => congrArg (fun z => ENNReal.ofReal (Real.exp z)) h
+    rwa [lintegral_congr_ae this]
+  have hmeas : Measurable fun ω =>
+      Real.exp (dualPairing (counterexampleU0 M.hd lam)
+        ((paperSetup B M.hT).W_hat t ω)) := by
+    simpa [Function.comp_def, paperSetup_W_hat_eq B M.hT t] using
+      Real.measurable_exp.comp (measurable_dualPairing_counterexampleU0 B M.hd lam t)
+  refine ⟨hmeas.aestronglyMeasurable, ?_⟩
+  have he : ∫⁻ ω, ‖Real.exp (dualPairing (counterexampleU0 M.hd lam)
+      ((paperSetup B M.hT).W_hat t ω))‖ₑ ∂P =
+      ∫⁻ ω, ENNReal.ofReal (Real.exp (dualPairing (counterexampleU0 M.hd lam)
+        ((paperSetup B M.hT).W_hat t ω))) ∂P :=
+    lintegral_congr fun ω => Real.enorm_eq_ofReal (Real.exp_pos _).le
+  rw [HasFiniteIntegral, he]
+  exact hlin'.trans_lt ENNReal.one_lt_top
 
 /-- **Pillar B (Markov + Brownian scaling + stopped Girsanov explosion asymptotics)**:
 There exists a function `v₁ : ℝ → ℝ` (namely `x ↦ ℚ_x(τ_∞ > T/2)` for `dY = Y² dr + dB̃`)
