@@ -27,16 +27,29 @@ public import SignatureVolatility.ItoCalculusKit.ExpSupermartingale
 public import SignatureVolatility.ItoCalculusKit.PathwiseExpIto
 public import SignatureVolatility.ItoCalculusKit.DoleansIdentify
 public import SignatureVolatility.ItoCalculusKit.BrownianQuadVarAS
+public import SignatureVolatility.SignatureRiccatiKit.FawcettHermite
+public import SignatureVolatility.SignatureRiccatiKit.CounterexampleTensor
+public import SignatureVolatility.SignatureRiccatiKit.CounterexampleV1
+public import SignatureVolatility.SignatureRiccatiKit.GirsanovFawcett
+public import SignatureVolatility.SignatureRiccatiKit.EntireTransfer
+public import SignatureVolatility.SignatureRiccatiKit.CounterexampleV1PosLe
+public import SignatureVolatility.SignatureRiccatiKit.CounterexampleV1LogBound
+public import SignatureVolatility.SignatureRiccatiKit.CounterexampleV1Monotone
+public import SignatureVolatility.SignatureRiccatiKit.CounterexampleV1Decay
+public import SignatureVolatility.SignatureRiccatiKit.CounterexampleV1CondExp
 
 /-!
 # Proposed counterexample to `affine_riccati_duality_mpr`
 
 Source: Gemini Carbon (outside opinion, 2026-11-24), filled-in Lean (Parts 1–5).
-Parts 1–3 are sorry-free. Pillars A and D are sorry-free. Part 5 assembles
-`not_affine_riccati_duality_mpr` from pillars A–D; B and C remain
-`sorry`. This file has not yet been independently proof-checked.
+Parts 1–3 are sorry-free. Pillars A and D are sorry-free. Pillars B and C are
+assembled here from the piece modules B1–B5 and C1–C3 (each remaining piece
+is a named `sorry` in its own module). Part 5 assembles
+`not_affine_riccati_duality_mpr` from pillars A–D.
 
-This module is not a completed refutation until B and C are proved as well.
+This module is not a completed refutation until B1–B5 and C2–C3 are proved
+as well. The tensor family and `v₁` live in `CounterexampleTensor` and
+`CounterexampleV1`.
 -/
 
 @[expose] public section
@@ -109,49 +122,6 @@ private lemma shuffleBasis_pair_pair {d : ℕ} (a : Letter d) (K : Word d) :
   simp only [shuffleBasis, shuffleWords_pair_pair, List.map_cons, List.map_nil,
     List.sum_cons, List.sum_nil]
   split_ifs <;> norm_num
-
-/-- First spatial letter `1 = (0 : Fin d).succ` when `0 < d`. -/
-def firstSpace {d : ℕ} (hd : 0 < d) : Letter (d + 1) :=
-  (⟨0, hd⟩ : Fin d).succ
-
-lemma firstSpace_ne_zero {d : ℕ} (hd : 0 < d) : firstSpace hd ≠ 0 :=
-  Fin.succ_ne_zero _
-
-/-- Counterexample tensor family `u₀^(λ) = 2λ e_{[1,1,1]} - λ e_{[1,0]} - 12λ² e_{[1,1,1,1,0]}`. -/
-def counterexampleU0 {d : ℕ} (hd : 0 < d) (lam : ℝ) : ExtTensorAlgebra (d + 1) :=
-  ⟨fun I =>
-    if I = [firstSpace hd, firstSpace hd, firstSpace hd] then 2 * lam
-    else if I = [firstSpace hd, 0] then -lam
-    else if I = [firstSpace hd, firstSpace hd, firstSpace hd, firstSpace hd, 0] then
-      -12 * lam ^ 2
-    else 0⟩
-
-lemma counterexampleU0_coeff {d : ℕ} (hd : 0 < d) (lam : ℝ) (I : Word (d + 1)) :
-    (counterexampleU0 hd lam).coeff I =
-      if I = [firstSpace hd, firstSpace hd, firstSpace hd] then 2 * lam
-      else if I = [firstSpace hd, 0] then -lam
-      else if I = [firstSpace hd, firstSpace hd, firstSpace hd, firstSpace hd, 0] then
-        -12 * lam ^ 2
-      else 0 :=
-  rfl
-
-
-lemma counterexampleU0_coeff_zero {d : ℕ} (hd : 0 < d) (lam : ℝ) {I : Word (d + 1)}
-    (h3 : I ≠ [firstSpace hd, firstSpace hd, firstSpace hd])
-    (h2 : I ≠ [firstSpace hd, 0])
-    (h5 : I ≠ [firstSpace hd, firstSpace hd, firstSpace hd, firstSpace hd, 0]) :
-    (counterexampleU0 hd lam).coeff I = 0 := by
-  simp [counterexampleU0_coeff, h3, h2, h5]
-
-lemma counterexampleU0_isFinitelySupported {d : ℕ} (hd : 0 < d) (lam : ℝ) :
-    IsFinitelySupported (counterexampleU0 hd lam) := by
-  refine ⟨5, fun I hI => ?_⟩
-  simp only [counterexampleU0]
-  split_ifs with h1 h2 h3
-  · subst h1; simp at hI
-  · subst h2; simp at hI
-  · subst h3; simp at hI
-  · rfl
 
 lemma rightShift_zero_counterexampleU0 {d : ℕ} (hd : 0 < d) (lam : ℝ) (K : Word (d + 1)) :
     (rightShift 0 (counterexampleU0 hd lam)).coeff K =
@@ -1005,7 +975,12 @@ lemma exists_scaled_survival_function (M : SignatureVolatilityModel)
             Real.exp (dualPairing (counterexampleU0 M.hd lam)
               ((paperSetup B M.hT).W_hat t_lam ω)) *
             v₁ (lam ^ (1 / 3 : ℝ) * MultiBrownian.W B t_lam ω ⟨0, M.hd⟩) := by
-  sorry
+  refine ⟨counterexampleV1AtHalf M B, ?_, ?_, ?_, ?_, ?_⟩
+  · exact counterexampleV1_pos_le M B
+  · exact counterexampleV1_log_bound M B
+  · exact counterexampleV1_monotone_nonpos M B
+  · exact counterexampleV1_tendsto_zero M B
+  · exact counterexampleV1_condExp M B
 
 /-- **Pillar C (Girsanov–Fawcett / Hermite conditional signature expansion)**:
 If `ϕ ∈ T_w` and `⟨ϕ, Ŵ_t⟩ = f(W_t^0)` a.s. for a measurable function `f : ℝ → ℝ` at `t ∈ (0, T)`,
@@ -1019,7 +994,9 @@ lemma exists_entire_expTypeOne_of_memTw (M : SignatureVolatilityModel)
     ∃ (G : ℂ → ℂ) (C : ℝ), Differentiable ℂ G ∧ 0 ≤ C ∧
       (∀ z : ℂ, ‖G z‖ ≤ C * Real.exp ‖z‖) ∧
       (∀ᵐ x : ℝ ∂volume, G x = (f x : ℂ)) := by
-  sorry
+  refine fawcett_transfer_to_f M B ht0 htT hϕ hfeq ?_
+  intro I
+  exact girsanov_fawcett_identification M.hd B M.hT ht0 htT I
 
 section PillarD
 open Complex Metric

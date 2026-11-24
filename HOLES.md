@@ -2,16 +2,14 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-24T15:27:58Z
-**`sorry` occurrences:** 1 · 1 open · 2 blocked · 181 done · 1 file(s) with `sorry`.
+**Updated:** 2026-11-24T20:15:47Z
+**`sorry` occurrences:** 8 · 8 open · 3 blocked · 184 done · 8 file(s) with `sorry`.
 **Paper claims refuted:** 5 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
 
 ## Open problem (the single remaining `sorry`)
 
 - **`SignatureRiccatiKit.AffineRiccatiDualityMpr`**: OPEN PROBLEM: `affine_riccati_duality_mpr`, the <- direction of the affine / Riccati duality (paper Thm 4.2(ii), p. 21; proof §4.4, p. 23), is stated at paper strength with `sorry`. The -> direction `affine_riccati_duality_mp` is proved and compared (SignatureRiccatiKit.AffineRiccatiDualityMp). The paper's justification of <- is unsupported: H3 plus polynomial moments do not give uniform integrability of exp<psi(T-t), W_t>, and Lemma 4.10 uses the false Lemmas B.1/B.2 (CounterExample_Lemma77/78). No counterexample found; Cuchiero-Svaluto-Ferro-Teichmann (arXiv:2302.01362, Thm 3.5) assume the true-martingale property. affine_riccati_duality / signatureRiccatiKit_of_setup (SignatureRiccatiKit.AffineRiccatiDuality) and theorem_B_mpr / theorem_B (TheoremBMpr) depend on it.
 - `SignatureRiccatiKit.AffineRiccatiDuality` (`affine_riccati_duality`, `signatureRiccatiKit_of_setup`) and `TheoremBMpr` (`theorem_B_mpr`, full `theorem_B`) are blocked only because they depend on this module. The Challenge and `Solution.lean` have **0** `sorry`. `theorem_B_mp` (martingale, NFLVR, special semimartingale, `->` Riccati direction) and `affine_riccati_duality_mp` are sorry-free and compared in `comparator.json`.
-
-**Proposed counterexample (unverified).** Gemini Carbon (outside opinion, 2026-11-24) claims `affine_riccati_duality_mpr` is false as stated: for every `SignatureVolatilityModel` and Brownian motion there is a finitely supported family $u_0^{(\lambda)}$ for which both hypotheses hold and the conclusion fails. That claim has **not** been verified or compiled in this repository. Pillars A–D of the proposed Lean disproof remain `sorry`. The citation arXiv:2606.29622 has not been verified by us. The generated line above still says “No counterexample found”; treat that as stale until the argument is checked. Full writeup: [`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.md`](SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.md). Short Writeup pointer: [`Writeup/Section3/SupportingModules/AffineRiccatiDualityMpr.md`](Writeup/Section3/SupportingModules/AffineRiccatiDualityMpr.md).
 
 ## Counterexamples and refuted paper claims
 
@@ -53,16 +51,30 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | Status | Id | File |
 |---|---|---|
 | open | `SignatureRiccatiKit.AffineRiccatiDualityMpr` | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.lean` |
+| open | `SignatureRiccatiKit.CounterexampleV1CondExp` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1CondExp.lean` |
+| open | `SignatureRiccatiKit.CounterexampleV1Decay` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1Decay.lean` |
+| open | `SignatureRiccatiKit.CounterexampleV1LogBound` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1LogBound.lean` |
+| open | `SignatureRiccatiKit.CounterexampleV1Monotone` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1Monotone.lean` |
+| open | `SignatureRiccatiKit.CounterexampleV1PosLe` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1PosLe.lean` |
+| open | `SignatureRiccatiKit.EntireTransfer` | `SignatureVolatility/SignatureRiccatiKit/EntireTransfer.lean` |
+| open | `SignatureRiccatiKit.GirsanovFawcett` | `SignatureVolatility/SignatureRiccatiKit/GirsanovFawcett.lean` |
 
 ## Open now (Layer 0)
 
 | Id | File |
 |---|---|
 | `SignatureRiccatiKit.AffineRiccatiDualityMpr` | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.lean` |
+| `SignatureRiccatiKit.CounterexampleV1CondExp` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1CondExp.lean` |
+| `SignatureRiccatiKit.CounterexampleV1Decay` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1Decay.lean` |
+| `SignatureRiccatiKit.CounterexampleV1LogBound` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1LogBound.lean` |
+| `SignatureRiccatiKit.CounterexampleV1Monotone` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1Monotone.lean` |
+| `SignatureRiccatiKit.CounterexampleV1PosLe` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1PosLe.lean` |
+| `SignatureRiccatiKit.EntireTransfer` | `SignatureVolatility/SignatureRiccatiKit/EntireTransfer.lean` |
+| `SignatureRiccatiKit.GirsanovFawcett` | `SignatureVolatility/SignatureRiccatiKit/GirsanovFawcett.lean` |
 
 ## By group
 
-### Top-level modules — 3 hole(s)
+### Top-level modules — 11 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -183,7 +195,18 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | blocked | `SignatureRiccatiKit.AffineRiccatiDuality` | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDuality.lean` |
 | done | `SignatureRiccatiKit.AffineRiccatiDualityMp` | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMp.lean` |
 | open | `SignatureRiccatiKit.AffineRiccatiDualityMpr` | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.lean` |
+| blocked | `SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample` | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMprCounterexample.lean` |
 | done | `SignatureRiccatiKit.CoordSemimartingale` | `SignatureVolatility/SignatureRiccatiKit/CoordSemimartingale.lean` |
+| done | `SignatureRiccatiKit.CounterexampleTensor` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleTensor.lean` |
+| done | `SignatureRiccatiKit.CounterexampleV1` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1.lean` |
+| open | `SignatureRiccatiKit.CounterexampleV1CondExp` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1CondExp.lean` |
+| open | `SignatureRiccatiKit.CounterexampleV1Decay` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1Decay.lean` |
+| open | `SignatureRiccatiKit.CounterexampleV1LogBound` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1LogBound.lean` |
+| open | `SignatureRiccatiKit.CounterexampleV1Monotone` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1Monotone.lean` |
+| open | `SignatureRiccatiKit.CounterexampleV1PosLe` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1PosLe.lean` |
+| open | `SignatureRiccatiKit.EntireTransfer` | `SignatureVolatility/SignatureRiccatiKit/EntireTransfer.lean` |
+| done | `SignatureRiccatiKit.FawcettHermite` | `SignatureVolatility/SignatureRiccatiKit/FawcettHermite.lean` |
+| open | `SignatureRiccatiKit.GirsanovFawcett` | `SignatureVolatility/SignatureRiccatiKit/GirsanovFawcett.lean` |
 | done | `SignatureRiccatiKit.RiccatiExpProcess` | `SignatureVolatility/SignatureRiccatiKit/RiccatiExpProcess.lean` |
 | done | `SignatureRiccatiKit.RiccatiOp` | `SignatureVolatility/SignatureRiccatiKit/RiccatiOp.lean` |
 | done | `SignatureVolatilityModel` | `SignatureVolatility/SignatureVolatilityModel.lean` |

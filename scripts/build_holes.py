@@ -107,6 +107,18 @@ STATUS_LABELS: dict[str, str] = {
     "TheoremBMpr": "theorem_B_mpr, theorem_B",
     "SignatureRiccatiKit.AffineRiccatiDualityMp": "affine_riccati_duality_mp",
     "TheoremB": "theorem_B_mp",
+    "SignatureRiccatiKit.FawcettHermite": "C1 Hermite combinatorial core",
+    "SignatureRiccatiKit.GirsanovFawcett": "C2 Girsanov–Fawcett identification",
+    "SignatureRiccatiKit.EntireTransfer": "C3 transfer to f (Pillar C)",
+    "SignatureRiccatiKit.CounterexampleV1": "v₁ (shared)",
+    "SignatureRiccatiKit.CounterexampleV1PosLe": "B1 0 < v₁ ≤ 1",
+    "SignatureRiccatiKit.CounterexampleV1LogBound": "B2 quartic log lower bound",
+    "SignatureRiccatiKit.CounterexampleV1Monotone": "B3 monotone on (-∞, 0]",
+    "SignatureRiccatiKit.CounterexampleV1Decay": "B4 decay to 0",
+    "SignatureRiccatiKit.CounterexampleV1CondExp": "B5 cond. exp. factorisation",
+    "SignatureRiccatiKit.CounterexampleTensor": "u₀^(λ) tensor family",
+    "SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample":
+        "not_affine_riccati_duality_mpr (assembled)",
 }
 STATUS_DETAILS: dict[str, str] = {
     "TheoremB":
@@ -143,7 +155,8 @@ REFUTATION_LABELS: dict[str, str] = {
 
 
 def is_counterexample(nid: str) -> bool:
-    return nid in COUNTEREXAMPLES or nid.endswith("False") or "Counterexample" in nid
+    return (nid in COUNTEREXAMPLES or nid.endswith("False")
+            or nid.endswith("Counterexample") or nid.endswith("CounterExample"))
 
 
 # Module ids (short paths) that have been human-verified / sorry-free and may be
@@ -152,6 +165,10 @@ def is_counterexample(nid: str) -> bool:
 VERIFIED: set[str] = {
     "SignatureRiccatiKit.AffineRiccatiDualityMp",
     "SignatureRiccatiKit.AffineRiccatiDuality",
+    "SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample",
+    "SignatureRiccatiKit.FawcettHermite",
+    "SignatureRiccatiKit.CounterexampleTensor",
+    "SignatureRiccatiKit.CounterexampleV1",
     "TheoremBMpr",
     "AdmissibleGainsUnderP",
     "BanachAlgebraConcatBound",

@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-24T15:27:58Z",
-  "sorryCount": 1,
+  "updated": "2026-11-24T20:15:47Z",
+  "sorryCount": 8,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, SignatureRiccatiKit.AffineRiccatiDualityMpr, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done (proved, counterexample or refuted; no sorry). Green = open. Grey = blocked. Counterexample / refutation labels are shown as text on the node.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: SignatureRiccatiKit.AffineRiccatiDualityMpr."
+    "Open tips: SignatureRiccatiKit.AffineRiccatiDualityMpr, SignatureRiccatiKit.CounterexampleV1CondExp, SignatureRiccatiKit.CounterexampleV1Decay, SignatureRiccatiKit.CounterexampleV1LogBound, SignatureRiccatiKit.CounterexampleV1Monotone, SignatureRiccatiKit.CounterexampleV1PosLe, SignatureRiccatiKit.EntireTransfer, SignatureRiccatiKit.GirsanovFawcett."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -1914,6 +1914,18 @@
       "paperKitGoal": true
     },
     {
+      "id": "SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample",
+      "label": "not_affine_riccati_duality_mpr (assembled)",
+      "section": 1,
+      "file": "SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMprCounterexample.lean",
+      "status": "blocked",
+      "kind": null,
+      "blocker": "needs SignatureRiccatiKit.GirsanovFawcett, SignatureRiccatiKit.EntireTransfer, SignatureRiccatiKit.CounterexampleV1PosLe, SignatureRiccatiKit.CounterexampleV1LogBound, SignatureRiccatiKit.CounterexampleV1Monotone, SignatureRiccatiKit.CounterexampleV1Decay, SignatureRiccatiKit.CounterexampleV1CondExp",
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
       "id": "SignatureRiccatiKit.CoordSemimartingale",
       "label": "SignatureRiccatiKit.CoordSemimartingale",
       "section": 1,
@@ -1923,6 +1935,126 @@
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "SignatureRiccatiKit.CounterexampleTensor",
+      "label": "u\u2080^(\u03bb) tensor family",
+      "section": 1,
+      "file": "SignatureVolatility/SignatureRiccatiKit/CounterexampleTensor.lean",
+      "status": "done",
+      "kind": null,
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "SignatureRiccatiKit.CounterexampleV1",
+      "label": "v\u2081 (shared)",
+      "section": 1,
+      "file": "SignatureVolatility/SignatureRiccatiKit/CounterexampleV1.lean",
+      "status": "done",
+      "kind": null,
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "SignatureRiccatiKit.CounterexampleV1CondExp",
+      "label": "B5 cond. exp. factorisation",
+      "section": 1,
+      "file": "SignatureVolatility/SignatureRiccatiKit/CounterexampleV1CondExp.lean",
+      "status": "open",
+      "kind": null,
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
+      "hasSorry": true,
+      "paperKitGoal": false
+    },
+    {
+      "id": "SignatureRiccatiKit.CounterexampleV1Decay",
+      "label": "B4 decay to 0",
+      "section": 1,
+      "file": "SignatureVolatility/SignatureRiccatiKit/CounterexampleV1Decay.lean",
+      "status": "open",
+      "kind": null,
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
+      "hasSorry": true,
+      "paperKitGoal": false
+    },
+    {
+      "id": "SignatureRiccatiKit.CounterexampleV1LogBound",
+      "label": "B2 quartic log lower bound",
+      "section": 1,
+      "file": "SignatureVolatility/SignatureRiccatiKit/CounterexampleV1LogBound.lean",
+      "status": "open",
+      "kind": null,
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
+      "hasSorry": true,
+      "paperKitGoal": false
+    },
+    {
+      "id": "SignatureRiccatiKit.CounterexampleV1Monotone",
+      "label": "B3 monotone on (-\u221e, 0]",
+      "section": 1,
+      "file": "SignatureVolatility/SignatureRiccatiKit/CounterexampleV1Monotone.lean",
+      "status": "open",
+      "kind": null,
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
+      "hasSorry": true,
+      "paperKitGoal": false
+    },
+    {
+      "id": "SignatureRiccatiKit.CounterexampleV1PosLe",
+      "label": "B1 0 < v\u2081 \u2264 1",
+      "section": 1,
+      "file": "SignatureVolatility/SignatureRiccatiKit/CounterexampleV1PosLe.lean",
+      "status": "open",
+      "kind": null,
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
+      "hasSorry": true,
+      "paperKitGoal": false
+    },
+    {
+      "id": "SignatureRiccatiKit.EntireTransfer",
+      "label": "C3 transfer to f (Pillar C)",
+      "section": 1,
+      "file": "SignatureVolatility/SignatureRiccatiKit/EntireTransfer.lean",
+      "status": "open",
+      "kind": null,
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
+      "hasSorry": true,
+      "paperKitGoal": false
+    },
+    {
+      "id": "SignatureRiccatiKit.FawcettHermite",
+      "label": "C1 Hermite combinatorial core",
+      "section": 1,
+      "file": "SignatureVolatility/SignatureRiccatiKit/FawcettHermite.lean",
+      "status": "done",
+      "kind": null,
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
+      "id": "SignatureRiccatiKit.GirsanovFawcett",
+      "label": "C2 Girsanov\u2013Fawcett identification",
+      "section": 1,
+      "file": "SignatureVolatility/SignatureRiccatiKit/GirsanovFawcett.lean",
+      "status": "open",
+      "kind": null,
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
+      "hasSorry": true,
       "paperKitGoal": false
     },
     {
@@ -3550,6 +3682,51 @@
       "kind": "hard"
     },
     {
+      "from": "SignatureRiccatiKit",
+      "to": "SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.RiccatiOp",
+      "to": "SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.GirsanovFawcett",
+      "to": "SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.EntireTransfer",
+      "to": "SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.CounterexampleV1PosLe",
+      "to": "SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.CounterexampleV1LogBound",
+      "to": "SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.CounterexampleV1Monotone",
+      "to": "SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.CounterexampleV1Decay",
+      "to": "SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.CounterexampleV1CondExp",
+      "to": "SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample",
+      "kind": "hard"
+    },
+    {
       "from": "ItoCalculusKit.OfMathFin",
       "to": "SignatureRiccatiKit.CoordSemimartingale",
       "kind": "hard"
@@ -3557,6 +3734,86 @@
     {
       "from": "IsSpecialSemimartingale",
       "to": "SignatureRiccatiKit.CoordSemimartingale",
+      "kind": "hard"
+    },
+    {
+      "from": "ExtTensorAlgebra.IsFinitelySupported",
+      "to": "SignatureRiccatiKit.CounterexampleTensor",
+      "kind": "hard"
+    },
+    {
+      "from": "ProlongedBrownianSetup.OfBrownian",
+      "to": "SignatureRiccatiKit.CounterexampleV1",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureVolatilityModel",
+      "to": "SignatureRiccatiKit.CounterexampleV1",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.CounterexampleTensor",
+      "to": "SignatureRiccatiKit.CounterexampleV1CondExp",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.CounterexampleV1",
+      "to": "SignatureRiccatiKit.CounterexampleV1CondExp",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.OfMathFin",
+      "to": "SignatureRiccatiKit.CounterexampleV1CondExp",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.CounterexampleV1",
+      "to": "SignatureRiccatiKit.CounterexampleV1Decay",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.CounterexampleV1",
+      "to": "SignatureRiccatiKit.CounterexampleV1LogBound",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.CounterexampleV1",
+      "to": "SignatureRiccatiKit.CounterexampleV1Monotone",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.CounterexampleV1",
+      "to": "SignatureRiccatiKit.CounterexampleV1PosLe",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.FawcettHermite",
+      "to": "SignatureRiccatiKit.EntireTransfer",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.OfMathFin",
+      "to": "SignatureRiccatiKit.EntireTransfer",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureVolatilityModel",
+      "to": "SignatureRiccatiKit.EntireTransfer",
+      "kind": "hard"
+    },
+    {
+      "from": "MemTw",
+      "to": "SignatureRiccatiKit.FawcettHermite",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.FawcettHermite",
+      "to": "SignatureRiccatiKit.GirsanovFawcett",
+      "kind": "hard"
+    },
+    {
+      "from": "ItoCalculusKit.OfMathFin",
+      "to": "SignatureRiccatiKit.GirsanovFawcett",
       "kind": "hard"
     },
     {
