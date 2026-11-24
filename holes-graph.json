@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-24T22:11:06Z",
-  "sorryCount": 11,
+  "updated": "2026-11-24T22:13:36Z",
+  "sorryCount": 10,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -2040,8 +2040,8 @@
       "status": "blocked",
       "kind": null,
       "blocker": "needs SignatureRiccatiKit.BrownianScalingShiftedExponent, SignatureRiccatiKit.CondExpMulIndepDisintegrate",
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
-      "hasSorry": true,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {

@@ -40,6 +40,23 @@ lemma counterexampleV1_condExp (M : SignatureVolatilityModel)
             ((paperSetup B M.hT).W_hat t_lam ω)) *
           counterexampleV1AtHalf M B
             (lam ^ (1 / 3 : ℝ) * MultiBrownian.W B t_lam ω ⟨0, M.hd⟩) := by
-  sorry
+  intro lam hlam s_lam t_lam
+  have hlam_pos : 0 < lam := by linarith
+  have hs_pos : 0 < s_lam :=
+    mul_pos (Real.rpow_pos_of_pos hlam_pos _) (half_pos M.hT)
+  have hs_le : s_lam ≤ M.T / 2 := by
+    have h1 : lam ^ (-(2 / 3 : ℝ)) ≤ 1 :=
+      Real.rpow_le_one_of_one_le_of_nonpos hlam (by norm_num)
+    have hT : 0 ≤ M.T / 2 := le_of_lt (half_pos M.hT)
+    simpa [s_lam] using mul_le_of_le_one_left hT h1
+  have ht0 : 0 ≤ t_lam := by
+    have : s_lam ≤ M.T := le_trans hs_le (div_le_self (le_of_lt M.hT) one_le_two)
+    linarith
+  have htT : t_lam < M.T := by linarith
+  have h := condExp_mul_indep_disintegrate M B hlam ht0 htT
+  have htime : lam ^ (2 / 3 : ℝ) * (M.T - t_lam) = M.T / 2 := by
+    simp only [t_lam, s_lam, sub_sub_cancel, ← mul_assoc, ← Real.rpow_add hlam_pos,
+      add_neg_cancel, Real.rpow_zero, one_mul]
+  simpa only [htime, counterexampleV1AtHalf] using h
 
 end SignatureVolatility

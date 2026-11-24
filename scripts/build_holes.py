@@ -178,6 +178,7 @@ VERIFIED: set[str] = {
     "SignatureRiccatiKit.ComplexTilt",
     "SignatureRiccatiKit.IteratedDerivGaussian",
     "SignatureRiccatiKit.CondSigPoly",
+    "SignatureRiccatiKit.CounterexampleV1CondExp",
     "SignatureRiccatiKit.BarrierU",
     "SignatureRiccatiKit.CounterexampleTensor",
     "SignatureRiccatiKit.CounterexampleV1",
