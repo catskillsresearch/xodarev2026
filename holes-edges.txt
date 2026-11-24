@@ -214,6 +214,7 @@ ItoCalculusKit.MathFinBridgeSetup -hard-> ItoCalculusKit.StoppedRaw
 ItoCalculusKit.NovikovDoob -hard-> ItoCalculusKit.DoleansStrongClass
 ItoCalculusKit.NovikovMartingale -hard-> ItoCalculusKit.DoleansEnvelope
 ItoCalculusKit.OfMathFin -hard-> SignatureRiccatiKit.AffineRiccatiDualityMp
+ItoCalculusKit.OfMathFin -hard-> SignatureRiccatiKit.AffineRiccatiDualityMpr
 ItoCalculusKit.OfMathFin -hard-> SignatureRiccatiKit.CoordSemimartingale
 ItoCalculusKit.OfMathFin -hard-> TheoremA
 ItoCalculusKit.PathwiseExpIto -hard-> ItoCalculusKit.DoleansMoments
@@ -372,14 +373,17 @@ SignatureFiltrationEqBrownianFiltration -hard-> ItoCalculusKit.MathFinBridgeSetu
 SignaturePriceSolution -hard-> TheoremAOfBrownianSetupItoKit
 SignaturePriceSolution -hard-> TheoremBOfSetupItoRiccatiKit
 SignatureRiccatiKit -hard-> SignatureRiccatiKit.AffineRiccatiDualityMp
+SignatureRiccatiKit -hard-> SignatureRiccatiKit.AffineRiccatiDualityMpr
 SignatureRiccatiKit -hard-> TheoremBOfSetupItoRiccatiKit
 SignatureRiccatiKit.AffineRiccatiDuality -hard-> TheoremBMpr
 SignatureRiccatiKit.AffineRiccatiDualityMp -hard-> SignatureRiccatiKit.AffineRiccatiDuality
 SignatureRiccatiKit.AffineRiccatiDualityMp -hard-> TheoremB
+SignatureRiccatiKit.AffineRiccatiDualityMpr -hard-> SignatureRiccatiKit.AffineRiccatiDuality
 SignatureRiccatiKit.CoordSemimartingale -hard-> SignatureRiccatiKit.AffineRiccatiDuality
 SignatureRiccatiKit.CoordSemimartingale -hard-> TheoremB
 SignatureRiccatiKit.RiccatiOp -hard-> Lemma77ShuffleEstimateFalse
 SignatureRiccatiKit.RiccatiOp -hard-> SignatureRiccatiKit.AffineRiccatiDualityMp
+SignatureRiccatiKit.RiccatiOp -hard-> SignatureRiccatiKit.AffineRiccatiDualityMpr
 SignatureVolatilityModel -hard-> BlackScholesModel
 SignatureVolatilityModel -hard-> FirstOrderBrownianVolModel
 SignatureVolatilityModel -hard-> InfiniteGeometricSignatureModel

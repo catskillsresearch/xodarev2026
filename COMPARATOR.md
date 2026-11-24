@@ -41,13 +41,15 @@ the open problem below. `theorem_B` is the full paper statement, proved from `th
 **Open problem (not compared).** The affine / Riccati duality (paper Thm 4.2(ii), p. 21; proof
 §4.4, p. 23) is split. The `→` direction `affine_riccati_duality_mp` is proved and compared. The
 `←` direction `affine_riccati_duality_mpr`
-(`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDuality.lean`) is stated at paper strength
+(`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.lean`) is stated at paper strength
 and is the single `sorry` in the repository: a positive local martingale
 `exp⟨ψ(T − t), Ŵ_t⟩` must be shown to be the true conditional expectation. The paper's argument
 for it is unsupported: H3 and polynomial moment bounds do not give the uniform integrability it
 claims, and its Lemma 4.10 uses the false Lemmas B.1/B.2 (our Lemma 77/78 counterexamples). No
 counterexample has been found, and the closest literature (Cuchiero–Svaluto-Ferro–Teichmann,
-arXiv:2302.01362, Thm 3.5) assumes the true-martingale property that would close it. The same
-module holds `affine_riccati_duality` (the iff) and `signatureRiccatiKit_of_setup`;
+arXiv:2302.01362, Thm 3.5) assumes the true-martingale property that would close it. The proved `→` direction is in
+`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMp.lean`. The iff
+`affine_riccati_duality` and `signatureRiccatiKit_of_setup` are in
+`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDuality.lean`;
 `theorem_B_mpr` and `theorem_B` are in `SignatureVolatility/TheoremBMpr.lean`. The Challenge and
 `Solution.lean` contain no `sorry`.

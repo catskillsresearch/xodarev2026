@@ -23,7 +23,7 @@ This file proves the `→` direction (`affine_riccati_duality_mp`): an exponenti
 representation through a classical Riccati solution yields such a solution. The `←` direction
 (that the positive local martingale `exp⟨ψ(T − t), Ŵ_t⟩` is the true conditional expectation) is
 an open problem; it is stated with `sorry` as `affine_riccati_duality_mpr` in
-`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDuality.lean`.
+`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.lean`.
 
 Proved supporting fact for `←` (in `RiccatiExpProcess`): along a classical solution the exponent
 `⟨ψ(T − t), Ŵ_t⟩` is a.s. summable and continuous in `t`

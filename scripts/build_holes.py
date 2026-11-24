@@ -40,7 +40,7 @@ SORRY_RE = re.compile(r"(?<![A-Za-z0-9_])sorry(?![A-Za-z0-9_])")
 PAPER_KIT_GOALS: list[str] = [
     "ProlongedBrownianSetup.StratonovichOfBM",
     "ItoCalculusKit.OfMathFin",
-    "SignatureRiccatiKit.AffineRiccatiDuality",
+    "SignatureRiccatiKit.AffineRiccatiDualityMpr",
     "PriceFiltrationSignatureSpace.OfMarket",
     "GKWDecompositionSetup.OfPFS",
     # Paper entry theorems (instance wrappers; blocked until the kits above are done):
@@ -86,7 +86,7 @@ REFUTED_THEOREMS: dict[str, tuple[str, str]] = {
 
 # Documented open problems (the only remaining `sorry`s). Value: detail text.
 OPEN_PROBLEMS: dict[str, str] = {
-    "SignatureRiccatiKit.AffineRiccatiDuality":
+    "SignatureRiccatiKit.AffineRiccatiDualityMpr":
         "OPEN PROBLEM: `affine_riccati_duality_mpr`, the "
         "<- direction of the affine / Riccati duality (paper Thm 4.2(ii), p. 21; proof §4.4, p. 23), "
         "is stated at paper strength with `sorry`. The -> direction `affine_riccati_duality_mp` is "
@@ -94,15 +94,18 @@ OPEN_PROBLEMS: dict[str, str] = {
         "of <- is unsupported: H3 plus polynomial moments do not give uniform integrability of "
         "exp<psi(T-t), W_t>, and Lemma 4.10 uses the false Lemmas B.1/B.2 (CounterExample_Lemma77/78). "
         "No counterexample found; Cuchiero-Svaluto-Ferro-Teichmann (arXiv:2302.01362, Thm 3.5) assume "
-        "the true-martingale property. theorem_B_mpr and the full theorem_B (TheoremBMpr) depend on it.",
+        "the true-martingale property. affine_riccati_duality / signatureRiccatiKit_of_setup "
+        "(SignatureRiccatiKit.AffineRiccatiDuality) and theorem_B_mpr / theorem_B (TheoremBMpr) "
+        "depend on it.",
 }
 
 
 # Labels shown on unfinished nodes (always applied).
 STATUS_LABELS: dict[str, str] = {
-    "SignatureRiccatiKit.AffineRiccatiDuality": "affine_riccati_duality_mpr",
+    "SignatureRiccatiKit.AffineRiccatiDualityMpr": "affine_riccati_duality_mpr",
+    "SignatureRiccatiKit.AffineRiccatiDuality": "affine_riccati_duality, kit of_setup",
     "TheoremBMpr": "theorem_B_mpr, theorem_B",
-    "SignatureRiccatiKit.AffineRiccatiDualityMp": "affine_riccati_duality_mp (-> proved)",
+    "SignatureRiccatiKit.AffineRiccatiDualityMp": "affine_riccati_duality_mp",
     "TheoremB": "theorem_B_mp",
 }
 STATUS_DETAILS: dict[str, str] = {
@@ -114,10 +117,14 @@ STATUS_DETAILS: dict[str, str] = {
         "Proved -> direction of the affine / Riccati duality (paper Thm 4.2(ii)): an exponential-"
         "affine conditional transform through a classical Riccati solution gives a solution. "
         "Compared in comparator.json. The <- direction is the open problem "
-        "(SignatureRiccatiKit.AffineRiccatiDuality).",
+        "(SignatureRiccatiKit.AffineRiccatiDualityMpr).",
+    "SignatureRiccatiKit.AffineRiccatiDuality":
+        "affine_riccati_duality (the paper iff) and signatureRiccatiKit_of_setup, assembled from "
+        "affine_riccati_duality_mp (proved) and affine_riccati_duality_mpr (the single sorry). "
+        "No `sorry` in this file.",
     "TheoremBMpr":
         "theorem_B_mpr: the <- direction of paper Theorem B's Riccati clause, open; it is "
-        "affine_riccati_duality_mpr (the single sorry, SignatureRiccatiKit.AffineRiccatiDuality). "
+        "affine_riccati_duality_mpr (the single sorry, SignatureRiccatiKit.AffineRiccatiDualityMpr). "
         "theorem_B: the full paper statement, proved from theorem_B_mp and theorem_B_mpr. "
         "No `sorry` in this file.",
 }
@@ -144,6 +151,7 @@ def is_counterexample(nid: str) -> bool:
 # Do NOT list paper-kit goal modules here until they are sorry-free at paper strength.
 VERIFIED: set[str] = {
     "SignatureRiccatiKit.AffineRiccatiDualityMp",
+    "SignatureRiccatiKit.AffineRiccatiDuality",
     "TheoremBMpr",
     "AdmissibleGainsUnderP",
     "BanachAlgebraConcatBound",
@@ -655,7 +663,9 @@ def write_md(data: dict) -> None:
         "## Open problem (the single remaining `sorry`)",
         "",
         *[f"- **`{nid}`**: {txt}" for nid, txt in OPEN_PROBLEMS.items()],
-        "- `TheoremBMpr` (`theorem_B_mpr`, full `theorem_B`) is blocked only because it imports this module. "
+        "- `SignatureRiccatiKit.AffineRiccatiDuality` (`affine_riccati_duality`, "
+        "`signatureRiccatiKit_of_setup`) and `TheoremBMpr` (`theorem_B_mpr`, full `theorem_B`) "
+        "are blocked only because they depend on this module. "
         "The Challenge and `Solution.lean` have **0** `sorry`. "
         "`theorem_B_mp` (martingale, NFLVR, special semimartingale, `->` Riccati direction) and "
         "`affine_riccati_duality_mp` are sorry-free and compared in `comparator.json`.",

@@ -52,9 +52,11 @@ status:
     SignatureVolatilityComparator/Solution.lean have no sorry. The single
     sorry of the repository is the open ← direction of the affine / Riccati
     duality (affine_riccati_duality_mpr in
-    SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDuality.lean),
-    together with what depends on it (affine_riccati_duality,
-    signatureRiccatiKit_of_setup, theorem_B_mpr, full theorem_B in
+    SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.lean),
+    together with what depends on it (affine_riccati_duality and
+    signatureRiccatiKit_of_setup in
+    SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDuality.lean,
+    theorem_B_mpr and full theorem_B in
     SignatureVolatility/TheoremBMpr.lean). Those are in the main library but
     are not compared. Challenge is one file importing only Lean core and Mathlib.
   sorry_count: 0
@@ -289,7 +291,7 @@ known_gaps:
     Open problem (the one gap): the ← direction of the affine / Riccati
     duality, paper Theorem 4.2(ii) p. 21, proof §4.4 p. 23
     (SignatureVolatility.affine_riccati_duality_mpr,
-    SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDuality.lean, sorry). It requires the positive
+    SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.lean, sorry). It requires the positive
     local martingale exp⟨ψ(T − t), Ŵ_t⟩ to be a true martingale. The paper's
     argument is unsupported: H3 and polynomial moments do not give uniform
     integrability of the exponential, and Lemma 4.10 uses Lemmas B.1/B.2,

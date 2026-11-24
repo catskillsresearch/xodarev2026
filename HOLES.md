@@ -2,14 +2,14 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-24T15:23:00Z
-**`sorry` occurrences:** 1 · 1 open · 1 blocked · 181 done · 1 file(s) with `sorry`.
+**Updated:** 2026-11-24T15:27:58Z
+**`sorry` occurrences:** 1 · 1 open · 2 blocked · 181 done · 1 file(s) with `sorry`.
 **Paper claims refuted:** 5 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
 
 ## Open problem (the single remaining `sorry`)
 
-- **`SignatureRiccatiKit.AffineRiccatiDuality`**: OPEN PROBLEM: `affine_riccati_duality_mpr`, the <- direction of the affine / Riccati duality (paper Thm 4.2(ii), p. 21; proof §4.4, p. 23), is stated at paper strength with `sorry`. The -> direction `affine_riccati_duality_mp` is proved and compared (SignatureRiccatiKit.AffineRiccatiDualityMp). The paper's justification of <- is unsupported: H3 plus polynomial moments do not give uniform integrability of exp<psi(T-t), W_t>, and Lemma 4.10 uses the false Lemmas B.1/B.2 (CounterExample_Lemma77/78). No counterexample found; Cuchiero-Svaluto-Ferro-Teichmann (arXiv:2302.01362, Thm 3.5) assume the true-martingale property. theorem_B_mpr and the full theorem_B (TheoremBMpr) depend on it.
-- `TheoremBMpr` (`theorem_B_mpr`, full `theorem_B`) is blocked only because it imports this module. The Challenge and `Solution.lean` have **0** `sorry`. `theorem_B_mp` (martingale, NFLVR, special semimartingale, `->` Riccati direction) and `affine_riccati_duality_mp` are sorry-free and compared in `comparator.json`.
+- **`SignatureRiccatiKit.AffineRiccatiDualityMpr`**: OPEN PROBLEM: `affine_riccati_duality_mpr`, the <- direction of the affine / Riccati duality (paper Thm 4.2(ii), p. 21; proof §4.4, p. 23), is stated at paper strength with `sorry`. The -> direction `affine_riccati_duality_mp` is proved and compared (SignatureRiccatiKit.AffineRiccatiDualityMp). The paper's justification of <- is unsupported: H3 plus polynomial moments do not give uniform integrability of exp<psi(T-t), W_t>, and Lemma 4.10 uses the false Lemmas B.1/B.2 (CounterExample_Lemma77/78). No counterexample found; Cuchiero-Svaluto-Ferro-Teichmann (arXiv:2302.01362, Thm 3.5) assume the true-martingale property. affine_riccati_duality / signatureRiccatiKit_of_setup (SignatureRiccatiKit.AffineRiccatiDuality) and theorem_B_mpr / theorem_B (TheoremBMpr) depend on it.
+- `SignatureRiccatiKit.AffineRiccatiDuality` (`affine_riccati_duality`, `signatureRiccatiKit_of_setup`) and `TheoremBMpr` (`theorem_B_mpr`, full `theorem_B`) are blocked only because they depend on this module. The Challenge and `Solution.lean` have **0** `sorry`. `theorem_B_mp` (martingale, NFLVR, special semimartingale, `->` Riccati direction) and `affine_riccati_duality_mp` are sorry-free and compared in `comparator.json`.
 
 ## Counterexamples and refuted paper claims
 
@@ -40,7 +40,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `ItoCalculusKit.OfMathFin` | no | `SignatureVolatility/ItoCalculusKit/OfMathFin.lean` |
 | done | `PriceFiltrationSignatureSpace.OfMarket` | no | `SignatureVolatility/PriceFiltrationSignatureSpace/OfMarket.lean` |
 | done | `ProlongedBrownianSetup.StratonovichOfBM` | no | `SignatureVolatility/ProlongedBrownianSetup/StratonovichOfBM.lean` |
-| open | `SignatureRiccatiKit.AffineRiccatiDuality` | yes | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDuality.lean` |
+| open | `SignatureRiccatiKit.AffineRiccatiDualityMpr` | yes | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.lean` |
 | done | `TheoremA` | no | `SignatureVolatility/TheoremA.lean` |
 | done | `TheoremB` | no | `SignatureVolatility/TheoremB.lean` |
 | done | `TheoremC` | no | `SignatureVolatility/TheoremC.lean` |
@@ -50,17 +50,17 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 
 | Status | Id | File |
 |---|---|---|
-| open | `SignatureRiccatiKit.AffineRiccatiDuality` | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDuality.lean` |
+| open | `SignatureRiccatiKit.AffineRiccatiDualityMpr` | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.lean` |
 
 ## Open now (Layer 0)
 
 | Id | File |
 |---|---|
-| `SignatureRiccatiKit.AffineRiccatiDuality` | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDuality.lean` |
+| `SignatureRiccatiKit.AffineRiccatiDualityMpr` | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.lean` |
 
 ## By group
 
-### Top-level modules — 2 hole(s)
+### Top-level modules — 3 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -178,8 +178,9 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `SignatureHestonLevel2Model` | `SignatureVolatility/SignatureHestonLevel2Model.lean` |
 | done | `SignaturePriceSolution` | `SignatureVolatility/SignaturePriceSolution.lean` |
 | done | `SignatureRiccatiKit` | `SignatureVolatility/SignatureRiccatiKit.lean` |
-| open | `SignatureRiccatiKit.AffineRiccatiDuality` | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDuality.lean` |
+| blocked | `SignatureRiccatiKit.AffineRiccatiDuality` | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDuality.lean` |
 | done | `SignatureRiccatiKit.AffineRiccatiDualityMp` | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMp.lean` |
+| open | `SignatureRiccatiKit.AffineRiccatiDualityMpr` | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.lean` |
 | done | `SignatureRiccatiKit.CoordSemimartingale` | `SignatureVolatility/SignatureRiccatiKit/CoordSemimartingale.lean` |
 | done | `SignatureRiccatiKit.RiccatiExpProcess` | `SignatureVolatility/SignatureRiccatiKit/RiccatiExpProcess.lean` |
 | done | `SignatureRiccatiKit.RiccatiOp` | `SignatureVolatility/SignatureRiccatiKit/RiccatiOp.lean` |
