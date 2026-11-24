@@ -143,6 +143,7 @@ VERIFIED: set[str] = {
     "ItoCalculusKit.StoppedKit",
     "ItoCalculusKit.StoppedL2",
     "ItoCalculusKit.OfMathFin",
+    "SignatureRiccatiKit.RiccatiOp",
     "ItoCalculusKit.PathwiseExpIto",
     "Letter",
     "MemL2w",

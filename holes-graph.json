@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T03:52:36Z",
+  "updated": "2026-11-24T03:58:03Z",
   "sorryCount": 6,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -1680,6 +1680,17 @@
       "paperKitGoal": true
     },
     {
+      "id": "SignatureRiccatiKit.RiccatiOp",
+      "label": "SignatureRiccatiKit.RiccatiOp",
+      "section": 1,
+      "file": "SignatureVolatility/SignatureRiccatiKit/RiccatiOp.lean",
+      "status": "done",
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false
+    },
+    {
       "id": "SignatureVolatilityModel",
       "label": "SignatureVolatilityModel",
       "section": 1,
@@ -3207,6 +3218,16 @@
     {
       "from": "SignatureRiccatiKit",
       "to": "SignatureRiccatiKit.OfSetup",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.RiccatiOp",
+      "to": "SignatureRiccatiKit.OfSetup",
+      "kind": "hard"
+    },
+    {
+      "from": "RiccatiOpBounded",
+      "to": "SignatureRiccatiKit.RiccatiOp",
       "kind": "hard"
     },
     {

@@ -400,6 +400,7 @@ ProlongedBrownianSetup.WHat -hard-> TheoremBOfSetupItoRiccatiKit
 PureBrownianWord -hard-> SuperfactorialFunctional
 RiccatiOpBounded -hard-> ClassicalRiccatiSolution
 RiccatiOpBounded -hard-> Remark219BlackScholesRiccati
+RiccatiOpBounded -hard-> SignatureRiccatiKit.RiccatiOp
 RightShift -hard-> Remark219BlackScholesRiccati
 RightShift -hard-> RiccatiOpBounded
 SatisfiesNFLVR -hard-> NflvrOfMartingaleMeasure
@@ -413,6 +414,7 @@ SignaturePriceSolution -hard-> TheoremBOfSetupItoRiccatiKit
 SignatureRiccatiKit -hard-> SignatureRiccatiKit.OfSetup
 SignatureRiccatiKit -hard-> TheoremBOfSetupItoRiccatiKit
 SignatureRiccatiKit.OfSetup -hard-> TheoremB
+SignatureRiccatiKit.RiccatiOp -hard-> SignatureRiccatiKit.OfSetup
 SignatureVolatilityModel -hard-> BlackScholesModel
 SignatureVolatilityModel -hard-> Corollary36SigmaWellDefined
 SignatureVolatilityModel -hard-> FirstOrderBrownianVolModel
