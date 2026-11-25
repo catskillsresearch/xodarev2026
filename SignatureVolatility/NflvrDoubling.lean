@@ -719,4 +719,93 @@ lemma doublingK_sq_int_finite_ae (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < 
     _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top (by
         rw [Real.volume_Icc]; exact ENNReal.ofReal_lt_top)
 
+
+lemma isStoppingTime_tauHit (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) (n : ℕ) :
+    IsStoppingTimeOn (pathFiltration B).σAlg T (tauHit (bmCoord B) T n) := by
+  refine ⟨fun ω =>
+    ⟨(tGrid_mem hT n).1.trans (tauHit_mem_Icc hT (bmCoord B) n ω).1,
+      (tauHit_mem_Icc hT (bmCoord B) n ω).2.trans (tGrid_mem hT (n + 1)).2⟩,
+    fun t ht => ?_⟩
+  set a := tGrid T n
+  set b := tGrid T (n + 1)
+  set c := Real.sqrt (dtGrid T n)
+  by_cases hta : t < a
+  · have : {ω | tauHit (bmCoord B) T n ω ≤ t} = ∅ :=
+      eq_empty_iff_forall_notMem.mpr fun ω hω =>
+        not_lt.mpr ((tauHit_mem_Icc hT (bmCoord B) n ω).1.trans hω) hta
+    rw [this]
+    exact @MeasurableSet.empty Ω ((pathFiltration B).σAlg t)
+  by_cases htb : b ≤ t
+  · have : {ω | tauHit (bmCoord B) T n ω ≤ t} = Set.univ :=
+      Set.eq_univ_iff_forall.mpr fun ω =>
+        (tauHit_mem_Icc hT (bmCoord B) n ω).2.trans htb
+    rw [this]
+    exact @MeasurableSet.univ Ω ((pathFiltration B).σAlg t)
+  have hat : a ≤ t := le_of_not_gt hta
+  have htltb : t < b := lt_of_not_ge htb
+  have hiff : ∀ ω, tauHit (bmCoord B) T n ω ≤ t ↔
+      ∃ s ∈ Icc a t, c ≤ bmCoord B s ω - bmCoord B a ω := fun ω => by
+    constructor
+    · intro hle
+      have hnA : ω ∉ noHitEvent (bmCoord B) T n := fun hA => by
+        have htau := ((tauHit_spec B hT n ω).1 hA).1
+        linarith
+      exact ⟨tauHit (bmCoord B) T n ω,
+        ⟨(tauHit_mem_Icc hT (bmCoord B) n ω).1, hle⟩,
+        ((tauHit_spec B hT n ω).2 hnA).ge⟩
+    · rintro ⟨s, hs, hcs⟩
+      have hsI : s ∈ Icc a b := ⟨hs.1, hs.2.trans htltb.le⟩
+      have hS : (hitSet (bmCoord B) T n ω).Nonempty := ⟨s, hsI, hcs⟩
+      have htau : tauHit (bmCoord B) T n ω = sInf (hitSet (bmCoord B) T n ω) := by
+        simp [tauHit, hS]
+      rw [htau]
+      have hlb : BddBelow (hitSet (bmCoord B) T n ω) :=
+        ⟨a, fun u hu => (mem_Icc.mp hu.1).1⟩
+      exact (csInf_le hlb ⟨hsI, hcs⟩).trans hs.2
+  have hab0 : Icc a t ⊆ Ici (0 : ℝ) := fun u hu => (tGrid_mem hT n).1.trans hu.1
+  have hset : {ω | tauHit (bmCoord B) T n ω ≤ t} =
+      ⋂ k : ℕ, (⋃ q : ℚ, if a ≤ (q : ℝ) ∧ (q : ℝ) ≤ t then
+        {ω | c - 1 / ((k : ℝ) + 1) < bmCoord B q ω - bmCoord B a ω} else ∅) ∪
+        {ω | c ≤ bmCoord B t ω - bmCoord B a ω} := by
+    ext ω
+    have hf : ContinuousOn (fun u => bmCoord B u ω - bmCoord B a ω) (Icc a t) :=
+      ((bmCoord_cont B ω).mono hab0).sub continuousOn_const
+    simp only [Set.mem_ofPred_eq]
+    rw [hiff ω, exists_hit_iff_rat hat hf]
+    simp only [Set.mem_iInter, Set.mem_union, Set.mem_iUnion]
+    refine forall_congr' fun k => or_congr_left (exists_congr fun q => ?_)
+    by_cases hq : a ≤ (q : ℝ) ∧ (q : ℝ) ≤ t
+    · simp [hq]
+    · simp only [ite_eq_right hq, mem_empty_iff_false]
+      constructor
+      · intro h
+        exact hq ⟨h.1, h.2.1⟩
+      · intro h
+        exact h.elim
+  rw [hset]
+  refine @MeasurableSet.iInter Ω ℕ ((pathFiltration B).σAlg t) _ _ (fun k => ?_)
+  refine @MeasurableSet.union Ω ((pathFiltration B).σAlg t) _ _ ?_ ?_
+  · refine @MeasurableSet.iUnion Ω ℚ ((pathFiltration B).σAlg t) _ _ (fun q => ?_)
+    split_ifs with hq
+    · have h1 := bmCoord_adapted (T := t) B ⟨(tGrid_mem hT n).1.trans hq.1, hq.2⟩
+      have h2 := bmCoord_adapted (T := t) B ⟨(tGrid_mem hT n).1, hat⟩
+      change MeasurableSet[(pathFiltration B).σAlg t]
+        ((fun ω => bmCoord B (q : ℝ) ω - bmCoord B a ω) ⁻¹'
+          Ioi (c - 1 / ((k : ℝ) + 1)))
+      exact (h1.sub h2) measurableSet_Ioi
+    · exact @MeasurableSet.empty Ω ((pathFiltration B).σAlg t)
+  · have h1 := bmCoord_adapted (T := t) B ⟨ht.1, le_rfl⟩
+    have h2 := bmCoord_adapted (T := t) B ⟨(tGrid_mem hT n).1, hat⟩
+    change MeasurableSet[(pathFiltration B).σAlg t]
+      ((fun ω => bmCoord B t ω - bmCoord B a ω) ⁻¹' Ici c)
+    exact (h1.sub h2) measurableSet_Ici
+
+
+lemma tGrid_mono {T : ℝ} (hT : 0 < T) : Monotone (tGrid T) :=
+  (strictMono_nat_of_lt_succ fun n => tGrid_lt_succ hT n).monotone
+
+lemma measurable_stdIncr (B : MultiBrownian Ω P 1) {T : ℝ} (_hT : 0 < T) (n : ℕ) :
+    Measurable (stdIncr (bmCoord B) T n) :=
+  ((bmCoord_meas B (tGrid T (n + 1))).sub (bmCoord_meas B (tGrid T n))).div_const _
+
 end SignatureVolatility
