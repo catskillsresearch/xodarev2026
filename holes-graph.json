@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-25T23:17:53Z",
+  "updated": "2026-11-25T23:45:50Z",
   "sorryCount": 0,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done (proved, counterexample or refuted; no sorry). Green = open. Grey = blocked. Counterexample / refutation labels are shown as text on the node.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: TheoremB_DS.localization."
+    "Open tips: TheoremB_DS."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -1559,6 +1559,20 @@
       "label": "NflvrContIto",
       "section": 1,
       "file": "SignatureVolatility/NflvrContIto.lean",
+      "status": "done",
+      "kind": null,
+      "blocker": null,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false,
+      "synthetic": false,
+      "commits": null
+    },
+    {
+      "id": "NflvrDS",
+      "label": "NflvrDS",
+      "section": 1,
+      "file": "SignatureVolatility/NflvrDS.lean",
       "status": "done",
       "kind": null,
       "blocker": null,
@@ -3337,52 +3351,52 @@
       "label": "Localization K^(m)",
       "section": 11,
       "file": "SignatureVolatility/NflvrDS.lean",
-      "status": "open",
+      "status": "done",
       "kind": null,
       "blocker": null,
-      "detail": "Left-continuous raw-filtration localization K^(m)=K 1_{Q\u2264m} of an S-admissible integrand (pathwise \u222bK\u00b2<\u221e, not necessarily L\u00b2(dt\u2297P)), so each stopped piece is in L\u00b2 and the unstopped V is a local martingale. Next Part 3 task (NflvrDS; Carbon/Gemini). The continuous integral it rests on landed in b246755.",
+      "detail": "Left-continuous raw-filtration localization K^(m)=K 1_{Q\u2264m} of an S-admissible integrand (pathwise \u222bK\u00b2<\u221e, not necessarily L\u00b2(dt\u2297P)): localizedK is predSigma-measurable, lies in L\u00b2(dtP), and localizedQuad at \u03c4_m is at most m (Carbon/Gemini, Mathlib 4.35 repairs).",
       "hasSorry": false,
       "paperKitGoal": false,
       "synthetic": true,
-      "commits": null
+      "commits": "8ced7b0"
     },
     {
       "id": "TheoremB_DS.superMartingale",
       "label": "Bounded-below local martingale \u21d2 supermartingale",
       "section": 11,
-      "file": "SignatureVolatility/NflvrBoundedBelow.lean",
-      "status": "blocked",
+      "file": "SignatureVolatility/NflvrDS.lean",
+      "status": "done",
       "kind": null,
-      "blocker": "needs TheoremB_DS.localization",
-      "detail": "A uniformly bounded-below local martingale is a supermartingale on [0,T]. Localize and apply Fatou (expectation_le_zero_of_bounded_below_local_martingale in NflvrCone) to get E[V_T]\u22640. Still to prove.",
+      "blocker": null,
+      "detail": "A uniformly bounded-below local martingale is a supermartingale on [0,T]. Localize V at \u03c4_m, apply the continuous L\u00b2 integral, and use Fatou (expectation_le_zero_of_bounded_below_local_martingale in NflvrCone) to get E[V_T]\u22640. Proved as expectation_le_zero_of_boundedBelowGain (Carbon/Gemini, Mathlib 4.35 repairs).",
       "hasSorry": false,
       "paperKitGoal": false,
       "synthetic": true,
-      "commits": null
+      "commits": "8ced7b0"
     },
     {
       "id": "TheoremB_DS.nflvrDs",
       "label": "satisfiesNFLVR_DS_boundedBelowGains",
       "section": 11,
-      "file": "SignatureVolatility/NflvrBoundedBelow.lean",
-      "status": "blocked",
+      "file": "SignatureVolatility/NflvrDS.lean",
+      "status": "done",
       "kind": null,
-      "blocker": "needs TheoremB_DS.superMartingale",
-      "detail": "Every G in BoundedBelowGains is integrable with E[G]\u22640, hence SatisfiesNFLVR_DS holds by nflvr_ds_of_nonpos_mean. No H3. Still to prove; Carbon (Gemini) planned this lemma but the reply was truncated before it.",
+      "blocker": null,
+      "detail": "Every G in BoundedBelowGains is integrable with E[G]\u22640, hence SatisfiesNFLVR_DS holds by nflvr_ds_of_nonpos_mean. No H3. Proved for adapted, a.s.-continuous S and \u03c3 on the raw path filtration (Carbon/Gemini, Mathlib 4.35 repairs).",
       "hasSorry": false,
       "paperKitGoal": false,
       "synthetic": true,
-      "commits": null
+      "commits": "8ced7b0"
     },
     {
       "id": "TheoremB_DS",
       "label": "theorem_B_mp / unwrapped DS NFLVR upgrade",
       "section": 11,
       "file": "SignatureVolatility/TheoremB.lean",
-      "status": "blocked",
+      "status": "open",
       "kind": null,
-      "blocker": "needs TheoremB_DS.nflvrDs",
-      "detail": "Replace the SatisfiesNFLVR P (AdmissibleGainsUnderP P) conjunct of theorem_B_mp and theorem_B_mp_unwrapped with SatisfiesNFLVR_DS P (BoundedBelowGains (sigFiltration B).\u03c3Alg P (fun t \u03c9 => B.W t \u03c9 (kitDriver M.hd)) S (sigVol M B) M.T). Of-setup variant too. Blocked on the DS lemma and the kitItoInt continuity patch.",
+      "blocker": null,
+      "detail": "Replace the SatisfiesNFLVR P (AdmissibleGainsUnderP P) conjunct of theorem_B_mp and theorem_B_mp_unwrapped with SatisfiesNFLVR_DS P (BoundedBelowGains (sigFiltration B).\u03c3Alg P (fun t \u03c9 => B.W t \u03c9 (kitDriver M.hd)) S (sigVol M B) M.T). Of-setup variant too. The DS lemma landed in 8ced7b0; next is Way A on IsSignaturePrice so the upgrade applies to S itself.",
       "hasSorry": false,
       "paperKitGoal": false,
       "synthetic": true,
@@ -4321,6 +4335,11 @@
     {
       "from": "NflvrBoundedBelow",
       "to": "NflvrContIto",
+      "kind": "hard"
+    },
+    {
+      "from": "NflvrContIto",
+      "to": "NflvrDS",
       "kind": "hard"
     },
     {

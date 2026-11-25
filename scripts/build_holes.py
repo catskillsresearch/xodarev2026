@@ -408,36 +408,41 @@ SYNTHETIC_NODES: list[dict] = [
     {
         "id": "TheoremB_DS.localization",
         "label": "Localization K^(m)",
-        "status": "open",
+        "status": "done",
         "section": 11,
         "detail": "Left-continuous raw-filtration localization K^(m)=K 1_{Q≤m} of an "
-                  "S-admissible integrand (pathwise ∫K²<∞, not necessarily L²(dt⊗P)), "
-                  "so each stopped piece is in L² and the unstopped V is a local "
-                  "martingale. Next Part 3 task (NflvrDS; Carbon/Gemini). The "
-                  "continuous integral it rests on landed in b246755.",
+                  "S-admissible integrand (pathwise ∫K²<∞, not necessarily L²(dt⊗P)): "
+                  "localizedK is predSigma-measurable, lies in L²(dtP), and "
+                  "localizedQuad at τ_m is at most m (Carbon/Gemini, Mathlib 4.35 "
+                  "repairs).",
         "file": "SignatureVolatility/NflvrDS.lean",
+        "commits": "8ced7b0",
     },
     {
         "id": "TheoremB_DS.superMartingale",
         "label": "Bounded-below local martingale ⇒ supermartingale",
-        "status": "open",
+        "status": "done",
         "section": 11,
         "detail": "A uniformly bounded-below local martingale is a supermartingale on "
-                  "[0,T]. Localize and apply Fatou "
-                  "(expectation_le_zero_of_bounded_below_local_martingale in NflvrCone) "
-                  "to get E[V_T]≤0. Still to prove.",
-        "file": "SignatureVolatility/NflvrBoundedBelow.lean",
+                  "[0,T]. Localize V at τ_m, apply the continuous L² integral, and use "
+                  "Fatou (expectation_le_zero_of_bounded_below_local_martingale in "
+                  "NflvrCone) to get E[V_T]≤0. Proved as "
+                  "expectation_le_zero_of_boundedBelowGain (Carbon/Gemini, Mathlib 4.35 "
+                  "repairs).",
+        "file": "SignatureVolatility/NflvrDS.lean",
+        "commits": "8ced7b0",
     },
     {
         "id": "TheoremB_DS.nflvrDs",
         "label": "satisfiesNFLVR_DS_boundedBelowGains",
-        "status": "open",
+        "status": "done",
         "section": 11,
         "detail": "Every G in BoundedBelowGains is integrable with E[G]≤0, hence "
-                  "SatisfiesNFLVR_DS holds by nflvr_ds_of_nonpos_mean. No H3. Still "
-                  "to prove; Carbon (Gemini) planned this lemma but the reply was "
-                  "truncated before it.",
-        "file": "SignatureVolatility/NflvrBoundedBelow.lean",
+                  "SatisfiesNFLVR_DS holds by nflvr_ds_of_nonpos_mean. No H3. Proved "
+                  "for adapted, a.s.-continuous S and σ on the raw path filtration "
+                  "(Carbon/Gemini, Mathlib 4.35 repairs).",
+        "file": "SignatureVolatility/NflvrDS.lean",
+        "commits": "8ced7b0",
     },
     {
         "id": "TheoremB_DS",
@@ -448,7 +453,8 @@ SYNTHETIC_NODES: list[dict] = [
                   "theorem_B_mp and theorem_B_mp_unwrapped with SatisfiesNFLVR_DS P "
                   "(BoundedBelowGains (sigFiltration B).σAlg P (fun t ω => B.W t ω "
                   "(kitDriver M.hd)) S (sigVol M B) M.T). Of-setup variant too. "
-                  "Blocked on the DS lemma and the kitItoInt continuity patch.",
+                  "The DS lemma landed in 8ced7b0; next is Way A on IsSignaturePrice "
+                  "so the upgrade applies to S itself.",
         "file": "SignatureVolatility/TheoremB.lean",
     },
     {
@@ -684,6 +690,7 @@ VERIFIED: set[str] = {
     "NflvrCone",
     "NflvrContIto",
     "NflvrDefs",
+    "NflvrDS",
     "NflvrDoubling",
     "NflvrOfMartingaleMeasure",
     "Norm2w",

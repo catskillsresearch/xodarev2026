@@ -337,6 +337,7 @@ MemTwDual -hard-> NormWDual
 MemTwDualOfMemL2w -hard-> Corollary36SigmaWellDefined
 NflvrBoundedBelow -hard-> NflvrContIto
 NflvrCone -hard-> NflvrBoundedBelow
+NflvrContIto -hard-> NflvrDS
 NflvrDefs -hard-> NflvrBoundedBelow
 NflvrDefs -hard-> NflvrCone
 NflvrDefs -hard-> NflvrDoubling
