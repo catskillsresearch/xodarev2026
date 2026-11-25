@@ -1,5 +1,7 @@
 # Comparator: what is compared and what it means
 
+Palomar registration: TBD.
+
 `comparator.json` lists exactly the results this repository proves, with no `sorry`
 (axioms: `propext`, `Quot.sound`, `Classical.choice`). The Challenge
 (`SignatureVolatilityComparator/Challenge.lean`) is a single file that imports only Lean core
@@ -16,25 +18,25 @@ each module is its own file); neither adds declarations or changes any kernel ty
 | Compared theorem | Paper item | Status |
 |---|---|---|
 | `theorem_A` | Theorem A | proved |
-| `theorem_B_mp` | Theorem B: martingale on the signature filtration, NFLVR, every coordinate special semimartingale, and the `→` direction of the Riccati transform equivalence | proved (all of Theorem B except the `←` Riccati direction) |
+| `theorem_B_mp` | Theorem B fragment, under analytic `HypH3`: martingale on the signature filtration, NFLVR, every coordinate special semimartingale, and the `→` direction of the Riccati transform equivalence | proved (these clauses only; not the paper's full Theorem B conjunction) |
 | `affine_riccati_duality_mp` | Theorem 4.2(ii), `→` direction | proved |
 | `not_affine_riccati_duality_mpr` | Theorem 4.2(ii), `←` direction | **refuted** |
 | `not_affine_riccati_duality` | Theorem 4.2(ii), the iff | **refuted** (corollary) |
-| `not_theorem_B_mpr`, `not_theorem_B` | Theorem B's `←` Riccati clause; full Theorem B | **refuted** (corollaries) |
+| `not_theorem_B_mpr`, `not_theorem_B` | Theorem B's `←` Riccati clause; full Theorem B conjunction | **refuted** (corollaries, each with unused `HypH3`) |
 | `not_theorem_C`, `theorem_C_refuted`, `blackScholes_isCompleteWithCalls` | Theorem C (Thm 56) | **refuted** for Black–Scholes |
 | `theorem_C_depth_infinite`, `theorem_C_blackScholes_depth_infinite` | Theorem C right-hand side | proved: `N^*_S = ∞` whenever `L²(ℱ^S_T)` is infinite-dimensional, and for Black–Scholes |
 | `theorem_D` | Theorem D / Thm 66, GKW projection | proved |
 | `theorem_D_residual_hypothesis_fails` | Theorem D, residual expansion "if `N^*_S < ∞`" | hypothesis fails for Black–Scholes |
 | `not_prop58_blackScholes_depth_zero`, `blackScholes_completenessDepth_eq_top` | Proposition 58 | **refuted** |
-| `not_lemma77_shuffle_estimate`, `not_lemma77_of_hypH2` | Lemma 77 (B.1) | **refuted** for every weight |
+| `not_lemma77_shuffle_estimate`, `not_lemma77_of_hypH2` | Lemma 77 (B.1) | **refuted** for every weight (and, with unused `HypH2`, for every H2 weight) |
 | `not_lemma78_local_lipschitz` | Lemma 78 (B.2) | **refuted** for `w ≡ 1` |
 
 The other `theorem_names` entries are supporting facts: Itô/Doléans kit, Brownian driver, and
 signature properties. They sit in the dependency closure of the statements above, so the
 Solution must prove them too.
 
-**Nothing is open.** Every paper claim is either proved at paper strength or refuted by a
-compared Lean theorem. The library and `Solution.lean` have no `sorry` (the Challenge's compared
+**Nothing is open.** Every compared paper claim is either proved at the exact strength of its
+Lean theorem, or refuted by a compared Lean negation that claims no more than that negation. The library and `Solution.lean` have no `sorry` (the Challenge's compared
 proofs are `sorry` by design), and there are no `axiom` declarations. The earlier
 `OpenProblems` packaging has been retired. The false `affine_riccati_duality_mpr`, the iff
 `affine_riccati_duality`, the kit constructor `signatureRiccatiKit_of_setup`, `theorem_B_mpr` and
@@ -48,17 +50,19 @@ refutation is in [`Writeup/narratives/appendix/`](Writeup/narratives/appendix/ca
 
 - **Theorem 4.2(ii) `←` / Theorem B** (`not_affine_riccati_duality_mpr`; for every model `M` and
   driver `B`).
-  - The counterexample is `u₀^(λ) = 2λe_[1,1,1] − λe_[1,0] − 12λ²e_[1,1,1,1,0]`. It has
-    `ℛ(u₀^(λ)) = 0`, so `ψ ≡ u₀^(λ)` is a global Riccati solution, and `exp⟨u₀^(λ),Ŵ_t⟩` is the
-    Doléans exponential of `∫λW²dW`. So `E exp⟨u₀^(λ),Ŵ_t⟩ ≤ 1`, and the hypotheses hold.
-  - That exponential is not a true martingale: Brownian scaling gives
-    `E[· | ℱ_{t_λ}] = exp⟨u₀^(λ),Ŵ_{t_λ}⟩·v₁(λ^{1/3}W_{t_λ})`, with `v₁ → 0` at `+∞`.
+  - The counterexample is `u₀^(λ) = 2λe_[1,1,1] − λe_[1,0] − 12λ²e_[1,1,1,1,0]`. Lean proves
+    `ℛ(u₀^(λ)) = 0`, so `ψ ≡ u₀^(λ)` is a global Riccati solution, and
+    `∫ exp⟨u₀^(λ),Ŵ_t⟩ dP ≤ 1`, so the hypotheses of the universal `←` claim hold.
+    Lean does not state a theorem that the exponential is a local martingale or that it is
+    not a true martingale.
+  - What Lean does prove, and uses, is the factorisation
+    `E[exp⟨u₀^(λ),Ŵ_T⟩ | ℱ_{t_λ}] = exp⟨u₀^(λ),Ŵ_{t_λ}⟩·v₁(λ^{1/3}W_{t_λ})`, with `v₁ → 0` at `+∞`.
   - If the identity held for some Riccati solution, for every `λ ≥ 1`, then `log v₁` would agree
     almost everywhere with an entire function of exponential type 0 and quartic growth. That
     function would be a polynomial bounded on `(−∞, 0]`, hence constant, which contradicts
     `v₁ → 0`.
   - `not_affine_riccati_duality`, `not_theorem_B_mpr` and `not_theorem_B` follow from it.
-    The H3 argument of the Theorem B forms is unused.
+    `not_theorem_B_mpr` and `not_theorem_B` carry an additional unused `HypH3` hypothesis.
 - **Theorem C** (`not_theorem_C`). Black–Scholes is complete, by Brownian martingale
   representation, since `ℱ^S = ℱ^W`. But `N^*_S = ∞`, because `L²(ℱ^S_T)` is
   infinite-dimensional while each depth-`N` span is finite-dimensional. So "complete ⇔ `N^*_S < ∞`"

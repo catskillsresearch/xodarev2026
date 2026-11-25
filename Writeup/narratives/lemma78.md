@@ -4,7 +4,7 @@
 
 **Claim.** The Riccati operator `ℛ` is locally Lipschitz on bounded subsets of `T_w`.
 
-**Counterexample.** Take the H2 weight `w ≡ 1`, at least one space letter `ℓ`, radius `ρ = 1`
+**Counterexample.** Take the weight `w ≡ 1` (`Weight.constOne`; this weight does satisfy H2, but the theorem is only for this weight), any `d : ℕ` (alphabet size `d+2`), radius `ρ = 1`
 and `v = 0` (`ℛ(0) = 0`). Then `u_k = e_{ℓ^(k+1)}` has `‖u_k‖_w = 1`. But the coefficient of
 `ℛ(u_k)` at `ℓ^(2k)`, which comes from the quadratic shuffle term, is `½ binom(2k, k) ≥ k`. So
 `‖ℛ(u_k) − ℛ(0)‖_w ≥ k`, and no `L` works: `ℛ` is not even bounded on the unit ball.

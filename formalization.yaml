@@ -5,26 +5,80 @@ project:
   name: Xodarev Signature Volatility Models in Lean 4
   description: >-
     A Lean 4 / Mathlib formalization of Akmal Xodarev, "On the Structural
-    Foundations of Signature Volatility Models", arXiv:2605.17142. Framing:
-    rigorous verification of Theorems A–D, proving what holds at paper
-    strength and refuting what does not. Proved: Theorem A (global existence
-    and uniqueness of the positive strong solution of the signature SDE under
-    H1–H3); Theorem B except the ← direction of its Riccati clause
-    (theorem_B_mp: martingale, NFLVR, special semimartingale, → Riccati); the → direction of the affine / Riccati duality of
-    Theorem 4.2(ii) (affine_riccati_duality_mp); and the GKW projection part
-    of Theorem D (theorem_D, Half_TheoremD). Refuted by Lean counterexamples:
-    the ← direction of the affine / Riccati duality of Theorem 4.2(ii)
-    (not_affine_riccati_duality_mpr, via the tensor family
-    u₀ = 2λe_[1,1,1] − λe_[1,0] − 12λ²e_[1,1,1,1,0] with ℛ(u₀) = 0, whose
-    exponential is a positive local martingale but not a true martingale),
-    hence the iff (not_affine_riccati_duality) and Theorem B's ← clause and
-    full statement (not_theorem_B_mpr, not_theorem_B);
-    Theorem C (Black–Scholes is complete with finitely many calls but has
-    completeness depth N^*_S = ∞), Proposition 58 (Black–Scholes depth is ∞,
-    not 0), Lemma 77 (weighted shuffle estimate, for every (H2) weight) and
-    Lemma 78 (local Lipschitz bound for the Riccati operator); and the
-    residual-expansion hypothesis "N^*_S < ∞" of Theorem D fails for
-    Black–Scholes. No open problems remain. Why each counterexample works:
+    Foundations of Signature Volatility Models", arXiv:2605.17142. Palomar
+    registration: TBD. Framing: prove the paper claims that hold, at the exact
+    strength of the Lean theorems below, and refute the claims that do not, by
+    Lean negations of those claims and nothing stronger. Proved:
+    theorem_A — for every SignatureVolatilityModel (which includes d ≥ 1, T > 0,
+    s₀ > 0, HypH1, HypH2, and parameter nondegeneracy ℓ ≠ 0) and every Brownian
+    driver, under the additional analytic hypothesis HypH3 on the signature
+    volatility, there exists a SignaturePriceSolution of the signature SDE
+    (strictly positive, with Doléans–Dade representation, satisfying the
+    integral equation, with square-integrable supremum, and a martingale on the
+    prolonged-signature filtration), and this solution is unique among processes
+    that are measurable with respect to the signature filtration, lie in
+    KitStrongSolutionClass, and satisfy the integral equation, almost everywhere
+    on [0, T];
+    theorem_B_mp — under the same HypH3, there exists a SignaturePriceSolution
+    that is a martingale on the signature filtration, SatisfiesNFLVR holds for
+    AdmissibleGainsUnderP, every signature coordinate is a special
+    semimartingale, and the → direction of Theorem 4.2(ii) holds (if the
+    exponential-affine conditional-expectation formula holds through some
+    classical Riccati solution, then a classical Riccati solution exists). This
+    is not a proof of the paper's full Theorem B, whose conjunction includes the
+    ← direction of the iff;
+    affine_riccati_duality_mp — for every model and driver and every finitely
+    supported u₀ with finite signature transform, if the exponential-affine
+    conditional-expectation formula holds through some classical Riccati
+    solution, then a classical Riccati solution exists;
+    theorem_D — for every MarketData and every X in L²(ℱ^S_T), there is a unique
+    GKW decomposition X = (∫ X) · 1 + G + ε with G in the gains space H0 and
+    orthogonal to constants, ε in L²(ℱ^S_T) ∩ H0⊥ and orthogonal to the gains
+    set, and the Pythagorean identity. This does not identify G as a stochastic
+    integral ∫ H dS.
+    Refuted by Lean counterexamples:
+    not_affine_riccati_duality_mpr — for every SignatureVolatilityModel and
+    every Brownian driver, with no analytic HypH3 hypothesis, it is not the
+    case that every finitely supported u₀ with finite signature transform and
+    some classical Riccati solution admits a classical Riccati solution ψ for
+    which E[exp⟨u₀, Ŵ_T⟩ | ℱ_t] = exp⟨ψ(T − t), Ŵ_t⟩ almost surely for all
+    t ∈ [0, T]. The proof uses the family u₀^(λ) = 2λ e_[1,1,1] − λ e_[1,0] −
+    12λ² e_[1,1,1,1,0] (λ ≥ 1), for which ℛ(u₀^(λ)) = 0 and the signature
+    transform is finite (Lean proves ∫ exp⟨u₀^(λ), Ŵ_t⟩ dP ≤ 1). Lean does not
+    state a theorem that this exponential is a local martingale or that it is
+    not a true martingale; what is compared is the failure of the universal
+    conditional-expectation formula;
+    not_affine_riccati_duality — under the same hypotheses (every model and
+    driver, no HypH3), the paper's iff in Theorem 4.2(ii) is false as a
+    universal statement over such u₀;
+    not_theorem_B_mpr and not_theorem_B — the same ← failure, and the failure of
+    the paper's full Theorem B conjunction, each stated with an additional
+    unused HypH3 hypothesis, so they apply to every model and driver for which
+    analytic HypH3 holds (HypH3 is satisfiable; it holds for constant
+    volatility);
+    not_theorem_C and theorem_C_refuted — for the Black–Scholes market (T > 0,
+    s₀ > 0, σ₀ ≠ 0, one-dimensional Brownian motion) and every finite set of
+    call strikes, the equivalence "complete with finitely many calls on ℱ^S_T
+    ⇔ N^*_S < ∞" is false, because blackScholes_isCompleteWithCalls holds and
+    the completeness depth is infinite (theorem_C_blackScholes_depth_infinite,
+    blackScholes_completenessDepth_eq_top). Separately,
+    theorem_C_depth_infinite states that N^*_S = ∞ and no finite-depth
+    signature span is dense, for every MarketData whose L²(ℱ^S_T) is
+    infinite-dimensional;
+    not_prop58_blackScholes_depth_zero — Black–Scholes completeness depth is
+    not 0; blackScholes_completenessDepth_eq_top — it equals ∞;
+    not_lemma77_shuffle_estimate — for every weight w and every letter ℓ in
+    Fin d, there is no constant C such that ‖e_I ⧢ e_J‖_w ≤ C ‖e_I‖_w ‖e_J‖_w
+    for all words I, J; not_lemma77_of_hypH2 is the same conclusion with an
+    unused HypH2 hypothesis, hence also for every H2 weight;
+    not_lemma78_local_lipschitz — only for the weight w ≡ 1 (Weight.constOne),
+    on ExtTensorAlgebra (d+2) for every d, the Riccati operator is not locally
+    Lipschitz on bounded subsets of T_w;
+    theorem_D_residual_hypothesis_fails — for Black–Scholes (same parameters as
+    above), ¬ (N^*_S < ∞). This shows that the residual-expansion hypothesis of
+    Theorem D fails for Black–Scholes; it does not refute the expansion
+    identity on markets where the hypothesis holds.
+    No open problems remain. Why each counterexample works:
     Writeup/narratives/ (one short file per refutation; verbatim outside
     source in Writeup/narratives/appendix/). Every compared theorem uses only
     propext, Quot.sound and Classical.choice. Project rule: no Lean `axiom`
@@ -327,27 +381,40 @@ known_gaps:
   - >-
     No open problems. False paper claims are registered through their Lean
     negations, not the claims; each has a short narrative in
-    Writeup/narratives/. Theorem 4.2(ii) ← / Theorem B
-    (not_affine_riccati_duality_mpr, not_affine_riccati_duality,
-    not_theorem_B_mpr, not_theorem_B): for every model and driver, the family
+    Writeup/narratives/. Theorem 4.2(ii) ← (not_affine_riccati_duality_mpr,
+    for every SignatureVolatilityModel and driver, with no HypH3): the family
     u₀^(λ) = 2λe_[1,1,1] − λe_[1,0] − 12λ²e_[1,1,1,1,0] has ℛ(u₀^(λ)) = 0 and
-    E exp⟨u₀^(λ),Ŵ_t⟩ ≤ 1, but Brownian scaling gives
-    E[exp⟨u₀^(λ),Ŵ_T⟩ | ℱ_t] = exp⟨u₀^(λ),Ŵ_t⟩·v₁(λ^{1/3}W_t) with v₁ → 0 at +∞;
-    a Riccati representation for all λ would make log v₁ an entire function
-    of exponential type 0 with quartic growth, hence a polynomial bounded on
-    (−∞, 0], hence constant — contradiction. The H3 argument of the Theorem B
-    forms is unused (H3 is satisfiable, e.g. Black–Scholes).
+    ∫ exp⟨u₀^(λ),Ŵ_t⟩ dP ≤ 1, so the hypotheses of the universal ← claim hold,
+    but that claim is false. Lean proves the factorisation
+    E[exp⟨u₀^(λ),Ŵ_T⟩ | ℱ_{t_λ}] = exp⟨u₀^(λ),Ŵ_{t_λ}⟩·v₁(λ^{1/3}W_{t_λ}) with
+    v₁ → 0 at +∞; a Riccati representation for all λ ≥ 1 would make log v₁ an
+    entire function of exponential type 0 with quartic growth, hence a
+    polynomial bounded on (−∞, 0], hence constant — contradiction. Lean does
+    not state a theorem that the exponential is a local martingale or that it
+    is not a true martingale. not_affine_riccati_duality is the corresponding
+    negation of the iff, under the same hypotheses. not_theorem_B_mpr and
+    not_theorem_B are the same ← failure and the failure of the full Theorem B
+    conjunction, each with an additional unused HypH3 hypothesis (HypH3 is
+    satisfiable, e.g. constant volatility).
   - >-
-    Theorem C, Proposition 58 and the Theorem D residual hypothesis: in
-    Black–Scholes W_T is a function of S_T, so L²(ℱ^S_T) is
+    Theorem C, Proposition 58 and the Theorem D residual hypothesis: the
+    compared refutations of the completeness iff (not_theorem_C,
+    theorem_C_refuted) and of Proposition 58, and the failure of the residual
+    hypothesis, are for the Black–Scholes market (T > 0, s₀ > 0, σ₀ ≠ 0,
+    one-dimensional Brownian motion). In Black–Scholes, L²(ℱ^S_T) is
     infinite-dimensional, while Definition 55 depth N spans finitely many
     signature coordinates; hence N^*_S = ∞ (not 0), although the market is
-    complete by Brownian martingale representation. Theorem D's residual
-    expansion is shown vacuous for Black–Scholes, not false.
+    complete with finitely many calls (in fact the Lean completeness proof
+    uses no calls). Theorem D's residual expansion is shown only to have a
+    failed hypothesis for Black–Scholes, not to be false when the hypothesis
+    holds. Separately, theorem_C_depth_infinite gives N^*_S = ∞ for every
+    MarketData with infinite-dimensional L²(ℱ^S_T).
   - >-
-    Lemma 77: ℓ^k ⧢ ℓ = (k+1)ℓ^{k+1} defeats any shuffle constant, for every
-    weight. Lemma 78: for w ≡ 1, ℛ(e_{ℓ^{k+1}}) has coefficient ½·binom(2k,k)
-    at ℓ^{2k}, so ℛ is unbounded on the unit ball.
+    Lemma 77: for every weight w and every letter ℓ, ℓ^k ⧢ ℓ = (k+1)ℓ^{k+1}
+    defeats any shuffle constant on basis words. not_lemma77_of_hypH2 is the
+    same conclusion with unused HypH2. Lemma 78: only for w ≡ 1, ℛ(e_{ℓ^{k+1}})
+    has coefficient ½·binom(2k,k) at ℓ^{2k}, so ℛ is not locally Lipschitz on
+    bounded subsets of T_w (it is unbounded on the unit ball).
 
 limitations:
   - >-
@@ -358,79 +425,79 @@ limitations:
 alignment:
   namespace: SignatureVolatility
   statements:
-  - source: "Thm A: unique positive strong solution of the signature SDE under H1–H3."
+  - source: "Thm A: under the model's H1, H2 and analytic HypH3, a SignaturePriceSolution exists (strictly positive, Doléans representation, SDE, L²-supremum, martingale on the signature filtration) and is unique among signature-adapted KitStrongSolutionClass solutions of the integral equation."
     lean: theorem_A
     module: SignatureVolatility.TheoremA
     status: proved
-  - source: "Thm B, all but the ← Riccati direction: martingale, NFLVR, special semimartingale, → Riccati."
+  - source: "Thm B fragment theorem_B_mp, under analytic HypH3: martingale, NFLVR, special semimartingale, and → Riccati. Not a proof of the paper's full Theorem B conjunction."
     lean: theorem_B_mp
     module: SignatureVolatility.TheoremB
     status: proved
-  - source: "Thm 4.2(ii), → direction of the affine / Riccati duality."
+  - source: "Thm 4.2(ii), → direction: if the exponential-affine conditional-expectation formula holds through some classical Riccati solution, then a classical Riccati solution exists. No HypH3."
     lean: affine_riccati_duality_mp
     module: SignatureVolatility.SignatureRiccatiKit.AffineRiccatiDualityMp
     status: proved
-  - source: "Thm 4.2(ii) ← refuted: u₀ = 2λe_[1,1,1] − λe_[1,0] − 12λ²e_[1,1,1,1,0], ℛ(u₀) = 0, exponential not a true martingale (Writeup/narratives/affine_riccati_duality_mpr.md)."
+  - source: "Thm 4.2(ii) ← refuted, for every model and driver, with no HypH3: the universal exponential-affine conditional-expectation formula fails. The proof uses u₀^(λ) = 2λe_[1,1,1] − λe_[1,0] − 12λ²e_[1,1,1,1,0], for which ℛ(u₀) = 0 and the signature transform is finite. Lean does not state that the exponential is not a true martingale (Writeup/narratives/affine_riccati_duality_mpr.md)."
     lean: not_affine_riccati_duality_mpr
     module: SignatureVolatility.SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
     status: proved
-  - source: "Thm 4.2(ii) iff refuted (corollary of the ← counterexample)."
+  - source: "Thm 4.2(ii) iff refuted, for every model and driver, with no HypH3 (corollary of the ← counterexample)."
     lean: not_affine_riccati_duality
     module: SignatureVolatility.SignatureRiccatiKit.AffineRiccatiDuality
     status: proved
-  - source: "Thm B ← Riccati clause refuted (corollary)."
+  - source: "Thm B ← Riccati clause refuted (corollary of not_affine_riccati_duality_mpr), under an additional unused HypH3 hypothesis."
     lean: not_theorem_B_mpr
     module: SignatureVolatility.TheoremBMpr
     status: proved
-  - source: "Thm B (full conjunction) refuted (corollary)."
+  - source: "Thm B (full conjunction, including the Riccati iff) refuted (corollary), under an additional unused HypH3 hypothesis."
     lean: not_theorem_B
     module: SignatureVolatility.TheoremBMpr
     status: proved
-  - source: "Thm C (Thm 56): complete with calls ⇔ N^*_S < ∞ — false for Black–Scholes (CounterExample_TheoremC)."
+  - source: "Thm C (Thm 56): complete with finitely many calls ⇔ N^*_S < ∞ is false for Black–Scholes (T > 0, s₀ > 0, σ₀ ≠ 0, 1-dimensional Brownian motion) and every finite strike set (CounterExample_TheoremC)."
     lean: not_theorem_C
     module: SignatureVolatility.TheoremCCounterExample
     status: proved
-  - source: "Thm C refuted (headline form)."
+  - source: "Thm C refuted in headline form: same Black–Scholes iff failure as not_theorem_C."
     lean: theorem_C_refuted
     module: SignatureVolatility.TheoremC
     status: proved
-  - source: "Black–Scholes is complete on F^S_T with finitely many calls."
+  - source: "Black–Scholes is complete on F^S_T with finitely many calls, for every finite strike set (the Lean proof uses no calls)."
     lean: blackScholes_isCompleteWithCalls
     module: SignatureVolatility.TheoremCCounterExample
     status: proved
-  - source: "N^*_S = ∞ whenever L²(F^S_T) is infinite-dimensional."
+  - source: "For every MarketData with infinite-dimensional L²(F^S_T), N^*_S = ∞ and no finite-depth closed signature span is dense in L²(F^S_T)."
     lean: theorem_C_depth_infinite
     module: SignatureVolatility.TheoremC
     status: proved
-  - source: "N^*_S = ∞ for Black–Scholes."
+  - source: "For Black–Scholes (T > 0, s₀ > 0, σ₀ ≠ 0, 1-dimensional Brownian motion), N^*_S = ∞ and no finite-depth span is dense."
     lean: theorem_C_blackScholes_depth_infinite
     module: SignatureVolatility.TheoremC
     status: proved
-  - source: "Thm D / Thm 66: GKW projection (Half_TheoremD)."
+  - source: "Thm D / Thm 66, GKW projection only (Half_TheoremD): unique decomposition X = (∫X)·1 + G + ε in L²(F^S_T). Does not identify G as ∫ H dS."
     lean: theorem_D
     module: SignatureVolatility.TheoremD
     status: proved
-  - source: "Thm D residual expansion: hypothesis N^*_S < ∞ fails for Black–Scholes (CounterExample_TheoremD)."
+  - source: "Thm D residual-expansion hypothesis N^*_S < ∞ fails for Black–Scholes; the expansion identity itself is not refuted (CounterExample_TheoremD)."
     lean: theorem_D_residual_hypothesis_fails
     module: SignatureVolatility.TheoremDCounterExample
     status: proved
-  - source: "Prop 58 refuted: Black–Scholes depth is not 0 (CounterExample_Prop58)."
+  - source: "Prop 58 refuted: Black–Scholes completeness depth is not 0 (T > 0, s₀ > 0, σ₀ ≠ 0, 1-dimensional Brownian motion) (CounterExample_Prop58)."
     lean: not_prop58_blackScholes_depth_zero
     module: SignatureVolatility.Prop58BlackScholesDepthFalse
     status: proved
-  - source: "Black–Scholes completeness depth is ∞."
+  - source: "Black–Scholes completeness depth equals ∞ (same parameters)."
     lean: blackScholes_completenessDepth_eq_top
     module: SignatureVolatility.Prop58BlackScholesDepthFalse
     status: proved
-  - source: "Lemma 77 (B.1) weighted shuffle estimate refuted (CounterExample_Lemma77)."
+  - source: "Lemma 77 (B.1) weighted shuffle estimate refuted for every weight w and every letter, already on basis words (CounterExample_Lemma77)."
     lean: not_lemma77_shuffle_estimate
     module: SignatureVolatility.Lemma77ShuffleEstimateFalse
     status: proved
-  - source: "Lemma 77 refuted for every (H2) weight."
+  - source: "Lemma 77 refuted for every H2 weight (same basis-word statement, with unused HypH2)."
     lean: not_lemma77_of_hypH2
     module: SignatureVolatility.Lemma77ShuffleEstimateFalse
     status: proved
-  - source: "Lemma 78 (B.2 / 2.20) local Lipschitz bound for ℛ refuted (CounterExample_Lemma78)."
+  - source: "Lemma 78 (B.2 / 2.20) local Lipschitz bound for ℛ refuted only for the weight w ≡ 1, on ExtTensorAlgebra (d+2) (CounterExample_Lemma78)."
     lean: not_lemma78_local_lipschitz
     module: SignatureVolatility.Lemma78RiccatiLipschitzFalse
     status: proved

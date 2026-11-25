@@ -10,6 +10,9 @@ have `ℓ^k ⧢ ℓ = (k+1) ℓ^(k+1)`. So `‖e_{ℓ^k} ⧢ e_ℓ‖_w = (k+1) 
 `‖e_{ℓ^k}‖_w ‖e_ℓ‖_w = w(k) w(1)`. Taking `k ≥ |C| w(1)` contradicts any `C`.
 
 The paper's proof absorbs a binomial factor `≤ 2ⁿ` into "an equivalent weight", but `2ⁿ w(n)` is
-not equivalent to `w`. The Lean statement is `¬ ∃ C, ∀ I J, ‖e_I ⧢ e_J‖_w ≤ C ‖e_I‖_w ‖e_J‖_w`.
+not equivalent to `w`. The Lean statement of `not_lemma77_shuffle_estimate` is
+`¬ ∃ C, ∀ I J, ‖e_I ⧢ e_J‖_w ≤ C ‖e_I‖_w ‖e_J‖_w`, for every weight `w` and every letter `ℓ : Fin d`.
+`not_lemma77_of_hypH2` is the same conclusion with an unused `HypH2` hypothesis, so it also covers
+every H2 weight.
 
 **Source material.** No verbatim Carbon text found. See `README.md`.
