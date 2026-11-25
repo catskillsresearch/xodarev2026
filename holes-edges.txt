@@ -255,6 +255,7 @@ ItoCalculusKit.MartingaleTransform -hard-> SignatureRiccatiKit.ItoWordTiltClosed
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.ConstVol
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.ItoQuadDoleans
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.KitRaw
+ItoCalculusKit.MathFinBridge -hard-> NflvrDoubling
 ItoCalculusKit.MathFinBridgeSetup -hard-> ItoCalculusKit.ItoQuadDoleans
 ItoCalculusKit.MathFinBridgeSetup -hard-> ItoCalculusKit.NovikovDoob
 ItoCalculusKit.MathFinBridgeSetup -hard-> ItoCalculusKit.StoppedRaw
@@ -330,6 +331,8 @@ MemTwDual -hard-> DualPairingLeNormWDualMulNormW
 MemTwDual -hard-> MemTwDualOfMemL2w
 MemTwDual -hard-> NormWDual
 MemTwDualOfMemL2w -hard-> Corollary36SigmaWellDefined
+NflvrDefs -hard-> NflvrCone
+NflvrDefs -hard-> NflvrDoubling
 NflvrOfMartingaleMeasure -hard-> TheoremBOfSetupItoRiccatiKit
 Norm2w -hard-> ItoCalculusKit
 Norm2w -hard-> MemTwDualOfMemL2w
@@ -392,6 +395,7 @@ ProlongedBrownianSetup.ItoWordIntegral -hard-> ProlongedBrownianSetup.Stratonovi
 ProlongedBrownianSetup.ItoWordIntegral -hard-> SignatureRiccatiKit.ItoWordTiltClosedForm
 ProlongedBrownianSetup.ItoWordIntegralConsLong -hard-> ProlongedBrownianSetup.ItoWordIntegral
 ProlongedBrownianSetup.ItoWordIntegralLe1 -hard-> ProlongedBrownianSetup.ItoWordIntegralConsLong
+ProlongedBrownianSetup.OfBrownian -hard-> NflvrDoubling
 ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.ItoIntegralAgainstBM
 ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.ItoWordIntegralLe1
 ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.SignatureOfBM
@@ -420,6 +424,7 @@ ProlongedBrownianSetup.ShiftedWordIntegral -hard-> SignatureRiccatiKit.BrownianS
 ProlongedBrownianSetup.ShiftedWordIntegral -hard-> SignatureRiccatiKit.CondExpMulIndepDisintegrate
 ProlongedBrownianSetup.Sig2StratAdapted -hard-> ItoCalculusKit.JointPast
 ProlongedBrownianSetup.Sig2StratAdapted -hard-> ItoCalculusKit.MathFinBridge
+ProlongedBrownianSetup.Sig2StratAdapted -hard-> NflvrDoubling
 ProlongedBrownianSetup.Sig2StratAdapted -hard-> SignatureRiccatiKit.BrownianScalingShiftedExponent
 ProlongedBrownianSetup.SignatureFiltration -hard-> ItoCalculusKit
 ProlongedBrownianSetup.SignatureFiltration -hard-> SignatureFiltrationEqBrownianFiltration

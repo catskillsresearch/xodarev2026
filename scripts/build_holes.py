@@ -83,10 +83,37 @@ REFUTED_THEOREMS: dict[str, tuple[str, str]] = {
 }
 
 
-# Documented open problems (optional headline notes). None remain: the paper's affine /
-# Riccati `←` direction is refuted (`not_affine_riccati_duality_mpr`). Any future `sorry`
-# is discovered automatically from the graph.
-OPEN_PROBLEMS: dict[str, str] = {}
+# Documented open problems (headline notes). Keys need not be existing modules; they are
+# listed in HOLES.md. Do not mark the corresponding work done in VERIFIED until proved.
+OPEN_PROBLEMS: dict[str, str] = {
+    "NflvrDoubling":
+        "OPEN: increment independence, geometric decay P(E_n)≤q^n and pathwise doubling wealth "
+        "V_T=1 a.s. are proved. Not yet proved: the integrand K (predictability, pathwise L², "
+        "elementary/Itô identification), the Black–Scholes transfer H=K/(S σ₀), and the "
+        "compared refutations not_literal_nflvr and not_terminal_bdd_nflvr.",
+    "Black–Scholes transfer":
+        "OPEN: transfer the doubling integrand to the Black–Scholes market via H=K/(S σ₀), "
+        "and prove S-admissibility (σ₀≠0, S>0).",
+    "not_literal_nflvr":
+        "OPEN: refute the paper's literal NFLVR cone (no lower bound on wealth) by a doubling "
+        "strategy with V_T=1 a.s. Not yet a compared theorem.",
+    "not_terminal_bdd_nflvr":
+        "OPEN: refute the terminal-only bounded-below cone (V_T≥-a, no uniform-in-time bound) "
+        "by the same doubling strategy. Not yet a compared theorem.",
+    "general local integral":
+        "OPEN: a local Itô integral for a general predictable S-admissible integrand "
+        "(pathwise ∫H²S²ξ² ds < ∞ a.s.), beyond the current L² kit. Needed for the "
+        "theorem_B NFLVR upgrade. Not started.",
+    "supermartingale step":
+        "OPEN: a continuous local martingale bounded below is a supermartingale (localisation "
+        "plus Fatou), hence E[V_T]≤0. Needed to feed BoundedBelowGains into nflvr_ds_of_nonpos_mean. "
+        "Not started.",
+    "theorem_B upgrade":
+        "OPEN: upgrade theorem_B_mp / theorem_B_mp_unwrapped from AdmissibleGainsUnderP "
+        "(price-independent E[G]≤0) to SatisfiesNFLVR_DS on BoundedBelowGains. Blocked on "
+        "the general local integral and the supermartingale step. Until then the compared "
+        "NFLVR conjunct is the weaker lemma.",
+}
 
 
 # Labels shown on unfinished nodes (always applied).
@@ -94,7 +121,10 @@ STATUS_LABELS: dict[str, str] = {
     "SignatureRiccatiKit.AffineRiccatiDuality": "not_affine_riccati_duality",
     "TheoremBMpr": "not_theorem_B_mpr, not_theorem_B",
     "SignatureRiccatiKit.AffineRiccatiDualityMp": "affine_riccati_duality_mp",
-    "TheoremB": "theorem_B_mp",
+    "TheoremB": "theorem_B_mp (AdmissibleGainsUnderP NFLVR; DS upgrade open)",
+    "NflvrDefs": "DS cones (defs)",
+    "NflvrCone": "Fatou / weak-* NFLVR (upgrade ingredients open)",
+    "NflvrDoubling": "doubling V_T=1 a.s.; open: K, BS transfer, refutations",
     "SignatureRiccatiKit.FawcettHermite": "C1 Hermite combinatorial core",
     "SignatureRiccatiKit.ComplexTilt": "C2a complex tilt E_t(ξ)",
     "SignatureRiccatiKit.ItoWordTiltClosedForm": "C2 tilted Itô-word closed form",
@@ -124,9 +154,30 @@ STATUS_LABELS: dict[str, str] = {
 }
 STATUS_DETAILS: dict[str, str] = {
     "TheoremB":
-        "theorem_B_mp (proved, compared): martingale on the signature filtration, NFLVR, special "
-        "semimartingale coordinates, and the -> direction of the Riccati transform equivalence. "
-        "The paper's <- direction and the full iff are false; their negations are in TheoremBMpr.",
+        "theorem_B_mp (proved, compared): martingale on the signature filtration, the "
+        "price-independent AdmissibleGainsUnderP NFLVR conjunct (any integrable G with E[G]≤0; "
+        "the Palomar editorial audit flagged this as close to trivial), special semimartingale "
+        "coordinates, and the -> direction of the Riccati transform equivalence. The paper's "
+        "<- direction and the full iff are false; their negations are in TheoremBMpr. OPEN: "
+        "upgrade that NFLVR conjunct to SatisfiesNFLVR_DS on BoundedBelowGains, which needs a "
+        "general local Itô integral and the supermartingale step; those are not proved.",
+    "NflvrDefs":
+        "Paper NFLVR definitions (Mathlib-only, for later exact copy into the Challenge): "
+        "S-admissible strategies, the three gain cones (literal / terminal-bounded-below / "
+        "uniformly bounded-below), and SatisfiesNFLVR_DS. Definitions only; no compared "
+        "theorems in this file.",
+    "NflvrCone":
+        "Proved: if every uniformly bounded-below gain has integrable nonpositive mean, then "
+        "SatisfiesNFLVR_DS holds (weak-* pairing with 1; no H3). Fatou gives nonpositive mean "
+        "for an a.s. limit of mean-zero variables with a uniform lower bound. The general local "
+        "integral and the supermartingale step that would feed actual trading gains into this "
+        "lemma are not in this file and are not proved.",
+    "NflvrDoubling":
+        "Proved: grid increment independence, P(E_n)≤q^n with q=P(Z<1)<1, pathwise doubling "
+        "wealth X_n and V_T=1 a.s. OPEN / not proved in this file: predictability and pathwise "
+        "L² of the integrand K, elementary or Itô identification of the wealth, the "
+        "Black–Scholes transfer H=K/(S σ₀), and the compared refutations not_literal_nflvr "
+        "and not_terminal_bdd_nflvr. Do not treat this module as done.",
     "SignatureRiccatiKit.AffineRiccatiDualityMp":
         "Proved -> direction of the affine / Riccati duality (paper Thm 4.2(ii)): an exponential-"
         "affine conditional transform through a classical Riccati solution gives a solution. "
@@ -306,6 +357,8 @@ VERIFIED: set[str] = {
     "MemTw",
     "MemTwDual",
     "MemTwDualOfMemL2w",
+    "NflvrCone",
+    "NflvrDefs",
     "NflvrOfMartingaleMeasure",
     "Norm2w",
     "Norm2wInv",
@@ -710,9 +763,11 @@ def write_md(data: dict) -> None:
         "All four are compared in `comparator.json` in unwrapped form (`…_unwrapped` in "
         "`Unwrapped`; see `Writeup/narratives/`). "
         "`Solution.lean` has **0** `sorry` (the Challenge's compared proofs are `sorry` by design). "
-        "`theorem_B_mp` (martingale, NFLVR, special semimartingale, `->` Riccati direction) is "
-        "sorry-free and compared as `theorem_B_mp_unwrapped`; `affine_riccati_duality_mp` is "
-        "sorry-free and not compared.",
+        "`theorem_B_mp` (martingale, the price-independent `AdmissibleGainsUnderP` NFLVR "
+        "conjunct, special semimartingale, `->` Riccati direction) is sorry-free and compared "
+        "as `theorem_B_mp_unwrapped`; `affine_riccati_duality_mp` is sorry-free and not compared. "
+        "The paper's Delbaen–Schachermayer NFLVR for uniformly bounded-below admissible "
+        "strategies is not yet proved; see the open problems below.",
         "",
         *[f"- **`{nid}`**: {txt}" for nid, txt in OPEN_PROBLEMS.items()],
         "",

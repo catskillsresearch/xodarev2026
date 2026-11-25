@@ -387,7 +387,7 @@ lemma noHitEvent_props (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) (n : �
     ext ω
     have hneg : ω ∈ (noHitEvent (bmCoord B) T n)ᶜ ↔
         ∃ s ∈ Icc a b, c ≤ bmCoord B s ω - bmCoord B a ω := by
-      simp only [noHitEvent, a, b, c, mem_compl_iff, mem_setOf, not_forall, not_lt, mem_Icc]
+      simp only [noHitEvent, a, b, c, mem_compl_iff, mem_ofPred, not_forall, not_lt, mem_Icc]
       constructor
       · rintro ⟨s, ⟨hs1, hs2⟩, hsc⟩; exact ⟨s, ⟨hs1, hs2⟩, hsc⟩
       · rintro ⟨s, ⟨hs1, hs2⟩, hsc⟩; exact ⟨s, ⟨hs1, hs2⟩, hsc⟩
@@ -398,7 +398,7 @@ lemma noHitEvent_props (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) (n : �
     refine forall_congr' fun k => or_congr_left (exists_congr fun q => ?_)
     by_cases hq : a ≤ (q : ℝ) ∧ (q : ℝ) ≤ b
     · simp [a, b, hq]
-    · simp only [if_neg hq, mem_empty_iff_false, a, b]
+    · simp only [ite_eq_right hq, mem_empty_iff_false, a, b]
       constructor
       · intro h
         exact hq ⟨h.1, h.2.1⟩
@@ -580,5 +580,54 @@ lemma doublingVT_eq_one_ae (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) :
   have hnull : P (⋂ n, nonHitPrefix (bmCoord B) T n) = 0 := (nonHitPrefix_props B hT).2.2
   refine (measure_eq_zero_iff_ae_notMem.mp hnull).mono fun ω hω => ?_
   simp [doublingVT, hω]
+
+
+lemma tGrid_tendsto (T : ℝ) : Tendsto (fun n : ℕ => tGrid T n) atTop (𝓝 T) := by
+  have hpow : Tendsto (fun n : ℕ => ((1 / 2 : ℝ) ^ n)) atTop (𝓝 0) :=
+    tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num) (by norm_num)
+  have hone : Tendsto (fun n : ℕ => (1 : ℝ) - (1 / 2 : ℝ) ^ n) atTop (𝓝 (1 - 0)) :=
+    (tendsto_const_nhds (x := (1 : ℝ))).sub hpow
+  have hmul : Tendsto (fun n : ℕ => T * (1 - (1 / 2 : ℝ) ^ n)) atTop (𝓝 (T * (1 - 0))) :=
+    (tendsto_const_nhds (x := T)).mul hone
+  simpa [tGrid] using hmul
+
+lemma exists_tGrid_ge {T s : ℝ} (hT : 0 < T) (hs : s < T) :
+    ∃ n : ℕ, s ≤ tGrid T (n + 1) := by
+  obtain ⟨n, hn⟩ := ((tendsto_order.1 (tGrid_tendsto T)).1 s hs).exists
+  cases n with
+  | zero =>
+    refine ⟨0, le_of_lt (hn.trans ?_)⟩
+    simp [tGrid, hT]
+    linarith
+  | succ k =>
+    exact ⟨k, hn.le⟩
+
+/-- The unique grid index with `t_n < s ≤ t_{n+1}` when `s ∈ (0, T)`; `0` otherwise. -/
+def nGrid (T s : ℝ) : ℕ :=
+  if h : 0 < T ∧ s < T then Nat.find (exists_tGrid_ge h.1 h.2) else 0
+
+lemma nGrid_spec {T s : ℝ} (hT : 0 < T) (hs0 : 0 < s) (hsT : s < T) :
+    tGrid T (nGrid T s) < s ∧ s ≤ tGrid T (nGrid T s + 1) := by
+  have hfind := Nat.find_spec (exists_tGrid_ge hT hsT)
+  have hn : nGrid T s = Nat.find (exists_tGrid_ge hT hsT) := by
+    simp [nGrid, hT, hsT]
+  rw [hn]
+  refine ⟨?_, hfind⟩
+  cases hfn : Nat.find (exists_tGrid_ge hT hsT) with
+  | zero =>
+    simp only [tGrid_zero]
+    exact hs0
+  | succ n =>
+    have hlt : ¬ s ≤ tGrid T (n + 1) :=
+      Nat.find_min (exists_tGrid_ge hT hsT) (by rw [hfn]; exact Nat.lt_succ_self n)
+    exact lt_of_not_ge hlt
+
+/-- Geometric-grid doubling integrand `K`: on the nth interval it takes the constant position
+`c_n` up to the hitting time `τ_n`, provided the path has not already hit, and `0` elsewhere. -/
+def doublingK (B : ℝ → Ω → ℝ) (T : ℝ) (s : ℝ) (ω : Ω) : ℝ :=
+  if _h : 0 < s ∧ s < T then
+    let n := nGrid T s
+    if ω ∈ nonHitPrefix B T n ∧ s ≤ tauHit B T n ω then doublingC B T n ω else 0
+  else 0
 
 end SignatureVolatility
