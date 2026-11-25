@@ -792,6 +792,7 @@ such that:
 lemma exists_scaled_survival_function (M : SignatureVolatilityModel)
     (B : MultiBrownian Ω P M.d) :
     ∃ v₁ : ℝ → ℝ,
+      Measurable v₁ ∧
       (∀ x, 0 < v₁ x ∧ v₁ x ≤ 1) ∧
       (∃ C : ℝ, 0 ≤ C ∧ ∀ x : ℝ, -C * (1 + |x| ^ 4) ≤ Real.log (v₁ x)) ∧
       (∀ x : ℝ, x ≤ 0 →
@@ -807,7 +808,8 @@ lemma exists_scaled_survival_function (M : SignatureVolatilityModel)
             Real.exp (dualPairing (counterexampleU0 M.hd lam)
               ((paperSetup B M.hT).W_hat t_lam ω)) *
             v₁ (lam ^ (1 / 3 : ℝ) * MultiBrownian.W B t_lam ω ⟨0, M.hd⟩) := by
-  refine ⟨counterexampleV1AtHalf M B, ?_, ?_, ?_, ?_, ?_⟩
+  refine ⟨counterexampleV1AtHalf M B, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · exact measurable_counterexampleV1AtHalf M B
   · exact counterexampleV1_pos_le M B
   · exact counterexampleV1_log_bound M B
   · exact counterexampleV1_log_nonpos M B
@@ -821,12 +823,13 @@ of exponential type `≤ 1` (`∃ C ≥ 0, ∀ z, ‖G z‖ ≤ C * Real.exp ‖
 lemma exists_entire_expTypeOne_of_memTw (M : SignatureVolatilityModel)
     (B : MultiBrownian Ω P M.d) {t : ℝ} (ht0 : 0 < t) (htT : t ≤ M.T)
     {ϕ : ExtTensorAlgebra (M.d + 1)} (hϕ : MemTw M.w ϕ) {f : ℝ → ℝ}
+    (hf : AEMeasurable f volume)
     (hfeq : (fun ω => dualPairing ϕ ((paperSetup B M.hT).W_hat t ω)) =ᵐ[P]
       fun ω => f (MultiBrownian.W B t ω ⟨0, M.hd⟩)) :
     ∃ (G : ℂ → ℂ) (C : ℝ), Differentiable ℂ G ∧ 0 ≤ C ∧
       (∀ z : ℂ, ‖G z‖ ≤ C * Real.exp ‖z‖) ∧
       (∀ᵐ x : ℝ ∂volume, G x = (f x : ℂ)) :=
-  fawcett_transfer_to_f M B ht0 htT hϕ hfeq
+  fawcett_transfer_to_f M B ht0 htT hϕ hf hfeq
 
 section PillarD
 open Complex Metric
@@ -1280,7 +1283,7 @@ theorem not_affine_riccati_duality_mpr (M : SignatureVolatilityModel)
             fun ω => Real.exp (dualPairing (sol.ψ (M.T - t))
               ((paperSetup B M.hT).W_hat t ω)) := by
   intro hthm
-  obtain ⟨v₁, hv₁_pos_le, ⟨C_poly, hC_poly0, hv₁_poly⟩, hv₁_nonpos, hv₁_tendsto, hcond⟩ :=
+  obtain ⟨v₁, hv₁_meas, hv₁_pos_le, ⟨C_poly, hC_poly0, hv₁_poly⟩, hv₁_nonpos, hv₁_tendsto, hcond⟩ :=
     exists_scaled_survival_function M B
   -- For every `lam ≥ 1`, obtain an entire `F_lam` of exponential type `≤ lam^(-1/3)`
   -- agreeing a.e. on `ℝ` with `log ∘ v₁`.
@@ -1385,8 +1388,11 @@ theorem not_affine_riccati_duality_mpr (M : SignatureVolatilityModel)
       have hlog := congrArg Real.log hω
       rw [Real.log_exp, Real.log_mul (Real.exp_pos _).ne' hv_pos.ne', Real.log_exp] at hlog
       linarith [hdp_sub, hlog]
+    have hf_log : AEMeasurable f_log volume :=
+      (Real.measurable_log.comp
+        (hv₁_meas.comp (measurable_const.mul measurable_id))).aemeasurable
     obtain ⟨G, C, hG_diff, hC0, hG_bd, hG_ae⟩ :=
-      exists_entire_expTypeOne_of_memTw M B ht_pos ht_mem.2 hϕ_mem hlog_eq
+      exists_entire_expTypeOne_of_memTw M B ht_pos ht_mem.2 hϕ_mem hf_log hlog_eq
     -- Rescale `F(z) = G(lam^(-1/3) * z)`.
     set c : ℝ := lam ^ (-(1 / 3 : ℝ))
     have hc_pos : 0 < c := Real.rpow_pos_of_pos hlam_pos _

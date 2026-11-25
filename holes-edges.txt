@@ -76,6 +76,7 @@ ExtTensorAlgebra.LevelInner -hard-> DualPairing
 ExtTensorAlgebra.LevelInner -hard-> DualPairingLeNormWDualMulNormW
 ExtTensorAlgebra.LevelInner -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 ExtTensorAlgebra.LevelInner -hard-> SignatureRiccatiKit.CounterexampleTensor
+ExtTensorAlgebra.LevelInner -hard-> SignatureRiccatiKit.EntireTransfer
 ExtTensorAlgebra.LevelInner -hard-> SignatureVolatilityModel.Sigma
 ExtTensorAlgebra.LevelInner -hard-> WeightedTruncationEstimates
 ExtTensorAlgebra.LevelNorm -hard-> BanachAlgebraConcatBound
@@ -92,6 +93,7 @@ ExtTensorAlgebra.LevelNorm -hard-> NormWDual
 ExtTensorAlgebra.LevelNorm -hard-> ProjGt
 ExtTensorAlgebra.LevelNorm -hard-> ProlongedBrownianSetup
 ExtTensorAlgebra.LevelNorm -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
+ExtTensorAlgebra.LevelNorm -hard-> SignatureRiccatiKit.EntireTransfer
 ExtTensorAlgebra.LevelNorm -hard-> SignatureRiccatiKit.FawcettHermite
 ExtTensorAlgebra.LevelNorm -hard-> SignatureRiccatiKit.SummableNormTermAndBound
 ExtTensorAlgebra.LevelNorm -hard-> TailNorm2wInvLeRatioMulNormW
@@ -173,6 +175,7 @@ ItoCalculusKit.BrownianQuadVarAS -hard-> SignatureRiccatiKit.AffineRiccatiDualit
 ItoCalculusKit.BrownianQuadVarAS -hard-> SignatureRiccatiKit.BrownianScalingShiftedExponent
 ItoCalculusKit.BrownianQuadVarAS -hard-> SignatureRiccatiKit.ComplexTilt
 ItoCalculusKit.BrownianQuadVarAS -hard-> SignatureRiccatiKit.CounterexampleV1LogNonpos
+ItoCalculusKit.BrownianQuadVarAS -hard-> SignatureRiccatiKit.EntireTransfer
 ItoCalculusKit.BrownianQuadVarAS -hard-> SignatureRiccatiKit.IntegralExpBarrier
 ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.DoleansSigma
 ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.GBMMartingale
@@ -340,6 +343,7 @@ NormW -hard-> Lemma32SignatureInTw
 NormW -hard-> Lemma77ShuffleEstimateFalse
 NormW -hard-> MemL2wInvOfMemTw
 NormW -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
+NormW -hard-> SignatureRiccatiKit.EntireTransfer
 NormW -hard-> TailNorm2wInvLeRatioMulNormW
 NormWDual -hard-> DualPairingLeNormWDualMulNormW
 NormWDual -hard-> MemTwDualOfMemL2w
@@ -395,6 +399,7 @@ ProlongedBrownianSetup.PaperSig -hard-> ProlongedBrownianSetup.PaperSigDynamics
 ProlongedBrownianSetup.PaperSig -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 ProlongedBrownianSetup.PaperSig -hard-> SignatureRiccatiKit.CondSigPolyIdentification
 ProlongedBrownianSetup.PaperSig -hard-> SignatureRiccatiKit.CounterexampleTensor
+ProlongedBrownianSetup.PaperSig -hard-> SignatureRiccatiKit.EntireTransfer
 ProlongedBrownianSetup.PaperSig -hard-> SignatureRiccatiKit.ItoWordTiltClosedForm
 ProlongedBrownianSetup.PaperSigChen -hard-> ProlongedBrownianSetup.StratonovichOfBM
 ProlongedBrownianSetup.PaperSigChen -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
@@ -405,6 +410,7 @@ ProlongedBrownianSetup.PaperSigDynamics -hard-> SignatureRiccatiKit.BrownianScal
 ProlongedBrownianSetup.PaperSigDynamics -hard-> SignatureRiccatiKit.CameronMartinC2Shift
 ProlongedBrownianSetup.PaperSigDynamics -hard-> SignatureRiccatiKit.ComplexTilt
 ProlongedBrownianSetup.PaperSigDynamics -hard-> SignatureRiccatiKit.CounterexampleTensor
+ProlongedBrownianSetup.PaperSigDynamics -hard-> SignatureRiccatiKit.EntireTransfer
 ProlongedBrownianSetup.PaperSigDynamics -hard-> SignatureRiccatiKit.ItoWordTiltClosedForm
 ProlongedBrownianSetup.ShiftedWordIntegral -hard-> ProlongedBrownianSetup.PaperSigChen
 ProlongedBrownianSetup.ShiftedWordIntegral -hard-> SignatureRiccatiKit.BrownianScalingShiftedExponent
@@ -428,6 +434,7 @@ ProlongedBrownianSetup.StratonovichItoConversion -hard-> ProlongedBrownianSetup.
 ProlongedBrownianSetup.StratonovichItoConversion -hard-> SignatureRiccatiKit.CondSigPoly
 ProlongedBrownianSetup.StratonovichOfBM -hard-> ItoCalculusKit.MathFinBridgeSetup
 ProlongedBrownianSetup.StratonovichOfBM -hard-> ItoCalculusKit.SigmaContinuity
+ProlongedBrownianSetup.StratonovichOfBM -hard-> SignatureRiccatiKit.EntireTransfer
 ProlongedBrownianSetup.WHat -hard-> ItoCalculusKit
 ProlongedBrownianSetup.WHat -hard-> ItoCalculusKit.SigmaContinuity
 ProlongedBrownianSetup.WHat -hard-> Lemma32SignatureInTw
@@ -470,6 +477,7 @@ SignatureRiccatiKit.CameronMartinC2Shift -hard-> SignatureRiccatiKit.AffineRicca
 SignatureRiccatiKit.CameronMartinC2Shift -hard-> SignatureRiccatiKit.CounterexampleV1LogNonpos
 SignatureRiccatiKit.ComplexTilt -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit.ComplexTilt -hard-> SignatureRiccatiKit.CondSigPoly
+SignatureRiccatiKit.ComplexTilt -hard-> SignatureRiccatiKit.EntireTransfer
 SignatureRiccatiKit.ComplexTilt -hard-> SignatureRiccatiKit.ItoWordTiltClosedForm
 SignatureRiccatiKit.CondExpMulIndepDisintegrate -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit.CondExpMulIndepDisintegrate -hard-> SignatureRiccatiKit.CounterexampleV1CondExp
@@ -507,6 +515,7 @@ SignatureRiccatiKit.DifferentiableAtTsum -hard-> SignatureRiccatiKit.EntireTrans
 SignatureRiccatiKit.EntireTransfer -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit.FawcettHermite -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit.FawcettHermite -hard-> SignatureRiccatiKit.CondSigPoly
+SignatureRiccatiKit.FawcettHermite -hard-> SignatureRiccatiKit.EntireTransfer
 SignatureRiccatiKit.FourierUniquenessGaussian -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit.FourierUniquenessGaussian -hard-> SignatureRiccatiKit.EntireTransfer
 SignatureRiccatiKit.IntegralExpBarrier -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
@@ -605,6 +614,7 @@ WordsOfLength -hard-> Remark219BlackScholesRiccati
 WordsOfLength -hard-> ShuffleFinite
 WordsOfLength -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 WordsOfLength -hard-> SignatureRiccatiKit.CounterexampleTensor
+WordsOfLength -hard-> SignatureRiccatiKit.EntireTransfer
 WordsOfLength -hard-> SignatureRiccatiKit.FawcettHermite
 WordsOfLength -hard-> SignatureRiccatiKit.SummableNormTermAndBound
 WordsOfLength -hard-> SuperfactorialFunctional

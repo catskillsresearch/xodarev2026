@@ -3,6 +3,7 @@ module
 public import SignatureVolatility.SignatureRiccatiKit.CounterexampleV1
 public import SignatureVolatility.SignatureRiccatiKit.LintegralExpShifted
 public import SignatureVolatility.ItoCalculusKit.PathwiseExpIto
+public import Mathlib.MeasureTheory.Measure.Prod
 
 /-!
 # B1. Positivity and the unit upper bound for `v₁`
@@ -108,5 +109,93 @@ lemma counterexampleV1_pos_le (M : SignatureVolatilityModel)
           (ae_of_all _ fun _ => (Real.exp_pos _).le)]
       simpa using hlint
     simpa [counterexampleV1AtHalf, counterexampleV1] using hle
+
+
+private lemma measurable_intervalIntegral_addW_uncurry {d : ℕ} (B : MultiBrownian Ω P d)
+    (k : Fin d) {s : ℝ} (hs : 0 ≤ s) :
+    Measurable fun p : ℝ × Ω => ∫ r in (0 : ℝ)..s, p.1 + MultiBrownian.W B r p.2 k := by
+  have hsum : ∀ n : ℕ, Measurable fun p : ℝ × Ω =>
+      ∑ i ∈ range (n + 1),
+        (p.1 + MultiBrownian.W B ((i : ℝ) * (s / ((n : ℝ) + 1))) p.2 k) *
+          (s / ((n : ℝ) + 1)) := fun n =>
+    Finset.measurable_sum _ fun i _ =>
+      (measurable_fst.add ((MultiBrownian.W_meas B _ k).comp measurable_snd)).mul_const _
+  have hlim : ∀ p : ℝ × Ω, Tendsto (fun n : ℕ =>
+      ∑ i ∈ range (n + 1),
+        (p.1 + MultiBrownian.W B ((i : ℝ) * (s / ((n : ℝ) + 1))) p.2 k) *
+          (s / ((n : ℝ) + 1))) atTop
+      (𝓝 (∫ r in (0 : ℝ)..s, p.1 + MultiBrownian.W B r p.2 k)) := fun p =>
+    tendsto_lebRiemann_of_continuousOn hs
+      (continuous_const.add (continuous_W_coord_v1 B k p.2)).continuousOn
+  exact measurable_of_tendsto_metrizable (fun n => hsum n) (tendsto_pi_nhds.mpr hlim)
+
+private lemma measurable_intervalIntegral_addW_pow4_uncurry {d : ℕ} (B : MultiBrownian Ω P d)
+    (k : Fin d) {s : ℝ} (hs : 0 ≤ s) :
+    Measurable fun p : ℝ × Ω => ∫ r in (0 : ℝ)..s, (p.1 + MultiBrownian.W B r p.2 k) ^ 4 := by
+  have hsum : ∀ n : ℕ, Measurable fun p : ℝ × Ω =>
+      ∑ i ∈ range (n + 1),
+        (p.1 + MultiBrownian.W B ((i : ℝ) * (s / ((n : ℝ) + 1))) p.2 k) ^ 4 *
+          (s / ((n : ℝ) + 1)) := fun n =>
+    Finset.measurable_sum _ fun i _ =>
+      ((measurable_fst.add ((MultiBrownian.W_meas B _ k).comp measurable_snd)).pow_const 4).mul_const _
+  have hlim : ∀ p : ℝ × Ω, Tendsto (fun n : ℕ =>
+      ∑ i ∈ range (n + 1),
+        (p.1 + MultiBrownian.W B ((i : ℝ) * (s / ((n : ℝ) + 1))) p.2 k) ^ 4 *
+          (s / ((n : ℝ) + 1))) atTop
+      (𝓝 (∫ r in (0 : ℝ)..s, (p.1 + MultiBrownian.W B r p.2 k) ^ 4)) := fun p =>
+    tendsto_lebRiemann_of_continuousOn hs
+      ((continuous_const.add (continuous_W_coord_v1 B k p.2)).pow 4).continuousOn
+  exact measurable_of_tendsto_metrizable (fun n => hsum n) (tendsto_pi_nhds.mpr hlim)
+
+private lemma measurable_counterexampleV1Exponent_uncurry {d : ℕ} (B : MultiBrownian Ω P d)
+    (hd : 0 < d) {s : ℝ} (hs : 0 ≤ s) :
+    Measurable fun p : ℝ × Ω => counterexampleV1Exponent B hd s p.1 p.2 := by
+  have hW : Measurable fun p : ℝ × Ω => MultiBrownian.W B s p.2 ⟨0, hd⟩ :=
+    (MultiBrownian.W_meas B s ⟨0, hd⟩).comp measurable_snd
+  have hI := measurable_intervalIntegral_addW_uncurry B ⟨0, hd⟩ hs
+  have hQ := measurable_intervalIntegral_addW_pow4_uncurry B ⟨0, hd⟩ hs
+  simp only [counterexampleV1Exponent]
+  exact ((((measurable_fst.add hW).pow_const 3).sub (measurable_fst.pow_const 3)).const_mul
+      (1 / 3 : ℝ)).sub hI |>.sub (hQ.const_mul (1 / 2 : ℝ))
+
+/-- `v₁(s, ·)` is Borel measurable, as a parametric integral of a jointly measurable integrand. -/
+lemma measurable_counterexampleV1 {d : ℕ} (B : MultiBrownian Ω P d)
+    (hd : 0 < d) {s : ℝ} (hs : 0 ≤ s) :
+    Measurable (counterexampleV1 B hd s) := by
+  have hF : Measurable fun p : ℝ × Ω =>
+      ENNReal.ofReal (Real.exp (counterexampleV1Exponent B hd s p.1 p.2)) :=
+    Measurable.ennreal_ofReal
+      (Real.measurable_exp.comp (measurable_counterexampleV1Exponent_uncurry B hd hs))
+  have hlint : Measurable fun x =>
+      ∫⁻ ω, ENNReal.ofReal (Real.exp (counterexampleV1Exponent B hd s x ω)) ∂P :=
+    hF.lintegral_prod_right'
+  have heq : counterexampleV1 B hd s = fun x =>
+      (∫⁻ ω, ENNReal.ofReal (Real.exp (counterexampleV1Exponent B hd s x ω)) ∂P).toReal := by
+    funext x
+    have hmeas : Measurable fun ω =>
+        Real.exp (counterexampleV1Exponent B hd s x ω) :=
+      Real.measurable_exp.comp (measurable_counterexampleV1Exponent B hd hs x)
+    have hle := lintegral_exp_shiftedExponent_le_one B hd hs x
+    have hint : Integrable (fun ω =>
+        Real.exp (counterexampleV1Exponent B hd s x ω)) P := by
+      refine ⟨hmeas.aestronglyMeasurable, ?_⟩
+      have he : ∫⁻ ω, ‖Real.exp (counterexampleV1Exponent B hd s x ω)‖ₑ ∂P =
+          ∫⁻ ω, ENNReal.ofReal (Real.exp (counterexampleV1Exponent B hd s x ω)) ∂P :=
+        lintegral_congr fun ω => Real.enorm_eq_ofReal (Real.exp_pos _).le
+      rw [HasFiniteIntegral, he]
+      exact hle.trans_lt ENNReal.one_lt_top
+    unfold counterexampleV1
+    rw [← ENNReal.toReal_ofReal (integral_nonneg fun _ => (Real.exp_pos _).le),
+      ofReal_integral_eq_lintegral_ofReal hint
+        (ae_of_all _ fun _ => (Real.exp_pos _).le)]
+  rw [heq]
+  exact hlint.ennreal_toReal
+
+lemma measurable_counterexampleV1AtHalf (M : SignatureVolatilityModel)
+    (B : MultiBrownian Ω P M.d) :
+    Measurable (counterexampleV1AtHalf M B) := by
+  have hs : 0 ≤ M.T / 2 := div_nonneg M.hT.le (by norm_num)
+  unfold counterexampleV1AtHalf
+  exact measurable_counterexampleV1 B M.hd hs
 
 end SignatureVolatility

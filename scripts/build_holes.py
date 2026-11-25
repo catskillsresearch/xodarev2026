@@ -179,6 +179,7 @@ VERIFIED: set[str] = {
     "SignatureRiccatiKit.IteratedDerivGaussian",
     "SignatureRiccatiKit.CondSigPoly",
     "SignatureRiccatiKit.CondSigPolyIdentification",
+    "SignatureRiccatiKit.EntireTransfer",
     "SignatureRiccatiKit.CounterexampleV1CondExp",
     "SignatureRiccatiKit.BrownianScalingShiftedExponent",
     "SignatureRiccatiKit.SummableNormTermAndBound",
