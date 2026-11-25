@@ -2564,4 +2564,54 @@ theorem theorem_literal_nflvr_fails (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0
   rw [huniv, measure_univ] at hμ
   exact one_ne_zero hμ
 
+/-- A terminal gain that equals `1` a.s. and already lies in the cone `K` is a
+nontrivial free lunch, so `SatisfiesNFLVR_DS` fails for `K`. -/
+lemma not_satisfiesNFLVR_DS_of_unit_gain {K : Set (Ω → ℝ)} {V : Ω → ℝ}
+    (hV : V ∈ K) (hV1 : V =ᵐ[P] fun _ => (1 : ℝ)) :
+    ¬ SatisfiesNFLVR_DS P K := by
+  intro hNFLVR
+  have hone : (fun _ => (1 : ℝ)) ∈ nflvrCone P K := by
+    refine ⟨memLp_const (p := ∞) (1 : ℝ), V, hV, fun _ => (0 : ℝ),
+      Eventually.of_forall fun _ => le_rfl, ?_⟩
+    filter_upwards [hV1] with ω hω
+    simp [hω]
+  have hws : InWeakStarClosure P (nflvrCone P K) (fun _ => (1 : ℝ)) := by
+    refine ⟨memLp_const (p := ∞) (1 : ℝ), fun ε hε gs _hgs => ?_⟩
+    refine ⟨fun _ => (1 : ℝ), hone, memLp_const (p := ∞) (1 : ℝ), fun g _hg => ?_⟩
+    have : |∫ ω, ((1 : ℝ) - 1) * g ω ∂P| = 0 := by
+      simp
+    simpa [this] using hε
+  have hzero := hNFLVR (fun _ => (1 : ℝ))
+    (Eventually.of_forall fun _ => zero_le_one) hws
+  have huniv : {ω : Ω | (1 : ℝ) ≠ 0} = Set.univ := by
+    ext ω; simp
+  have hμ : P {ω : Ω | ¬ (1 : ℝ) = 0} = 0 := ae_iff.mp hzero
+  rw [huniv, measure_univ] at hμ
+  exact one_ne_zero hμ
+
+/-- Terminal-only bounded-below NFLVR also fails: the same doubling strategy
+ends at `V_T = 1 ≥ 0` almost surely, with no uniform-in-time lower bound. -/
+theorem theorem_terminal_bdd_nflvr_fails (B : MultiBrownian Ω P 1) {T : ℝ}
+    (hT : 0 < T) :
+    ¬ SatisfiesNFLVR_DS P
+        (TerminalBoundedBelowGains (pathFiltration B).σAlg P (bmCoord B)
+          (fun _ _ => (1 : ℝ)) (fun _ _ => (1 : ℝ)) T) := by
+  have hadm := sAdmissible_doublingK B hT
+  have hIto : IsItoIntegral P (bmCoord B)
+      (fun t ω => doublingK (bmCoord B) T t ω * (1 : ℝ) * (1 : ℝ))
+      (doublingWealth (bmCoord B) T) T := by
+    have heq : (fun t ω => doublingK (bmCoord B) T t ω * (1 : ℝ) * (1 : ℝ)) =
+        doublingK (bmCoord B) T := by
+      funext t ω; ring
+    rw [heq]
+    exact isItoIntegral_doublingWealth B hT
+  have hterm : IsTerminalBoundedBelow P (doublingWealth (bmCoord B) T) T 0 :=
+    ⟨le_rfl, (doublingWealth_T_eq_one_ae B hT).mono fun ω hω => by
+      simp [hω]⟩
+  have hG : (fun ω => doublingWealth (bmCoord B) T T ω) ∈
+      TerminalBoundedBelowGains (pathFiltration B).σAlg P (bmCoord B)
+        (fun _ _ => (1 : ℝ)) (fun _ _ => (1 : ℝ)) T :=
+    ⟨doublingK (bmCoord B) T, doublingWealth (bmCoord B) T, 0, hadm, hterm, hIto, rfl⟩
+  exact not_satisfiesNFLVR_DS_of_unit_gain hG (doublingWealth_T_eq_one_ae B hT)
+
 end SignatureVolatility
