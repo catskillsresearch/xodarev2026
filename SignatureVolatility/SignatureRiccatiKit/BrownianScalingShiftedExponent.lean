@@ -6,6 +6,7 @@ public import SignatureVolatility.ItoCalculusKit.JointPast
 public import SignatureVolatility.ItoCalculusKit.PathwiseExpIto
 public import SignatureVolatility.ProlongedBrownianSetup.Sig2StratAdapted
 public import SignatureVolatility.ProlongedBrownianSetup.PaperSigDynamics
+public import SignatureVolatility.ProlongedBrownianSetup.ShiftedWordIntegral
 public import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 public import Mathlib.MeasureTheory.Constructions.Pi
 public import Mathlib.MeasureTheory.Integral.Lebesgue.Add
@@ -35,7 +36,7 @@ noncomputable def counterexampleV1ExponentScaled {d : ℕ} (B : MultiBrownian Ω
 
 /-- Law of `N` uniform increments `(ΔW_0, …, ΔW_{N-1})` on `[0, s]`:
 i.i.d. `N(0, s / N)` Gaussians. -/
-private lemma hasLaw_incrVec {d : ℕ} (B : MultiBrownian Ω P d) (hd : 0 < d)
+lemma hasLaw_incrVec {d : ℕ} (B : MultiBrownian Ω P d) (hd : 0 < d)
     {s : ℝ} (hs : 0 < s) (N : ℕ) (hN : 0 < N) :
     let Δ := s / (N : ℝ)
     HasLaw (fun ω (k : Fin N) => wnnIncr B ⟨0, hd⟩ ((k : ℝ) * Δ) (((k : ℕ) + 1 : ℕ) * Δ) ω)
@@ -146,7 +147,7 @@ noncomputable def discV1Exp (N : ℕ) (s x : ℝ) (z : Fin N → ℝ) : ℝ :=
     - (∑ k : Fin N, (x + psum k) * Δ)
     - (1 / 2 : ℝ) * (∑ k : Fin N, (x + psum k) ^ 4 * Δ)
 
-private lemma continuous_discV1Exp (N : ℕ) (s x : ℝ) :
+lemma continuous_discV1Exp (N : ℕ) (s x : ℝ) :
     Continuous fun z : Fin N → ℝ => discV1Exp N s x z := by
   have hp (k : ℕ) : Continuous fun z : Fin N → ℝ =>
       ∑ j : Fin N, if (j : ℕ) < k then z j else 0 :=
@@ -168,7 +169,7 @@ private lemma continuous_discV1Exp (N : ℕ) (s x : ℝ) :
   unfold discV1Exp
   convert (hpsumN.sub hsum1).sub hsum4
 
-private lemma psum_incrVec {d : ℕ} (B : MultiBrownian Ω P d) (hd : 0 < d)
+lemma psum_incrVec {d : ℕ} (B : MultiBrownian Ω P d) (hd : 0 < d)
     (s : ℝ) (N k : ℕ) (hk : k ≤ N) (ω : Ω) :
     (∑ j : Fin N, if (j : ℕ) < k then
       wnnIncr B ⟨0, hd⟩ ((j : ℝ) * (s / (N : ℝ))) (((j : ℕ) + 1 : ℕ) * (s / (N : ℝ))) ω else 0) =
@@ -194,11 +195,11 @@ private lemma psum_incrVec {d : ℕ} (B : MultiBrownian Ω P d) (hd : 0 < d)
   simpa [MultiBrownian.W_zero] using
     (Finset.sum_range_sub (fun j => MultiBrownian.W B ((j : ℝ) * (s / (N : ℝ))) ω ⟨0, hd⟩) k)
 
-private lemma continuous_W_coord_v1 {d : ℕ} (B : MultiBrownian Ω P d) (k : Fin d) (ω : Ω) :
+lemma continuous_W_coord_v1 {d : ℕ} (B : MultiBrownian Ω P d) (k : Fin d) (ω : Ω) :
     Continuous fun t : ℝ => MultiBrownian.W B t ω k :=
   (B.pathContinuous k ω).comp continuous_real_toNNReal
 
-private lemma measurable_intervalIntegral_addW {d : ℕ} (B : MultiBrownian Ω P d)
+lemma measurable_intervalIntegral_addW {d : ℕ} (B : MultiBrownian Ω P d)
     (k : Fin d) {s : ℝ} (hs : 0 ≤ s) (x : ℝ) :
     Measurable fun ω => ∫ r in (0 : ℝ)..s, x + MultiBrownian.W B r ω k := by
   have hsum : ∀ n : ℕ, Measurable fun ω =>
@@ -216,7 +217,7 @@ private lemma measurable_intervalIntegral_addW {d : ℕ} (B : MultiBrownian Ω P
       (continuous_const.add (continuous_W_coord_v1 B k ω)).continuousOn
   exact measurable_of_tendsto_metrizable (fun n => hsum n) (tendsto_pi_nhds.mpr hlim)
 
-private lemma measurable_intervalIntegral_addW_pow4 {d : ℕ} (B : MultiBrownian Ω P d)
+lemma measurable_intervalIntegral_addW_pow4 {d : ℕ} (B : MultiBrownian Ω P d)
     (k : Fin d) {s : ℝ} (hs : 0 ≤ s) (x : ℝ) :
     Measurable fun ω => ∫ r in (0 : ℝ)..s, (x + MultiBrownian.W B r ω k) ^ 4 := by
   have hsum : ∀ n : ℕ, Measurable fun ω =>
@@ -234,7 +235,7 @@ private lemma measurable_intervalIntegral_addW_pow4 {d : ℕ} (B : MultiBrownian
       ((continuous_const.add (continuous_W_coord_v1 B k ω)).pow 4).continuousOn
   exact measurable_of_tendsto_metrizable (fun n => hsum n) (tendsto_pi_nhds.mpr hlim)
 
-private lemma measurable_counterexampleV1Exponent {d : ℕ} (B : MultiBrownian Ω P d)
+lemma measurable_counterexampleV1Exponent {d : ℕ} (B : MultiBrownian Ω P d)
     (hd : 0 < d) {s : ℝ} (hs : 0 ≤ s) (x : ℝ) :
     Measurable fun ω => counterexampleV1Exponent B hd s x ω := by
   have hW : Measurable fun ω => MultiBrownian.W B s ω ⟨0, hd⟩ :=
@@ -245,7 +246,7 @@ private lemma measurable_counterexampleV1Exponent {d : ℕ} (B : MultiBrownian �
   exact (((hW.const_add x).pow_const 3).sub measurable_const).const_mul _ |>.sub hI |>.sub
     (hQ.const_mul _)
 
-private lemma measurable_counterexampleV1ExponentScaled {d : ℕ} (B : MultiBrownian Ω P d)
+lemma measurable_counterexampleV1ExponentScaled {d : ℕ} (B : MultiBrownian Ω P d)
     (hd : 0 < d) {lam s : ℝ} (hs : 0 ≤ s) (x : ℝ) :
     Measurable fun ω => counterexampleV1ExponentScaled B hd lam s x ω := by
   have hW : Measurable fun ω => MultiBrownian.W B s ω ⟨0, hd⟩ :=
@@ -256,7 +257,7 @@ private lemma measurable_counterexampleV1ExponentScaled {d : ℕ} (B : MultiBrow
   exact (((hW.const_add x).pow_const 3).sub measurable_const).const_mul _ |>.sub
     (hI.const_mul _) |>.sub (hQ.const_mul _)
 
-private lemma measurable_min_exp_disc (N : ℕ) (s x : ℝ) (R : ℕ)
+lemma measurable_min_exp_disc (N : ℕ) (s x : ℝ) (R : ℕ)
     {Z : Ω → Fin N → ℝ} (hZ : Measurable Z) :
     Measurable fun ω => min (R : ℝ) (Real.exp (discV1Exp N s x (Z ω))) :=
   measurable_const.min (Real.measurable_exp.comp ((continuous_discV1Exp N s x).measurable.comp hZ))
@@ -515,5 +516,186 @@ lemma brownian_scaling_shiftedExponent {d : ℕ} (B : MultiBrownian Ω P d) (hd 
       simpa [hasFiniteIntegral_iff_enorm, Real.enorm_eq_ofReal (Real.exp_pos _).le]
         using hi2.hasFiniteIntegral
     rw [integral_undef h1, integral_undef h2]
+
+
+/-- `counterexampleV1` depends only on the law of the driving Brownian motion, so it is
+invariant under restarting at time `t`. -/
+lemma counterexampleV1_eq_shift {d : ℕ} (B : MultiBrownian Ω P d) (hd : 0 < d)
+    {t s : ℝ} (_ht : 0 ≤ t) (hs : 0 ≤ s) (x : ℝ) :
+    counterexampleV1 (B.shift t.toNNReal) hd s x = counterexampleV1 B hd s x := by
+  rcases hs.eq_or_lt with rfl | hs_pos
+  · simp [counterexampleV1, counterexampleV1Exponent, MultiBrownian.W_zero]
+  set B' := B.shift t.toNNReal
+  have hcut : ∀ R : ℕ,
+      ∫ ω, min (R : ℝ) (Real.exp (counterexampleV1Exponent B' hd s x ω)) ∂P =
+        ∫ ω, min (R : ℝ) (Real.exp (counterexampleV1Exponent B hd s x ω)) ∂P := by
+    intro R
+    let Z (n : ℕ) (ω : Ω) : Fin (n + 1) → ℝ := fun k =>
+      wnnIncr B' ⟨0, hd⟩ ((k : ℝ) * (s / ((n + 1 : ℕ) : ℝ)))
+        (((k : ℕ) + 1 : ℕ) * (s / ((n + 1 : ℕ) : ℝ))) ω
+    let Z0 (n : ℕ) (ω : Ω) : Fin (n + 1) → ℝ := fun k =>
+      wnnIncr B ⟨0, hd⟩ ((k : ℝ) * (s / ((n + 1 : ℕ) : ℝ)))
+        (((k : ℕ) + 1 : ℕ) * (s / ((n + 1 : ℕ) : ℝ))) ω
+    have hZ : ∀ n, Measurable (Z n) := fun n =>
+      measurable_pi_iff.mpr fun k => measurable_wnnIncr B' ⟨0, hd⟩ _ _
+    have hZ0 : ∀ n, Measurable (Z0 n) := fun n =>
+      measurable_pi_iff.mpr fun k => measurable_wnnIncr B ⟨0, hd⟩ _ _
+    have hfin : ∀ n : ℕ,
+        ∫ ω, min (R : ℝ) (Real.exp (discV1Exp (n + 1) s x (Z n ω))) ∂P =
+          ∫ ω, min (R : ℝ) (Real.exp (discV1Exp (n + 1) s x (Z0 n ω))) ∂P := fun n => by
+      have hcont := continuous_discV1Exp (n + 1) s x
+      have hcont' : Continuous fun z : Fin (n + 1) → ℝ =>
+          min (R : ℝ) (Real.exp (discV1Exp (n + 1) s x z)) :=
+        continuous_const.min (Real.continuous_exp.comp hcont)
+      have h1 := (hasLaw_incrVec B' hd hs_pos (n + 1) n.succ_pos).integral_comp
+        hcont'.aestronglyMeasurable
+      have h2 := (hasLaw_incrVec B hd hs_pos (n + 1) n.succ_pos).integral_comp
+        hcont'.aestronglyMeasurable
+      exact h1.trans h2.symm
+    have hlim (B₀ : MultiBrownian Ω P d)
+        (Z₀ : (n : ℕ) → Ω → Fin (n + 1) → ℝ)
+        (hZ₀ : ∀ n, Measurable (Z₀ n))
+        (hpsum₀ : ∀ n ω k, k ≤ n + 1 →
+          (∑ j : Fin (n + 1), if (j : ℕ) < k then Z₀ n ω j else 0) =
+            MultiBrownian.W B₀ ((k : ℝ) * (s / ((n + 1 : ℕ) : ℝ))) ω ⟨0, hd⟩) :
+        Tendsto (fun n => ∫ ω, min (R : ℝ) (Real.exp (discV1Exp (n + 1) s x (Z₀ n ω))) ∂P)
+          atTop (𝓝 (∫ ω, min (R : ℝ) (Real.exp (counterexampleV1Exponent B₀ hd s x ω)) ∂P)) := by
+      refine tendsto_integral_of_dominated_convergence (fun _ => (R : ℝ))
+        (fun n => (measurable_min_exp_disc (n + 1) s x R (hZ₀ n)).aestronglyMeasurable)
+        (integrable_const _)
+        (fun n => ae_of_all _ fun ω => by
+          rw [Real.norm_of_nonneg (le_min (Nat.cast_nonneg R) (Real.exp_pos _).le)]
+          exact min_le_left _ _)
+        (ae_of_all _ fun ω => by
+          have hc1 : Tendsto (fun n : ℕ => ∑ j ∈ Finset.range (n + 1),
+              (x + MultiBrownian.W B₀ ((j : ℝ) * (s / ((n : ℝ) + 1))) ω ⟨0, hd⟩) *
+                (s / ((n : ℝ) + 1))) atTop
+              (𝓝 (∫ r in (0 : ℝ)..s, x + MultiBrownian.W B₀ r ω ⟨0, hd⟩)) :=
+            tendsto_lebRiemann_of_continuousOn hs_pos.le
+              (continuous_const.add (continuous_W_coord_v1 B₀ ⟨0, hd⟩ ω)).continuousOn
+          have hc4 : Tendsto (fun n : ℕ => ∑ j ∈ Finset.range (n + 1),
+              (x + MultiBrownian.W B₀ ((j : ℝ) * (s / ((n : ℝ) + 1))) ω ⟨0, hd⟩) ^ 4 *
+                (s / ((n : ℝ) + 1))) atTop
+              (𝓝 (∫ r in (0 : ℝ)..s, (x + MultiBrownian.W B₀ r ω ⟨0, hd⟩) ^ 4)) :=
+            tendsto_lebRiemann_of_continuousOn hs_pos.le
+              ((continuous_const.add (continuous_W_coord_v1 B₀ ⟨0, hd⟩ ω)).pow 4).continuousOn
+          have hlim' : Tendsto (fun n => discV1Exp (n + 1) s x (Z₀ n ω)) atTop
+              (𝓝 (counterexampleV1Exponent B₀ hd s x ω)) := by
+            have h := ((tendsto_const_nhds (x := (1 / 3 : ℝ) *
+              ((x + MultiBrownian.W B₀ s ω ⟨0, hd⟩) ^ 3 - x ^ 3))).sub hc1).sub
+              (hc4.const_mul (1 / 2 : ℝ))
+            refine h.congr fun n => ?_
+            have hNs : ((n + 1 : ℕ) : ℝ) * (s / ((n + 1 : ℕ) : ℝ)) = s := by field_simp
+            have hsum1 :
+                ∑ k : Fin (n + 1),
+                  (x + ∑ j : Fin (n + 1), if (j : ℕ) < (k : ℕ) then Z₀ n ω j else 0) *
+                    (s / ((n + 1 : ℕ) : ℝ)) =
+                ∑ k ∈ Finset.range (n + 1),
+                  (x + MultiBrownian.W B₀ ((k : ℝ) * (s / ((n : ℝ) + 1))) ω ⟨0, hd⟩) *
+                    (s / ((n : ℝ) + 1)) := by
+              rw [Fin.sum_univ_eq_sum_range (fun k =>
+                (x + ∑ j : Fin (n + 1), if (j : ℕ) < k then Z₀ n ω j else 0) *
+                  (s / ((n + 1 : ℕ) : ℝ))) (n + 1)]
+              refine Finset.sum_congr rfl fun k hk => ?_
+              rw [hpsum₀ n ω k (Finset.mem_range.mp hk).le]
+              push_cast
+              rfl
+            have hsum4 :
+                ∑ k : Fin (n + 1),
+                  (x + ∑ j : Fin (n + 1), if (j : ℕ) < (k : ℕ) then Z₀ n ω j else 0) ^ 4 *
+                    (s / ((n + 1 : ℕ) : ℝ)) =
+                ∑ k ∈ Finset.range (n + 1),
+                  (x + MultiBrownian.W B₀ ((k : ℝ) * (s / ((n : ℝ) + 1))) ω ⟨0, hd⟩) ^ 4 *
+                    (s / ((n : ℝ) + 1)) := by
+              rw [Fin.sum_univ_eq_sum_range (fun k =>
+                (x + ∑ j : Fin (n + 1), if (j : ℕ) < k then Z₀ n ω j else 0) ^ 4 *
+                  (s / ((n + 1 : ℕ) : ℝ))) (n + 1)]
+              refine Finset.sum_congr rfl fun k hk => ?_
+              rw [hpsum₀ n ω k (Finset.mem_range.mp hk).le]
+              push_cast
+              rfl
+            simp only [discV1Exp]
+            rw [hpsum₀ n ω (n + 1) le_rfl, hNs, hsum1, hsum4]
+          exact tendsto_const_nhds.min ((Real.continuous_exp.tendsto _).comp hlim'))
+    have hpsumZ : ∀ n ω k, k ≤ n + 1 →
+        (∑ j : Fin (n + 1), if (j : ℕ) < k then Z n ω j else 0) =
+          MultiBrownian.W B' ((k : ℝ) * (s / ((n + 1 : ℕ) : ℝ))) ω ⟨0, hd⟩ :=
+      fun n ω k hk => by
+        dsimp only [Z]
+        exact psum_incrVec B' hd s (n + 1) k hk ω
+    have hpsumZ0 : ∀ n ω k, k ≤ n + 1 →
+        (∑ j : Fin (n + 1), if (j : ℕ) < k then Z0 n ω j else 0) =
+          MultiBrownian.W B ((k : ℝ) * (s / ((n + 1 : ℕ) : ℝ))) ω ⟨0, hd⟩ :=
+      fun n ω k hk => by
+        dsimp only [Z0]
+        exact psum_incrVec B hd s (n + 1) k hk ω
+    exact tendsto_nhds_unique (hlim B' Z hZ hpsumZ)
+      ((hlim B Z0 hZ0 hpsumZ0).congr fun n => (hfin n).symm)
+  have hlint : ∫⁻ ω, ENNReal.ofReal (Real.exp (counterexampleV1Exponent B' hd s x ω)) ∂P =
+      ∫⁻ ω, ENNReal.ofReal (Real.exp (counterexampleV1Exponent B hd s x ω)) ∂P := by
+    have hMCT (B₀ : MultiBrownian Ω P d) :=
+      lintegral_tendsto_of_tendsto_of_monotone (μ := P)
+        (f := fun R : ℕ => fun ω => ENNReal.ofReal (min (R : ℝ)
+          (Real.exp (counterexampleV1Exponent B₀ hd s x ω))))
+        (fun R => (measurable_const.min (Real.measurable_exp.comp
+          (measurable_counterexampleV1Exponent B₀ hd hs_pos.le x))).aemeasurable.ennreal_ofReal)
+        (ae_of_all _ fun ω R₁ R₂ h12 =>
+          ENNReal.ofReal_le_ofReal (min_le_min_right _ (Nat.cast_le.mpr h12)))
+        (ae_of_all _ fun ω => ENNReal.tendsto_ofReal <| tendsto_atTop_of_eventually_const
+          (i₀ := ⌈Real.exp (counterexampleV1Exponent B₀ hd s x ω)⌉₊) fun R hR =>
+            min_eq_right ((Nat.le_ceil _).trans (Nat.cast_le.mpr hR)))
+    refine tendsto_nhds_unique (hMCT B') ((hMCT B).congr fun R => ?_)
+    have hi (B₀ : MultiBrownian Ω P d) :
+        Integrable (fun ω => min (R : ℝ) (Real.exp (counterexampleV1Exponent B₀ hd s x ω))) P :=
+      (integrable_const (R : ℝ)).mono'
+        (measurable_const.min (Real.measurable_exp.comp
+          (measurable_counterexampleV1Exponent B₀ hd hs_pos.le x))).aestronglyMeasurable
+        (ae_of_all _ fun ω => by
+          rw [Real.norm_of_nonneg (le_min (Nat.cast_nonneg R) (Real.exp_pos _).le)]
+          exact min_le_left _ _)
+    rw [← ofReal_integral_eq_lintegral_ofReal (hi B) (ae_of_all _ fun _ =>
+        le_min (Nat.cast_nonneg R) (Real.exp_pos _).le),
+      ← ofReal_integral_eq_lintegral_ofReal (hi B') (ae_of_all _ fun _ =>
+        le_min (Nat.cast_nonneg R) (Real.exp_pos _).le),
+      hcut R]
+  -- Unfold the two `counterexampleV1` definitions and compare integrals.
+  simp only [counterexampleV1]
+  by_cases h1 : Integrable (fun ω => Real.exp (counterexampleV1Exponent B' hd s x ω)) P
+  · have h2 : Integrable (fun ω => Real.exp (counterexampleV1Exponent B hd s x ω)) P := by
+      refine ⟨(Real.measurable_exp.comp
+        (measurable_counterexampleV1Exponent B hd hs_pos.le x)).aestronglyMeasurable, ?_⟩
+      rw [hasFiniteIntegral_iff_enorm]
+      simp only [Real.enorm_eq_ofReal (Real.exp_pos _).le]
+      rw [← hlint]
+      simpa [hasFiniteIntegral_iff_enorm, Real.enorm_eq_ofReal (Real.exp_pos _).le]
+        using h1.hasFiniteIntegral
+    have hL : ENNReal.ofReal (∫ ω, Real.exp (counterexampleV1Exponent B' hd s x ω) ∂P) =
+        ∫⁻ ω, ENNReal.ofReal (Real.exp (counterexampleV1Exponent B' hd s x ω)) ∂P :=
+      ofReal_integral_eq_lintegral_ofReal h1 (ae_of_all _ fun _ => (Real.exp_pos _).le)
+    have hR : ENNReal.ofReal (∫ ω, Real.exp (counterexampleV1Exponent B hd s x ω) ∂P) =
+        ∫⁻ ω, ENNReal.ofReal (Real.exp (counterexampleV1Exponent B hd s x ω)) ∂P :=
+      ofReal_integral_eq_lintegral_ofReal h2 (ae_of_all _ fun _ => (Real.exp_pos _).le)
+    calc ∫ ω, Real.exp (counterexampleV1Exponent B' hd s x ω) ∂P
+        = (ENNReal.ofReal (∫ ω, Real.exp (counterexampleV1Exponent B' hd s x ω) ∂P)).toReal :=
+          (ENNReal.toReal_ofReal (integral_nonneg fun _ => (Real.exp_pos _).le)).symm
+      _ = (∫⁻ ω, ENNReal.ofReal (Real.exp (counterexampleV1Exponent B' hd s x ω)) ∂P).toReal :=
+          congrArg ENNReal.toReal hL
+      _ = (∫⁻ ω, ENNReal.ofReal (Real.exp (counterexampleV1Exponent B hd s x ω)) ∂P).toReal :=
+          congrArg ENNReal.toReal hlint
+      _ = (ENNReal.ofReal (∫ ω, Real.exp (counterexampleV1Exponent B hd s x ω) ∂P)).toReal :=
+          congrArg ENNReal.toReal hR.symm
+      _ = ∫ ω, Real.exp (counterexampleV1Exponent B hd s x ω) ∂P :=
+          ENNReal.toReal_ofReal (integral_nonneg fun _ => (Real.exp_pos _).le)
+  · have h2 : ¬ Integrable (fun ω => Real.exp (counterexampleV1Exponent B hd s x ω)) P := by
+      intro hi2; apply h1
+      refine ⟨(Real.measurable_exp.comp
+        (measurable_counterexampleV1Exponent B' hd hs_pos.le x)).aestronglyMeasurable, ?_⟩
+      rw [hasFiniteIntegral_iff_enorm]
+      simp only [Real.enorm_eq_ofReal (Real.exp_pos _).le]
+      rw [hlint]
+      simpa [hasFiniteIntegral_iff_enorm, Real.enorm_eq_ofReal (Real.exp_pos _).le]
+        using hi2.hasFiniteIntegral
+    rw [integral_undef h1, integral_undef h2]
+
 
 end SignatureVolatility
