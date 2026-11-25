@@ -1900,4 +1900,149 @@ lemma isItoIntegral_doublingWealth (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 
     exact tendsto_itoRiemannSum_doublingK hT (bmCoord B) hN ht.1
       (bmCoord_cont_Icc B ω ht.1)
 
+
+
+
+/-- Scaling identity: `k < s * 2^m / T` iff `k * T / 2^m < s`. -/
+lemma dyadic_lt_iff {T s : ℝ} (hT : 0 < T) (k m : ℕ) :
+    (k : ℝ) < s * (2 ^ m : ℝ) / T ↔ (k : ℝ) * T / (2 ^ m : ℝ) < s := by
+  have h2 : 0 < (2 ^ m : ℝ) := by positivity
+  rw [lt_div_iff₀ hT, div_lt_iff₀ h2, mul_comm s]
+
+lemma dyadic_le_iff {T s : ℝ} (hT : 0 < T) (k m : ℕ) :
+    s * (2 ^ m : ℝ) / T ≤ (k : ℝ) ↔ s ≤ (k : ℝ) * T / (2 ^ m : ℝ) := by
+  have h2 : 0 < (2 ^ m : ℝ) := by positivity
+  rw [div_le_iff₀ hT, le_div_iff₀ h2, mul_comm s]
+
+/-- The unique dyadic slot of level `m` containing `s ∈ (0, T]`. -/
+lemma exists_dyadic_Ioc {T s : ℝ} (hT : 0 < T) (hs0 : 0 < s) (hsT : s ≤ T) (m : ℕ) :
+    ∃ k : ℕ, k + 1 ≤ 2 ^ m ∧
+      (k : ℝ) * T / (2 ^ m : ℝ) < s ∧
+        s ≤ (k + 1 : ℝ) * T / (2 ^ m : ℝ) := by
+  set x := s * (2 ^ m : ℝ) / T
+  have hxpos : 0 < x := div_pos (mul_pos hs0 (by positivity)) hT
+  have hxle : x ≤ (2 ^ m : ℝ) := by
+    have h2 : 0 ≤ (2 ^ m : ℝ) := by positivity
+    have : s * (2 ^ m : ℝ) ≤ T * (2 ^ m : ℝ) :=
+      mul_le_mul_of_nonneg_right hsT h2
+    rw [mul_comm T] at this
+    exact (div_le_iff₀ hT).mpr this
+  have hceil_pos : 1 ≤ ⌈x⌉₊ := Nat.succ_le_iff.mpr (Nat.ceil_pos.mpr hxpos)
+  have hceil_le : ⌈x⌉₊ ≤ 2 ^ m := Nat.ceil_le.mpr (by exact_mod_cast hxle)
+  refine ⟨⌈x⌉₊ - 1, ?_, ?_, ?_⟩
+  · exact (Nat.sub_add_cancel hceil_pos).symm ▸ hceil_le
+  · have hcast : ((⌈x⌉₊ - 1 : ℕ) : ℝ) = (⌈x⌉₊ : ℝ) - 1 := by
+      rw [Nat.cast_sub hceil_pos, Nat.cast_one]
+    have hlt : ((⌈x⌉₊ - 1 : ℕ) : ℝ) < x := by
+      rw [hcast]
+      have hnot : ¬ x ≤ (⌈x⌉₊ : ℝ) - 1 := by
+        intro hle
+        have : ⌈x⌉₊ ≤ ⌈x⌉₊ - 1 :=
+          Nat.ceil_le.mpr (by rwa [← hcast] at hle)
+        exact (Nat.not_le.mpr (Nat.sub_one_lt_of_le hceil_pos le_rfl)) this
+      exact not_le.mp hnot
+    exact (dyadic_lt_iff hT (⌈x⌉₊ - 1) m).mp hlt
+  · have hcancel : ⌈x⌉₊ - 1 + 1 = ⌈x⌉₊ := Nat.sub_add_cancel hceil_pos
+    have hxk : x ≤ ((⌈x⌉₊ - 1 + 1 : ℕ) : ℝ) := by
+      rw [hcancel]
+      exact Nat.le_ceil x
+    have hgoal := (dyadic_le_iff hT (⌈x⌉₊ - 1 + 1) m).mp hxk
+    simpa [Nat.cast_succ] using hgoal
+
+/-- Generating rectangles are measurable in `predSigma`. -/
+lemma measurableSet_predRect {σAlg : ℝ → MeasurableSpace Ω} {T a b : ℝ} {A : Set Ω}
+    (ha : 0 ≤ a) (hab : a ≤ b) (hbT : b ≤ T) (hA : MeasurableSet[σAlg a] A) :
+    MeasurableSet[predSigma σAlg T] (Ioc a b ×ˢ A) :=
+  MeasurableSpace.measurableSet_generateFrom ⟨a, b, A, ha, hab, hbT, hA, rfl⟩
+
+/-- Width of a dyadic slot of level `m`. -/
+lemma dyadic_width (T : ℝ) (m k : ℕ) :
+    ((k + 1 : ℕ) : ℝ) * T / (2 ^ m : ℝ) - (k : ℝ) * T / (2 ^ m : ℝ) =
+      T / (2 ^ m : ℝ) := by
+  rw [Nat.cast_succ, add_mul, one_mul, add_div, add_sub_cancel_left]
+
+/-- The left-open stochastic interval `(a, τ] ∩ (0, T]` is predictable when `τ` is a
+`[0, T]`-valued stopping time and `0 ≤ a ≤ T`. -/
+lemma measurableSet_stochInterval {σAlg : ℝ → MeasurableSpace Ω} {T a : ℝ}
+    (hT : 0 < T) (ha0 : 0 ≤ a) (haT : a ≤ T) (τ : Ω → ℝ)
+    (hτ : IsStoppingTimeOn σAlg T τ) :
+    MeasurableSet[predSigma σAlg T]
+      {p : ℝ × Ω | a < p.1 ∧ p.1 ≤ τ p.2 ∧ p.1 ≤ T} := by
+  let tPoint (m k : ℕ) : ℝ := (k : ℝ) * T / (2 ^ m : ℝ)
+  let box (m k : ℕ) : Set (ℝ × Ω) :=
+    Ioc (tPoint m k) (tPoint m (k + 1)) ×ˢ {ω | tPoint m k < τ ω}
+  have hbox : ∀ m k, k + 1 ≤ 2 ^ m → MeasurableSet[predSigma σAlg T] (box m k) := by
+    intro m k hk
+    have htk0 : 0 ≤ tPoint m k :=
+      div_nonneg (mul_nonneg (Nat.cast_nonneg _) hT.le) (by positivity)
+    have htk_le : tPoint m k ≤ tPoint m (k + 1) := by
+      have : (k : ℝ) ≤ ((k + 1 : ℕ) : ℝ) := by
+        rw [Nat.cast_succ]; linarith
+      exact div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_right this hT.le)
+        (by positivity)
+    have htkT : tPoint m (k + 1) ≤ T := by
+      have hk' : ((k + 1 : ℕ) : ℝ) ≤ (2 ^ m : ℝ) := by exact_mod_cast hk
+      have : ((k + 1 : ℕ) : ℝ) * T ≤ T * (2 ^ m : ℝ) := by
+        rw [mul_comm T]
+        exact mul_le_mul_of_nonneg_right hk' hT.le
+      exact (div_le_iff₀ (by positivity : 0 < (2 ^ m : ℝ))).mpr this
+    have htIcc : tPoint m k ∈ Icc 0 T := ⟨htk0, htk_le.trans htkT⟩
+    refine measurableSet_predRect htk0 htk_le htkT ?_
+    have : {ω | tPoint m k < τ ω} = {ω | τ ω ≤ tPoint m k}ᶜ := by
+      ext ω; simp [not_le]
+    rw [this]
+    exact (hτ.2 (tPoint m k) htIcc).compl
+  have hrect : MeasurableSet[predSigma σAlg T] (Ioc a T ×ˢ (Set.univ : Set Ω)) :=
+    measurableSet_predRect ha0 haT le_rfl MeasurableSet.univ
+  let U (m : ℕ) : Set (ℝ × Ω) := ⋃ k ∈ Finset.range (2 ^ m), box m k
+  have hU : ∀ m, MeasurableSet[predSigma σAlg T] (U m) := fun m =>
+    Finset.measurableSet_biUnion _ fun k hk =>
+      hbox m k (Nat.succ_le_of_lt (Finset.mem_range.mp hk))
+  have hI : MeasurableSet[predSigma σAlg T] (⋂ m, U m) :=
+    MeasurableSet.iInter hU
+  have hRmeas : MeasurableSet[predSigma σAlg T]
+      ((Ioc a T ×ˢ (Set.univ : Set Ω)) ∩ ⋂ m, U m) :=
+    hrect.inter hI
+  have hSR : {p : ℝ × Ω | a < p.1 ∧ p.1 ≤ τ p.2 ∧ p.1 ≤ T} =
+      (Ioc a T ×ˢ (Set.univ : Set Ω)) ∩ ⋂ m, U m := by
+    ext ⟨s, ω⟩
+    constructor
+    · intro h
+      have hs0 : 0 < s := lt_of_le_of_lt ha0 h.1
+      refine ⟨⟨⟨h.1, h.2.2⟩, trivial⟩, ?_⟩
+      rw [mem_iInter]
+      intro m
+      obtain ⟨k, hk, hklt, hkle⟩ := exists_dyadic_Ioc hT hs0 h.2.2 m
+      refine mem_biUnion (Finset.mem_range.mpr (Nat.lt_of_succ_le hk)) ?_
+      have hkle' : s ≤ tPoint m (k + 1) := by
+        dsimp only [tPoint]
+        simpa [Nat.cast_succ] using hkle
+      exact ⟨⟨hklt, hkle'⟩, lt_of_lt_of_le hklt h.2.1⟩
+    · intro ⟨⟨⟨has, hsT⟩, _⟩, hcap⟩
+      refine ⟨has, ?_, hsT⟩
+      have hε : ∀ m : ℕ, s - T / (2 ^ m : ℝ) < τ ω := by
+        intro m
+        have hm : (s, ω) ∈ U m := (mem_iInter.mp hcap) m
+        rw [mem_iUnion₂] at hm
+        obtain ⟨k, hk, hkmem⟩ := hm
+        have hklt : k + 1 ≤ 2 ^ m :=
+          Nat.succ_le_of_lt (Finset.mem_range.mp hk)
+        have hmem : s ∈ Ioc (tPoint m k) (tPoint m (k + 1)) ∧ tPoint m k < τ ω :=
+          hkmem
+        have hwidth : s - T / (2 ^ m : ℝ) ≤ tPoint m k := by
+          have hsle : s ≤ tPoint m (k + 1) := hmem.1.2
+          have hdiff : tPoint m (k + 1) - tPoint m k = T / (2 ^ m : ℝ) := by
+            dsimp only [tPoint]
+            simpa using dyadic_width T m k
+          linarith
+        exact lt_of_le_of_lt hwidth hmem.2
+      have hlim0 : Tendsto (fun m : ℕ => s - T / (2 ^ m : ℝ)) atTop (𝓝 (s - 0)) :=
+        tendsto_const_nhds.sub
+          ((tendsto_const_nhds (x := T)).div_atTop
+            (tendsto_pow_atTop_atTop_of_one_lt (by norm_num : (1 : ℝ) < 2)))
+      have hlim : Tendsto (fun m : ℕ => s - T / (2 ^ m : ℝ)) atTop (𝓝 s) := by
+        simpa using hlim0
+      exact le_of_tendsto hlim (Eventually.of_forall fun m => (hε m).le)
+  exact hSR ▸ hRmeas
+
 end SignatureVolatility
