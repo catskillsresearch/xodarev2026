@@ -1710,4 +1710,194 @@ lemma tendsto_itoRiemannSum_doublingK {T : ℝ} (hT : 0 < T) (B : ℝ → Ω →
   · simp only [hE, ↓reduceIte]
     exact tendsto_const_nhds
 
+
+/-- Pathwise continuous extension of `bmCoord` to all of `ℝ`, constant on `(-∞, 0]`. -/
+lemma continuous_bmCoord_max (B : MultiBrownian Ω P 1) (ω : Ω) :
+    Continuous (fun t : ℝ => bmCoord B (max 0 t) ω) :=
+  (bmCoord_cont B ω).comp_continuous (continuous_const.max continuous_id)
+    fun t => le_max_left 0 t
+
+/-- Joint measurability of `(t, ω) ↦ B_{max(0,t)}(ω)`. -/
+lemma measurable_uncurry_bmCoord_max (B : MultiBrownian Ω P 1) :
+    Measurable (Function.uncurry fun t ω => bmCoord B (max 0 t) ω) :=
+  measurable_uncurry_of_continuous_of_measurable
+    (fun ω => continuous_bmCoord_max B ω) (fun t => bmCoord_meas B (max 0 t))
+
+/-- Evaluation of a non-negative measurable time along a continuous adapted path. -/
+lemma measurable_bmCoord_comp (B : MultiBrownian Ω P 1) {τ : Ω → ℝ}
+    (hτ : Measurable τ) (hnn : ∀ ω, 0 ≤ τ ω) :
+    Measurable (fun ω => bmCoord B (τ ω) ω) := by
+  have h : Measurable (fun ω => bmCoord B (max 0 (τ ω)) ω) :=
+    (measurable_uncurry_bmCoord_max B).comp (hτ.prodMk measurable_id)
+  have heq : (fun ω => bmCoord B (τ ω) ω) =
+      (fun ω => bmCoord B (max 0 (τ ω)) ω) :=
+    funext fun ω => by rw [max_eq_right (hnn ω)]
+  rwa [heq]
+
+
+/-- The hitting time `τ_n` is measurable with respect to the ambient σ-algebra. -/
+lemma measurable_tauHit (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) (n : ℕ) :
+    Measurable (tauHit (bmCoord B) T n) := by
+  refine measurable_of_Iic fun t => ?_
+  change MeasurableSet {ω | tauHit (bmCoord B) T n ω ≤ t}
+  by_cases ht0 : t < 0
+  · have hempty : {ω | tauHit (bmCoord B) T n ω ≤ t} = ∅ :=
+      eq_empty_iff_forall_notMem.mpr fun ω hω => by
+        have hnn : 0 ≤ tauHit (bmCoord B) T n ω :=
+          (tGrid_mem hT n).1.trans (tauHit_mem_Icc hT (bmCoord B) n ω).1
+        exact (not_lt.mpr hnn) (hω.trans_lt ht0)
+    rw [hempty]
+    exact MeasurableSet.empty
+  · by_cases htT : T ≤ t
+    · have huniv : {ω | tauHit (bmCoord B) T n ω ≤ t} = Set.univ :=
+        Set.eq_univ_iff_forall.mpr fun ω =>
+          (tauHit_mem_Icc hT (bmCoord B) n ω).2.trans
+            ((tGrid_mem hT (n + 1)).2.trans htT)
+      rw [huniv]
+      exact MeasurableSet.univ
+    · have ht : t ∈ Icc 0 T := ⟨not_lt.mp ht0, le_of_not_ge htT⟩
+      exact (pathFiltration B).le_ambient t _
+        ((isStoppingTime_tauHit B hT n).2 t ht)
+
+/-- Recursive grid wealth is measurable. -/
+lemma measurable_doublingX (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) :
+    ∀ n, Measurable (doublingX (bmCoord B) T n)
+  | 0 => by
+    simp only [doublingX]
+    exact measurable_const
+  | n + 1 => by
+    have hX := measurable_doublingX B hT n
+    have hC :
+        Measurable fun ω =>
+          (1 - doublingX (bmCoord B) T n ω) / Real.sqrt (dtGrid T n) :=
+      (measurable_const.sub hX).div_const _
+    have hE : MeasurableSet (nonHitPrefix (bmCoord B) T n) :=
+      (pathFiltration B).le_ambient (tGrid T n) _
+        ((nonHitPrefix_props B hT).1 n)
+    have hBτ : Measurable (fun ω => bmCoord B (tauHit (bmCoord B) T n ω) ω) :=
+      measurable_bmCoord_comp B (measurable_tauHit B hT n) fun ω =>
+        (tGrid_mem hT n).1.trans (tauHit_mem_Icc hT (bmCoord B) n ω).1
+    have hBt : Measurable (bmCoord B (tGrid T n)) := bmCoord_meas B (tGrid T n)
+    simp only [doublingX]
+    exact hX.add (Measurable.ite hE (hC.mul (hBτ.sub hBt)) measurable_const)
+
+lemma measurable_doublingC (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) (n : ℕ) :
+    Measurable (doublingC (bmCoord B) T n) :=
+  (measurable_const.sub (measurable_doublingX B hT n)).div_const _
+
+/-- Off `(0, T)` every doubling block is empty, so `K_s = 0`. -/
+lemma doublingK_eq_zero_of_not_mem_Ioo {T s : ℝ} (hT : 0 < T) (B : ℝ → Ω → ℝ)
+    (hs : s ∉ Ioo 0 T) (ω : Ω) : doublingK B T s ω = 0 := by
+  have hterm :
+      (fun n : ℕ =>
+        if ω ∈ nonHitPrefix B T n ∧ tGrid T n < s ∧ s ≤ tauHit B T n ω
+          then doublingC B T n ω else 0) = fun _ => 0 := by
+    funext n
+    by_cases hpos : 0 < s
+    · have hsT : ¬ s < T := fun hst => hs ⟨hpos, hst⟩
+      have hleτ : ¬ s ≤ tauHit B T n ω := by
+        have hτlt : tauHit B T n ω < T :=
+          lt_of_le_of_lt (tauHit_mem_Icc hT B n ω).2 (tGrid_lt_T hT (n + 1))
+        exact not_le.mpr (lt_of_lt_of_le hτlt (not_lt.mp hsT))
+      simp [hleτ]
+    · have hlt : ¬ tGrid T n < s :=
+        not_lt.mpr ((not_lt.mp hpos).trans (tGrid_mem hT n).1)
+      simp [hlt]
+  unfold doublingK
+  rw [hterm, tsum_zero]
+
+/-- On `(0, T)` only the finitely many blocks with `t_n < s` can be live. -/
+lemma doublingK_eq_sum_nGrid {T s : ℝ} (hT : 0 < T) (hs0 : 0 < s) (hsT : s < T)
+    (B : ℝ → Ω → ℝ) (ω : Ω) :
+    doublingK B T s ω =
+      ∑ n ∈ Finset.range (nGrid T s + 1),
+        (if ω ∈ nonHitPrefix B T n ∧ tGrid T n < s ∧ s ≤ tauHit B T n ω
+          then doublingC B T n ω else 0) := by
+  have hbound : ∀ n, nGrid T s + 1 ≤ n → ¬ tGrid T n < s := by
+    intro n hn
+    have hmono : tGrid T (nGrid T s + 1) ≤ tGrid T n := tGrid_mono hT hn
+    exact not_lt.mpr ((nGrid_spec hT hs0 hsT).2.trans hmono)
+  exact tsum_eq_sum fun n hn => by
+    have hge : nGrid T s + 1 ≤ n := le_of_not_gt (Finset.mem_range.not.mp hn)
+    simp [hbound n hge]
+
+/-- Each time-slice of the doubling integrand is measurable. -/
+lemma measurable_doublingK (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) (s : ℝ) :
+    Measurable (doublingK (bmCoord B) T s) := by
+  by_cases hs : s ∈ Ioo 0 T
+  · have hs0 : 0 < s := hs.1
+    have hsT : s < T := hs.2
+    have hterm : ∀ n, Measurable fun ω =>
+        if ω ∈ nonHitPrefix (bmCoord B) T n ∧ tGrid T n < s ∧
+            s ≤ tauHit (bmCoord B) T n ω
+          then doublingC (bmCoord B) T n ω else 0 := by
+      intro n
+      have hE : MeasurableSet (nonHitPrefix (bmCoord B) T n) :=
+        (pathFiltration B).le_ambient (tGrid T n) _
+          ((nonHitPrefix_props B hT).1 n)
+      have hτ : MeasurableSet {ω | s ≤ tauHit (bmCoord B) T n ω} :=
+        (measurable_tauHit B hT n) measurableSet_Ici
+      have hp : MeasurableSet
+          {ω | ω ∈ nonHitPrefix (bmCoord B) T n ∧ tGrid T n < s ∧
+            s ≤ tauHit (bmCoord B) T n ω} := by
+        by_cases hlt : tGrid T n < s
+        · have heq :
+              {ω | ω ∈ nonHitPrefix (bmCoord B) T n ∧ tGrid T n < s ∧
+                s ≤ tauHit (bmCoord B) T n ω} =
+              nonHitPrefix (bmCoord B) T n ∩
+                {ω | s ≤ tauHit (bmCoord B) T n ω} := by
+            ext ω; simp [hlt]
+          rw [heq]
+          exact hE.inter hτ
+        · have heq :
+              {ω | ω ∈ nonHitPrefix (bmCoord B) T n ∧ tGrid T n < s ∧
+                s ≤ tauHit (bmCoord B) T n ω} = ∅ := by
+            ext ω; simp [hlt]
+          rw [heq]
+          exact MeasurableSet.empty
+      exact Measurable.ite hp (measurable_doublingC B hT n) measurable_const
+    have heq : doublingK (bmCoord B) T s =
+        fun ω => ∑ n ∈ Finset.range (nGrid T s + 1),
+          (if ω ∈ nonHitPrefix (bmCoord B) T n ∧ tGrid T n < s ∧
+              s ≤ tauHit (bmCoord B) T n ω
+            then doublingC (bmCoord B) T n ω else 0) :=
+      funext fun ω => doublingK_eq_sum_nGrid hT hs0 hsT (bmCoord B) ω
+    rw [heq]
+    exact Finset.measurable_fun_sum _ fun n _ => hterm n
+  · have heq : doublingK (bmCoord B) T s = fun _ => 0 :=
+      funext fun ω => doublingK_eq_zero_of_not_mem_Ioo hT (bmCoord B) hs ω
+    rw [heq]
+    exact measurable_const
+
+lemma measurable_itoRiemannSum (K : ℝ → Ω → ℝ) (B : ℝ → Ω → ℝ) (t : ℝ) (n : ℕ)
+    (hK : ∀ k : Fin (n + 1), Measurable (K (k * t / (n + 1 : ℝ))))
+    (hB : ∀ s, Measurable (B s)) :
+    Measurable (itoRiemannSum K B t n) := by
+  unfold itoRiemannSum
+  exact Finset.measurable_fun_sum _ fun k _ =>
+    (hK k).mul ((hB _).sub (hB _))
+
+/-- The doubling wealth is the Itô integral of `doublingK` against `B` (no glue
+parameters): `V_0 = 0`, paths are a.s. continuous, and the left-point Riemann
+sums converge to `V_t` in probability on `[0, T]`. -/
+lemma isItoIntegral_doublingWealth (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) :
+    IsItoIntegral P (bmCoord B) (doublingK (bmCoord B) T)
+      (doublingWealth (bmCoord B) T) T := by
+  refine ⟨fun ω => doublingWealth_zero hT (bmCoord B) ω, ?_, ?_⟩
+  · exact doublingWealth_continuousOn_ae B hT
+  · intro t ht
+    have hmeas : ∀ n, Measurable
+        (itoRiemannSum (doublingK (bmCoord B) T) (bmCoord B) t n) :=
+      fun n => measurable_itoRiemannSum _ _ t n
+        (fun _ => measurable_doublingK B hT _) (fun _ => bmCoord_meas B _)
+    refine tendstoInMeasure_of_tendsto_ae
+      (fun n => (hmeas n).aestronglyMeasurable) ?_
+    have hhit : ∀ᵐ ω ∂P, ∃ N : ℕ, ω ∉ nonHitPrefix (bmCoord B) T N := by
+      have h0 := (nonHitPrefix_props B hT).2.2
+      refine (measure_eq_zero_iff_ae_notMem.mp h0).mono fun ω hω => ?_
+      simpa [mem_iInter] using hω
+    filter_upwards [hhit] with ω ⟨N, hN⟩
+    exact tendsto_itoRiemannSum_doublingK hT (bmCoord B) hN ht.1
+      (bmCoord_cont_Icc B ω ht.1)
+
 end SignatureVolatility
