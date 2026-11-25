@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-25T16:37:09Z",
+  "updated": "2026-11-25T16:40:03Z",
   "sorryCount": 0,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done (proved, counterexample or refuted; no sorry). Green = open. Grey = blocked. Counterexample / refutation labels are shown as text on the node.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: NflvrDoubling.writeup."
+    "Open tips: (none)."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -3239,14 +3239,14 @@
       "label": "NFLVR writeup (Carbon/Gemini)",
       "section": 10,
       "file": "Writeup/PalomarRegistration.md",
-      "status": "open",
+      "status": "done",
       "kind": null,
       "blocker": null,
-      "detail": "Writeup pass using Carbon's notes: narratives, PROVENANCE.md Comparator section, COMPARATOR.md, PalomarRegistration.md, and project.description, crediting Carbon (Gemini).",
+      "detail": "Writeup pass using Carbon's notes: narratives/nflvr_literal.md, Carbon appendix excerpt, PROVENANCE.md Comparator section, COMPARATOR.md, PalomarRegistration.md, and project.description, crediting Carbon (Gemini). Board, abstract and yaml scope updated to 11 compared theorems.",
       "hasSorry": false,
       "paperKitGoal": false,
       "synthetic": true,
-      "commits": null
+      "commits": "ef49eff"
     }
   ],
   "edges": [

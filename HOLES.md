@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-25T16:37:09Z
-**`sorry` occurrences:** 0 · 1 open · 0 blocked · 229 done · 0 file(s) with `sorry`.
+**Updated:** 2026-11-25T16:40:03Z
+**`sorry` occurrences:** 0 · 0 open · 0 blocked · 230 done · 0 file(s) with `sorry`.
 **Paper claims refuted:** 6 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
 
 ## The affine / Riccati `<-` direction is refuted
@@ -52,9 +52,7 @@ _None._
 
 ## Open now (Layer 0)
 
-| Id | File |
-|---|---|
-| `NflvrDoubling.writeup` | `Writeup/PalomarRegistration.md` |
+_None — every module is blocked or verified._
 
 ## NflvrDoubling subtasks
 
@@ -79,7 +77,7 @@ Internal structure of the doubling counterexample. These are not separate Lean m
 | done | `NflvrDoubling.terminalBdd` | `b8ea73f` | The same admissible doubling wealth ends at V_T=1≥0 a.s., so the terminal-only bounded-below cone also contains a nontrivial free lunch. Done in b8ea73f. |
 | done | `NflvrDoubling.unwrappedRefs` | `7377f12` | Unwrapped compared theorems use sigPrice of blackScholesModel, which agrees with the closed-form bsPrice on [0,T]. Done in 7377f12. |
 | done | `NflvrDoubling.challengeRefutations` | `7377f12` | Challenge copies of the NFLVR defs and two sorry compared theorems, still 1000 lines; comparator.json and yaml main_results list 11 unwrapped theorems; strict compare matches 44831 constants. Done in 7377f12. |
-| open | `NflvrDoubling.writeup` | `—` | Writeup pass using Carbon's notes: narratives, PROVENANCE.md Comparator section, COMPARATOR.md, PalomarRegistration.md, and project.description, crediting Carbon (Gemini). |
+| done | `NflvrDoubling.writeup` | `ef49eff` | Writeup pass using Carbon's notes: narratives/nflvr_literal.md, Carbon appendix excerpt, PROVENANCE.md Comparator section, COMPARATOR.md, PalomarRegistration.md, and project.description, crediting Carbon (Gemini). Board, abstract and yaml scope updated to 11 compared theorems. |
 
 ## By group
 
@@ -325,7 +323,7 @@ Internal structure of the doubling counterexample. These are not separate Lean m
 |---|---|---|
 | done | `SignatureVolatilityModel.Sigma` | `SignatureVolatility/SignatureVolatilityModel/Sigma.lean` |
 
-### NflvrDoubling subtasks — 1 hole(s)
+### NflvrDoubling subtasks — 0 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -346,7 +344,7 @@ Internal structure of the doubling counterexample. These are not separate Lean m
 | done | `NflvrDoubling.terminalBdd` | `SignatureVolatility/NflvrDoubling.lean` |
 | done | `NflvrDoubling.unwrappedRefs` | `SignatureVolatility/Unwrapped.lean` |
 | done | `NflvrDoubling.wealthProcess` | `SignatureVolatility/NflvrDoubling.lean` |
-| open | `NflvrDoubling.writeup` | `Writeup/PalomarRegistration.md` |
+| done | `NflvrDoubling.writeup` | `Writeup/PalomarRegistration.md` |
 
 ## Dependency sketch
 

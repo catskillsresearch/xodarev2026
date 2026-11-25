@@ -341,12 +341,13 @@ SYNTHETIC_NODES: list[dict] = [
     {
         "id": "NflvrDoubling.writeup",
         "label": "NFLVR writeup (Carbon/Gemini)",
-        "status": "open",
-        "detail": "Writeup pass using Carbon's notes: narratives, PROVENANCE.md Comparator "
-                  "section, COMPARATOR.md, PalomarRegistration.md, and project.description, "
-                  "crediting Carbon (Gemini).",
+        "status": "done",
+        "detail": "Writeup pass using Carbon's notes: narratives/nflvr_literal.md, Carbon "
+                  "appendix excerpt, PROVENANCE.md Comparator section, COMPARATOR.md, "
+                  "PalomarRegistration.md, and project.description, crediting Carbon "
+                  "(Gemini). Board, abstract and yaml scope updated to 11 compared theorems.",
         "file": "Writeup/PalomarRegistration.md",
-        "commits": "",
+        "commits": "ef49eff",
     },
 ]
 
