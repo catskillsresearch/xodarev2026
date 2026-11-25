@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-25T02:11:02Z
-**`sorry` occurrences:** 5 · 3 open · 6 blocked · 199 done · 5 file(s) with `sorry`.
+**Updated:** 2026-11-25T02:36:13Z
+**`sorry` occurrences:** 4 · 3 open · 5 blocked · 200 done · 4 file(s) with `sorry`.
 **Paper claims refuted:** 5 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
 
 ## Open analytic leaves of the affine / Riccati counterexample
@@ -51,9 +51,8 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 |---|---|---|
 | open | `SignatureRiccatiKit.CondExpMulIndepDisintegrate` | `SignatureVolatility/SignatureRiccatiKit/CondExpMulIndepDisintegrate.lean` |
 | open | `SignatureRiccatiKit.CondSigPolyIdentification` | `SignatureVolatility/SignatureRiccatiKit/CondSigPolyIdentification.lean` |
-| blocked | `SignatureRiccatiKit.CounterexampleV1Decay` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1Decay.lean` |
+| open | `SignatureRiccatiKit.CounterexampleV1Decay` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1Decay.lean` |
 | blocked | `SignatureRiccatiKit.EntireTransfer` | `SignatureVolatility/SignatureRiccatiKit/EntireTransfer.lean` |
-| open | `SignatureRiccatiKit.IntegralExpBarrier` | `SignatureVolatility/SignatureRiccatiKit/IntegralExpBarrier.lean` |
 
 ## Open now (Layer 0)
 
@@ -61,11 +60,11 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 |---|---|
 | `SignatureRiccatiKit.CondExpMulIndepDisintegrate` | `SignatureVolatility/SignatureRiccatiKit/CondExpMulIndepDisintegrate.lean` |
 | `SignatureRiccatiKit.CondSigPolyIdentification` | `SignatureVolatility/SignatureRiccatiKit/CondSigPolyIdentification.lean` |
-| `SignatureRiccatiKit.IntegralExpBarrier` | `SignatureVolatility/SignatureRiccatiKit/IntegralExpBarrier.lean` |
+| `SignatureRiccatiKit.CounterexampleV1Decay` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1Decay.lean` |
 
 ## By group
 
-### Top-level modules — 9 hole(s)
+### Top-level modules — 8 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -197,7 +196,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `SignatureRiccatiKit.CounterexampleTensor` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleTensor.lean` |
 | done | `SignatureRiccatiKit.CounterexampleV1` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1.lean` |
 | blocked | `SignatureRiccatiKit.CounterexampleV1CondExp` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1CondExp.lean` |
-| blocked | `SignatureRiccatiKit.CounterexampleV1Decay` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1Decay.lean` |
+| open | `SignatureRiccatiKit.CounterexampleV1Decay` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1Decay.lean` |
 | done | `SignatureRiccatiKit.CounterexampleV1LogBound` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1LogBound.lean` |
 | done | `SignatureRiccatiKit.CounterexampleV1LogNonpos` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1LogNonpos.lean` |
 | done | `SignatureRiccatiKit.CounterexampleV1PosLe` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1PosLe.lean` |
@@ -205,7 +204,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | blocked | `SignatureRiccatiKit.EntireTransfer` | `SignatureVolatility/SignatureRiccatiKit/EntireTransfer.lean` |
 | done | `SignatureRiccatiKit.FawcettHermite` | `SignatureVolatility/SignatureRiccatiKit/FawcettHermite.lean` |
 | done | `SignatureRiccatiKit.FourierUniquenessGaussian` | `SignatureVolatility/SignatureRiccatiKit/FourierUniquenessGaussian.lean` |
-| open | `SignatureRiccatiKit.IntegralExpBarrier` | `SignatureVolatility/SignatureRiccatiKit/IntegralExpBarrier.lean` |
+| done | `SignatureRiccatiKit.IntegralExpBarrier` | `SignatureVolatility/SignatureRiccatiKit/IntegralExpBarrier.lean` |
 | done | `SignatureRiccatiKit.IteratedDerivGaussian` | `SignatureVolatility/SignatureRiccatiKit/IteratedDerivGaussian.lean` |
 | done | `SignatureRiccatiKit.ItoWordTiltClosedForm` | `SignatureVolatility/SignatureRiccatiKit/ItoWordTiltClosedForm.lean` |
 | done | `SignatureRiccatiKit.LintegralExpShifted` | `SignatureVolatility/SignatureRiccatiKit/LintegralExpShifted.lean` |

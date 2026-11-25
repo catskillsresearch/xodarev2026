@@ -179,6 +179,7 @@ ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.CrossVariation -hard-> ProlongedBrownianSetup.PaperSigDynamics
 ItoCalculusKit.CrossVariation -hard-> SignatureRiccatiKit.CounterexampleV1LogBound
 ItoCalculusKit.CrossVariation -hard-> SignatureRiccatiKit.CounterexampleV1LogNonpos
+ItoCalculusKit.CrossVariation -hard-> SignatureRiccatiKit.IntegralExpBarrier
 ItoCalculusKit.CrossVariation -hard-> SignatureRiccatiKit.ItoWordTiltClosedForm
 ItoCalculusKit.DoleansEnvelope -hard-> ItoCalculusKit.NovikovDoob
 ItoCalculusKit.DoleansEnvelope -hard-> ItoCalculusKit.StoppedRaw
@@ -269,6 +270,7 @@ ItoCalculusKit.PathwiseExpIto -hard-> SignatureRiccatiKit.AffineRiccatiDualityMp
 ItoCalculusKit.PathwiseExpIto -hard-> SignatureRiccatiKit.BrownianScalingShiftedExponent
 ItoCalculusKit.PathwiseExpIto -hard-> SignatureRiccatiKit.CounterexampleV1LogNonpos
 ItoCalculusKit.PathwiseExpIto -hard-> SignatureRiccatiKit.CounterexampleV1PosLe
+ItoCalculusKit.PathwiseExpIto -hard-> SignatureRiccatiKit.IntegralExpBarrier
 ItoCalculusKit.PathwiseExpIto -hard-> SignatureRiccatiKit.LintegralExpShifted
 ItoCalculusKit.QVTransform -hard-> ItoCalculusKit.GridDoob
 ItoCalculusKit.QuadIncrement -hard-> ItoCalculusKit.DoleansInputs

@@ -184,6 +184,7 @@ VERIFIED: set[str] = {
     "SignatureRiccatiKit.ItoWordTiltClosedForm",
     "SignatureRiccatiKit.CameronMartinC2Shift",
     "SignatureRiccatiKit.CounterexampleV1LogNonpos",
+    "SignatureRiccatiKit.IntegralExpBarrier",
     "SignatureRiccatiKit.BarrierU",
     "SignatureRiccatiKit.CounterexampleTensor",
     "SignatureRiccatiKit.CounterexampleV1",
