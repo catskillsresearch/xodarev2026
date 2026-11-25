@@ -45,6 +45,9 @@ public import SignatureVolatility.MemTw
 public import SignatureVolatility.MemTwDual
 public import SignatureVolatility.MemTwDualOfMemL2w
 public import SignatureVolatility.NflvrOfMartingaleMeasure
+public import SignatureVolatility.NflvrDefs
+public import SignatureVolatility.NflvrCone
+public import SignatureVolatility.NflvrDoubling
 public import SignatureVolatility.Norm2w
 public import SignatureVolatility.Norm2wInv
 public import SignatureVolatility.NormW
