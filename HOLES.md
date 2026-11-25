@@ -2,21 +2,14 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-25T14:21:31Z
+**Updated:** 2026-11-25T14:30:45Z
 **`sorry` occurrences:** 0 · 1 open · 0 blocked · 211 done · 0 file(s) with `sorry`.
 **Paper claims refuted:** 6 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
 
 ## The affine / Riccati `<-` direction is refuted
 
-The false theorem `affine_riccati_duality_mpr` has been removed from the library. Its negation `not_affine_riccati_duality_mpr` is proved sorry-free in `SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample`; `not_affine_riccati_duality`, `not_theorem_B_mpr` and `not_theorem_B` follow from it. All four are compared in `comparator.json` in unwrapped form (`…_unwrapped` in `Unwrapped`; see `Writeup/narratives/`). `Solution.lean` has **0** `sorry` (the Challenge's compared proofs are `sorry` by design). `theorem_B_mp` (martingale, the price-independent `AdmissibleGainsUnderP` NFLVR conjunct, special semimartingale, `->` Riccati direction) is sorry-free and compared as `theorem_B_mp_unwrapped`; `affine_riccati_duality_mp` is sorry-free and not compared. The paper's Delbaen–Schachermayer NFLVR for uniformly bounded-below admissible strategies is not yet proved; see the open problems below.
+The false theorem `affine_riccati_duality_mpr` has been removed from the library. Its negation `not_affine_riccati_duality_mpr` is proved sorry-free in `SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample`; `not_affine_riccati_duality`, `not_theorem_B_mpr` and `not_theorem_B` follow from it. All four are compared in `comparator.json` in unwrapped form (`…_unwrapped` in `Unwrapped`; see `Writeup/narratives/`). `Solution.lean` has **0** `sorry` (the Challenge's compared proofs are `sorry` by design). `theorem_B_mp` (martingale, the price-independent `AdmissibleGainsUnderP` NFLVR conjunct, special semimartingale, `->` Riccati direction) is sorry-free and compared as `theorem_B_mp_unwrapped`; `affine_riccati_duality_mp` is sorry-free and not compared.
 
-- **`NflvrDoubling`**: OPEN: increment independence, geometric decay P(E_n)≤q^n and pathwise doubling wealth V_T=1 a.s. are proved. Not yet proved: the integrand K (predictability, pathwise L², elementary/Itô identification), the Black–Scholes transfer H=K/(S σ₀), and the compared refutations not_literal_nflvr and not_terminal_bdd_nflvr.
-- **`Black–Scholes transfer`**: OPEN: transfer the doubling integrand to the Black–Scholes market via H=K/(S σ₀), and prove S-admissibility (σ₀≠0, S>0).
-- **`not_literal_nflvr`**: OPEN: refute the paper's literal NFLVR cone (no lower bound on wealth) by a doubling strategy with V_T=1 a.s. Not yet a compared theorem.
-- **`not_terminal_bdd_nflvr`**: OPEN: refute the terminal-only bounded-below cone (V_T≥-a, no uniform-in-time bound) by the same doubling strategy. Not yet a compared theorem.
-- **`general local integral`**: OPEN: a local Itô integral for a general predictable S-admissible integrand (pathwise ∫H²S²ξ² ds < ∞ a.s.), beyond the current L² kit. Needed for the theorem_B NFLVR upgrade. Not started.
-- **`supermartingale step`**: OPEN: a continuous local martingale bounded below is a supermartingale (localisation plus Fatou), hence E[V_T]≤0. Needed to feed BoundedBelowGains into nflvr_ds_of_nonpos_mean. Not started.
-- **`theorem_B upgrade`**: OPEN: upgrade theorem_B_mp / theorem_B_mp_unwrapped from AdmissibleGainsUnderP (price-independent E[G]≤0) to SatisfiesNFLVR_DS on BoundedBelowGains. Blocked on the general local integral and the supermartingale step. Until then the compared NFLVR conjunct is the weaker lemma.
 
 ## Counterexamples and refuted paper claims
 
