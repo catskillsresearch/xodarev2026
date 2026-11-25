@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-25T16:01:34Z
-**`sorry` occurrences:** 0 · 1 open · 0 blocked · 211 done · 0 file(s) with `sorry`.
+**Updated:** 2026-11-25T16:09:20Z
+**`sorry` occurrences:** 0 · 2 open · 2 blocked · 222 done · 0 file(s) with `sorry`.
 **Paper claims refuted:** 6 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
 
 ## The affine / Riccati `<-` direction is refuted
@@ -54,11 +54,33 @@ _None._
 
 | Id | File |
 |---|---|
-| `NflvrDoubling` | `SignatureVolatility/NflvrDoubling.lean` |
+| `NflvrDoubling.bsTransfer` | `SignatureVolatility/NflvrDoubling.lean` |
+| `NflvrDoubling.terminalBdd` | `SignatureVolatility/NflvrDoubling.lean` |
+
+## NflvrDoubling subtasks
+
+Internal structure of the doubling counterexample. These are not separate Lean modules. Finished pieces are ordinary done nodes with the landing commit; remaining work is ordinary open or blocked follow-on nodes.
+
+| Status | Id | Commit(s) | What |
+|---|---|---|---|
+| done | `NflvrDoubling.tauHit` | `047b221, 99d7748` | Geometric grid t_n=T(1-2^{-n}) and hitting-time stopping lemma isStoppingTime_tauHit. Grid foundations in 99d7748; stopping lemma in 047b221. |
+| done | `NflvrDoubling.incrDecay` | `b74bd01` | Independence of the standardized increments Z_n and geometric decay P(E_n)≤q^n, plus the early V_T=1 a.s. identity. Done in b74bd01. |
+| done | `NflvrDoubling.l2Bound` | `b63d981, bf9c194` | L² bound on the doubling weights, E[∏_{j<m}(1-Z_j)²]=2^m, and the integrand / localizing-time packaging in bf9c194. Done in b63d981. |
+| done | `NflvrDoubling.wealthProcess` | `4c102ea` | Explicit wealth process: starts at 0, ends at 1 almost surely, and almost every path is continuous on [0,T]. Done in 4c102ea. |
+| done | `NflvrDoubling.riemannSums` | `5a32c82, b7cfba5` | Left-point Riemann-sum tools for the doubling integrand (5a32c82) and pathwise convergence of indicator partition sums to the matching Brownian increment (b7cfba5). |
+| done | `NflvrDoubling.itoIntegral` | `3fc4c9e` | The doubling wealth is the Itô integral of K, with no glue parameters. Done in 3fc4c9e. |
+| done | `NflvrDoubling.evalAdapted` | `024652f, f457b1e` | B evaluated at a stopping time τ≤t is F_t-measurable (Mathlib stronglyMeasurable_stoppedValue_of_le); X_n and c_n are F_{t_n}-adapted. Dyadic helpers in f457b1e; lemma and adaptedness in 024652f. |
+| done | `NflvrDoubling.predictableK` | `024652f, 1d57446` | Left-open stochastic intervals (t_n,τ_n] are predictable (1d57446); uncurry doublingK is a pointwise limit of those stopped blocks, hence predictable (024652f). |
+| done | `NflvrDoubling.sAdmissible` | `024652f` | IntegrableOn of K² on [0,T] a.s., hence the doubling strategy is S-admissible for S=σ=1. Done in 024652f. |
+| done | `NflvrDoubling.literalFails` | `024652f` | Literal NFLVR fails: the doubling strategy is admissible, V_T=1 a.s., and this is a nontrivial free lunch in the Delbaen–Schachermayer cone. Done in 024652f. |
+| open | `NflvrDoubling.bsTransfer` | `—` | Transfer the doubling integrand to the Black–Scholes market by H=K/(Sσ₀), so H S σ₀ = K and the same V_T=1 a.s. free lunch applies with the paper's price and constant volatility. |
+| open | `NflvrDoubling.terminalBdd` | `—` | The same doubling strategy has V_T=1≥0 a.s., so the terminal-only bounded-below cone also contains a nontrivial free lunch. |
+| blocked | `NflvrDoubling.challengeRefutations` | `—` | Library theorems not_literal_nflvr and not_terminal_bdd_nflvr, unwrapped forms in Challenge (≤1000 lines) and comparator.json, yaml main_results v0.4, and the strict compare. |
+| blocked | `NflvrDoubling.writeup` | `—` | Writeup pass using Carbon's notes: narratives, PROVENANCE.md Comparator section, COMPARATOR.md, PalomarRegistration.md, and project.description, crediting Carbon (Gemini). |
 
 ## By group
 
-### Top-level modules — 1 hole(s)
+### Top-level modules — 0 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -153,7 +175,7 @@ _None._
 | done | `MemTwDualOfMemL2w` | `SignatureVolatility/MemTwDualOfMemL2w.lean` |
 | done | `NflvrCone` | `SignatureVolatility/NflvrCone.lean` |
 | done | `NflvrDefs` | `SignatureVolatility/NflvrDefs.lean` |
-| open | `NflvrDoubling` | `SignatureVolatility/NflvrDoubling.lean` |
+| done | `NflvrDoubling` | `SignatureVolatility/NflvrDoubling.lean` |
 | done | `NflvrOfMartingaleMeasure` | `SignatureVolatility/NflvrOfMartingaleMeasure.lean` |
 | done | `Norm2w` | `SignatureVolatility/Norm2w.lean` |
 | done | `Norm2wInv` | `SignatureVolatility/Norm2wInv.lean` |
@@ -299,6 +321,25 @@ _None._
 | Status | Id | File |
 |---|---|---|
 | done | `SignatureVolatilityModel.Sigma` | `SignatureVolatility/SignatureVolatilityModel/Sigma.lean` |
+
+### NflvrDoubling subtasks — 4 hole(s)
+
+| Status | Id | File |
+|---|---|---|
+| open | `NflvrDoubling.bsTransfer` | `SignatureVolatility/NflvrDoubling.lean` |
+| blocked | `NflvrDoubling.challengeRefutations` | `SignatureVolatilityComparator/Challenge.lean` |
+| done | `NflvrDoubling.evalAdapted` | `SignatureVolatility/NflvrDoubling.lean` |
+| done | `NflvrDoubling.incrDecay` | `SignatureVolatility/NflvrDoubling.lean` |
+| done | `NflvrDoubling.itoIntegral` | `SignatureVolatility/NflvrDoubling.lean` |
+| done | `NflvrDoubling.l2Bound` | `SignatureVolatility/NflvrDoubling.lean` |
+| done | `NflvrDoubling.literalFails` | `SignatureVolatility/NflvrDoubling.lean` |
+| done | `NflvrDoubling.predictableK` | `SignatureVolatility/NflvrDoubling.lean` |
+| done | `NflvrDoubling.riemannSums` | `SignatureVolatility/NflvrDoubling.lean` |
+| done | `NflvrDoubling.sAdmissible` | `SignatureVolatility/NflvrDoubling.lean` |
+| done | `NflvrDoubling.tauHit` | `SignatureVolatility/NflvrDoubling.lean` |
+| open | `NflvrDoubling.terminalBdd` | `SignatureVolatility/NflvrDoubling.lean` |
+| done | `NflvrDoubling.wealthProcess` | `SignatureVolatility/NflvrDoubling.lean` |
+| blocked | `NflvrDoubling.writeup` | `Writeup/PalomarRegistration.md` |
 
 ## Dependency sketch
 

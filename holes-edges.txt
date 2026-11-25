@@ -638,3 +638,19 @@ WordsOfLength -hard-> SignatureRiccatiKit.EntireTransfer
 WordsOfLength -hard-> SignatureRiccatiKit.FawcettHermite
 WordsOfLength -hard-> SignatureRiccatiKit.SummableNormTermAndBound
 WordsOfLength -hard-> SuperfactorialFunctional
+# Synthetic NflvrDoubling subtask edges
+NflvrDoubling.tauHit -hard-> NflvrDoubling.incrDecay
+NflvrDoubling.incrDecay -hard-> NflvrDoubling.l2Bound
+NflvrDoubling.l2Bound -hard-> NflvrDoubling.wealthProcess
+NflvrDoubling.wealthProcess -hard-> NflvrDoubling.riemannSums
+NflvrDoubling.riemannSums -hard-> NflvrDoubling.itoIntegral
+NflvrDoubling.itoIntegral -hard-> NflvrDoubling.evalAdapted
+NflvrDoubling.evalAdapted -hard-> NflvrDoubling.predictableK
+NflvrDoubling.predictableK -hard-> NflvrDoubling.sAdmissible
+NflvrDoubling.sAdmissible -hard-> NflvrDoubling.literalFails
+NflvrDoubling.literalFails -hard-> NflvrDoubling
+NflvrDoubling -hard-> NflvrDoubling.bsTransfer
+NflvrDoubling -hard-> NflvrDoubling.terminalBdd
+NflvrDoubling.bsTransfer -hard-> NflvrDoubling.challengeRefutations
+NflvrDoubling.terminalBdd -hard-> NflvrDoubling.challengeRefutations
+NflvrDoubling.challengeRefutations -hard-> NflvrDoubling.writeup

@@ -84,7 +84,7 @@ REFUTED_THEOREMS: dict[str, tuple[str, str]] = {
 
 
 # Documented headline notes. Palomar has no open-problem category; keep this empty.
-# Unfinished work appears only as ordinary unverified modules (e.g. NflvrDoubling).
+# Unfinished follow-on work is recorded as ordinary open nodes (never this map).
 OPEN_PROBLEMS: dict[str, str] = {}
 
 
@@ -142,9 +142,12 @@ STATUS_DETAILS: dict[str, str] = {
         "SatisfiesNFLVR_DS holds (weak-* pairing with 1; no H3). Fatou gives nonpositive mean "
         "for an a.s. limit of mean-zero variables with a uniform lower bound.",
     "NflvrDoubling":
-        "Geometric-grid doubling construction used for the literal and terminal-only NFLVR "
-        "refutations. Increment independence, geometric decay and pathwise V_T=1 a.s. are "
-        "in this file. The module is not yet complete.",
+        "Geometric-grid doubling construction for the literal and terminal-only NFLVR "
+        "refutations. theorem_literal_nflvr_fails is proved (024652f): the doubling "
+        "strategy is S-admissible and V_T=1 a.s., so literal NFLVR fails for Brownian "
+        "motion. Subtask nodes below record the internal port. Still to come, as ordinary "
+        "open follow-on nodes: Black–Scholes transfer H=K/(Sσ₀), the terminal-only "
+        "refutation, Challenge compared theorems, and the writeup (Carbon/Gemini).",
     "SignatureRiccatiKit.AffineRiccatiDualityMp":
         "Proved -> direction of the affine / Riccati duality (paper Thm 4.2(ii)): an exponential-"
         "affine conditional transform through a classical Riccati solution gives a solution. "
@@ -172,6 +175,182 @@ REFUTATION_LABELS: dict[str, str] = {
     "TheoremCCounterExample": "CounterExample_TheoremC",
     "TheoremD": "Half_TheoremD",
 }
+
+
+
+# Internal structure of NflvrDoubling, shown as synthetic precursor / follow-on
+# nodes so progress is visible on the board. These are not Lean modules and are
+# not an "open problems" category: finished items are ordinary done nodes,
+# remaining work is ordinary open (or blocked) nodes.
+SYNTHETIC_NODES: list[dict] = [
+    {
+        "id": "NflvrDoubling.tauHit",
+        "label": "isStoppingTime_tauHit (047b221)",
+        "status": "done",
+        "detail": "Geometric grid t_n=T(1-2^{-n}) and hitting-time stopping lemma "
+                  "isStoppingTime_tauHit. Grid foundations in 99d7748; stopping lemma "
+                  "in 047b221.",
+        "commits": "047b221, 99d7748",
+    },
+    {
+        "id": "NflvrDoubling.incrDecay",
+        "label": "increment independence & geometric decay (b74bd01)",
+        "status": "done",
+        "detail": "Independence of the standardized increments Z_n and geometric decay "
+                  "P(E_n)≤q^n, plus the early V_T=1 a.s. identity. Done in b74bd01.",
+        "commits": "b74bd01",
+    },
+    {
+        "id": "NflvrDoubling.l2Bound",
+        "label": "doublingC_sq_integral_le (b63d981)",
+        "status": "done",
+        "detail": "L² bound on the doubling weights, E[∏_{j<m}(1-Z_j)²]=2^m, and the "
+                  "integrand / localizing-time packaging in bf9c194. Done in b63d981.",
+        "commits": "b63d981, bf9c194",
+    },
+    {
+        "id": "NflvrDoubling.wealthProcess",
+        "label": "doublingWealth V_0=0, V_T=1, continuity (4c102ea)",
+        "status": "done",
+        "detail": "Explicit wealth process: starts at 0, ends at 1 almost surely, and "
+                  "almost every path is continuous on [0,T]. Done in 4c102ea.",
+        "commits": "4c102ea",
+    },
+    {
+        "id": "NflvrDoubling.riemannSums",
+        "label": "Riemann-sum tools + pathwise convergence (5a32c82, b7cfba5)",
+        "status": "done",
+        "detail": "Left-point Riemann-sum tools for the doubling integrand (5a32c82) and "
+                  "pathwise convergence of indicator partition sums to the matching "
+                  "Brownian increment (b7cfba5).",
+        "commits": "5a32c82, b7cfba5",
+    },
+    {
+        "id": "NflvrDoubling.itoIntegral",
+        "label": "isItoIntegral_doublingWealth (3fc4c9e)",
+        "status": "done",
+        "detail": "The doubling wealth is the Itô integral of K, with no glue parameters. "
+                  "Done in 3fc4c9e.",
+        "commits": "3fc4c9e",
+    },
+    {
+        "id": "NflvrDoubling.evalAdapted",
+        "label": "measurable_bmCoord_eval_le / adaptedness (024652f)",
+        "status": "done",
+        "detail": "B evaluated at a stopping time τ≤t is F_t-measurable "
+                  "(Mathlib stronglyMeasurable_stoppedValue_of_le); X_n and c_n are "
+                  "F_{t_n}-adapted. Dyadic helpers in f457b1e; lemma and adaptedness "
+                  "in 024652f.",
+        "commits": "024652f, f457b1e",
+    },
+    {
+        "id": "NflvrDoubling.predictableK",
+        "label": "predictability of K (024652f)",
+        "status": "done",
+        "detail": "Left-open stochastic intervals (t_n,τ_n] are predictable (1d57446); "
+                  "uncurry doublingK is a pointwise limit of those stopped blocks, hence "
+                  "predictable (024652f).",
+        "commits": "024652f, 1d57446",
+    },
+    {
+        "id": "NflvrDoubling.sAdmissible",
+        "label": "SAdmissible (024652f)",
+        "status": "done",
+        "detail": "IntegrableOn of K² on [0,T] a.s., hence the doubling strategy is "
+                  "S-admissible for S=σ=1. Done in 024652f.",
+        "commits": "024652f",
+    },
+    {
+        "id": "NflvrDoubling.literalFails",
+        "label": "theorem_literal_nflvr_fails (024652f)",
+        "status": "done",
+        "detail": "Literal NFLVR fails: the doubling strategy is admissible, V_T=1 a.s., "
+                  "and this is a nontrivial free lunch in the Delbaen–Schachermayer cone. "
+                  "Done in 024652f.",
+        "commits": "024652f",
+    },
+    {
+        "id": "NflvrDoubling.bsTransfer",
+        "label": "Black–Scholes transfer H=K/(Sσ₀)",
+        "status": "open",
+        "detail": "Transfer the doubling integrand to the Black–Scholes market by "
+                  "H=K/(Sσ₀), so H S σ₀ = K and the same V_T=1 a.s. free lunch applies "
+                  "with the paper's price and constant volatility.",
+        "file": "SignatureVolatility/NflvrDoubling.lean",
+        "commits": "",
+    },
+    {
+        "id": "NflvrDoubling.terminalBdd",
+        "label": "theorem_terminal_bdd_nflvr_fails",
+        "status": "open",
+        "detail": "The same doubling strategy has V_T=1≥0 a.s., so the terminal-only "
+                  "bounded-below cone also contains a nontrivial free lunch.",
+        "file": "SignatureVolatility/NflvrDoubling.lean",
+        "commits": "",
+    },
+    {
+        "id": "NflvrDoubling.challengeRefutations",
+        "label": "Challenge not_literal_nflvr / not_terminal_bdd_nflvr",
+        "status": "open",
+        "detail": "Library theorems not_literal_nflvr and not_terminal_bdd_nflvr, unwrapped "
+                  "forms in Challenge (≤1000 lines) and comparator.json, yaml main_results "
+                  "v0.4, and the strict compare.",
+        "file": "SignatureVolatilityComparator/Challenge.lean",
+        "commits": "",
+    },
+    {
+        "id": "NflvrDoubling.writeup",
+        "label": "NFLVR writeup (Carbon/Gemini)",
+        "status": "open",
+        "detail": "Writeup pass using Carbon's notes: narratives, PROVENANCE.md Comparator "
+                  "section, COMPARATOR.md, PalomarRegistration.md, and project.description, "
+                  "crediting Carbon (Gemini).",
+        "file": "Writeup/PalomarRegistration.md",
+        "commits": "",
+    },
+]
+
+# Edges are dep → dependent (the dependent uses / follows the dep).
+# Done precursors chain into NflvrDoubling; remaining work follows it.
+SYNTHETIC_EDGES: list[tuple[str, str]] = [
+    ("NflvrDoubling.tauHit", "NflvrDoubling.incrDecay"),
+    ("NflvrDoubling.incrDecay", "NflvrDoubling.l2Bound"),
+    ("NflvrDoubling.l2Bound", "NflvrDoubling.wealthProcess"),
+    ("NflvrDoubling.wealthProcess", "NflvrDoubling.riemannSums"),
+    ("NflvrDoubling.riemannSums", "NflvrDoubling.itoIntegral"),
+    ("NflvrDoubling.itoIntegral", "NflvrDoubling.evalAdapted"),
+    ("NflvrDoubling.evalAdapted", "NflvrDoubling.predictableK"),
+    ("NflvrDoubling.predictableK", "NflvrDoubling.sAdmissible"),
+    ("NflvrDoubling.sAdmissible", "NflvrDoubling.literalFails"),
+    ("NflvrDoubling.literalFails", "NflvrDoubling"),
+    ("NflvrDoubling", "NflvrDoubling.bsTransfer"),
+    ("NflvrDoubling", "NflvrDoubling.terminalBdd"),
+    ("NflvrDoubling.bsTransfer", "NflvrDoubling.challengeRefutations"),
+    ("NflvrDoubling.terminalBdd", "NflvrDoubling.challengeRefutations"),
+    ("NflvrDoubling.challengeRefutations", "NflvrDoubling.writeup"),
+]
+
+
+def apply_synthetic(
+    nodes_meta: dict[str, dict], hard_edges: list[tuple[str, str]]
+) -> tuple[dict[str, dict], list[tuple[str, str]]]:
+    """Inject synthetic precursor / follow-on nodes and their edges."""
+    for item in SYNTHETIC_NODES:
+        nid = item["id"]
+        if nid in nodes_meta:
+            raise RuntimeError(f"synthetic node id collides with a Lean module: {nid}")
+        nodes_meta[nid] = {
+            "label": item["label"],
+            "section": 10,
+            "file": item.get("file", "SignatureVolatility/NflvrDoubling.lean"),
+            "detail": item["detail"],
+            "_mod": nid,
+            "_synthetic": True,
+            "_forced_status": item["status"],
+            "_commits": item.get("commits", ""),
+        }
+    hard_edges = list(hard_edges) + list(SYNTHETIC_EDGES)
+    return nodes_meta, hard_edges
 
 
 def is_counterexample(nid: str) -> bool:
@@ -326,6 +505,7 @@ VERIFIED: set[str] = {
     "MemTwDualOfMemL2w",
     "NflvrCone",
     "NflvrDefs",
+    "NflvrDoubling",
     "NflvrOfMartingaleMeasure",
     "Norm2w",
     "Norm2wInv",
@@ -554,6 +734,7 @@ def discover() -> tuple[dict[str, dict], list[tuple[str, str]]]:
 
 def build() -> dict:
     nodes_meta, hard_edges = discover()
+    nodes_meta, hard_edges = apply_synthetic(nodes_meta, hard_edges)
     display_edges = transitive_reduction(hard_edges)
 
     hard_preds: dict[str, list[str]] = {nid: [] for nid in nodes_meta}
@@ -563,12 +744,22 @@ def build() -> dict:
 
     has_sorry: dict[str, bool] = {}
     for nid, meta in nodes_meta.items():
-        has_sorry[nid] = file_has_sorry(ROOT / meta["file"])
+        if meta.get("_synthetic"):
+            has_sorry[nid] = False
+        else:
+            has_sorry[nid] = file_has_sorry(ROOT / meta["file"])
 
     # Hole unless verified AND sorry-free. `sorry` always wins over VERIFIED.
-    raw_hole = {
-        nid: (nid not in VERIFIED) or has_sorry[nid] for nid in nodes_meta
-    }
+    # Synthetic nodes use an explicit forced status instead of VERIFIED.
+    raw_hole = {}
+    for nid, meta in nodes_meta.items():
+        forced = meta.get("_forced_status")
+        if forced == "done":
+            raw_hole[nid] = False
+        elif forced == "open":
+            raw_hole[nid] = True
+        else:
+            raw_hole[nid] = (nid not in VERIFIED) or has_sorry[nid]
 
     status: dict[str, str] = {}
     for _ in range(len(nodes_meta) + 2):
@@ -628,6 +819,8 @@ def build() -> dict:
             "detail": detail,
             "hasSorry": has_sorry[nid],
             "paperKitGoal": nid in PAPER_KIT_GOALS,
+            "synthetic": bool(meta.get("_synthetic")),
+            "commits": meta.get("_commits") or None,
         })
 
     by_id = {n["id"]: n for n in nodes}
@@ -652,7 +845,11 @@ def build() -> dict:
     ]
 
     # True number of `sorry` occurrences in the library (not the number of unfinished modules).
-    sorry_count = sum(file_sorry_count(ROOT / n["file"]) for n in nodes)
+    # Deduplicate files so synthetic subtasks pointing at a parent module are not recounted.
+    sorry_count = sum(
+        file_sorry_count(ROOT / f)
+        for f in {n["file"] for n in nodes if not n.get("synthetic")}
+    )
     open_ids = [n["id"] for n in nodes if n["status"] == "open"]
 
     return {
@@ -664,7 +861,9 @@ def build() -> dict:
             "done": "Verified (listed in VERIFIED and deps done)",
         },
         "notes": [
-            "File-level board: one node per SignatureVolatility .lean module.",
+            "File-level board: one node per SignatureVolatility .lean module, plus "
+            "synthetic subtask nodes under NflvrDoubling (internal progress, not a "
+            "separate Lean module and not an open-problems category).",
             "Done = listed in VERIFIED and deps done and file contains no `sorry`.",
             "Any `sorry` forces open/blocked regardless of VERIFIED.",
             "Hard edge B→A: A imports B (direct, submodule files only; barrel omitted).",
@@ -699,6 +898,7 @@ def write_md(data: dict) -> None:
         5: "PriceFiltrationSignatureSpace",
         6: "SignatureVolatilityModel",
         99: "Root barrel",
+        10: "NflvrDoubling subtasks",
     }
 
     sorry_n = [n for n in data["nodes"] if n.get("hasSorry")]
@@ -783,6 +983,25 @@ def write_md(data: dict) -> None:
         lines.append("|---|---|")
         for n in sorted(open_n, key=lambda x: x["id"]):
             lines.append(f"| `{n['id']}` | `{n['file']}` |")
+    synth_n = [n for n in data["nodes"] if n.get("synthetic")]
+    if synth_n:
+        lines += [
+            "",
+            "## NflvrDoubling subtasks",
+            "",
+            "Internal structure of the doubling counterexample. These are not separate "
+            "Lean modules. Finished pieces are ordinary done nodes with the landing "
+            "commit; remaining work is ordinary open or blocked follow-on nodes.",
+            "",
+            "| Status | Id | Commit(s) | What |",
+            "|---|---|---|---|",
+        ]
+        order = {item["id"]: i for i, item in enumerate(SYNTHETIC_NODES)}
+        for n in sorted(synth_n, key=lambda x: order.get(x["id"], 10_000)):
+            commits = n.get("commits") or "—"
+            lines.append(
+                f"| {n['status']} | `{n['id']}` | `{commits}` | {n['detail']} |"
+            )
     lines += ["", "## By group", ""]
     for sec in sorted(by_sec):
         rows = sorted(by_sec[sec], key=lambda x: x["id"])
@@ -832,6 +1051,8 @@ def main() -> None:
     OUT_EDGES.write_text(
         "# Direct import SignatureVolatility deps (for blocking / build order)\n"
         + "\n".join(f"{frm} -hard-> {to}" for frm, to in sorted(direct_edges))
+        + "\n# Synthetic NflvrDoubling subtask edges\n"
+        + "\n".join(f"{frm} -hard-> {to}" for frm, to in SYNTHETIC_EDGES)
         + "\n",
         encoding="utf-8",
     )
