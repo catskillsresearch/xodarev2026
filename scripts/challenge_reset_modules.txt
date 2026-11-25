@@ -1,0 +1,22 @@
+# Source modules whose copied declarations own generated _proof_N constants that Comparator locks.
+# compact_challenge.py resets the aux-lemma cache before exactly these modules (others need no reset).
+# Derived from the Solution's locked-definition dump; if Comparator reports a _proof_N mismatch, add the owner's module.
+BrownianMotion.StochasticIntegral.SimpleProcess
+MathFin.Probability.Brownian.Ito.ItoIntegralHorizonDense
+MathFin.Probability.Brownian.Ito.ItoIntegralL2
+SignatureVolatility.BlackScholesModel
+SignatureVolatility.GeneratedFiltration
+SignatureVolatility.HypH2
+SignatureVolatility.ItoCalculusKit
+SignatureVolatility.ItoCalculusKit.MathFinBridge
+SignatureVolatility.PriceFiltrationSignatureSpace.OfMarket
+SignatureVolatility.ProlongedBrownianSetup
+SignatureVolatility.ProlongedBrownianSetup.ContVersion
+SignatureVolatility.ProlongedBrownianSetup.ItoWordIntegralLe1
+SignatureVolatility.ProlongedBrownianSetup.SignatureFiltration
+SignatureVolatility.ProlongedBrownianSetup.StratonovichOfBM
+SignatureVolatility.Prop58BlackScholesDepthFalse
+SignatureVolatility.SignatureRiccatiKit.RiccatiOp
+SignatureVolatility.StratonovichHalfLaplacian
+SignatureVolatility.TheoremCCounterExample
+SignatureVolatility.Weight.ConstOne

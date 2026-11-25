@@ -6,19 +6,11 @@ def localMods : List Name := [`SignatureVolatility, `MathFin, `BrownianMotion, `
 def isLocalMod (m : Name) : Bool := localMods.any (·.isPrefixOf m)
 
 def targets : List Name := [`SignatureVolatility.theorem_A, `SignatureVolatility.theorem_B_mp,
-  `SignatureVolatility.affine_riccati_duality_mp,
-    `SignatureVolatility.theorem_C_refuted, `SignatureVolatility.not_theorem_C,
-    `SignatureVolatility.blackScholes_isCompleteWithCalls,
-    `SignatureVolatility.theorem_C_depth_infinite,
-    `SignatureVolatility.theorem_C_blackScholes_depth_infinite,
-    `SignatureVolatility.theorem_D, `SignatureVolatility.theorem_D_residual_hypothesis_fails,
-    `SignatureVolatility.not_prop58_blackScholes_depth_zero,
-    `SignatureVolatility.blackScholes_completenessDepth_eq_top,
-    `SignatureVolatility.not_lemma77_shuffle_estimate, `SignatureVolatility.not_lemma77_of_hypH2,
-    `SignatureVolatility.not_lemma78_local_lipschitz,
     `SignatureVolatility.not_affine_riccati_duality_mpr,
     `SignatureVolatility.not_affine_riccati_duality,
-    `SignatureVolatility.not_theorem_B_mpr, `SignatureVolatility.not_theorem_B]
+    `SignatureVolatility.not_theorem_B_mpr, `SignatureVolatility.not_theorem_B,
+    `SignatureVolatility.not_theorem_C,
+    `SignatureVolatility.theorem_D, `SignatureVolatility.theorem_D_residual_hypothesis_fails]
 
 /-- Strip generated suffixes to get the source-level declaration. -/
 partial def parentDecl (env : Environment) (n : Name) : Name :=

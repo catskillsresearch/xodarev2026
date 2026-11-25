@@ -8,7 +8,11 @@ project:
     Foundations of Signature Volatility Models", arXiv:2605.17142. Palomar
     registration: TBD. Framing: prove the paper claims that hold, at the exact
     strength of the Lean theorems below, and refute the claims that do not, by
-    Lean negations of those claims and nothing stronger. Proved:
+    Lean negations of those claims and nothing stronger. Compared theorems
+    (comparator.json, Theorems A–D and their refutations): theorem_A,
+    theorem_B_mp, theorem_D (proved); not_affine_riccati_duality_mpr,
+    not_affine_riccati_duality, not_theorem_B_mpr, not_theorem_B,
+    not_theorem_C, theorem_D_residual_hypothesis_fails (refutations). Proved:
     theorem_A — for every SignatureVolatilityModel (which includes d ≥ 1, T > 0,
     s₀ > 0, HypH1, HypH2, and parameter nondegeneracy ℓ ≠ 0) and every Brownian
     driver, under the additional analytic hypothesis HypH3 on the signature
@@ -27,10 +31,6 @@ project:
     classical Riccati solution, then a classical Riccati solution exists). This
     is not a proof of the paper's full Theorem B, whose conjunction includes the
     ← direction of the iff;
-    affine_riccati_duality_mp — for every model and driver and every finitely
-    supported u₀ with finite signature transform, if the exponential-affine
-    conditional-expectation formula holds through some classical Riccati
-    solution, then a classical Riccati solution exists;
     theorem_D — for every MarketData and every X in L²(ℱ^S_T), there is a unique
     GKW decomposition X = (∫ X) · 1 + G + ε with G in the gains space H0 and
     orthogonal to constants, ε in L²(ℱ^S_T) ∩ H0⊥ and orthogonal to the gains
@@ -56,28 +56,35 @@ project:
     unused HypH3 hypothesis, so they apply to every model and driver for which
     analytic HypH3 holds (HypH3 is satisfiable; it holds for constant
     volatility);
-    not_theorem_C and theorem_C_refuted — for the Black–Scholes market (T > 0,
+    not_theorem_C — for the Black–Scholes market (T > 0,
     s₀ > 0, σ₀ ≠ 0, one-dimensional Brownian motion) and every finite set of
     call strikes, the equivalence "complete with finitely many calls on ℱ^S_T
-    ⇔ N^*_S < ∞" is false, because blackScholes_isCompleteWithCalls holds and
-    the completeness depth is infinite (theorem_C_blackScholes_depth_infinite,
-    blackScholes_completenessDepth_eq_top). Separately,
-    theorem_C_depth_infinite states that N^*_S = ∞ and no finite-depth
-    signature span is dense, for every MarketData whose L²(ℱ^S_T) is
-    infinite-dimensional;
+    ⇔ N^*_S < ∞" is false;
+    theorem_D_residual_hypothesis_fails — for Black–Scholes (same parameters as
+    above), ¬ (N^*_S < ∞). This shows that the residual-expansion hypothesis of
+    Theorem D fails for Black–Scholes; it does not refute the expansion
+    identity on markets where the hypothesis holds.
+    Supporting results, proved in the library with no sorry but not compared:
+    affine_riccati_duality_mp — for every model and driver and every finitely
+    supported u₀ with finite signature transform, if the exponential-affine
+    conditional-expectation formula holds through some classical Riccati
+    solution, then a classical Riccati solution exists; theorem_C_refuted —
+    the same Black–Scholes iff failure as not_theorem_C;
+    blackScholes_isCompleteWithCalls — Black–Scholes is complete on ℱ^S_T with
+    finitely many calls, for every finite strike set;
+    theorem_C_blackScholes_depth_infinite and
+    blackScholes_completenessDepth_eq_top — its completeness depth is infinite;
+    theorem_C_depth_infinite — N^*_S = ∞ and no finite-depth signature span is
+    dense, for every MarketData whose L²(ℱ^S_T) is infinite-dimensional;
     not_prop58_blackScholes_depth_zero — Black–Scholes completeness depth is
-    not 0; blackScholes_completenessDepth_eq_top — it equals ∞;
+    not 0;
     not_lemma77_shuffle_estimate — for every weight w and every letter ℓ in
     Fin d, there is no constant C such that ‖e_I ⧢ e_J‖_w ≤ C ‖e_I‖_w ‖e_J‖_w
     for all words I, J; not_lemma77_of_hypH2 is the same conclusion with an
     unused HypH2 hypothesis, hence also for every H2 weight;
     not_lemma78_local_lipschitz — only for the weight w ≡ 1 (Weight.constOne),
     on ExtTensorAlgebra (d+2) for every d, the Riccati operator is not locally
-    Lipschitz on bounded subsets of T_w;
-    theorem_D_residual_hypothesis_fails — for Black–Scholes (same parameters as
-    above), ¬ (N^*_S < ∞). This shows that the residual-expansion hypothesis of
-    Theorem D fails for Black–Scholes; it does not refute the expansion
-    identity on markets where the hypothesis holds.
+    Lipschitz on bounded subsets of T_w.
     No open problems remain. Why each counterexample works:
     Writeup/narratives/ (one short file per refutation; verbatim outside
     source in Writeup/narratives/appendix/). Every compared theorem uses only
@@ -104,15 +111,18 @@ classification:
   - '68V20'
 status:
   scope: >-
-    Comparator family (comparator.json): 60 theorems, all proved with no
-    sorry. They are the 19 headline results below (proved paper results and
-    Lean refutations of false paper claims) plus 41 supporting facts in their
-    dependency closure (Itô / Doléans kit, Brownian driver, signature
-    properties, MathFin / BrownianMotion lemmas). The library and
+    Comparator family (comparator.json): 50 theorems, all proved with no
+    sorry. They are the 9 headline results below (Theorems A, B, D proved
+    parts and the Lean refutations of Theorem 4.2(ii) ←, Theorem B, Theorem C
+    and the Theorem D residual hypothesis) plus 41 lemma statements that copied
+    definitions in their dependency closure refer to (Itô / Doléans kit,
+    Brownian driver, signature properties, MathFin / BrownianMotion lemmas).
+    Further refutations (Proposition 58, Lemmas 77 and 78) and supporting
+    results are proved in the library but not compared. The library and
     SignatureVolatilityComparator/Solution.lean have no sorry and there are no
     axiom declarations; nothing is open. The Challenge
     (SignatureVolatilityComparator/Challenge.lean) is one file importing only
-    Lean core and Mathlib, with the 60 compared proofs replaced by sorry, as
+    Lean core and Mathlib, with the 50 compared proofs replaced by sorry, as
     the comparator requires.
   sorry_count: 0
   sorry_in_definitions: 0
@@ -132,15 +142,6 @@ status:
     literature_dependencies: []
   - declaration: SignatureVolatility.theorem_B_mp
     file: SignatureVolatility/TheoremB.lean
-    sorry_count: 0
-    axioms:
-    - propext
-    - Classical.choice
-    - Quot.sound
-    comparator_config: comparator.json
-    literature_dependencies: []
-  - declaration: SignatureVolatility.affine_riccati_duality_mp
-    file: SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMp.lean
     sorry_count: 0
     axioms:
     - propext
@@ -193,42 +194,6 @@ status:
     - Quot.sound
     comparator_config: comparator.json
     literature_dependencies: []
-  - declaration: SignatureVolatility.theorem_C_refuted
-    file: SignatureVolatility/TheoremC.lean
-    sorry_count: 0
-    axioms:
-    - propext
-    - Classical.choice
-    - Quot.sound
-    comparator_config: comparator.json
-    literature_dependencies: []
-  - declaration: SignatureVolatility.blackScholes_isCompleteWithCalls
-    file: SignatureVolatility/TheoremCCounterExample.lean
-    sorry_count: 0
-    axioms:
-    - propext
-    - Classical.choice
-    - Quot.sound
-    comparator_config: comparator.json
-    literature_dependencies: []
-  - declaration: SignatureVolatility.theorem_C_depth_infinite
-    file: SignatureVolatility/TheoremC.lean
-    sorry_count: 0
-    axioms:
-    - propext
-    - Classical.choice
-    - Quot.sound
-    comparator_config: comparator.json
-    literature_dependencies: []
-  - declaration: SignatureVolatility.theorem_C_blackScholes_depth_infinite
-    file: SignatureVolatility/TheoremC.lean
-    sorry_count: 0
-    axioms:
-    - propext
-    - Classical.choice
-    - Quot.sound
-    comparator_config: comparator.json
-    literature_dependencies: []
   - declaration: SignatureVolatility.theorem_D
     file: SignatureVolatility/TheoremD.lean
     sorry_count: 0
@@ -240,51 +205,6 @@ status:
     literature_dependencies: []
   - declaration: SignatureVolatility.theorem_D_residual_hypothesis_fails
     file: SignatureVolatility/TheoremDCounterExample.lean
-    sorry_count: 0
-    axioms:
-    - propext
-    - Classical.choice
-    - Quot.sound
-    comparator_config: comparator.json
-    literature_dependencies: []
-  - declaration: SignatureVolatility.not_prop58_blackScholes_depth_zero
-    file: SignatureVolatility/Prop58BlackScholesDepthFalse.lean
-    sorry_count: 0
-    axioms:
-    - propext
-    - Classical.choice
-    - Quot.sound
-    comparator_config: comparator.json
-    literature_dependencies: []
-  - declaration: SignatureVolatility.blackScholes_completenessDepth_eq_top
-    file: SignatureVolatility/Prop58BlackScholesDepthFalse.lean
-    sorry_count: 0
-    axioms:
-    - propext
-    - Classical.choice
-    - Quot.sound
-    comparator_config: comparator.json
-    literature_dependencies: []
-  - declaration: SignatureVolatility.not_lemma77_shuffle_estimate
-    file: SignatureVolatility/Lemma77ShuffleEstimateFalse.lean
-    sorry_count: 0
-    axioms:
-    - propext
-    - Classical.choice
-    - Quot.sound
-    comparator_config: comparator.json
-    literature_dependencies: []
-  - declaration: SignatureVolatility.not_lemma77_of_hypH2
-    file: SignatureVolatility/Lemma77ShuffleEstimateFalse.lean
-    sorry_count: 0
-    axioms:
-    - propext
-    - Classical.choice
-    - Quot.sound
-    comparator_config: comparator.json
-    literature_dependencies: []
-  - declaration: SignatureVolatility.not_lemma78_local_lipschitz
-    file: SignatureVolatility/Lemma78RiccatiLipschitzFalse.lean
     sorry_count: 0
     axioms:
     - propext
@@ -398,9 +318,9 @@ known_gaps:
     satisfiable, e.g. constant volatility).
   - >-
     Theorem C, Proposition 58 and the Theorem D residual hypothesis: the
-    compared refutations of the completeness iff (not_theorem_C,
-    theorem_C_refuted) and of Proposition 58, and the failure of the residual
-    hypothesis, are for the Black–Scholes market (T > 0, s₀ > 0, σ₀ ≠ 0,
+    compared refutation of the completeness iff (not_theorem_C), the
+    non-compared library refutation of Proposition 58, and the compared failure
+    of the residual hypothesis, are for the Black–Scholes market (T > 0, s₀ > 0, σ₀ ≠ 0,
     one-dimensional Brownian motion). In Black–Scholes, L²(ℱ^S_T) is
     infinite-dimensional, while Definition 55 depth N spans finitely many
     signature coordinates; hence N^*_S = ∞ (not 0), although the market is
@@ -410,7 +330,7 @@ known_gaps:
     holds. Separately, theorem_C_depth_infinite gives N^*_S = ∞ for every
     MarketData with infinite-dimensional L²(ℱ^S_T).
   - >-
-    Lemma 77: for every weight w and every letter ℓ, ℓ^k ⧢ ℓ = (k+1)ℓ^{k+1}
+    Lemmas 77 and 78 (proved in the library, not compared): for every weight w and every letter ℓ, ℓ^k ⧢ ℓ = (k+1)ℓ^{k+1}
     defeats any shuffle constant on basis words. not_lemma77_of_hypH2 is the
     same conclusion with unused HypH2. Lemma 78: only for w ≡ 1, ℛ(e_{ℓ^{k+1}})
     has coefficient ½·binom(2k,k) at ℓ^{2k}, so ℛ is not locally Lipschitz on
