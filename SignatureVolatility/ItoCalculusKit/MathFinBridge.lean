@@ -1,11 +1,12 @@
 module
 
 public import SignatureVolatility.ProlongedBrownianSetup.Sig2StratAdapted
+public import SignatureVolatility.ProlongedBrownianSetup.ContVersion
 
 
 @[expose] public section
 
-open MeasureTheory Filter
+open MeasureTheory Filter Set
 open scoped Classical
 
 noncomputable section
@@ -187,5 +188,26 @@ lemma kitQuadVar_adapted_path (B : MultiBrownian Ω P d) (H : ℝ → Ω → ℝ
   split_ifs
   · exact (stronglyMeasurable_condExp.mono ((pathFiltration B).mono s.2.2)).measurable
   · exact measurable_const
+
+/-- Continuous adapted version of `kitItoInt` for the Theorem B path (avoids `condExp`'s
+`Quotient.out` choice at each `t` when `kitItoIntRaw` is already `pathFiltration`-adapted). -/
+def kitItoIntCont (B : MultiBrownian Ω P d) (H : ℝ → Ω → ℝ) (t : ℝ) : Ω → ℝ :=
+  if kitPairIntegrable B H t then
+    if ∀ u ∈ Icc 0 t, Measurable[(pathFiltration B).σAlg u] (kitItoIntRaw B H u) then
+      contVersion (kitItoIntRaw B H) t
+    else
+      condExp ((pathFiltration B).σAlg t) P (kitItoIntRaw B H t)
+  else
+    fun _ => 0
+
+/-- Continuous adapted version of `kitQuadVar` for the Theorem B path. -/
+def kitQuadVarCont (B : MultiBrownian Ω P d) (H : ℝ → Ω → ℝ) (t : ℝ) : Ω → ℝ :=
+  if kitPairIntegrable B H t then
+    if Measurable[(pathFiltration B).σAlg t] (kitQuadVarRaw B H t) then
+      kitQuadVarRaw B H t
+    else
+      condExp ((pathFiltration B).σAlg t) P (kitQuadVarRaw B H t)
+  else
+    fun _ => 0
 
 end SignatureVolatility
