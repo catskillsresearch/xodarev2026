@@ -335,6 +335,7 @@ MemTwDual -hard-> DualPairingLeNormWDualMulNormW
 MemTwDual -hard-> MemTwDualOfMemL2w
 MemTwDual -hard-> NormWDual
 MemTwDualOfMemL2w -hard-> Corollary36SigmaWellDefined
+NflvrBoundedBelow -hard-> NflvrContIto
 NflvrCone -hard-> NflvrBoundedBelow
 NflvrDefs -hard-> NflvrBoundedBelow
 NflvrDefs -hard-> NflvrCone
@@ -669,7 +670,8 @@ NflvrDoubling.terminalBdd -hard-> NflvrDoubling.unwrappedRefs
 NflvrDoubling.unwrappedRefs -hard-> NflvrDoubling.challengeRefutations
 NflvrDoubling.challengeRefutations -hard-> NflvrDoubling.writeup
 TheoremB_DS.jointL2Ito -hard-> TheoremB_DS.riemannL2
-TheoremB_DS.riemannL2 -hard-> TheoremB_DS.localization
+TheoremB_DS.riemannL2 -hard-> TheoremB_DS.contIto
+TheoremB_DS.contIto -hard-> TheoremB_DS.localization
 TheoremB_DS.localization -hard-> TheoremB_DS.superMartingale
 TheoremB_DS.superMartingale -hard-> TheoremB_DS.nflvrDs
 TheoremB_DS.nflvrDs -hard-> TheoremB_DS

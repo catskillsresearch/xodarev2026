@@ -392,6 +392,20 @@ SYNTHETIC_NODES: list[dict] = [
         "commits": "54fc9c8",
     },
     {
+        "id": "TheoremB_DS.contIto",
+        "label": "Continuous L² Itô integral and Riemann subsequence",
+        "status": "done",
+        "section": 11,
+        "detail": "exists_contIto_and_riemann_subseq: for predictable Z in L²(dtP), a "
+                  "version M of the joint-filtration Itô integral that is adapted and "
+                  "integrable, has mean zero, is a.s. continuous on [0,T] with M 0 = 0, "
+                  "is constant after q on {Z=0} after q, and is the in-probability "
+                  "limit of itoRiemannPrime along a subsequence (Carbon/Gemini, "
+                  "Mathlib 4.35 repairs).",
+        "file": "SignatureVolatility/NflvrContIto.lean",
+        "commits": "b246755",
+    },
+    {
         "id": "TheoremB_DS.localization",
         "label": "Localization K^(m)",
         "status": "open",
@@ -399,8 +413,9 @@ SYNTHETIC_NODES: list[dict] = [
         "detail": "Left-continuous raw-filtration localization K^(m)=K 1_{Q≤m} of an "
                   "S-admissible integrand (pathwise ∫K²<∞, not necessarily L²(dt⊗P)), "
                   "so each stopped piece is in L² and the unstopped V is a local "
-                  "martingale. Next Part 2 task (NflvrContIto; Carbon/Gemini).",
-        "file": "SignatureVolatility/NflvrContIto.lean",
+                  "martingale. Next Part 3 task (NflvrDS; Carbon/Gemini). The "
+                  "continuous integral it rests on landed in b246755.",
+        "file": "SignatureVolatility/NflvrDS.lean",
     },
     {
         "id": "TheoremB_DS.superMartingale",
@@ -482,7 +497,8 @@ SYNTHETIC_EDGES: list[tuple[str, str]] = [
     ("NflvrDoubling.unwrappedRefs", "NflvrDoubling.challengeRefutations"),
     ("NflvrDoubling.challengeRefutations", "NflvrDoubling.writeup"),
     ("TheoremB_DS.jointL2Ito", "TheoremB_DS.riemannL2"),
-    ("TheoremB_DS.riemannL2", "TheoremB_DS.localization"),
+    ("TheoremB_DS.riemannL2", "TheoremB_DS.contIto"),
+    ("TheoremB_DS.contIto", "TheoremB_DS.localization"),
     ("TheoremB_DS.localization", "TheoremB_DS.superMartingale"),
     ("TheoremB_DS.superMartingale", "TheoremB_DS.nflvrDs"),
     ("TheoremB_DS.nflvrDs", "TheoremB_DS"),
@@ -666,6 +682,7 @@ VERIFIED: set[str] = {
     "MemTwDualOfMemL2w",
     "NflvrBoundedBelow",
     "NflvrCone",
+    "NflvrContIto",
     "NflvrDefs",
     "NflvrDoubling",
     "NflvrOfMartingaleMeasure",
