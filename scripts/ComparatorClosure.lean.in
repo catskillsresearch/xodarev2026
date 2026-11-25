@@ -15,7 +15,10 @@ def targets : List Name := [`SignatureVolatility.theorem_A, `SignatureVolatility
     `SignatureVolatility.not_prop58_blackScholes_depth_zero,
     `SignatureVolatility.blackScholes_completenessDepth_eq_top,
     `SignatureVolatility.not_lemma77_shuffle_estimate, `SignatureVolatility.not_lemma77_of_hypH2,
-    `SignatureVolatility.not_lemma78_local_lipschitz]
+    `SignatureVolatility.not_lemma78_local_lipschitz,
+    `SignatureVolatility.not_affine_riccati_duality_mpr,
+    `SignatureVolatility.not_affine_riccati_duality,
+    `SignatureVolatility.not_theorem_B_mpr, `SignatureVolatility.not_theorem_B]
 
 /-- Strip generated suffixes to get the source-level declaration. -/
 partial def parentDecl (env : Environment) (n : Name) : Name :=

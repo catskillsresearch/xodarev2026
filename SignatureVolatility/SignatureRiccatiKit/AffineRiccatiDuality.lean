@@ -22,9 +22,9 @@ The constructor `signatureRiccatiKit_of_setup`, which filled a `SignatureRiccati
 iff for the paper operator `riccatiOp`, has been dropped: that kit field is an abstract
 hypothesis, and the paper operator does not satisfy it.
 
-No `sorry` is introduced here. The proof hangs off `not_affine_riccati_duality_mpr`, which is
-assembled in `AffineRiccatiDualityMprCounterexample` and remains blocked until the remaining
-analytic leaves of the counterexample close.
+No `sorry` is introduced here. The proof follows from `not_affine_riccati_duality_mpr`, which is
+proved sorry-free in `AffineRiccatiDualityMprCounterexample` (see
+`Writeup/narratives/affine_riccati_duality_mpr.md`).
 -/
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P]

@@ -93,6 +93,45 @@ public import Mathlib.Analysis.SpecialFunctions.Pow.Integral
 public import Mathlib.MeasureTheory.Function.LpSeminorm.Basic
 public import Mathlib.Analysis.MeanInequalities
 public import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
+public import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
+public import Mathlib.Analysis.Complex.PhragmenLindelof
+public import Mathlib.Analysis.Complex.Liouville
+public import Mathlib.Analysis.Calculus.DSlope
+public import Mathlib.MeasureTheory.Constructions.Pi
+public import Mathlib.MeasureTheory.Integral.Lebesgue.Add
+public import Mathlib.MeasureTheory.Measure.Prod
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
+public import Mathlib.Tactic
+public import Mathlib.Analysis.Convex.SpecificFunctions.Basic
+public import Mathlib.Probability.Moments.MGFAnalytic
+public import Mathlib.Analysis.Calculus.ContDiff.Defs
+public import Mathlib.Analysis.Calculus.ContDiff.Deriv
+public import Mathlib.MeasureTheory.Integral.Prod
+public import Mathlib.Analysis.SpecialFunctions.Log.Basic
+public import Mathlib.Topology.Order.Basic
+public import Mathlib.Analysis.SpecificLimits.Basic
+public import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+public import Mathlib.MeasureTheory.Measure.WithDensity
+public import Mathlib.Probability.HasLaw
+public import Mathlib.Probability.Moments.ComplexMGF
+public import Mathlib.Analysis.Complex.LocallyUniformLimit
+public import Mathlib.Data.Nat.Choose.Multinomial
+public import Mathlib.Analysis.Normed.Algebra.Exponential
+public import Mathlib.Analysis.Normed.Ring.InfiniteSum
+public import Mathlib.MeasureTheory.Integral.Bochner.Basic
+public import Mathlib.MeasureTheory.Integral.Lebesgue.Basic
+public import Mathlib.Analysis.SpecialFunctions.Exponential
+public import Mathlib.Analysis.Calculus.ParametricIntegral
+public import Mathlib.Analysis.Calculus.IteratedDeriv.Defs
+public import Mathlib.Analysis.Complex.Exponential
+public import Mathlib.MeasureTheory.Measure.CharacteristicFunction.Basic
+public import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap
+public import Mathlib.Topology.Algebra.InfiniteSum.Basic
+public import Mathlib.Analysis.Complex.CauchyIntegral
+public import Mathlib.MeasureTheory.Integral.DominatedConvergence
+public import Mathlib.MeasureTheory.Integral.CircleIntegral
+public import Mathlib.Analysis.Calculus.DiffContOnCl
+public import Mathlib.MeasureTheory.Function.LpSpace.Basic
 public import Mathlib.Algebra.Order.Archimedean.Real.Hom
 public import Mathlib.MeasureTheory.Order.Group.Lattice
 public import Mathlib.Probability.Martingale.Basic
@@ -102,7 +141,6 @@ public import Mathlib.Algebra.Ring.IsFormallyReal
 public import Mathlib.Tactic.NormNum.RealSqrt
 public import Mathlib.Algebra.Order.Star.Real
 public import Mathlib.Analysis.RCLike.Basic
-public import Mathlib.Analysis.SpecificLimits.Basic
 public import Mathlib.Algebra.BigOperators.Ring.Finset
 public import Mathlib.Algebra.Order.Archimedean.Real.Basic
 public import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
@@ -120,8 +158,8 @@ Imports only Mathlib. Every declaration the compared statements depend on is cop
 from `SignatureVolatility/` and from the vendored `MathFin` / `BrownianMotion` libraries, each
 source module in its own section; the compared theorems (`comparator.json` `theorem_names`)
 have their proofs replaced by `sorry`. See `COMPARATOR.md` for what each compared theorem says
-about the paper (proved, refuted, or counterexample) and for the one open problem
-(`affine_riccati_duality`, outside the submitted library).
+about the paper (proved, refuted, or counterexample). No open problems remain; the
+refutations are explained in `Writeup/narratives/`.
 -/
 
 set_option warn.sorry false
@@ -3110,6 +3148,77 @@ end
 end
 
 section
+-- source module: SignatureVolatility.SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
+run_cmd Lean.modifyEnv fun env => Lean.Meta.auxLemmasExt.setState env {}
+
+/-! ## from `SignatureVolatility.SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample` -/
+@[expose] public section
+
+open MeasureTheory Filter Topology Set
+open scoped BigOperators Classical ENNReal NNReal
+
+namespace SignatureVolatility
+
+open ExtTensorAlgebra
+
+variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P]
+
+theorem not_affine_riccati_duality_mpr (M : SignatureVolatilityModel)
+    (B : MultiBrownian Ω P M.d) :
+    ¬ ∀ u₀ : FreeTensorAlgebra (M.d + 1),
+      SignatureTransformFinite P (paperSetup B M.hT) u₀.1 →
+      Nonempty (ClassicalRiccatiSolution M.w M.T riccatiOp u₀.1) →
+      ∃ sol : ClassicalRiccatiSolution M.w M.T riccatiOp u₀.1,
+        ∀ t ∈ Icc 0 M.T,
+          Integrable (fun ω => Real.exp (dualPairing u₀.1
+            ((paperSetup B M.hT).W_hat M.T ω))) P ∧
+          P[fun ω => Real.exp (dualPairing u₀.1 ((paperSetup B M.hT).W_hat M.T ω)) |
+            (paperSetup B M.hT).signatureFiltration.σAlg t] =ᵐ[P]
+            fun ω => Real.exp (dualPairing (sol.ψ (M.T - t))
+              ((paperSetup B M.hT).W_hat t ω)) := by
+  sorry
+end SignatureVolatility
+end
+
+end
+
+section
+-- source module: SignatureVolatility.SignatureRiccatiKit.AffineRiccatiDuality
+run_cmd Lean.modifyEnv fun env => Lean.Meta.auxLemmasExt.setState env {}
+
+/-! ## from `SignatureVolatility.SignatureRiccatiKit.AffineRiccatiDuality` -/
+@[expose] public section
+
+open MeasureTheory Set
+
+namespace SignatureVolatility
+
+variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P]
+
+/-- The paper's affine / Riccati iff (Theorem 4.2(ii)) is false as a statement over all
+finitely supported `u₀` with finite signature transform. This follows from
+`not_affine_riccati_duality_mpr` (the `←` direction already fails), with no added assumptions. -/
+theorem not_affine_riccati_duality (M : SignatureVolatilityModel)
+    (B : MultiBrownian Ω P M.d) :
+    ¬ ∀ u₀ : ExtTensorAlgebra.FreeTensorAlgebra (M.d + 1),
+      SignatureTransformFinite P (paperSetup B M.hT) u₀.1 →
+      ((∃ sol : ClassicalRiccatiSolution M.w M.T riccatiOp u₀.1,
+          ∀ t ∈ Icc 0 M.T,
+            Integrable (fun ω => Real.exp (dualPairing u₀.1
+                ((paperSetup B M.hT).W_hat M.T ω))) P ∧
+            P[fun ω => Real.exp (dualPairing u₀.1
+                ((paperSetup B M.hT).W_hat M.T ω)) |
+              (paperSetup B M.hT).signatureFiltration.σAlg t] =ᵐ[P]
+              fun ω => Real.exp (dualPairing (sol.ψ (M.T - t))
+                ((paperSetup B M.hT).W_hat t ω))) ↔
+        Nonempty (ClassicalRiccatiSolution M.w M.T riccatiOp u₀.1)) := by
+  sorry
+end SignatureVolatility
+end
+
+end
+
+section
 -- source module: SignatureVolatility.SignatureRiccatiKit.AffineRiccatiDualityMp
 run_cmd Lean.modifyEnv fun env => Lean.Meta.auxLemmasExt.setState env {}
 
@@ -3181,6 +3290,69 @@ theorem theorem_B_mp (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
               fun ω => Real.exp (dualPairing (rSol.ψ (M.T - t))
                 ((paperSetup B M.hT).W_hat t ω))) →
         Nonempty (ClassicalRiccatiSolution M.w M.T riccatiOp u₀.1)) := by
+  sorry
+end SignatureVolatility
+end
+
+end
+
+section
+-- source module: SignatureVolatility.TheoremBMpr
+run_cmd Lean.modifyEnv fun env => Lean.Meta.auxLemmasExt.setState env {}
+
+/-! ## from `SignatureVolatility.TheoremBMpr` -/
+@[expose] public section
+
+open MeasureTheory Set
+
+namespace SignatureVolatility
+
+variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P]
+
+/-- The paper's `←` direction of Theorem B's Riccati clause is false as a statement over all
+finitely supported `u₀` with finite signature transform. This is the same claim as
+`not_affine_riccati_duality_mpr`; the `HypH3` hypothesis of the old wrapper is unused. -/
+theorem not_theorem_B_mpr (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
+    (_h3 : HypH3 P M.T (SignatureVolatilityModel.sigma M (paperSetup B M.hT))) :
+    ¬ ∀ u₀ : ExtTensorAlgebra.FreeTensorAlgebra (M.d + 1),
+      SignatureTransformFinite P (paperSetup B M.hT) u₀.1 →
+      Nonempty (ClassicalRiccatiSolution M.w M.T riccatiOp u₀.1) →
+      ∃ rSol : ClassicalRiccatiSolution M.w M.T riccatiOp u₀.1,
+        ∀ t ∈ Icc 0 M.T,
+          Integrable (fun ω => Real.exp (dualPairing u₀.1
+              ((paperSetup B M.hT).W_hat M.T ω))) P ∧
+          P[fun ω => Real.exp (dualPairing u₀.1
+              ((paperSetup B M.hT).W_hat M.T ω)) |
+            (paperSetup B M.hT).signatureFiltration.σAlg t] =ᵐ[P]
+            fun ω => Real.exp (dualPairing (rSol.ψ (M.T - t))
+              ((paperSetup B M.hT).W_hat t ω)) := by
+  sorry
+/-- The paper's Theorem B is false: its conjunction includes the universal Riccati iff, which
+fails. The martingale, NFLVR and special-semimartingale clauses are true (`theorem_B_mp`); the
+failure is only the `←` direction of the iff. -/
+theorem not_theorem_B (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
+    (_h3 : HypH3 P M.T (SignatureVolatilityModel.sigma M (paperSetup B M.hT))) :
+    ¬ ∃ sol : SignaturePriceSolution M (paperSetup B M.hT)
+          (itoCalculusKit_of_mathfin B M.hT),
+        (∀ ⦃s t : ℝ⦄, 0 ≤ s → s ≤ t → t ≤ M.T →
+          Integrable (sol.S t) P ∧
+          P[sol.S t | (paperSetup B M.hT).signatureFiltration.σAlg s] =ᵐ[P] sol.S s) ∧
+        SatisfiesNFLVR P (AdmissibleGainsUnderP P) ∧
+        (∀ I : Word (M.d + 1),
+          Nonempty (IsSpecialSemimartingale P (paperSetup B M.hT).signatureFiltration M.T
+            (fun t ω => ((paperSetup B M.hT).W_hat t ω).coeff I))) ∧
+        (∀ u₀ : ExtTensorAlgebra.FreeTensorAlgebra (M.d + 1),
+          SignatureTransformFinite P (paperSetup B M.hT) u₀.1 →
+          ((∃ rSol : ClassicalRiccatiSolution M.w M.T riccatiOp u₀.1,
+              ∀ t ∈ Icc 0 M.T,
+                Integrable (fun ω => Real.exp (dualPairing u₀.1
+                    ((paperSetup B M.hT).W_hat M.T ω))) P ∧
+                P[fun ω => Real.exp (dualPairing u₀.1
+                    ((paperSetup B M.hT).W_hat M.T ω)) |
+                  (paperSetup B M.hT).signatureFiltration.σAlg t] =ᵐ[P]
+                  fun ω => Real.exp (dualPairing (rSol.ψ (M.T - t))
+                    ((paperSetup B M.hT).W_hat t ω))) ↔
+            Nonempty (ClassicalRiccatiSolution M.w M.T riccatiOp u₀.1))) := by
   sorry
 end SignatureVolatility
 end

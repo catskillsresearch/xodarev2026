@@ -228,8 +228,8 @@ doc = ("\n/-!\n# Palomar Challenge (statement of record)\n\n"
        "from `SignatureVolatility/` and from the vendored `MathFin` / `BrownianMotion` libraries, each\n"
        "source module in its own section; the compared theorems (`comparator.json` `theorem_names`)\n"
        "have their proofs replaced by `sorry`. See `COMPARATOR.md` for what each compared theorem says\n"
-       "about the paper (proved, refuted, or counterexample) and for the one open problem\n"
-       "(`affine_riccati_duality`, outside the submitted library).\n-/\n\n"
+       "about the paper (proved, refuted, or counterexample). No open problems remain; the\n"
+       "refutations are explained in `Writeup/narratives/`.\n-/\n\n"
        "set_option warn.sorry false\n")
 text = (header + "module\n\n" + "".join(f"public import {m}\n" for m in ext_imports)
         + "meta import Lean.Meta.Tactic.AuxLemma\n" + doc + AUXDOC)

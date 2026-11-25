@@ -6,4 +6,4 @@
 
 @import "../../../SignatureVolatility/SignatureRiccatiKit.lean"
 
-The open `←` direction `affine_riccati_duality_mpr` lives in a separate module; a proposed (unverified) counterexample is written up in [`AffineRiccatiDualityMpr.md`](AffineRiccatiDualityMpr.md) and in full in [`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.md`](../../../SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMpr.md).
+The paper's `←` direction is false: `not_affine_riccati_duality_mpr` is proved in a separate module; the counterexample is explained in [`AffineRiccatiDualityMpr.md`](AffineRiccatiDualityMpr.md) and in full in [`Writeup/narratives/appendix/carbon_affine_riccati_duality_mpr.md`](../../narratives/appendix/carbon_affine_riccati_duality_mpr.md).

@@ -53,17 +53,16 @@ public import SignatureVolatility.SignatureRiccatiKit.CounterexampleV1Decay
 public import SignatureVolatility.SignatureRiccatiKit.CounterexampleV1CondExp
 
 /-!
-# Proposed counterexample to `affine_riccati_duality_mpr`
+# Counterexample to the paper's `←` affine / Riccati duality
 
-Source: Gemini Carbon (outside opinion, 2026-11-24), filled-in Lean (Parts 1–5).
-Parts 1–3 are sorry-free. Pillars A and D are sorry-free. Pillars B and C are
-assembled here from the piece modules B1–B5 and C1–C3 (each remaining piece
-is a named `sorry` in its own module). Part 5 assembles
-`not_affine_riccati_duality_mpr` from pillars A–D.
-
-This module is not a completed refutation until B1–B5 and C2–C3 are proved
-as well. The tensor family and `v₁` live in `CounterexampleTensor` and
-`CounterexampleV1`.
+Source: Gemini Carbon (outside opinion, 2026-11-24), filled-in Lean (Parts 1–5);
+verbatim text in `Writeup/narratives/appendix/carbon_affine_riccati_duality_mpr.md`,
+short accurate narrative in `Writeup/narratives/affine_riccati_duality_mpr.md`.
+Parts 1–3 and pillars A–D are sorry-free; pillars B and C are assembled here
+from the piece modules B1–B5 and C1–C3. Part 5 assembles
+`not_affine_riccati_duality_mpr` from pillars A–D (axioms: `propext`,
+`Classical.choice`, `Quot.sound`). The tensor family and `v₁` live in
+`CounterexampleTensor` and `CounterexampleV1`.
 -/
 
 @[expose] public section

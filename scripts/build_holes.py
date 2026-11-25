@@ -83,9 +83,9 @@ REFUTED_THEOREMS: dict[str, tuple[str, str]] = {
 }
 
 
-# Documented open problems (optional headline notes). Remaining `sorry`s are the
-# analytic leaves of the counterexample to the paper's affine / Riccati `←` direction;
-# they are discovered automatically from the graph.
+# Documented open problems (optional headline notes). None remain: the paper's affine /
+# Riccati `←` direction is refuted (`not_affine_riccati_duality_mpr`). Any future `sorry`
+# is discovered automatically from the graph.
 OPEN_PROBLEMS: dict[str, str] = {}
 
 
@@ -120,7 +120,7 @@ STATUS_LABELS: dict[str, str] = {
     "SignatureRiccatiKit.Poly4ConstOfLogBdd": "poly4 constant under log lower bound",
     "SignatureRiccatiKit.CounterexampleTensor": "u₀^(λ) tensor family",
     "SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample":
-        "not_affine_riccati_duality_mpr (assembled)",
+        "not_affine_riccati_duality_mpr (proved)",
 }
 STATUS_DETAILS: dict[str, str] = {
     "TheoremB":
@@ -700,14 +700,13 @@ def write_md(data: dict) -> None:
         f"{sum(1 for n in refute_n if n['kind'] == 'half-proved')} half-proved theorem(s). "
         "All are finished (no `sorry`) and counted as done.",
         "",
-        "## Open analytic leaves of the affine / Riccati counterexample",
+        "## The affine / Riccati `<-` direction is refuted",
         "",
         "The false theorem `affine_riccati_duality_mpr` has been removed from the library. "
-        "Its negation `not_affine_riccati_duality_mpr` is assembled in "
+        "Its negation `not_affine_riccati_duality_mpr` is proved sorry-free in "
         "`SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample`; "
-        "`not_affine_riccati_duality`, `not_theorem_B_mpr` and `not_theorem_B` hang off that "
-        "module. Those declarations have no `sorry` of their own and stay blocked until the "
-        "remaining analytic leaves close. "
+        "`not_affine_riccati_duality`, `not_theorem_B_mpr` and `not_theorem_B` follow from it. "
+        "All four are compared in `comparator.json` (see `Writeup/narratives/`). "
         "The Challenge and `Solution.lean` have **0** `sorry`. "
         "`theorem_B_mp` (martingale, NFLVR, special semimartingale, `->` Riccati direction) and "
         "`affine_riccati_duality_mp` are sorry-free and compared in `comparator.json`.",

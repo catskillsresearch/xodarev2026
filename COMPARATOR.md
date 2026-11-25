@@ -13,41 +13,62 @@ auxiliary `_proof_N` lemmas, and `itoWordIntegral_le1` is elaborated with
 each module is its own file); neither adds declarations or changes any kernel type or value. To check it, run
 `PALOMAR_QUIET=1 bash scripts/compare_challenge_solution_types.sh`.
 
-| Compared theorem | Paper item | Status (board label) |
+| Compared theorem | Paper item | Status |
 |---|---|---|
 | `theorem_A` | Theorem A | proved |
-| `theorem_B_mp` | Theorem B: martingale on the signature filtration, NFLVR, every coordinate special semimartingale, and the `→` direction of the Riccati transform equivalence | proved (`→` part of Theorem B, see below) |
-| `affine_riccati_duality_mp` | Theorem 4.2(ii), `→` direction: an exponential-affine conditional transform through a classical Riccati solution gives a solution | proved |
-| `not_theorem_C`, `theorem_C_refuted`, `blackScholes_isCompleteWithCalls` | Theorem C | refuted: Black–Scholes is complete with calls, but `N^*_S = ∞` (`CounterExample_TheoremC`) |
-| `theorem_C_depth_infinite`, `theorem_C_blackScholes_depth_infinite` | Theorem C right-hand side | `N^*_S = ∞` whenever `L²(ℱ^S_T)` is infinite-dimensional, and for Black–Scholes |
-| `theorem_D` | Theorem D / Thm 66, GKW projection | proved (`Half_TheoremD`) |
-| `theorem_D_residual_hypothesis_fails` | Theorem D, residual expansion "if `N^*_S < ∞`" | hypothesis fails for Black–Scholes (`CounterExample_TheoremD`) |
-| `not_prop58_blackScholes_depth_zero`, `blackScholes_completenessDepth_eq_top` | Proposition 58 | refuted: Black–Scholes has `N^*_S = ∞`, not 0 (`CounterExample_Prop58`) |
-| `not_lemma77_shuffle_estimate`, `not_lemma77_of_hypH2` | Lemma 77 | refuted for every (H2) weight (`CounterExample_Lemma77`) |
-| `not_lemma78_local_lipschitz` | Lemma 78 | refuted: `ℛ` is unbounded on the unit ball of `T_w` for `w ≡ 1` (`CounterExample_Lemma78`) |
+| `theorem_B_mp` | Theorem B: martingale on the signature filtration, NFLVR, every coordinate special semimartingale, and the `→` direction of the Riccati transform equivalence | proved (all of Theorem B except the `←` Riccati direction) |
+| `affine_riccati_duality_mp` | Theorem 4.2(ii), `→` direction | proved |
+| `not_affine_riccati_duality_mpr` | Theorem 4.2(ii), `←` direction | **refuted** |
+| `not_affine_riccati_duality` | Theorem 4.2(ii), the iff | **refuted** (corollary) |
+| `not_theorem_B_mpr`, `not_theorem_B` | Theorem B's `←` Riccati clause; full Theorem B | **refuted** (corollaries) |
+| `not_theorem_C`, `theorem_C_refuted`, `blackScholes_isCompleteWithCalls` | Theorem C (Thm 56) | **refuted** for Black–Scholes |
+| `theorem_C_depth_infinite`, `theorem_C_blackScholes_depth_infinite` | Theorem C right-hand side | proved: `N^*_S = ∞` whenever `L²(ℱ^S_T)` is infinite-dimensional, and for Black–Scholes |
+| `theorem_D` | Theorem D / Thm 66, GKW projection | proved |
+| `theorem_D_residual_hypothesis_fails` | Theorem D, residual expansion "if `N^*_S < ∞`" | hypothesis fails for Black–Scholes |
+| `not_prop58_blackScholes_depth_zero`, `blackScholes_completenessDepth_eq_top` | Proposition 58 | **refuted** |
+| `not_lemma77_shuffle_estimate`, `not_lemma77_of_hypH2` | Lemma 77 (B.1) | **refuted** for every weight |
+| `not_lemma78_local_lipschitz` | Lemma 78 (B.2) | **refuted** for `w ≡ 1` |
 
 The other `theorem_names` entries are supporting facts: Itô/Doléans kit, Brownian driver, and
 signature properties. They sit in the dependency closure of the statements above, so the
 Solution must prove them too.
 
-**Theorem B is split.** `theorem_B_mp` (`SignatureVolatility/TheoremB.lean`) is everything
-proved: the martingale, NFLVR and special-semimartingale conclusions and the `→` direction of
-part (ii)'s Riccati equivalence; it is compared. The `←` direction and the full paper
-conjunction are false as universal statements. Their negations `not_theorem_B_mpr` and
-`not_theorem_B` are in `SignatureVolatility/TheoremBMpr.lean` and are not compared; they hang
-off the counterexample to the `←` direction and stay blocked until that counterexample's
-remaining analytic leaves close.
+**Nothing is open.** Every paper claim is either proved at paper strength or refuted by a
+compared Lean theorem. The library and `Solution.lean` have no `sorry` (the Challenge's compared
+proofs are `sorry` by design), and there are no `axiom` declarations. The earlier
+`OpenProblems` packaging has been retired. The false `affine_riccati_duality_mpr`, the iff
+`affine_riccati_duality`, the kit constructor `signatureRiccatiKit_of_setup`, `theorem_B_mpr` and
+the full `theorem_B` are not in the library; their negations are.
 
-**The paper's `←` duality is false (not compared).** The affine / Riccati duality (paper Thm
-4.2(ii), p. 21; proof §4.4, p. 23) is split. The `→` direction `affine_riccati_duality_mp` is
-proved and compared (`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMp.lean`).
-The `←` direction is false as a statement over all finitely supported `u₀` with finite
-signature transform: `not_affine_riccati_duality_mpr` in
-`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMprCounterexample.lean`. The
-false sorry'd theorem `affine_riccati_duality_mpr` has been removed, as have the iff
-`affine_riccati_duality`, the kit constructor `signatureRiccatiKit_of_setup`, `theorem_B_mpr`,
-and the full `theorem_B`. Their honest negations `not_affine_riccati_duality`,
-`not_theorem_B_mpr` and `not_theorem_B` hang off the counterexample. The paper's argument for
-the `←` direction was already unsupported: H3 and polynomial moment bounds do not give the
-uniform integrability it claims, and its Lemma 4.10 uses the false Lemmas B.1/B.2 (our Lemma
-77/78 counterexamples). The Challenge and `Solution.lean` contain no `sorry`.
+## Why each counterexample works
+
+Full short narratives are in [`Writeup/narratives/`](Writeup/narratives/README.md). Each one
+matches its Lean statement. The verbatim outside (Gemini "Carbon") source for the duality
+refutation is in [`Writeup/narratives/appendix/`](Writeup/narratives/appendix/carbon_affine_riccati_duality_mpr.md).
+
+- **Theorem 4.2(ii) `←` / Theorem B** (`not_affine_riccati_duality_mpr`; for every model `M` and
+  driver `B`).
+  - The counterexample is `u₀^(λ) = 2λe_[1,1,1] − λe_[1,0] − 12λ²e_[1,1,1,1,0]`. It has
+    `ℛ(u₀^(λ)) = 0`, so `ψ ≡ u₀^(λ)` is a global Riccati solution, and `exp⟨u₀^(λ),Ŵ_t⟩` is the
+    Doléans exponential of `∫λW²dW`. So `E exp⟨u₀^(λ),Ŵ_t⟩ ≤ 1`, and the hypotheses hold.
+  - That exponential is not a true martingale: Brownian scaling gives
+    `E[· | ℱ_{t_λ}] = exp⟨u₀^(λ),Ŵ_{t_λ}⟩·v₁(λ^{1/3}W_{t_λ})`, with `v₁ → 0` at `+∞`.
+  - If the identity held for some Riccati solution, for every `λ ≥ 1`, then `log v₁` would agree
+    almost everywhere with an entire function of exponential type 0 and quartic growth. That
+    function would be a polynomial bounded on `(−∞, 0]`, hence constant, which contradicts
+    `v₁ → 0`.
+  - `not_affine_riccati_duality`, `not_theorem_B_mpr` and `not_theorem_B` follow from it.
+    The H3 argument of the Theorem B forms is unused.
+- **Theorem C** (`not_theorem_C`). Black–Scholes is complete, by Brownian martingale
+  representation, since `ℱ^S = ℱ^W`. But `N^*_S = ∞`, because `L²(ℱ^S_T)` is
+  infinite-dimensional while each depth-`N` span is finite-dimensional. So "complete ⇔ `N^*_S < ∞`"
+  fails.
+- **Proposition 58** (`not_prop58_blackScholes_depth_zero`). `W_T` is a function of `S_T`. The
+  events `{W_T ∈ (k, k+1]}` are disjoint and have positive probability, so `L²(ℱ^S_T)` is not the
+  constants, and the depth is `∞ ≠ 0`.
+- **Theorem D residual** (`theorem_D_residual_hypothesis_fails`). The hypothesis `N^*_S < ∞`
+  fails for Black–Scholes, so the clause is vacuous there. The expansion itself is not refuted.
+- **Lemma 77** (`not_lemma77_shuffle_estimate`). We have `ℓ^k ⧢ ℓ = (k+1)ℓ^{k+1}`, so
+  `‖e_{ℓ^k} ⧢ e_ℓ‖_w ≥ (k+1)w(k)`, against `w(k)w(1)`. No constant works, for any weight.
+- **Lemma 78** (`not_lemma78_local_lipschitz`). Take `w ≡ 1` and `u_k = e_{ℓ^{k+1}}`, which has norm 1.
+  `ℛ(u_k)` has coefficient `½·binom(2k,k) ≥ k` at `ℓ^{2k}`, so `ℛ` is unbounded on the unit ball.
