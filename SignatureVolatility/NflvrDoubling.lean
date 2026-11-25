@@ -2125,4 +2125,443 @@ lemma measurable_ite_σAlg {m : MeasurableSpace Ω} {p : Ω → Prop} [Decidable
   rw [hpre]
   exact (hp.inter (hf hs)).union (hp.compl.inter (hg hs))
 
+/-- The path filtration packaged as a Mathlib `Filtration`. -/
+def pathFiltrationM (B : MultiBrownian Ω P 1) :
+    Filtration ℝ (inferInstance : MeasurableSpace Ω) where
+  seq := (pathFiltration B).σAlg
+  mono' := fun _ _ hst => (pathFiltration B).mono hst
+  le' := (pathFiltration B).le_ambient
+
+/-- `B_{max(0,t)}` is `F_t`-measurable for every real `t`. -/
+lemma measurable_bmCoord_max_adapted (B : MultiBrownian Ω P 1) (t : ℝ) :
+    Measurable[(pathFiltration B).σAlg t] (fun ω => bmCoord B (max 0 t) ω) := by
+  by_cases ht : 0 ≤ t
+  · have heq : (fun ω => bmCoord B (max 0 t) ω) = bmCoord B t :=
+      funext fun ω => by rw [max_eq_right ht]
+    rw [heq]
+    exact measurable_W_pathFiltration (T := t) B ⟨t, ht, le_rfl⟩ ⟨0, Nat.succ_pos 0⟩
+  · have heq : (fun ω => bmCoord B (max 0 t) ω) = fun _ => (0 : ℝ) :=
+      funext fun ω => by rw [max_eq_left (le_of_not_ge ht), bmCoord_zero]
+    rw [heq]
+    exact measurable_const_σAlg (m := (pathFiltration B).σAlg t) 0
+
+lemma stronglyAdapted_bmCoord_max (B : MultiBrownian Ω P 1) :
+    StronglyAdapted (pathFiltrationM B) (fun t ω => bmCoord B (max 0 t) ω) :=
+  fun t => (measurable_bmCoord_max_adapted B t).stronglyMeasurable
+
+lemma isStronglyProgressive_bmCoord_max (B : MultiBrownian Ω P 1) :
+    IsStronglyProgressive (pathFiltrationM B) (fun t ω => bmCoord B (max 0 t) ω) :=
+  (stronglyAdapted_bmCoord_max B).isStronglyProgressive_of_continuous
+    (fun ω => continuous_bmCoord_max B ω)
+
+/-- A `[0, T]`-valued `IsStoppingTimeOn` is a Mathlib stopping time of `pathFiltrationM`. -/
+lemma isStoppingTime_pathFiltrationM (B : MultiBrownian Ω P 1) {T : ℝ} {τ : Ω → ℝ}
+    (hτ : IsStoppingTimeOn (pathFiltration B).σAlg T τ) :
+    IsStoppingTime (pathFiltrationM B) (fun ω => (τ ω : WithTop ℝ)) := by
+  intro i
+  have hset : {ω | (τ ω : WithTop ℝ) ≤ (i : WithTop ℝ)} = {ω | τ ω ≤ i} := by
+    ext ω; simp
+  rw [hset]
+  by_cases hi0 : i < 0
+  · have hempty : {ω | τ ω ≤ i} = ∅ :=
+      eq_empty_iff_forall_notMem.mpr fun ω hω =>
+        (not_lt.mpr (hτ.1 ω).1) (hω.trans_lt hi0)
+    rw [hempty]
+    exact @MeasurableSet.empty Ω ((pathFiltration B).σAlg i)
+  · by_cases hiT : T < i
+    · have huniv : {ω | τ ω ≤ i} = Set.univ :=
+        Set.eq_univ_iff_forall.mpr fun ω => (hτ.1 ω).2.trans hiT.le
+      rw [huniv]
+      exact @MeasurableSet.univ Ω ((pathFiltration B).σAlg i)
+    · have hi : i ∈ Icc 0 T := ⟨not_lt.mp hi0, le_of_not_gt hiT⟩
+      exact hτ.2 i hi
+
+/-- Evaluation of `B` at a `[0, T]`-valued stopping time `τ ≤ t` is `F_t`-measurable. -/
+lemma measurable_bmCoord_eval_le (B : MultiBrownian Ω P 1) {T t : ℝ}
+    (_ht : t ∈ Icc 0 T) {τ : Ω → ℝ}
+    (hτ : IsStoppingTimeOn (pathFiltration B).σAlg T τ)
+    (hτ_le : ∀ ω, τ ω ≤ t) :
+    Measurable[(pathFiltration B).σAlg t] (fun ω => bmCoord B (τ ω) ω) := by
+  have hST := isStoppingTime_pathFiltrationM B hτ
+  have hτ_le' : ∀ ω, (τ ω : WithTop ℝ) ≤ (t : WithTop ℝ) := fun ω =>
+    WithTop.coe_le_coe.mpr (hτ_le ω)
+  have hsm :
+      StronglyMeasurable[(pathFiltrationM B) t]
+        (stoppedValue (fun u ω => bmCoord B (max 0 u) ω)
+          (fun ω => (τ ω : WithTop ℝ))) :=
+    stronglyMeasurable_stoppedValue_of_le
+      (isStronglyProgressive_bmCoord_max B) hST hτ_le'
+  have heq :
+      stoppedValue (fun u ω => bmCoord B (max 0 u) ω)
+          (fun ω => (τ ω : WithTop ℝ)) =
+        fun ω => bmCoord B (τ ω) ω := by
+    funext ω
+    have hnn : 0 ≤ τ ω := (hτ.1 ω).1
+    simp [stoppedValue, WithTop.untopA, max_eq_right hnn]
+  rw [← heq]
+  exact hsm.measurable
+
+/-- Arithmetic of measurable functions, with the σ-algebra passed explicitly. -/
+lemma measurable_add_σAlg {m : MeasurableSpace Ω} {f g : Ω → ℝ}
+    (hf : @Measurable Ω ℝ m inferInstance f)
+    (hg : @Measurable Ω ℝ m inferInstance g) :
+    @Measurable Ω ℝ m inferInstance (fun ω => f ω + g ω) :=
+  hf.add hg
+
+lemma measurable_sub_σAlg {m : MeasurableSpace Ω} {f g : Ω → ℝ}
+    (hf : @Measurable Ω ℝ m inferInstance f)
+    (hg : @Measurable Ω ℝ m inferInstance g) :
+    @Measurable Ω ℝ m inferInstance (fun ω => f ω - g ω) :=
+  hf.sub hg
+
+lemma measurable_mul_σAlg {m : MeasurableSpace Ω} {f g : Ω → ℝ}
+    (hf : @Measurable Ω ℝ m inferInstance f)
+    (hg : @Measurable Ω ℝ m inferInstance g) :
+    @Measurable Ω ℝ m inferInstance (fun ω => f ω * g ω) :=
+  hf.mul hg
+
+lemma measurable_div_const_σAlg {m : MeasurableSpace Ω} {f : Ω → ℝ} (c : ℝ)
+    (hf : @Measurable Ω ℝ m inferInstance f) :
+    @Measurable Ω ℝ m inferInstance (fun ω => f ω / c) :=
+  hf.div_const c
+
+lemma measurable_mono_σAlg {m m' : MeasurableSpace Ω} {f : Ω → ℝ}
+    (hf : @Measurable Ω ℝ m inferInstance f) (hle : m ≤ m') :
+    @Measurable Ω ℝ m' inferInstance f :=
+  hf.mono hle le_rfl
+
+/-- Recursive grid wealth `X_n` is `F_{t_n}`-measurable. -/
+lemma measurable_doublingX_adapted (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) :
+    ∀ n, Measurable[(pathFiltration B).σAlg (tGrid T n)]
+      (doublingX (bmCoord B) T n)
+  | 0 => by
+    simp only [doublingX]
+    exact measurable_const_σAlg (m := (pathFiltration B).σAlg (tGrid T 0)) 0
+  | n + 1 => by
+    have hX := measurable_doublingX_adapted B hT n
+    have hX' : Measurable[(pathFiltration B).σAlg (tGrid T (n + 1))]
+        (doublingX (bmCoord B) T n) :=
+      measurable_mono_σAlg hX ((pathFiltration B).mono (tGrid_lt_succ hT n).le)
+    have hC : Measurable[(pathFiltration B).σAlg (tGrid T (n + 1))]
+        (doublingC (bmCoord B) T n) :=
+      measurable_div_const_σAlg _
+        (measurable_sub_σAlg
+          (measurable_const_σAlg
+            (m := (pathFiltration B).σAlg (tGrid T (n + 1))) 1)
+          hX')
+    have hE : MeasurableSet[(pathFiltration B).σAlg (tGrid T (n + 1))]
+        (nonHitPrefix (bmCoord B) T n) :=
+      (pathFiltration B).mono (tGrid_lt_succ hT n).le _
+        ((nonHitPrefix_props B hT).1 n)
+    have hBτ : Measurable[(pathFiltration B).σAlg (tGrid T (n + 1))]
+        (fun ω => bmCoord B (tauHit (bmCoord B) T n ω) ω) :=
+      measurable_bmCoord_eval_le B (tGrid_mem hT (n + 1))
+        (isStoppingTime_tauHit B hT n)
+        fun ω => (tauHit_mem_Icc hT (bmCoord B) n ω).2
+    have hBt : Measurable[(pathFiltration B).σAlg (tGrid T (n + 1))]
+        (bmCoord B (tGrid T n)) :=
+      bmCoord_adapted (T := tGrid T (n + 1)) B
+        ⟨(tGrid_mem hT n).1, (tGrid_lt_succ hT n).le⟩
+    have hinc : Measurable[(pathFiltration B).σAlg (tGrid T (n + 1))] fun ω =>
+        if ω ∈ nonHitPrefix (bmCoord B) T n then
+          doublingC (bmCoord B) T n ω *
+            (bmCoord B (tauHit (bmCoord B) T n ω) ω - bmCoord B (tGrid T n) ω)
+        else 0 :=
+      measurable_ite_σAlg
+        (m := (pathFiltration B).σAlg (tGrid T (n + 1))) hE
+        (measurable_mul_σAlg hC (measurable_sub_σAlg hBτ hBt))
+        (measurable_const_σAlg
+          (m := (pathFiltration B).σAlg (tGrid T (n + 1))) 0)
+    have heq : doublingX (bmCoord B) T (n + 1) =
+        fun ω => doublingX (bmCoord B) T n ω +
+          (if ω ∈ nonHitPrefix (bmCoord B) T n then
+            doublingC (bmCoord B) T n ω *
+              (bmCoord B (tauHit (bmCoord B) T n ω) ω -
+                bmCoord B (tGrid T n) ω)
+           else 0) := by
+      funext ω
+      simp [doublingX, doublingC]
+    rw [heq]
+    exact measurable_add_σAlg hX' hinc
+
+/-- The doubling weight `c_n` is `F_{t_n}`-measurable. -/
+lemma measurable_doublingC_adapted (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) (n : ℕ) :
+    Measurable[(pathFiltration B).σAlg (tGrid T n)]
+      (doublingC (bmCoord B) T n) :=
+  measurable_div_const_σAlg _
+    (measurable_sub_σAlg
+      (measurable_const_σAlg
+        (m := (pathFiltration B).σAlg (tGrid T n)) 1)
+      (measurable_doublingX_adapted B hT n))
+
+/-- A left-open stopped block `f · 1_{(a, τ] ∩ (0, T]}` with `f` measurable at time `a`
+is predictable. -/
+lemma measurable_uncurry_stoppedBlock {σAlg : ℝ → MeasurableSpace Ω} {T a : ℝ}
+    (hT : 0 < T) (ha0 : 0 ≤ a) (haT : a ≤ T) (τ : Ω → ℝ)
+    (hτ : IsStoppingTimeOn σAlg T τ) {f : Ω → ℝ}
+    (hf : Measurable[σAlg a] f) :
+    Measurable[predSigma σAlg T]
+      (fun p : ℝ × Ω =>
+        if a < p.1 ∧ p.1 ≤ τ p.2 ∧ p.1 ≤ T then f p.2 else 0) := by
+  intro s hs
+  set I : Set (ℝ × Ω) := {p | a < p.1 ∧ p.1 ≤ τ p.2 ∧ p.1 ≤ T}
+  have hI : MeasurableSet[predSigma σAlg T] I :=
+    measurableSet_stochInterval hT ha0 haT τ hτ
+  have hpre :
+      (fun p : ℝ × Ω =>
+        if a < p.1 ∧ p.1 ≤ τ p.2 ∧ p.1 ≤ T then f p.2 else 0) ⁻¹' s =
+        (I ∩ (Ioc a T ×ˢ (f ⁻¹' s))) ∪
+          (if 0 ∈ s then Iᶜ else (∅ : Set (ℝ × Ω))) := by
+    ext p
+    by_cases hpI : a < p.1 ∧ p.1 ≤ τ p.2 ∧ p.1 ≤ T
+    · have hp : p ∈ I := hpI
+      have hpIoc : p.1 ∈ Ioc a T := ⟨hpI.1, hpI.2.2⟩
+      by_cases hfmem : f p.2 ∈ s
+      · simp [hpI, hp, hpIoc, hfmem]
+      · simp [hpI, hp, hpIoc, hfmem]
+    · have hp : p ∉ I := hpI
+      by_cases h0 : 0 ∈ s
+      · simp [hpI, hp, h0]
+      · simp [hpI, hp, h0]
+  rw [hpre]
+  have hrect : MeasurableSet[predSigma σAlg T] (Ioc a T ×ˢ (f ⁻¹' s)) :=
+    measurableSet_predRect ha0 haT le_rfl (hf hs)
+  have hite : MeasurableSet[predSigma σAlg T]
+      (if 0 ∈ s then Iᶜ else (∅ : Set (ℝ × Ω))) := by
+    by_cases h0 : 0 ∈ s
+    · rw [ite_eq_left h0]
+      exact hI.compl
+    · rw [ite_eq_right h0]
+      exact @MeasurableSet.empty (ℝ × Ω) (predSigma σAlg T)
+  exact (hI.inter hrect).union hite
+
+/-- The n-th doubling block, including the prefix indicator, is predictable. -/
+lemma measurable_uncurry_doublingK_block (B : MultiBrownian Ω P 1) {T : ℝ}
+    (hT : 0 < T) (n : ℕ) :
+    Measurable[predSigma (pathFiltration B).σAlg T]
+      (fun p : ℝ × Ω =>
+        if p.2 ∈ nonHitPrefix (bmCoord B) T n ∧ tGrid T n < p.1 ∧
+            p.1 ≤ tauHit (bmCoord B) T n p.2
+          then doublingC (bmCoord B) T n p.2 else 0) := by
+  have ha0 : 0 ≤ tGrid T n := (tGrid_mem hT n).1
+  have haT : tGrid T n ≤ T := (tGrid_mem hT n).2
+  have hf : Measurable[(pathFiltration B).σAlg (tGrid T n)]
+      (fun ω =>
+        if ω ∈ nonHitPrefix (bmCoord B) T n then
+          doublingC (bmCoord B) T n ω else 0) :=
+    measurable_ite_σAlg (m := (pathFiltration B).σAlg (tGrid T n))
+      ((nonHitPrefix_props B hT).1 n)
+      (measurable_doublingC_adapted B hT n)
+      (measurable_const_σAlg
+        (m := (pathFiltration B).σAlg (tGrid T n)) 0)
+  have hblock :=
+    measurable_uncurry_stoppedBlock hT ha0 haT
+      (tauHit (bmCoord B) T n) (isStoppingTime_tauHit B hT n) hf
+  have heq :
+      (fun p : ℝ × Ω =>
+        if p.2 ∈ nonHitPrefix (bmCoord B) T n ∧ tGrid T n < p.1 ∧
+            p.1 ≤ tauHit (bmCoord B) T n p.2
+          then doublingC (bmCoord B) T n p.2 else 0) =
+        fun p =>
+          if tGrid T n < p.1 ∧ p.1 ≤ tauHit (bmCoord B) T n p.2 ∧ p.1 ≤ T then
+            (if p.2 ∈ nonHitPrefix (bmCoord B) T n then
+              doublingC (bmCoord B) T n p.2 else 0)
+          else 0 := by
+    funext p
+    by_cases hE : p.2 ∈ nonHitPrefix (bmCoord B) T n
+    · by_cases hlt : tGrid T n < p.1
+      · by_cases hτ : p.1 ≤ tauHit (bmCoord B) T n p.2
+        · by_cases hsT : p.1 ≤ T
+          · simp [hE, hlt, hτ, hsT]
+          · have hτle : tauHit (bmCoord B) T n p.2 ≤ T :=
+              (tauHit_mem_Icc hT (bmCoord B) n p.2).2.trans
+                (tGrid_mem hT (n + 1)).2
+            have : ¬ p.1 ≤ tauHit (bmCoord B) T n p.2 :=
+              not_le.mpr (lt_of_le_of_lt hτle (not_le.mp hsT))
+            exact (this hτ).elim
+        · simp [hE, hlt, hτ]
+      · simp [hE, hlt]
+    · simp [hE]
+  rwa [heq]
+
+/-- If `s ∉ (0, T)`, no doubling block is live at time `s`. -/
+lemma doublingK_term_eq_zero_outside_Ioo {T s : ℝ} (hT : 0 < T) (B : ℝ → Ω → ℝ)
+    (hs : s ∉ Ioo 0 T) (n : ℕ) (ω : Ω) :
+    ¬ (ω ∈ nonHitPrefix B T n ∧ tGrid T n < s ∧ s ≤ tauHit B T n ω) := by
+  intro hterm
+  by_cases hpos : 0 < s
+  · have hsT : ¬ s < T := fun hst => hs ⟨hpos, hst⟩
+    have hleτ : ¬ s ≤ tauHit B T n ω := by
+      have hτlt : tauHit B T n ω < T :=
+        lt_of_le_of_lt (tauHit_mem_Icc hT B n ω).2 (tGrid_lt_T hT (n + 1))
+      exact not_le.mpr (lt_of_lt_of_le hτlt (not_lt.mp hsT))
+    exact hleτ hterm.2.2
+  · have hlt : ¬ tGrid T n < s :=
+      not_lt.mpr ((not_lt.mp hpos).trans (tGrid_mem hT n).1)
+    exact hlt hterm.2.1
+
+/-- If `s ∈ (0, T)` and `n` is past the unique live grid interval, the block vanishes. -/
+lemma doublingK_term_eq_zero_of_nGrid_le {T s : ℝ} (hT : 0 < T)
+    (hs0 : 0 < s) (hsT : s < T) (B : ℝ → Ω → ℝ) {n : ℕ}
+    (hn : nGrid T s + 1 ≤ n) (ω : Ω) :
+    ¬ (ω ∈ nonHitPrefix B T n ∧ tGrid T n < s ∧ s ≤ tauHit B T n ω) := by
+  have hmono : tGrid T (nGrid T s + 1) ≤ tGrid T n := tGrid_mono hT hn
+  exact fun hterm =>
+    (not_lt.mpr ((nGrid_spec hT hs0 hsT).2.trans hmono)) hterm.2.1
+
+/-- Partial sums of the doubling blocks converge pointwise to `doublingK`. -/
+lemma tendsto_partial_doublingK {T : ℝ} (hT : 0 < T) (B : ℝ → Ω → ℝ) (s : ℝ) (ω : Ω) :
+    Tendsto (fun N : ℕ =>
+        ∑ n ∈ Finset.range N,
+          (if ω ∈ nonHitPrefix B T n ∧ tGrid T n < s ∧ s ≤ tauHit B T n ω
+            then doublingC B T n ω else 0))
+      atTop (𝓝 (doublingK B T s ω)) := by
+  by_cases hs : s ∈ Ioo 0 T
+  · have hsum : doublingK B T s ω =
+        ∑ n ∈ Finset.range (nGrid T s + 1),
+          (if ω ∈ nonHitPrefix B T n ∧ tGrid T n < s ∧ s ≤ tauHit B T n ω
+            then doublingC B T n ω else 0) :=
+      doublingK_eq_sum_nGrid hT hs.1 hs.2 B ω
+    refine tendsto_atTop_of_eventually_const (i₀ := nGrid T s + 1) fun N hN => ?_
+    rw [hsum]
+    exact (Finset.sum_subset (Finset.range_subset_range.mpr hN) fun n hnN hnG => by
+      have hn : nGrid T s + 1 ≤ n := by
+        simp only [Finset.mem_range, not_lt] at hnG
+        exact hnG
+      simp [doublingK_term_eq_zero_of_nGrid_le hT hs.1 hs.2 B hn ω]).symm
+  · have h0 : doublingK B T s ω = 0 :=
+      doublingK_eq_zero_of_not_mem_Ioo hT B hs ω
+    have hterm : ∀ N,
+        (∑ n ∈ Finset.range N,
+          (if ω ∈ nonHitPrefix B T n ∧ tGrid T n < s ∧ s ≤ tauHit B T n ω
+            then doublingC B T n ω else 0)) = 0 := fun N =>
+      Finset.sum_eq_zero fun n _ => by
+        simp [doublingK_term_eq_zero_outside_Ioo hT B hs n ω]
+    rw [h0]
+    have hfun :
+        (fun N : ℕ =>
+          ∑ n ∈ Finset.range N,
+            (if ω ∈ nonHitPrefix B T n ∧ tGrid T n < s ∧ s ≤ tauHit B T n ω
+              then doublingC B T n ω else 0)) = fun _ => 0 :=
+      funext hterm
+    rw [hfun]
+    exact tendsto_const_nhds
+
+/-- The doubling integrand is predictable on `[0, T]`. -/
+lemma isPredictableProcess_doublingK (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) :
+    IsPredictableProcess (pathFiltration B).σAlg T (doublingK (bmCoord B) T) := by
+  let f : ℕ → ℝ × Ω → ℝ := fun N p =>
+    ∑ n ∈ Finset.range N,
+      (if p.2 ∈ nonHitPrefix (bmCoord B) T n ∧ tGrid T n < p.1 ∧
+          p.1 ≤ tauHit (bmCoord B) T n p.2
+        then doublingC (bmCoord B) T n p.2 else 0)
+  have hf : ∀ N, Measurable[predSigma (pathFiltration B).σAlg T] (f N) :=
+    fun N => Finset.measurable_fun_sum _ fun n _ =>
+      measurable_uncurry_doublingK_block B hT n
+  have hlim : Tendsto f atTop (𝓝 (Function.uncurry (doublingK (bmCoord B) T))) :=
+    tendsto_pi_nhds.mpr fun p => tendsto_partial_doublingK hT (bmCoord B) p.1 p.2
+  exact @measurable_of_tendsto_metrizable (ℝ × Ω) ℝ
+    (predSigma (pathFiltration B).σAlg T) _ _ _ _ f
+    (Function.uncurry (doublingK (bmCoord B) T)) hf hlim
+
+/-- For each path, `s ↦ K_s(ω)` is Borel-measurable on `ℝ`. -/
+lemma measurable_doublingK_slice {T : ℝ} (hT : 0 < T) (B : ℝ → Ω → ℝ) (ω : Ω) :
+    Measurable (fun s : ℝ => doublingK B T s ω) := by
+  let f : ℕ → ℝ → ℝ := fun N s =>
+    ∑ n ∈ Finset.range N,
+      (if ω ∈ nonHitPrefix B T n ∧ tGrid T n < s ∧ s ≤ tauHit B T n ω
+        then doublingC B T n ω else 0)
+  have hf : ∀ N, Measurable (f N) := fun N =>
+    Finset.measurable_fun_sum _ fun n _ => by
+      have hset : MeasurableSet
+          {s : ℝ | ω ∈ nonHitPrefix B T n ∧ tGrid T n < s ∧
+            s ≤ tauHit B T n ω} := by
+        by_cases hE : ω ∈ nonHitPrefix B T n
+        · have heq :
+              {s : ℝ | ω ∈ nonHitPrefix B T n ∧ tGrid T n < s ∧
+                s ≤ tauHit B T n ω} =
+              Ioc (tGrid T n) (tauHit B T n ω) := by
+            ext s; simp [hE]
+          rw [heq]
+          exact measurableSet_Ioc
+        · have heq :
+              {s : ℝ | ω ∈ nonHitPrefix B T n ∧ tGrid T n < s ∧
+                s ≤ tauHit B T n ω} = ∅ := by
+            ext s; simp [hE]
+          rw [heq]
+          exact MeasurableSet.empty
+      exact Measurable.ite hset measurable_const measurable_const
+  exact measurable_of_tendsto_metrizable hf
+    (tendsto_pi_nhds.mpr fun s => tendsto_partial_doublingK hT B s ω)
+
+/-- Pathwise `∫₀ᵀ K_s² ds < ∞` upgrades to `IntegrableOn` of `K²` on `[0, T]`. -/
+lemma integrableOn_doublingK_sq (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) :
+    ∀ᵐ ω ∂P, IntegrableOn
+      (fun s => doublingK (bmCoord B) T s ω ^ 2) (Icc 0 T) volume := by
+  filter_upwards [doublingK_sq_int_finite_ae B hT] with ω hfin
+  refine ⟨((measurable_doublingK_slice hT (bmCoord B) ω).pow_const 2).aestronglyMeasurable, ?_⟩
+  unfold HasFiniteIntegral
+  have key : ∀ s, ‖(fun u => doublingK (bmCoord B) T u ω ^ 2) s‖ₑ =
+      ENNReal.ofReal (doublingK (bmCoord B) T s ω ^ 2) := fun s =>
+    Real.enorm_eq_ofReal (sq_nonneg _)
+  convert hfin
+  exact key _
+
+/-- The doubling strategy is S-admissible for the constant coefficients `S = σ = 1`. -/
+lemma sAdmissible_doublingK (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) :
+    SAdmissible (pathFiltration B).σAlg P
+      (fun _ _ => (1 : ℝ)) (fun _ _ => (1 : ℝ)) T
+      (doublingK (bmCoord B) T) := by
+  refine ⟨isPredictableProcess_doublingK B hT, ?_⟩
+  filter_upwards [integrableOn_doublingK_sq B hT] with ω hInt
+  simpa using hInt
+
+/-- Literal NFLVR (no lower bound on wealth) fails for Brownian motion: the doubling
+strategy is S-admissible, its terminal wealth is `1` almost surely, and this is a
+non-trivial free lunch in the Delbaen–Schachermayer cone. -/
+theorem theorem_literal_nflvr_fails (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) :
+    ¬ SatisfiesNFLVR_DS P
+        (LiteralGains (pathFiltration B).σAlg P (bmCoord B)
+          (fun _ _ => (1 : ℝ)) (fun _ _ => (1 : ℝ)) T) := by
+  intro hNFLVR
+  have hadm := sAdmissible_doublingK B hT
+  have hIto : IsItoIntegral P (bmCoord B)
+      (fun t ω => doublingK (bmCoord B) T t ω * (1 : ℝ) * (1 : ℝ))
+      (doublingWealth (bmCoord B) T) T := by
+    have heq : (fun t ω => doublingK (bmCoord B) T t ω * (1 : ℝ) * (1 : ℝ)) =
+        doublingK (bmCoord B) T := by
+      funext t ω; ring
+    rw [heq]
+    exact isItoIntegral_doublingWealth B hT
+  have hG : (fun ω => doublingWealth (bmCoord B) T T ω) ∈
+      LiteralGains (pathFiltration B).σAlg P (bmCoord B)
+        (fun _ _ => (1 : ℝ)) (fun _ _ => (1 : ℝ)) T :=
+    ⟨doublingK (bmCoord B) T, doublingWealth (bmCoord B) T, hadm, hIto, rfl⟩
+  have hone : (fun _ => (1 : ℝ)) ∈
+      nflvrCone P
+        (LiteralGains (pathFiltration B).σAlg P (bmCoord B)
+          (fun _ _ => (1 : ℝ)) (fun _ _ => (1 : ℝ)) T) := by
+    refine ⟨memLp_const (p := ∞) (1 : ℝ),
+      (fun ω => doublingWealth (bmCoord B) T T ω), hG,
+      (fun _ => (0 : ℝ)), Eventually.of_forall fun _ => le_rfl, ?_⟩
+    filter_upwards [doublingWealth_T_eq_one_ae B hT] with ω hω
+    simp [hω]
+  have hws : InWeakStarClosure P
+      (nflvrCone P
+        (LiteralGains (pathFiltration B).σAlg P (bmCoord B)
+          (fun _ _ => (1 : ℝ)) (fun _ _ => (1 : ℝ)) T))
+      (fun _ => (1 : ℝ)) := by
+    refine ⟨memLp_const (p := ∞) (1 : ℝ), fun ε hε gs _hgs => ?_⟩
+    refine ⟨fun _ => (1 : ℝ), hone, memLp_const (p := ∞) (1 : ℝ), fun g _hg => ?_⟩
+    have : |∫ ω, ((1 : ℝ) - 1) * g ω ∂P| = 0 := by
+      simp
+    simpa [this] using hε
+  have hzero := hNFLVR (fun _ => (1 : ℝ))
+    (Eventually.of_forall fun _ => zero_le_one) hws
+  have huniv : {ω : Ω | (1 : ℝ) ≠ 0} = Set.univ := by
+    ext ω; simp
+  have hμ : P {ω : Ω | ¬ (1 : ℝ) = 0} = 0 := ae_iff.mp hzero
+  rw [huniv, measure_univ] at hμ
+  exact one_ne_zero hμ
+
 end SignatureVolatility
