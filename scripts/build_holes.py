@@ -180,6 +180,7 @@ VERIFIED: set[str] = {
     "SignatureRiccatiKit.CondSigPoly",
     "SignatureRiccatiKit.CondSigPolyIdentification",
     "SignatureRiccatiKit.EntireTransfer",
+    "SignatureRiccatiKit.CondExpMulIndepDisintegrate",
     "SignatureRiccatiKit.CounterexampleV1CondExp",
     "SignatureRiccatiKit.BrownianScalingShiftedExponent",
     "SignatureRiccatiKit.SummableNormTermAndBound",

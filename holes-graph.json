@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-25T03:42:38Z",
-  "sorryCount": 1,
+  "updated": "2026-11-25T04:14:03Z",
+  "sorryCount": 0,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done (proved, counterexample or refuted; no sorry). Green = open. Grey = blocked. Counterexample / refutation labels are shown as text on the node.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: SignatureRiccatiKit.CondExpMulIndepDisintegrate."
+    "Open tips: (none)."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -1881,9 +1881,9 @@
       "label": "not_affine_riccati_duality",
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDuality.lean",
-      "status": "blocked",
+      "status": "done",
       "kind": null,
-      "blocker": "needs SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample",
+      "blocker": null,
       "detail": "not_affine_riccati_duality: the paper iff fails as a statement over all finitely supported u0 with finite signature transform. Proved from not_affine_riccati_duality_mpr. The kit constructor signatureRiccatiKit_of_setup has been dropped. No `sorry` in this file.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -1905,10 +1905,10 @@
       "label": "not_affine_riccati_duality_mpr (assembled)",
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMprCounterexample.lean",
-      "status": "blocked",
-      "kind": null,
-      "blocker": "needs SignatureRiccatiKit.CondExpMulIndepDisintegrate, SignatureRiccatiKit.CounterexampleV1CondExp",
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "status": "done",
+      "kind": "counterexample",
+      "blocker": null,
+      "detail": "COUNTEREXAMPLE to a paper claim.",
       "hasSorry": false,
       "paperKitGoal": false
     },
@@ -1965,11 +1965,11 @@
       "label": "B5b condExp disintegration",
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit/CondExpMulIndepDisintegrate.lean",
-      "status": "open",
+      "status": "done",
       "kind": null,
       "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
-      "hasSorry": true,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -2037,9 +2037,9 @@
       "label": "B5 cond. exp. factorisation",
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit/CounterexampleV1CondExp.lean",
-      "status": "blocked",
+      "status": "done",
       "kind": null,
-      "blocker": "needs SignatureRiccatiKit.CondExpMulIndepDisintegrate",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -2361,9 +2361,9 @@
       "label": "not_theorem_B_mpr, not_theorem_B",
       "section": 1,
       "file": "SignatureVolatility/TheoremBMpr.lean",
-      "status": "blocked",
+      "status": "done",
       "kind": null,
-      "blocker": "needs SignatureRiccatiKit.AffineRiccatiDuality",
+      "blocker": null,
       "detail": "not_theorem_B_mpr and not_theorem_B: the paper's <- Riccati clause and the full Theorem B conjunction are false as universal statements. Proved from not_affine_riccati_duality_mpr / not_affine_riccati_duality. No `sorry` in this file.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -3882,7 +3882,12 @@
       "kind": "hard"
     },
     {
-      "from": "SignatureRiccatiKit.CounterexampleV1",
+      "from": "SignatureRiccatiKit.CounterexampleV1PosLe",
+      "to": "SignatureRiccatiKit.CondExpMulIndepDisintegrate",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.BrownianScalingShiftedExponent",
       "to": "SignatureRiccatiKit.CondExpMulIndepDisintegrate",
       "kind": "hard"
     },
@@ -3944,11 +3949,6 @@
     {
       "from": "SignatureVolatilityModel",
       "to": "SignatureRiccatiKit.CounterexampleV1",
-      "kind": "hard"
-    },
-    {
-      "from": "SignatureRiccatiKit.BrownianScalingShiftedExponent",
-      "to": "SignatureRiccatiKit.CounterexampleV1CondExp",
       "kind": "hard"
     },
     {

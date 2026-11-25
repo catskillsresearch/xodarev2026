@@ -240,6 +240,7 @@ ItoCalculusKit.JointPast -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.JointPast -hard-> ItoCalculusKit.MartingaleTransform
 ItoCalculusKit.JointPast -hard-> SignatureRiccatiKit.BrownianScalingShiftedExponent
 ItoCalculusKit.JointPast -hard-> SignatureRiccatiKit.ComplexTilt
+ItoCalculusKit.JointPast -hard-> SignatureRiccatiKit.CondExpMulIndepDisintegrate
 ItoCalculusKit.KitRaw -hard-> ItoCalculusKit.RiemannConvergence
 ItoCalculusKit.KolmogorovIto -hard-> ItoCalculusKit.DoleansQV
 ItoCalculusKit.KolmogorovIto -hard-> ItoCalculusKit.HolderPath
@@ -385,6 +386,7 @@ ProlongedBrownianSetup.ContVersion -hard-> ProlongedBrownianSetup.ItoWordIntegra
 ProlongedBrownianSetup.ContVersionKolmogorov -hard-> ItoCalculusKit.LevelBounds
 ProlongedBrownianSetup.ItoIntegralAgainstBM -hard-> ItoCalculusKit.BrownianQuadVarAS
 ProlongedBrownianSetup.ItoIntegralAgainstBM -hard-> ProlongedBrownianSetup.ItoIntegralProcess
+ProlongedBrownianSetup.ItoIntegralAgainstBM -hard-> SignatureRiccatiKit.CondExpMulIndepDisintegrate
 ProlongedBrownianSetup.ItoIntegralProcess -hard-> ProlongedBrownianSetup.ItoWordIntegralConsLong
 ProlongedBrownianSetup.ItoWordIntegral -hard-> ProlongedBrownianSetup.StratonovichItoConversion
 ProlongedBrownianSetup.ItoWordIntegral -hard-> SignatureRiccatiKit.ItoWordTiltClosedForm
@@ -397,6 +399,7 @@ ProlongedBrownianSetup.OfBrownian -hard-> SignatureRiccatiKit.CounterexampleV1
 ProlongedBrownianSetup.PaperSig -hard-> ItoCalculusKit.SigmaBounds
 ProlongedBrownianSetup.PaperSig -hard-> ProlongedBrownianSetup.PaperSigDynamics
 ProlongedBrownianSetup.PaperSig -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
+ProlongedBrownianSetup.PaperSig -hard-> SignatureRiccatiKit.CondExpMulIndepDisintegrate
 ProlongedBrownianSetup.PaperSig -hard-> SignatureRiccatiKit.CondSigPolyIdentification
 ProlongedBrownianSetup.PaperSig -hard-> SignatureRiccatiKit.CounterexampleTensor
 ProlongedBrownianSetup.PaperSig -hard-> SignatureRiccatiKit.EntireTransfer
@@ -414,6 +417,7 @@ ProlongedBrownianSetup.PaperSigDynamics -hard-> SignatureRiccatiKit.EntireTransf
 ProlongedBrownianSetup.PaperSigDynamics -hard-> SignatureRiccatiKit.ItoWordTiltClosedForm
 ProlongedBrownianSetup.ShiftedWordIntegral -hard-> ProlongedBrownianSetup.PaperSigChen
 ProlongedBrownianSetup.ShiftedWordIntegral -hard-> SignatureRiccatiKit.BrownianScalingShiftedExponent
+ProlongedBrownianSetup.ShiftedWordIntegral -hard-> SignatureRiccatiKit.CondExpMulIndepDisintegrate
 ProlongedBrownianSetup.Sig2StratAdapted -hard-> ItoCalculusKit.JointPast
 ProlongedBrownianSetup.Sig2StratAdapted -hard-> ItoCalculusKit.MathFinBridge
 ProlongedBrownianSetup.Sig2StratAdapted -hard-> SignatureRiccatiKit.BrownianScalingShiftedExponent
@@ -460,6 +464,7 @@ ShuffleFinite -hard-> Remark219BlackScholesRiccati
 ShuffleFinite -hard-> RiccatiOpBounded
 ShuffleFinite -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureFiltrationEqBrownianFiltration -hard-> ItoCalculusKit.MathFinBridgeSetup
+SignatureFiltrationEqBrownianFiltration -hard-> SignatureRiccatiKit.CondExpMulIndepDisintegrate
 SignaturePriceSolution -hard-> TheoremAOfBrownianSetupItoKit
 SignaturePriceSolution -hard-> TheoremBOfSetupItoRiccatiKit
 SignatureRiccatiKit -hard-> SignatureRiccatiKit.AffineRiccatiDualityMp
@@ -472,6 +477,7 @@ SignatureRiccatiKit.BarrierU -hard-> SignatureRiccatiKit.AffineRiccatiDualityMpr
 SignatureRiccatiKit.BarrierU -hard-> SignatureRiccatiKit.IntegralExpBarrier
 SignatureRiccatiKit.BrownianScalingShiftedExponent -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit.BrownianScalingShiftedExponent -hard-> SignatureRiccatiKit.CameronMartinC2Shift
+SignatureRiccatiKit.BrownianScalingShiftedExponent -hard-> SignatureRiccatiKit.CondExpMulIndepDisintegrate
 SignatureRiccatiKit.BrownianScalingShiftedExponent -hard-> SignatureRiccatiKit.CounterexampleV1CondExp
 SignatureRiccatiKit.CameronMartinC2Shift -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit.CameronMartinC2Shift -hard-> SignatureRiccatiKit.CounterexampleV1LogNonpos
@@ -507,6 +513,7 @@ SignatureRiccatiKit.CounterexampleV1Decay -hard-> SignatureRiccatiKit.AffineRicc
 SignatureRiccatiKit.CounterexampleV1LogBound -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit.CounterexampleV1LogNonpos -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit.CounterexampleV1PosLe -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
+SignatureRiccatiKit.CounterexampleV1PosLe -hard-> SignatureRiccatiKit.CondExpMulIndepDisintegrate
 SignatureRiccatiKit.CounterexampleV1PosLe -hard-> SignatureRiccatiKit.CounterexampleV1Decay
 SignatureRiccatiKit.CounterexampleV1PosLe -hard-> SignatureRiccatiKit.CounterexampleV1LogBound
 SignatureRiccatiKit.CounterexampleV1PosLe -hard-> SignatureRiccatiKit.CounterexampleV1LogNonpos
@@ -525,6 +532,7 @@ SignatureRiccatiKit.IteratedDerivGaussian -hard-> SignatureRiccatiKit.EntireTran
 SignatureRiccatiKit.ItoWordTiltClosedForm -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit.ItoWordTiltClosedForm -hard-> SignatureRiccatiKit.CondSigPolyIdentification
 SignatureRiccatiKit.LintegralExpShifted -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
+SignatureRiccatiKit.LintegralExpShifted -hard-> SignatureRiccatiKit.CondExpMulIndepDisintegrate
 SignatureRiccatiKit.LintegralExpShifted -hard-> SignatureRiccatiKit.CounterexampleV1PosLe
 SignatureRiccatiKit.LintegralExpShifted -hard-> SignatureRiccatiKit.IntegralExpBarrier
 SignatureRiccatiKit.LintegralExpShifted -hard-> SignatureRiccatiKit.ItoWordTiltClosedForm

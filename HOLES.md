@@ -2,9 +2,9 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-25T03:42:38Z
-**`sorry` occurrences:** 1 · 1 open · 4 blocked · 203 done · 1 file(s) with `sorry`.
-**Paper claims refuted:** 5 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
+**Updated:** 2026-11-25T04:14:03Z
+**`sorry` occurrences:** 0 · 0 open · 0 blocked · 208 done · 0 file(s) with `sorry`.
+**Paper claims refuted:** 6 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
 
 ## Open analytic leaves of the affine / Riccati counterexample
 
@@ -18,6 +18,7 @@ The false theorem `affine_riccati_duality_mpr` has been removed from the library
 | **counterexample** | **CounterExample_Lemma77** (`Lemma77ShuffleEstimateFalse`) | CounterExample_Lemma77: refutes paper Lemma 77 (weighted shuffle estimate) for every (H2) weight. | `SignatureVolatility/Lemma77ShuffleEstimateFalse.lean` |
 | **counterexample** | **CounterExample_Lemma78** (`Lemma78RiccatiLipschitzFalse`) | CounterExample_Lemma78: refutes paper Lemma 78 (local Lipschitz bound for the Riccati operator); for w = 1 the operator is unbounded on the unit ball of T_w. | `SignatureVolatility/Lemma78RiccatiLipschitzFalse.lean` |
 | **counterexample** | **CounterExample_Prop58** (`Prop58BlackScholesDepthFalse`) | CounterExample_Prop58: refutes paper Prop. 58 / PDF Prop. 5.5 (Black-Scholes has completeness depth 0); Black-Scholes depth is infinite under Definition 55. | `SignatureVolatility/Prop58BlackScholesDepthFalse.lean` |
+| **counterexample** | **not_affine_riccati_duality_mpr (assembled)** (`SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample`) | COUNTEREXAMPLE to a paper claim. | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMprCounterexample.lean` |
 | **counterexample** | **CounterExample_TheoremC** (`TheoremCCounterExample`) | CounterExample_TheoremC (proved, not_theorem_C): Black-Scholes is complete on F^S_T (vendored MathFin martingale representation, F^S = F^W) for every finite strike set, while N*_S = infinity; so the paper's 'complete iff N*_S < infinity' is false. | `SignatureVolatility/TheoremCCounterExample.lean` |
 | **counterexample** | **CounterExample_TheoremD** (`TheoremDCounterExample`) | CounterExample_TheoremD (theorem_D_residual_hypothesis_fails): the residual-expansion clause of Theorem 66 assumes N*_S < infinity, which fails for Black-Scholes (vacuous). | `SignatureVolatility/TheoremDCounterExample.lean` |
 | **half-proved** | **Half_TheoremD** (`TheoremD`) | Half_TheoremD: GKW projection part proved (theorem_D). The residual-expansion clause is refuted separately by CounterExample_TheoremD (TheoremDCounterExample). Paper kit / theorem goal. | `SignatureVolatility/TheoremD.lean` |
@@ -47,19 +48,15 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 
 ## Files with `sorry`
 
-| Status | Id | File |
-|---|---|---|
-| open | `SignatureRiccatiKit.CondExpMulIndepDisintegrate` | `SignatureVolatility/SignatureRiccatiKit/CondExpMulIndepDisintegrate.lean` |
+_None._
 
 ## Open now (Layer 0)
 
-| Id | File |
-|---|---|
-| `SignatureRiccatiKit.CondExpMulIndepDisintegrate` | `SignatureVolatility/SignatureRiccatiKit/CondExpMulIndepDisintegrate.lean` |
+_None — every module is blocked or verified._
 
 ## By group
 
-### Top-level modules — 5 hole(s)
+### Top-level modules — 0 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -177,20 +174,20 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `SignatureHestonLevel2Model` | `SignatureVolatility/SignatureHestonLevel2Model.lean` |
 | done | `SignaturePriceSolution` | `SignatureVolatility/SignaturePriceSolution.lean` |
 | done | `SignatureRiccatiKit` | `SignatureVolatility/SignatureRiccatiKit.lean` |
-| blocked | `SignatureRiccatiKit.AffineRiccatiDuality` | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDuality.lean` |
+| done | `SignatureRiccatiKit.AffineRiccatiDuality` | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDuality.lean` |
 | done | `SignatureRiccatiKit.AffineRiccatiDualityMp` | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMp.lean` |
-| blocked | `SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample` | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMprCounterexample.lean` |
+| done | `SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample` | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMprCounterexample.lean` |
 | done | `SignatureRiccatiKit.BarrierU` | `SignatureVolatility/SignatureRiccatiKit/BarrierU.lean` |
 | done | `SignatureRiccatiKit.BrownianScalingShiftedExponent` | `SignatureVolatility/SignatureRiccatiKit/BrownianScalingShiftedExponent.lean` |
 | done | `SignatureRiccatiKit.CameronMartinC2Shift` | `SignatureVolatility/SignatureRiccatiKit/CameronMartinC2Shift.lean` |
 | done | `SignatureRiccatiKit.ComplexTilt` | `SignatureVolatility/SignatureRiccatiKit/ComplexTilt.lean` |
-| open | `SignatureRiccatiKit.CondExpMulIndepDisintegrate` | `SignatureVolatility/SignatureRiccatiKit/CondExpMulIndepDisintegrate.lean` |
+| done | `SignatureRiccatiKit.CondExpMulIndepDisintegrate` | `SignatureVolatility/SignatureRiccatiKit/CondExpMulIndepDisintegrate.lean` |
 | done | `SignatureRiccatiKit.CondSigPoly` | `SignatureVolatility/SignatureRiccatiKit/CondSigPoly.lean` |
 | done | `SignatureRiccatiKit.CondSigPolyIdentification` | `SignatureVolatility/SignatureRiccatiKit/CondSigPolyIdentification.lean` |
 | done | `SignatureRiccatiKit.CoordSemimartingale` | `SignatureVolatility/SignatureRiccatiKit/CoordSemimartingale.lean` |
 | done | `SignatureRiccatiKit.CounterexampleTensor` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleTensor.lean` |
 | done | `SignatureRiccatiKit.CounterexampleV1` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1.lean` |
-| blocked | `SignatureRiccatiKit.CounterexampleV1CondExp` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1CondExp.lean` |
+| done | `SignatureRiccatiKit.CounterexampleV1CondExp` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1CondExp.lean` |
 | done | `SignatureRiccatiKit.CounterexampleV1Decay` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1Decay.lean` |
 | done | `SignatureRiccatiKit.CounterexampleV1LogBound` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1LogBound.lean` |
 | done | `SignatureRiccatiKit.CounterexampleV1LogNonpos` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1LogNonpos.lean` |
@@ -216,7 +213,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | done | `TheoremA` | `SignatureVolatility/TheoremA.lean` |
 | done | `TheoremAOfBrownianSetupItoKit` | `SignatureVolatility/TheoremAOfBrownianSetupItoKit.lean` |
 | done | `TheoremB` | `SignatureVolatility/TheoremB.lean` |
-| blocked | `TheoremBMpr` | `SignatureVolatility/TheoremBMpr.lean` |
+| done | `TheoremBMpr` | `SignatureVolatility/TheoremBMpr.lean` |
 | done | `TheoremBOfSetupItoRiccatiKit` | `SignatureVolatility/TheoremBOfSetupItoRiccatiKit.lean` |
 | done | `TheoremC` | `SignatureVolatility/TheoremC.lean` |
 | done | `TheoremCCounterExample` | `SignatureVolatility/TheoremCCounterExample.lean` |
