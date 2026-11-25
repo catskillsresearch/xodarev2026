@@ -18,19 +18,37 @@ def wordsOfLength (d : ℕ) : ℕ → Finset (Word d)
 
 namespace wordsOfLength
 
-lemma mem {d : ℕ} : ∀ {n : ℕ} {I : Word d}, I ∈ wordsOfLength d n ↔ I.length = n
-  | 0, [] => by simp [wordsOfLength]
-  | 0, _ :: _ => by simp [wordsOfLength]
-  | n + 1, [] => by simp [wordsOfLength]
-  | n + 1, i :: I => by
-    simp only [wordsOfLength, Finset.mem_biUnion, Finset.mem_univ, true_and, Finset.mem_map,
-      List.length_cons, Nat.add_right_cancel_iff]
-    constructor
-    · rintro ⟨a, J, hJ, hcons⟩
-      cases hcons
-      exact wordsOfLength.mem.mp hJ
-    · intro hlen
-      exact ⟨i, I, wordsOfLength.mem.mpr hlen, rfl⟩
+lemma mem {d : ℕ} {n : ℕ} {I : Word d} : I ∈ wordsOfLength d n ↔ I.length = n := by
+  induction n generalizing I with
+  | zero =>
+    cases I with
+    | nil =>
+      exact ⟨fun _ => List.length_nil, fun _ => Finset.mem_singleton_self _⟩
+    | cons i I =>
+      refine ⟨fun h => (List.cons_ne_nil i I (Finset.mem_singleton.mp h)).elim,
+        fun hlen => (Nat.succ_ne_zero I.length hlen).elim⟩
+  | succ n ih =>
+    cases I with
+    | nil =>
+      refine ⟨fun h => ?_, fun hlen => (Nat.succ_ne_zero n hlen.symm).elim⟩
+      rw [wordsOfLength, Finset.mem_biUnion] at h
+      obtain ⟨_, _, hmap⟩ := h
+      rw [Finset.mem_map] at hmap
+      obtain ⟨_, _, hcons⟩ := hmap
+      exact (List.cons_ne_nil _ _ hcons).elim
+    | cons i I =>
+      rw [wordsOfLength, Finset.mem_biUnion]
+      constructor
+      · intro h
+        obtain ⟨j, _, hmap⟩ := h
+        rw [Finset.mem_map] at hmap
+        obtain ⟨J, hJ, hcons⟩ := hmap
+        cases hcons
+        exact congrArg Nat.succ (ih.mp hJ)
+      · intro hlen
+        refine ⟨i, Finset.mem_univ i, ?_⟩
+        rw [Finset.mem_map]
+        exact ⟨I, ih.mpr (Nat.succ_inj.mp hlen), rfl⟩
 
 lemma succ {d : ℕ} (n : ℕ) (F : Word d → ℝ) :
     ∑ I ∈ wordsOfLength d (n + 1), F I =

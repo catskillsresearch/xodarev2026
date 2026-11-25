@@ -53,10 +53,12 @@ square-integrable predictable integrands), `theorem_D`, `theorem_D_residual_hypo
 and `not_lemma77_of_hypH2` (Lemma 77 refuted for every weight), `not_lemma78_local_lipschitz`
 (Lemma 78 refuted for `w ≡ 1`).
 
-The other 6 `theorem_names` entries are supporting lemma statements (`hypH3_blackScholes`,
-`measurable_paperSig2_coeff`, `MultiBrownian.W_meas`, `Market.memLp_coord`,
-`hypH1_of_isFinitelySupported`, `sigPrice_meas`). They sit in the dependency closure of the statements above, so the
-Solution must prove them too.
+Supporting lemmas that appear in the dependency closure of these statements
+(`hypH3_blackScholes`, `measurable_paperSig2_coeff`, `MultiBrownian.W_meas`,
+`sigPrice_meas`, `hypH1_of_isFinitelySupported`, and similar) are ordinary
+proved lemmas in both the Challenge and the Solution, not compared holes.
+Palomar compares those non-target declarations by exact syntactic equality,
+including proofs, so the Challenge keeps the same proof text as the library.
 
 **Nothing is open.** Every paper claim above is either proved at the exact strength of its
 Lean theorem, or refuted by a compared Lean negation that claims no more than that negation. The library and `Solution.lean` have no `sorry` (the Challenge's compared

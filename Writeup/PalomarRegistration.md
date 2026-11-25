@@ -2,7 +2,7 @@
 
 Palomar registration: **TBD**. Lars Warren Ericson will run the Palomar preflight and the submission; this report uses the placeholder TBD wherever a registration identifier or URL would go.
 
-The comparator (`comparator.json`) checks 15 theorems against the single-file Challenge and the Solution, with permitted axioms `propext`, `Classical.choice`, and `Quot.sound`: the 9 headline results (Theorems A–D and their refutations, stated in unwrapped form in `SignatureVolatility/Unwrapped.lean`) and 6 supporting lemma statements. There are no open problems. Short counterexample narratives, each matched to the Lean `not_X` statement, are in [`Writeup/narratives/`](narratives/README.md). Gemini "Carbon" supplied draft proofs for the Riccati leaves; the verbatim outside narrative is in the appendix.
+The comparator (`comparator.json`) checks 9 theorems against the single-file Challenge and the Solution, with permitted axioms `propext`, `Classical.choice`, and `Quot.sound`: the 9 headline results (Theorems A–D and their refutations, stated in unwrapped form in `SignatureVolatility/Unwrapped.lean`). There are no open problems. Short counterexample narratives, each matched to the Lean `not_X` statement, are in [`Writeup/narratives/`](narratives/README.md). Gemini "Carbon" supplied draft proofs for the Riccati leaves; the verbatim outside narrative is in the appendix.
 
 ## Official Palomar description
 

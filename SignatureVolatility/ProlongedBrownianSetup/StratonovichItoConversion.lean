@@ -86,18 +86,20 @@ lemma stratWordIntegral_space (B : MultiBrownian Ω P d) (s t : ℝ) (ω : Ω) (
 lemma measurable_stratItoCorrection (B : MultiBrownian Ω P d) (s t : ℝ)
     (I : Word (d + 1)) :
     Measurable (fun ω => stratItoCorrection B s t ω I) := by
-  match I with
-  | [] =>
+  cases I with
+  | nil =>
     change Measurable (fun _ => (0 : ℝ))
     exact measurable_const
-  | [_] =>
-    change Measurable (fun _ => (0 : ℝ))
-    exact measurable_const
-  | _ :: _ :: _ =>
-    simp only [stratItoCorrection]
-    exact Finset.measurable_sum _ fun _ _ =>
-      Finset.measurable_sum _ fun J _ =>
-        (measurable_itoWordIntegral B s t J).const_mul _
+  | cons _ I' =>
+    cases I' with
+    | nil =>
+      change Measurable (fun _ => (0 : ℝ))
+      exact measurable_const
+    | cons _ _ =>
+      simp only [stratItoCorrection]
+      exact Finset.measurable_sum _ fun _ _ =>
+        Finset.measurable_sum _ fun J _ =>
+          (measurable_itoWordIntegral B s t J).const_mul _
 
 lemma measurable_stratWordIntegral (B : MultiBrownian Ω P d) (s t : ℝ) (I : Word (d + 1)) :
     Measurable (fun ω => stratWordIntegral B s t ω I) :=

@@ -59,9 +59,9 @@ lemma measurable_itoWordStep (B : MultiBrownian Ω P d) (j : Fin (d + 1))
 
 lemma measurable_itoWordIntegral (B : MultiBrownian Ω P d) (s t : ℝ) (I : Word (d + 1)) :
     Measurable (fun ω => itoWordIntegral B s t ω I) := by
-  match I with
-  | [] => simp [itoWordIntegral]
-  | j :: I' =>
+  cases I with
+  | nil => simp [itoWordIntegral]
+  | cons j I' =>
     by_cases hI : I' = []
     · subst hI
       simpa [itoWordIntegral] using measurable_itoWordIntegral_le1 B s t [j]

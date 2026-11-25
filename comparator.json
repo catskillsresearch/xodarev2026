@@ -10,13 +10,7 @@
     "SignatureVolatility.not_theorem_B_unwrapped",
     "SignatureVolatility.not_theorem_C_unwrapped",
     "SignatureVolatility.theorem_D_unwrapped",
-    "SignatureVolatility.theorem_D_residual_hypothesis_fails_unwrapped",
-    "SignatureVolatility.hypH3_blackScholes",
-    "SignatureVolatility.measurable_paperSig2_coeff",
-    "SignatureVolatility.MultiBrownian.W_meas",
-    "SignatureVolatility.Market.memLp_coord",
-    "SignatureVolatility.hypH1_of_isFinitelySupported",
-    "SignatureVolatility.sigPrice_meas"
+    "SignatureVolatility.theorem_D_residual_hypothesis_fails_unwrapped"
   ],
   "definition_names": [],
   "permitted_axioms": [

@@ -37,8 +37,8 @@ lemma paperSig2_coeff (B : MultiBrownian Ω P d) (s t : ℝ) (ω : Ω) (I : Word
     (paperSig2 B s t ω).coeff I = stratWordIntegral B s t ω I.reverse := rfl
 
 lemma paperSig2_empty (B : MultiBrownian Ω P d) (s t : ℝ) (ω : Ω) :
-    (paperSig2 B s t ω).coeff [] = 1 :=
-  stratWordIntegral_empty B s t ω
+    (paperSig2 B s t ω).coeff [] = 1 := by
+  simp [paperSig2, stratWordIntegral, itoWordIntegral, stratItoCorrection]
 
 lemma paperSig2_time (B : MultiBrownian Ω P d) (s t : ℝ) (ω : Ω) :
     (paperSig2 B s t ω).coeff [0] = t - s :=

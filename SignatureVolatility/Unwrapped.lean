@@ -231,9 +231,17 @@ lemma memLp_coord (mkt : Market Ω P) (I : Word (mkt.M.d + 1)) :
     MemLp (fun ω => (paperSig2 mkt.B 0 mkt.M.T ω).coeff I) 2 P :=
   MarketData.memLp_coord ⟨mkt.M, mkt.B, mkt.h3⟩ I
 
+/-- The terminal signature coordinate `⟨e_I, Ŵ_T⟩` as an `L²(ℙ)` class: the `MemLp.toLp`
+embedding when the coordinate is square-integrable, and `0` otherwise. Every `Market`
+has square-integrable coordinates (`memLp_coord`), so on the markets that appear in
+the compared theorems this is the genuine coordinate. -/
+def coord (mkt : Market Ω P) (I : Word (mkt.M.d + 1)) : Lp ℝ 2 P :=
+  haveI := Classical.dec (MemLp (fun ω => (paperSig2 mkt.B 0 mkt.M.T ω).coeff I) 2 P)
+  if h : MemLp (fun ω => (paperSig2 mkt.B 0 mkt.M.T ω).coeff I) 2 P then h.toLp _ else 0
+
 /-- The depth-`≤ N` terminal signature coordinates `{⟨e_I, Ŵ_T⟩ : |I| ≤ N}` in `L²(ℙ)`. -/
 def coordSet (mkt : Market Ω P) (N : ℕ) : Set (Lp ℝ 2 P) :=
-  {f | ∃ I : Word (mkt.M.d + 1), I.length ≤ N ∧ f = (mkt.memLp_coord I).toLp _}
+  {f | ∃ I : Word (mkt.M.d + 1), I.length ≤ N ∧ f = mkt.coord I}
 
 /-- **Definition 55.** The completeness depth `N^*_S`: the least `N` with
 `closure span {⟨e_I, Ŵ_T⟩ : |I| ≤ N} ∩ L²(ℱ^S_T) = L²(ℱ^S_T)`, and `⊤` if there is none. -/
@@ -243,6 +251,22 @@ def completenessDepth (mkt : Market Ω P) : ℕ∞ :=
 
 /-- The wrapped `MarketData` with the same model, driver and H3. -/
 abbrev toMarketData (mkt : Market Ω P) : MarketData Ω P := ⟨mkt.M, mkt.B, mkt.h3⟩
+
+lemma coord_eq (mkt : Market Ω P) (I : Word (mkt.M.d + 1)) :
+    mkt.coord I = mkt.toMarketData.coord I := by
+  have h := memLp_coord mkt I
+  unfold coord MarketData.coord
+  rw [dif_pos h]
+  rfl
+
+lemma coordSet_eq (mkt : Market Ω P) (N : ℕ) :
+    mkt.coordSet N = mkt.toMarketData.coordSet N := by
+  ext f
+  constructor
+  · rintro ⟨I, hI, rfl⟩
+    exact ⟨I, hI, (coord_eq mkt I).symm ▸ rfl⟩
+  · rintro ⟨I, hI, rfl⟩
+    exact ⟨I, hI, (coord_eq mkt I) ▸ rfl⟩
 
 lemma S_eq (mkt : Market Ω P) : mkt.toMarketData.S = mkt.S :=
   funext fun t => funext fun ω => mkt.toMarketData.sol.doleans_repr t ω
@@ -271,7 +295,7 @@ lemma H0_eq (mkt : Market Ω P) : mkt.toMarketData.H0 = mkt.H0 := by
 lemma completenessDepth_eq (mkt : Market Ω P) :
     mkt.toMarketData.completenessDepth = mkt.completenessDepth := by
   simp only [MarketData.completenessDepth, MarketData.sigSpan, completenessDepth, L2S_eq]
-  rfl
+  simp [coordSet_eq]
 
 end Market
 
@@ -295,9 +319,21 @@ section BlackScholes
 
 variable (T s₀ σ₀ : ℝ) (hT : 0 < T) (hs₀ : 0 < s₀) (hσ₀ : σ₀ ≠ 0)
 
+lemma sigVol_blackScholes (B : MultiBrownian Ω P 1) (t : ℝ) (ω : Ω) :
+    sigVol (blackScholesModel T s₀ σ₀ hT hs₀ hσ₀) B t ω = σ₀ := by
+  unfold sigVol blackScholesModel
+  have h := dualPairing_smul_basisWord_nil σ₀ (paperSig2 B 0 t ω)
+  have h1 : (paperSig2 B 0 t ω).coeff [] = 1 := paperSig2_empty B 0 t ω
+  rw [h1, mul_one] at h
+  exact h
+
 lemma hypH3_blackScholes (B : MultiBrownian Ω P 1) :
-    HypH3 P T (sigVol (blackScholesModel T s₀ σ₀ hT hs₀ hσ₀) B) :=
-  (blackScholesMarket T s₀ σ₀ hT hs₀ hσ₀ B).h3
+    HypH3 P T (sigVol (blackScholesModel T s₀ σ₀ hT hs₀ hσ₀) B) := by
+  intro _ _
+  have hσ : sigVol (blackScholesModel T s₀ σ₀ hT hs₀ hσ₀) B = fun _ _ => σ₀ :=
+    funext fun t => funext fun ω => sigVol_blackScholes T s₀ σ₀ hT hs₀ hσ₀ B t ω
+  simp only [hσ]
+  exact integrable_const _
 
 /-- The Black–Scholes market (constant volatility `σ₀`) on a one-dimensional Brownian driver. -/
 def bsMarket (B : MultiBrownian Ω P 1) : Market Ω P :=

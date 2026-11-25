@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
 # xodarev2026 — Palomar packaging (Challenge/Solution/comparator).
-version: v0.5
+version: v0.4
 project:
   name: Xodarev Signature Volatility Models in Lean 4
   description: >-
@@ -136,20 +136,17 @@ classification:
   - '68V20'
 status:
   scope: >-
-    Comparator family (comparator.json): 15 theorems, all proved with no
+    Comparator family (comparator.json): 9 theorems, all proved with no
     sorry. They are the 9 headline results below, in unwrapped form (Theorems
     A, B, D proved parts and the Lean refutations of Theorem 4.2(ii) ←,
-    Theorem B, Theorem C and the Theorem D residual hypothesis), plus 6 lemma
-    statements that copied definitions in their dependency closure refer to
-    (hypH3_blackScholes, measurable_paperSig2_coeff, MultiBrownian.W_meas,
-    Market.memLp_coord, hypH1_of_isFinitelySupported, sigPrice_meas).
+    Theorem B, Theorem C and the Theorem D residual hypothesis).
     Further refutations (Proposition 58, Lemmas 77 and 78), the wrapped forms
     of the compared theorems and supporting results are proved in the library
     but not compared. The library and
     SignatureVolatilityComparator/Solution.lean have no sorry and there are no
     axiom declarations; nothing is open. The Challenge
     (SignatureVolatilityComparator/Challenge.lean) is one file importing only
-    Lean core and Mathlib, with the 15 compared proofs replaced by sorry, as
+    Lean core and Mathlib, with the 9 compared proofs replaced by sorry, as
     the comparator requires.
   sorry_count: 0
   sorry_in_definitions: 0

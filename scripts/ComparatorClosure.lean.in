@@ -55,7 +55,11 @@ run_cmd do
       | _ => "aux"
     match ci with
     | .thmInfo t =>
-        if isAux then work := work ++ tyC ++ (t.value.getUsedConstants.filter svPrefix).toList
+        -- Targets are compared by type only, so do not walk their proofs (that would
+        -- pull the wrapped library into the Challenge). Non-target lemmas kept in the
+        -- Challenge must have identical proofs, so walk those proof values.
+        if isAux || !targets.contains n then
+          work := work ++ tyC ++ (t.value.getUsedConstants.filter svPrefix).toList
         else work := work ++ tyC
     | .defnInfo d => work := work ++ tyC ++ (d.value.getUsedConstants.filter svPrefix).toList
     | .inductInfo i => work := work ++ tyC ++ i.ctors

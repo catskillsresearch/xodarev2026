@@ -48,9 +48,9 @@ lemma itoWordIntegral_le1_space (B : MultiBrownian Ω P d) (s t : ℝ) (ω : Ω)
 
 lemma measurable_itoWordIntegral_le1 (B : MultiBrownian Ω P d) (s t : ℝ) (I : Word (d + 1)) :
     Measurable (fun ω => itoWordIntegral_le1 B s t ω I) := by
-  match I with
-  | [] => simp [itoWordIntegral_le1]
-  | j :: I' =>
+  cases I with
+  | nil => simp [itoWordIntegral_le1]
+  | cons j I' =>
     simp only [itoWordIntegral_le1]
     by_cases hI : I' ≠ []
     · simp [hI]

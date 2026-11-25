@@ -59,6 +59,7 @@ def contVersion (X : ℝ → Ω → ℝ) (t : ℝ) (ω : Ω) : ℝ :=
 
 lemma measurable_contVersion {m : MeasurableSpace Ω} (X : ℝ → Ω → ℝ) (t : ℝ)
     (hX : ∀ n, Measurable[m] (X (dyadicFloor n t))) : Measurable[m] (contVersion X t) :=
+  haveI : T0Space ℝ := T6Space.toT0Space
   (StronglyMeasurable.limUnder fun n => (hX n).stronglyMeasurable).measurable
 
 lemma contVersion_eq_of_tendsto {X : ℝ → Ω → ℝ} {t : ℝ} {ω : Ω} {a : ℝ}

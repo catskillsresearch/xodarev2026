@@ -68,6 +68,39 @@ def wordsOfLength (d : ℕ) : ℕ → Finset (Word d)
   | n + 1 =>
     (Finset.univ : Finset (Fin d)).biUnion fun i =>
       (wordsOfLength d n).map ⟨fun I => i :: I, fun _ _ h => (List.cons.inj h).2⟩
+namespace wordsOfLength
+lemma mem {d : ℕ} {n : ℕ} {I : Word d} : I ∈ wordsOfLength d n ↔ I.length = n := by
+  induction n generalizing I with
+  | zero =>
+    cases I with
+    | nil =>
+      exact ⟨fun _ => List.length_nil, fun _ => Finset.mem_singleton_self _⟩
+    | cons i I =>
+      refine ⟨fun h => (List.cons_ne_nil i I (Finset.mem_singleton.mp h)).elim,
+        fun hlen => (Nat.succ_ne_zero I.length hlen).elim⟩
+  | succ n ih =>
+    cases I with
+    | nil =>
+      refine ⟨fun h => ?_, fun hlen => (Nat.succ_ne_zero n hlen.symm).elim⟩
+      rw [wordsOfLength, Finset.mem_biUnion] at h
+      obtain ⟨_, _, hmap⟩ := h
+      rw [Finset.mem_map] at hmap
+      obtain ⟨_, _, hcons⟩ := hmap
+      exact (List.cons_ne_nil _ _ hcons).elim
+    | cons i I =>
+      rw [wordsOfLength, Finset.mem_biUnion]
+      constructor
+      · intro h
+        obtain ⟨j, _, hmap⟩ := h
+        rw [Finset.mem_map] at hmap
+        obtain ⟨J, hJ, hcons⟩ := hmap
+        cases hcons
+        exact congrArg Nat.succ (ih.mp hJ)
+      · intro hlen
+        refine ⟨i, Finset.mem_univ i, ?_⟩
+        rw [Finset.mem_map]
+        exact ⟨I, ih.mpr (Nat.succ_inj.mp hlen), rfl⟩
+end wordsOfLength
 namespace ExtTensorAlgebra
 /-- Squared Euclidean norm of the level-`n` component: `∑_{|I| = n} a_I²`. -/
 def levelNormSq {d : ℕ} (a : ExtTensorAlgebra d) (n : ℕ) : ℝ :=
@@ -95,7 +128,17 @@ def MemL2w {d : ℕ} (w : Weight) (ℓ : ExtTensorAlgebra d) : Prop :=
 structure HypH1 {d : ℕ} (w : Weight) (ℓ : ExtTensorAlgebra (d + 1)) : Prop where
   mem_l2w : MemL2w w ℓ
 lemma hypH1_of_isFinitelySupported {d : ℕ} (w : Weight) {ℓ : ExtTensorAlgebra (d + 1)}
-    (hfin : ExtTensorAlgebra.IsFinitelySupported ℓ) : HypH1 w ℓ := by sorry
+    (hfin : ExtTensorAlgebra.IsFinitelySupported ℓ) : HypH1 w ℓ := by
+  rcases hfin with ⟨N, hN⟩
+  refine ⟨summable_of_ne_finset_zero (s := Finset.range (N + 1)) fun n hn => ?_⟩
+  have hgt : N < n := Nat.lt_of_not_ge fun hle => hn (Finset.mem_range.mpr (Nat.lt_succ_of_le hle))
+  have hl0 : ℓ.levelNormSq n = 0 := by
+    unfold ExtTensorAlgebra.levelNormSq
+    refine Finset.sum_eq_zero fun I hI => ?_
+    have hlen : I.length = n := wordsOfLength.mem.mp hI
+    rw [hN I (hlen ▸ hgt)]
+    ring
+  rw [hl0, zero_div]
 namespace Weight
 run_cmd Lean.modifyEnv fun env => Lean.Meta.auxLemmasExt.setState env {}
 /-- The constant weight `w_n = 1`. -/
@@ -327,6 +370,10 @@ variable {Ω : Type*}
 /-- Continuous version of `X` read along left dyadic approximants. -/
 def contVersion (X : ℝ → Ω → ℝ) (t : ℝ) (ω : Ω) : ℝ :=
   limUnder atTop fun n => X (dyadicFloor n t) ω
+lemma measurable_contVersion {m : MeasurableSpace Ω} (X : ℝ → Ω → ℝ) (t : ℝ)
+    (hX : ∀ n, Measurable[m] (X (dyadicFloor n t))) : Measurable[m] (contVersion X t) :=
+  haveI : T0Space ℝ := T6Space.toT0Space
+  (StronglyMeasurable.limUnder fun n => (hX n).stronglyMeasurable).measurable
 end
 /-- Clamp a real time to nonnegative (`max t 0`). -/
 noncomputable def toNNRealTime (t : ℝ) : ℝ≥0 := Real.toNNReal t
@@ -334,6 +381,11 @@ noncomputable def toNNRealTime (t : ℝ) : ℝ≥0 := Real.toNNReal t
 noncomputable def reindexProcessFin {Ω : Type*} {d : ℕ}
     (X : ℝ≥0 → Ω → Fin d → ℝ) : ℝ → Ω → Fin d → ℝ :=
   fun t ω i => X (toNNRealTime t) ω i
+lemma measurable_reindexProcessFin {Ω : Type*} [MeasurableSpace Ω] {d : ℕ}
+    {X : ℝ≥0 → Ω → Fin d → ℝ} (hX : ∀ t i, Measurable (fun ω => X t ω i))
+    (t : ℝ) (i : Fin d) :
+    Measurable (fun ω => reindexProcessFin X t ω i) :=
+  hX _ _
 section
 open ProbabilityTheory
 /-- A `d`-dimensional Brownian driver on `ℝ≥0`, packaged for reindexing to the
@@ -365,7 +417,8 @@ def W {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P
   reindexProcessFin B.Wnn
 lemma W_meas {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}
     (B : MultiBrownian Ω P d) (t : ℝ) (i : Fin d) :
-    Measurable (fun ω => W B t ω i) := by sorry
+    Measurable (fun ω => W B t ω i) :=
+  measurable_reindexProcessFin B.Wnn_meas t i
 end MultiBrownian
 end
 section
@@ -374,6 +427,9 @@ variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasur
 /-- Space increment of coordinate `i` between `ℝ`-times `s` and `t` via `toNNReal`. -/
 def wnnIncr (B : MultiBrownian Ω P d) (i : Fin d) (s t : ℝ) (ω : Ω) : ℝ :=
   B.Wnn (Real.toNNReal t) ω i - B.Wnn (Real.toNNReal s) ω i
+lemma measurable_wnnIncr (B : MultiBrownian Ω P d) (i : Fin d) (s t : ℝ) :
+    Measurable (fun ω => wnnIncr B i s t ω) :=
+  (B.Wnn_meas _ i).sub (B.Wnn_meas _ i)
 end
 section
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}
@@ -381,9 +437,22 @@ variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasur
 def lebRiemann_process (H : ℝ → Ω → ℝ) (s t : ℝ) (n : ℕ) (ω : Ω) : ℝ :=
   let Δ := (t - s) / (n + 1 : ℕ)
   ∑ k ∈ Finset.range (n + 1), H (s + (k : ℝ) * Δ) ω * Δ
+lemma measurable_lebRiemann_process (H : ℝ → Ω → ℝ) (hH : ∀ u, Measurable (H u))
+    (s t : ℝ) (n : ℕ) :
+    Measurable (fun ω => lebRiemann_process H s t n ω) :=
+  Finset.measurable_sum _ fun _ _ => (hH _).mul measurable_const
 /-- Pathwise Lebesgue `∫_s^t H_u du` as dyadic Riemann `limUnder` (0 if `¬ s ≤ t`). -/
 def lebIntegral_process (H : ℝ → Ω → ℝ) (s t : ℝ) (ω : Ω) : ℝ :=
   if _h : s ≤ t then limUnder atTop fun n => lebRiemann_process H s t n ω else 0
+lemma measurable_lebIntegral_process (H : ℝ → Ω → ℝ) (hH : ∀ u, Measurable (H u))
+    (s t : ℝ) :
+    Measurable (fun ω => lebIntegral_process H s t ω) := by
+  classical
+  by_cases h : s ≤ t
+  · simp only [lebIntegral_process, h, ↓reduceDIte]
+    exact (StronglyMeasurable.limUnder
+      (fun n => (measurable_lebRiemann_process H hH s t n).stronglyMeasurable)).measurable
+  · simp [lebIntegral_process, h]
 /-- Dyadic left Itô–Riemann sum for `∫_s^t H_u dW^k`. -/
 def itoRiemann_process (B : MultiBrownian Ω P d) (k : Fin d)
     (H : ℝ → Ω → ℝ) (s t : ℝ) (n : ℕ) (ω : Ω) : ℝ :=
@@ -391,10 +460,24 @@ def itoRiemann_process (B : MultiBrownian Ω P d) (k : Fin d)
   ∑ j ∈ Finset.range (n + 1),
     H (s + (j : ℝ) * Δ) ω *
       wnnIncr B k (s + (j : ℝ) * Δ) (s + ((j : ℝ) + 1) * Δ) ω
+lemma measurable_itoRiemann_process (B : MultiBrownian Ω P d) (k : Fin d)
+    (H : ℝ → Ω → ℝ) (hH : ∀ u, Measurable (H u)) (s t : ℝ) (n : ℕ) :
+    Measurable (fun ω => itoRiemann_process B k H s t n ω) :=
+  Finset.measurable_sum _ fun _ _ =>
+    (hH _).mul (measurable_wnnIncr B k _ _)
 /-- Pathwise Itô `∫_s^t H_u dW^k` as dyadic Itô–Riemann `limUnder` (0 if `¬ s ≤ t`). -/
 def itoIntegral_process (B : MultiBrownian Ω P d) (k : Fin d)
     (H : ℝ → Ω → ℝ) (s t : ℝ) (ω : Ω) : ℝ :=
   if _h : s ≤ t then limUnder atTop fun n => itoRiemann_process B k H s t n ω else 0
+lemma measurable_itoIntegral_process (B : MultiBrownian Ω P d) (k : Fin d)
+    (H : ℝ → Ω → ℝ) (hH : ∀ u, Measurable (H u)) (s t : ℝ) :
+    Measurable (fun ω => itoIntegral_process B k H s t ω) := by
+  classical
+  by_cases h : s ≤ t
+  · simp only [itoIntegral_process, h, ↓reduceDIte]
+    exact (StronglyMeasurable.limUnder
+      (fun n => (measurable_itoRiemann_process B k H hH s t n).stronglyMeasurable)).measurable
+  · simp [itoIntegral_process, h]
 end
 section
 run_cmd Lean.modifyEnv fun env => Lean.Meta.auxLemmasExt.setState env {}
@@ -414,6 +497,20 @@ def itoWordIntegral_le1 (B : MultiBrownian Ω P d) (s t : ℝ) (ω : Ω) :
     else
       MultiBrownian.W B t ω (spaceLetterIndex j h) -
         MultiBrownian.W B s ω (spaceLetterIndex j h)
+lemma measurable_itoWordIntegral_le1 (B : MultiBrownian Ω P d) (s t : ℝ) (I : Word (d + 1)) :
+    Measurable (fun ω => itoWordIntegral_le1 B s t ω I) := by
+  cases I with
+  | nil => simp [itoWordIntegral_le1]
+  | cons j I' =>
+    simp only [itoWordIntegral_le1]
+    by_cases hI : I' ≠ []
+    · simp [hI]
+    · simp only [hI, ↓reduceIte]
+      by_cases hj : (j : ℕ) = 0
+      · simp [hj]
+      · simp only [hj, ↓reduceDIte]
+        exact (MultiBrownian.W_meas B t (spaceLetterIndex j hj)).sub
+          (MultiBrownian.W_meas B s (spaceLetterIndex j hj))
 end
 section
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}
@@ -422,6 +519,13 @@ def itoWordIntegral_cons_long (B : MultiBrownian Ω P d) (j : Fin (d + 1))
     (H : ℝ → Ω → ℝ) (s t : ℝ) (ω : Ω) : ℝ :=
   if hj : (j : ℕ) = 0 then lebIntegral_process H s t ω
   else itoIntegral_process B (spaceLetterIndex j hj) H s t ω
+lemma measurable_itoWordIntegral_cons_long (B : MultiBrownian Ω P d) (j : Fin (d + 1))
+    (H : ℝ → Ω → ℝ) (hH : ∀ u, Measurable (H u)) (s t : ℝ) :
+    Measurable (fun ω => itoWordIntegral_cons_long B j H s t ω) := by
+  simp only [itoWordIntegral_cons_long]
+  by_cases hj : (j : ℕ) = 0
+  · simpa [hj] using measurable_lebIntegral_process H hH s t
+  · simpa [hj] using measurable_itoIntegral_process B (spaceLetterIndex j hj) H hH s t
 end
 section
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}
@@ -438,6 +542,24 @@ def itoWordIntegral (B : MultiBrownian Ω P d) (s t : ℝ) (ω : Ω) : Word (d +
     if I = [] then itoWordIntegral_le1 B s t ω [j]
     else
       contVersion (itoWordStep B j (fun u ω' => itoWordIntegral B s u ω' I) s) t ω
+lemma measurable_itoWordStep (B : MultiBrownian Ω P d) (j : Fin (d + 1))
+    (H : ℝ → Ω → ℝ) (hH : ∀ u, Measurable (H u)) (s u : ℝ) :
+    Measurable (fun ω => itoWordStep B j H s u ω) := by
+  unfold itoWordStep
+  by_cases hsu : s ≤ u
+  · simpa [hsu] using measurable_itoWordIntegral_cons_long B j H hH s u
+  · simp [hsu]
+lemma measurable_itoWordIntegral (B : MultiBrownian Ω P d) (s t : ℝ) (I : Word (d + 1)) :
+    Measurable (fun ω => itoWordIntegral B s t ω I) := by
+  cases I with
+  | nil => simp [itoWordIntegral]
+  | cons j I' =>
+    by_cases hI : I' = []
+    · subst hI
+      simpa [itoWordIntegral] using measurable_itoWordIntegral_le1 B s t [j]
+    · simp only [itoWordIntegral, hI, ↓reduceIte]
+      exact measurable_contVersion _ t fun n => measurable_itoWordStep B j _
+        (fun u => measurable_itoWordIntegral B s u I') s _
 end
 section
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}
@@ -469,6 +591,26 @@ def stratItoCorrection (B : MultiBrownian Ω P d) (s t : ℝ) (ω : Ω) :
 /-- Stratonovich word coordinate via triangular conversion from Itô. -/
 def stratWordIntegral (B : MultiBrownian Ω P d) (s t : ℝ) (ω : Ω) (I : Word (d + 1)) : ℝ :=
   itoWordIntegral B s t ω I + stratItoCorrection B s t ω I
+lemma measurable_stratItoCorrection (B : MultiBrownian Ω P d) (s t : ℝ)
+    (I : Word (d + 1)) :
+    Measurable (fun ω => stratItoCorrection B s t ω I) := by
+  cases I with
+  | nil =>
+    change Measurable (fun _ => (0 : ℝ))
+    exact measurable_const
+  | cons _ I' =>
+    cases I' with
+    | nil =>
+      change Measurable (fun _ => (0 : ℝ))
+      exact measurable_const
+    | cons _ _ =>
+      simp only [stratItoCorrection]
+      exact Finset.measurable_sum _ fun _ _ =>
+        Finset.measurable_sum _ fun J _ =>
+          (measurable_itoWordIntegral B s t J).const_mul _
+lemma measurable_stratWordIntegral (B : MultiBrownian Ω P d) (s t : ℝ) (I : Word (d + 1)) :
+    Measurable (fun ω => stratWordIntegral B s t ω I) :=
+  (measurable_itoWordIntegral B s t I).add (measurable_stratItoCorrection B s t I)
 end
 section
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}
@@ -510,20 +652,66 @@ def kitItoInt (B : MultiBrownian Ω P d) (H : ℝ → Ω → ℝ) (t : ℝ) : Ω
     condExp ((pathFiltration B).σAlg t) P (kitItoIntRaw B H t)
   else
     fun _ => 0
+lemma kitItoInt_meas (B : MultiBrownian Ω P d) (H : ℝ → Ω → ℝ) (t : ℝ) :
+    Measurable (kitItoInt B H t) := by
+  simp only [kitItoInt]
+  split_ifs
+  · exact (stronglyMeasurable_condExp.mono ((pathFiltration B).le_ambient t)).measurable
+  · exact measurable_const
 /-- Quadratic variation: condExp onto the path filtration when the pair is integrable, else `0`. -/
 def kitQuadVar (B : MultiBrownian Ω P d) (H : ℝ → Ω → ℝ) (t : ℝ) : Ω → ℝ :=
   if kitPairIntegrable B H t then
     condExp ((pathFiltration B).σAlg t) P (kitQuadVarRaw B H t)
   else
     fun _ => 0
+lemma kitQuadVar_meas (B : MultiBrownian Ω P d) (H : ℝ → Ω → ℝ) (t : ℝ) :
+    Measurable (kitQuadVar B H t) := by
+  simp only [kitQuadVar]
+  split_ifs
+  · exact (stronglyMeasurable_condExp.mono ((pathFiltration B).le_ambient t)).measurable
+  · exact measurable_const
 end
 section
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}
 /-- Paper Stratonovich signature of the time-extended Brownian path (iterated integrals). -/
 def paperSig2 (B : MultiBrownian Ω P d) (s t : ℝ) (ω : Ω) : ExtTensorAlgebra (d + 1) :=
   ⟨fun I => stratWordIntegral B s t ω I.reverse⟩
+lemma paperSig2_empty (B : MultiBrownian Ω P d) (s t : ℝ) (ω : Ω) :
+    (paperSig2 B s t ω).coeff [] = 1 := by
+  simp [paperSig2, stratWordIntegral, itoWordIntegral, stratItoCorrection]
 lemma measurable_paperSig2_coeff (B : MultiBrownian Ω P d) (s t : ℝ) (I : Word (d + 1)) :
-    Measurable (fun ω => (paperSig2 B s t ω).coeff I) := by sorry
+    Measurable (fun ω => (paperSig2 B s t ω).coeff I) :=
+  measurable_stratWordIntegral B s t I.reverse
+end
+section
+run_cmd Lean.modifyEnv fun env => Lean.Meta.auxLemmasExt.setState env {}
+open ProbabilityTheory
+variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P]
+lemma dualPairing_smul_basisWord_nil {d : ℕ} (σ₀ : ℝ) (a : ExtTensorAlgebra d) :
+    dualPairing (σ₀ • ExtTensorAlgebra.basisWord ([] : Word d)) a = σ₀ * a.coeff [] := by
+  have hcoeff : ∀ I : Word d,
+      (σ₀ • ExtTensorAlgebra.basisWord ([] : Word d)).coeff I = if I = [] then σ₀ else 0 := by
+    intro I
+    change σ₀ * (if I = [] then (1 : ℝ) else 0) = _
+    split_ifs <;> simp
+  have hlev : ∀ n : ℕ, (σ₀ • ExtTensorAlgebra.basisWord ([] : Word d)).levelInner a n =
+      if n = 0 then σ₀ * a.coeff [] else 0 := by
+    intro n
+    unfold ExtTensorAlgebra.levelInner
+    split_ifs with hn
+    · subst hn
+      rw [Finset.sum_eq_single ([] : Word d)]
+      · rw [hcoeff]; simp
+      · intro I hI hne; rw [hcoeff, ite_eq_right_iff.mpr (fun h => absurd h hne), zero_mul]
+      · intro h; exact absurd (wordsOfLength.mem.mpr (rfl : ([] : Word d).length = 0)) h
+    · refine Finset.sum_eq_zero fun I hI => ?_
+      have hlen : I.length = n := wordsOfLength.mem.mp hI
+      have hne : I ≠ [] := fun h => hn (by rw [← hlen, h, List.length_nil])
+      rw [hcoeff, ite_eq_right_iff.mpr (fun h => absurd h hne), zero_mul]
+  unfold dualPairing
+  simp_rw [hlev]
+  exact tsum_ite_eq 0 _
+variable (T s₀ σ₀ : ℝ) (hT : 0 < T) (hs₀ : 0 < s₀) (hσ₀ : σ₀ ≠ 0)
 end
 section
 open scoped Classical RealInnerProductSpace
@@ -665,7 +853,9 @@ Theorem A), with the Itô integral `kitItoInt B` and quadratic variation `kitQua
 def sigPrice (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d) (t : ℝ) (ω : Ω) : ℝ :=
   M.s₀ * Real.exp (kitItoInt B (sigVol M B) t ω - (1 / 2 : ℝ) * kitQuadVar B (sigVol M B) t ω)
 lemma sigPrice_meas (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d) (t : ℝ) :
-    Measurable (sigPrice M B t) := by sorry
+    Measurable (sigPrice M B t) :=
+  measurable_const.mul ((kitItoInt_meas B _ t).sub
+    (measurable_const.mul (kitQuadVar_meas B _ t))).exp
 /-- Market data for Theorems C–D (unwrapped): the model, its Brownian driver, and the analytic
 H3 hypothesis of Theorem A. -/
 structure Market (Ω : Type*) [MeasurableSpace Ω] (P : Measure Ω) [IsProbabilityMeasure P] where
@@ -693,11 +883,16 @@ def gainsSet (mkt : Market Ω P) : Set (Lp ℝ 2 P) :=
 /-- **Definition 65.** `H0`, the closed span of the constant `1` and the gains `gainsSet`. -/
 def H0 (mkt : Market Ω P) : Submodule ℝ (Lp ℝ 2 P) :=
   (Submodule.span ℝ (insert (Market.oneLp P) mkt.gainsSet)).topologicalClosure
-lemma memLp_coord (mkt : Market Ω P) (I : Word (mkt.M.d + 1)) :
-    MemLp (fun ω => (paperSig2 mkt.B 0 mkt.M.T ω).coeff I) 2 P := by sorry
+/-- The terminal signature coordinate `⟨e_I, Ŵ_T⟩` as an `L²(ℙ)` class: the `MemLp.toLp`
+embedding when the coordinate is square-integrable, and `0` otherwise. Every `Market`
+has square-integrable coordinates (`memLp_coord`), so on the markets that appear in
+the compared theorems this is the genuine coordinate. -/
+def coord (mkt : Market Ω P) (I : Word (mkt.M.d + 1)) : Lp ℝ 2 P :=
+  haveI := Classical.dec (MemLp (fun ω => (paperSig2 mkt.B 0 mkt.M.T ω).coeff I) 2 P)
+  if h : MemLp (fun ω => (paperSig2 mkt.B 0 mkt.M.T ω).coeff I) 2 P then h.toLp _ else 0
 /-- The depth-`≤ N` terminal signature coordinates `{⟨e_I, Ŵ_T⟩ : |I| ≤ N}` in `L²(ℙ)`. -/
 def coordSet (mkt : Market Ω P) (N : ℕ) : Set (Lp ℝ 2 P) :=
-  {f | ∃ I : Word (mkt.M.d + 1), I.length ≤ N ∧ f = (mkt.memLp_coord I).toLp _}
+  {f | ∃ I : Word (mkt.M.d + 1), I.length ≤ N ∧ f = mkt.coord I}
 /-- **Definition 55.** The completeness depth `N^*_S`: the least `N` with
 `closure span {⟨e_I, Ŵ_T⟩ : |I| ≤ N} ∩ L²(ℱ^S_T) = L²(ℱ^S_T)`, and `⊤` if there is none. -/
 def completenessDepth (mkt : Market Ω P) : ℕ∞ :=
@@ -718,8 +913,20 @@ theorem theorem_D_unwrapped (mkt : Market Ω P) (X : Lp ℝ 2 P) (hX : X ∈ mkt
           c = ∫ ω, X ω ∂P ∧ G' = G ∧ ε' = ε := by sorry
 section BlackScholes
 variable (T s₀ σ₀ : ℝ) (hT : 0 < T) (hs₀ : 0 < s₀) (hσ₀ : σ₀ ≠ 0)
+lemma sigVol_blackScholes (B : MultiBrownian Ω P 1) (t : ℝ) (ω : Ω) :
+    sigVol (blackScholesModel T s₀ σ₀ hT hs₀ hσ₀) B t ω = σ₀ := by
+  unfold sigVol blackScholesModel
+  have h := dualPairing_smul_basisWord_nil σ₀ (paperSig2 B 0 t ω)
+  have h1 : (paperSig2 B 0 t ω).coeff [] = 1 := paperSig2_empty B 0 t ω
+  rw [h1, mul_one] at h
+  exact h
 lemma hypH3_blackScholes (B : MultiBrownian Ω P 1) :
-    HypH3 P T (sigVol (blackScholesModel T s₀ σ₀ hT hs₀ hσ₀) B) := by sorry
+    HypH3 P T (sigVol (blackScholesModel T s₀ σ₀ hT hs₀ hσ₀) B) := by
+  intro _ _
+  have hσ : sigVol (blackScholesModel T s₀ σ₀ hT hs₀ hσ₀) B = fun _ _ => σ₀ :=
+    funext fun t => funext fun ω => sigVol_blackScholes T s₀ σ₀ hT hs₀ hσ₀ B t ω
+  simp only [hσ]
+  exact integrable_const _
 /-- The Black–Scholes market (constant volatility `σ₀`) on a one-dimensional Brownian driver. -/
 def bsMarket (B : MultiBrownian Ω P 1) : Market Ω P :=
   ⟨blackScholesModel T s₀ σ₀ hT hs₀ hσ₀, B, hypH3_blackScholes T s₀ σ₀ hT hs₀ hσ₀ B⟩

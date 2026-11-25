@@ -13,6 +13,22 @@ open, variable, ...) of each source file are kept so copied declarations elabora
 """
 import re, sys, collections, json
 
+# Keep in sync with `scripts/ComparatorClosure.lean.in` `targets`. Only these
+# theorems are compared (proofs replaced by `sorry`); other lemmas in the
+# closure are copied with their proofs, as Palomar compares non-targets by
+# exact syntactic equality.
+TARGETS = [
+    "SignatureVolatility.theorem_A_unwrapped",
+    "SignatureVolatility.theorem_B_mp_unwrapped",
+    "SignatureVolatility.not_affine_riccati_duality_mpr_unwrapped",
+    "SignatureVolatility.not_affine_riccati_duality_unwrapped",
+    "SignatureVolatility.not_theorem_B_mpr_unwrapped",
+    "SignatureVolatility.not_theorem_B_unwrapped",
+    "SignatureVolatility.not_theorem_C_unwrapped",
+    "SignatureVolatility.theorem_D_unwrapped",
+    "SignatureVolatility.theorem_D_residual_hypothesis_fails_unwrapped",
+]
+
 closure, out_path, json_path = sys.argv[1], sys.argv[2], sys.argv[3]
 rows = [l.rstrip("\n").split("\t") for l in open(closure) if l.count("\t") == 6]
 need = {}  # module -> {startLine: kind}
@@ -29,6 +45,9 @@ for kind, name, parent, idx, mod, sl, el in rows:
         continue
     if kind == "aux":
         k = None
+    elif kind == "thm" and name not in TARGETS:
+        # Non-target lemmas: copy with proof, do not sorry them.
+        k = "copy"
     else:
         k = kind
     d = need.setdefault(mod, {})
@@ -40,7 +59,7 @@ for kind, name, parent, idx, mod, sl, el in rows:
     if d.get(sl) is None:
         d[sl] = "copy"
     modidx[mod] = int(idx)
-    if kind == "thm":
+    if kind == "thm" and name in TARGETS:
         thm_names.append(name)
 
 INSTANCE_SKIP = ["finiteDimensional_span_coordSet", "finiteDimensional_sigSpan"]  # substrings identifying instances whose proofs need non-copied lemmas
@@ -241,6 +260,10 @@ subprocess.run([sys.executable, os.path.join(os.path.dirname(__file__), "compact
 import os, shutil
 if os.path.isdir("SignatureVolatilityComparator/ChallengeParts"):
     shutil.rmtree("SignatureVolatilityComparator/ChallengeParts")
+missing = [n for n in TARGETS if n not in thm_names]
+if missing:
+    raise SystemExit(f"compared targets missing from closure: {missing}")
+thm_names = list(TARGETS)
 cfg = json.load(open(json_path))
 cfg["theorem_names"] = thm_names
 cfg["definition_names"] = []
