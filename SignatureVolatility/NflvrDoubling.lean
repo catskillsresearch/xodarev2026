@@ -2045,4 +2045,84 @@ lemma measurableSet_stochInterval {σAlg : ℝ → MeasurableSpace Ω} {T a : �
       exact le_of_tendsto hlim (Eventually.of_forall fun m => (hε m).le)
   exact hSR ▸ hRmeas
 
+
+/-- Nonnegativity of a dyadic grid point on `[0, T]`. -/
+lemma dyadic_point_nonneg {T : ℝ} (hT : 0 ≤ T) (m k : ℕ) :
+    0 ≤ (k : ℝ) * T / (2 ^ m : ℝ) :=
+  div_nonneg (mul_nonneg (Nat.cast_nonneg _) hT) (by positivity)
+
+lemma dyadic_point_mono {T : ℝ} (hT : 0 ≤ T) (m k : ℕ) :
+    (k : ℝ) * T / (2 ^ m : ℝ) ≤ ((k + 1 : ℕ) : ℝ) * T / (2 ^ m : ℝ) := by
+  have : (k : ℝ) ≤ ((k + 1 : ℕ) : ℝ) := by
+    rw [Nat.cast_succ]; linarith
+  exact div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_right this hT) (by positivity)
+
+lemma dyadic_point_le_T {T : ℝ} (hT : 0 ≤ T) {m k : ℕ} (hk : k ≤ 2 ^ m) :
+    (k : ℝ) * T / (2 ^ m : ℝ) ≤ T := by
+  have hk' : (k : ℝ) ≤ (2 ^ m : ℝ) := by exact_mod_cast hk
+  have : (k : ℝ) * T ≤ T * (2 ^ m : ℝ) := by
+    rw [mul_comm T]
+    exact mul_le_mul_of_nonneg_right hk' hT
+  exact (div_le_iff₀ (by positivity : 0 < (2 ^ m : ℝ))).mpr this
+
+lemma dyadic_point_mem_Icc {T : ℝ} (hT : 0 ≤ T) {m k : ℕ} (hk : k ≤ 2 ^ m) :
+    (k : ℝ) * T / (2 ^ m : ℝ) ∈ Icc 0 T :=
+  ⟨dyadic_point_nonneg hT m k, dyadic_point_le_T hT hk⟩
+
+/-- A point of `(0, T]` lies in at most one dyadic slot of a given level. -/
+lemma dyadic_Ioc_unique {T s : ℝ} (hT : 0 < T) {m k k' : ℕ}
+    (hk : (k : ℝ) * T / (2 ^ m : ℝ) < s ∧
+      s ≤ ((k + 1 : ℕ) : ℝ) * T / (2 ^ m : ℝ))
+    (hk' : (k' : ℝ) * T / (2 ^ m : ℝ) < s ∧
+      s ≤ ((k' + 1 : ℕ) : ℝ) * T / (2 ^ m : ℝ)) :
+    k = k' := by
+  rcases lt_trichotomy k k' with h | h | h
+  · have hle : ((k + 1 : ℕ) : ℝ) * T / (2 ^ m : ℝ) ≤
+        (k' : ℝ) * T / (2 ^ m : ℝ) := by
+      have : k + 1 ≤ k' := Nat.succ_le_of_lt h
+      have hcast : ((k + 1 : ℕ) : ℝ) ≤ (k' : ℝ) := by exact_mod_cast this
+      exact div_le_div_of_nonneg_right
+        (mul_le_mul_of_nonneg_right hcast hT.le) (by positivity)
+    linarith
+  · exact h
+  · have hle : ((k' + 1 : ℕ) : ℝ) * T / (2 ^ m : ℝ) ≤
+        (k : ℝ) * T / (2 ^ m : ℝ) := by
+      have : k' + 1 ≤ k := Nat.succ_le_of_lt h
+      have hcast : ((k' + 1 : ℕ) : ℝ) ≤ (k : ℝ) := by exact_mod_cast this
+      exact div_le_div_of_nonneg_right
+        (mul_le_mul_of_nonneg_right hcast hT.le) (by positivity)
+    linarith
+
+/-- Constant functions are measurable for an arbitrary σ-algebra on `Ω`. -/
+lemma measurable_const_σAlg {m : MeasurableSpace Ω} (c : ℝ) :
+    @Measurable Ω ℝ m inferInstance (fun _ => c) :=
+  fun s _hs => by
+    by_cases hmem : c ∈ s
+    · have : (fun _ : Ω => c) ⁻¹' s = Set.univ := by
+        ext ω; simp [hmem]
+      rw [this]
+      exact @MeasurableSet.univ Ω m
+    · have : (fun _ : Ω => c) ⁻¹' s = ∅ := by
+        ext ω; simp [hmem]
+      rw [this]
+      exact @MeasurableSet.empty Ω m
+
+/-- Pointwise `if p then f else g` is measurable for an arbitrary σ-algebra on `Ω`. -/
+lemma measurable_ite_σAlg {m : MeasurableSpace Ω} {p : Ω → Prop} [DecidablePred p]
+    {f g : Ω → ℝ} (hp : MeasurableSet[m] {ω | p ω})
+    (hf : ∀ ⦃s : Set ℝ⦄, MeasurableSet s → MeasurableSet[m] (f ⁻¹' s))
+    (hg : ∀ ⦃s : Set ℝ⦄, MeasurableSet s → MeasurableSet[m] (g ⁻¹' s)) :
+    ∀ ⦃s : Set ℝ⦄, MeasurableSet s →
+      MeasurableSet[m] ((fun ω => if p ω then f ω else g ω) ⁻¹' s) := by
+  intro s hs
+  have hpre :
+      (fun ω => if p ω then f ω else g ω) ⁻¹' s =
+        ({ω | p ω} ∩ f ⁻¹' s) ∪ ({ω | p ω}ᶜ ∩ g ⁻¹' s) := by
+    ext ω
+    by_cases hpω : p ω
+    · simp [hpω]
+    · simp [hpω]
+  rw [hpre]
+  exact (hp.inter (hf hs)).union (hp.compl.inter (hg hs))
+
 end SignatureVolatility
