@@ -622,12 +622,101 @@ lemma nGrid_spec {T s : ℝ} (hT : 0 < T) (hs0 : 0 < s) (hsT : s < T) :
       Nat.find_min (exists_tGrid_ge hT hsT) (by rw [hfn]; exact Nat.lt_succ_self n)
     exact lt_of_not_ge hlt
 
-/-- Geometric-grid doubling integrand `K`: on the nth interval it takes the constant position
-`c_n` up to the hitting time `τ_n`, provided the path has not already hit, and `0` elsewhere. -/
+/-- Geometric-grid doubling integrand `K` (Carbon): on the nth interval it takes the
+constant position `c_n` up to the hitting time `τ_n`, provided the path has not already
+hit, and `0` elsewhere. -/
 def doublingK (B : ℝ → Ω → ℝ) (T : ℝ) (s : ℝ) (ω : Ω) : ℝ :=
-  if _h : 0 < s ∧ s < T then
-    let n := nGrid T s
-    if ω ∈ nonHitPrefix B T n ∧ s ≤ tauHit B T n ω then doublingC B T n ω else 0
-  else 0
+  ∑' n : ℕ, if ω ∈ nonHitPrefix B T n ∧ tGrid T n < s ∧ s ≤ tauHit B T n ω
+    then doublingC B T n ω else 0
+
+/-- `L²`-localizing times `σ_N = t_N` on `E_N` and `T` after the first hit. -/
+def doublingSigma (B : ℝ → Ω → ℝ) (T : ℝ) (N : ℕ) (ω : Ω) : ℝ :=
+  if ω ∈ nonHitPrefix B T N then tGrid T N else T
+
+/-- A `[0, T]`-valued stopping time of the filtration `σAlg`. -/
+def IsStoppingTimeOn {Ω : Type*} [MeasurableSpace Ω]
+    (σAlg : ℝ → MeasurableSpace Ω) (T : ℝ) (τ : Ω → ℝ) : Prop :=
+  (∀ ω, τ ω ∈ Icc 0 T) ∧
+    ∀ t, t ∈ Icc 0 T → MeasurableSet[σAlg t] {ω | τ ω ≤ t}
+
+lemma isStoppingTime_doublingSigma (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) (N : ℕ) :
+    IsStoppingTimeOn (pathFiltration B).σAlg T (doublingSigma (bmCoord B) T N) := by
+  refine ⟨fun ω => ?_, fun t ht => ?_⟩
+  · simp only [doublingSigma]
+    by_cases hE : ω ∈ nonHitPrefix (bmCoord B) T N
+    · simpa [hE] using tGrid_mem hT N
+    · simp [hE, hT.le]
+  · by_cases htT : t = T
+    · have : {ω | doublingSigma (bmCoord B) T N ω ≤ t} = Set.univ :=
+        Set.eq_univ_iff_forall.mpr fun ω => by
+          simp only [doublingSigma]
+          by_cases hE : ω ∈ nonHitPrefix (bmCoord B) T N
+          · simpa [hE] using (tGrid_mem hT N).2.trans htT.ge
+          · simp [hE, htT.ge]
+      rw [this]
+      exact @MeasurableSet.univ Ω ((pathFiltration B).σAlg t)
+    have ht_lt : t < T := lt_of_le_of_ne ht.2 htT
+    by_cases htN : t < tGrid T N
+    · have : {ω | doublingSigma (bmCoord B) T N ω ≤ t} = ∅ :=
+        eq_empty_iff_forall_notMem.mpr fun ω hω => by
+          simp only [doublingSigma] at hω
+          by_cases hE : ω ∈ nonHitPrefix (bmCoord B) T N
+          · simp [hE] at hω
+            exact (not_le.mpr htN) hω
+          · simp [hE] at hω
+            exact (not_le.mpr ht_lt) hω
+      rw [this]
+      exact @MeasurableSet.empty Ω ((pathFiltration B).σAlg t)
+    have hge : tGrid T N ≤ t := le_of_not_gt htN
+    have heq : {ω | doublingSigma (bmCoord B) T N ω ≤ t} =
+        nonHitPrefix (bmCoord B) T N := by
+      ext ω
+      simp only [doublingSigma]
+      by_cases hE : ω ∈ nonHitPrefix (bmCoord B) T N
+      · simp [hE, hge]
+      · simp [hE, not_le.mpr ht_lt]
+    rw [heq]
+    exact ((pathFiltration B).mono hge) _ ((nonHitPrefix_props B hT).1 N)
+
+/-- On `⋃ N, E_Nᶜ` (probability 1), `doublingK` vanishes after `t_{N(ω)}`, hence
+`∫₀ᵀ K_s² ds < ∞` a.s. -/
+lemma doublingK_sq_int_finite_ae (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) :
+    ∀ᵐ ω ∂P, ∫⁻ s in Icc 0 T, ENNReal.ofReal (doublingK (bmCoord B) T s ω ^ 2) ∂volume < ⊤ := by
+  have hhit : ∀ᵐ ω ∂P, ∃ N : ℕ, ω ∉ nonHitPrefix (bmCoord B) T N := by
+    have h0 := (nonHitPrefix_props B hT).2.2
+    refine (measure_eq_zero_iff_ae_notMem.mp h0).mono fun ω hω => ?_
+    simpa [mem_iInter] using hω
+  filter_upwards [hhit] with ω ⟨N, hN⟩
+  have hvan : ∀ n ≥ N, ω ∉ nonHitPrefix (bmCoord B) T n := by
+    intro n hn
+    induction hn with
+    | refl => exact hN
+    | step _ ih => exact fun h => ih h.1
+  set C : ℝ := ∑ n ∈ Finset.range N, |doublingC (bmCoord B) T n ω|
+  have hK_le : ∀ s : ℝ, |doublingK (bmCoord B) T s ω| ≤ C := fun s => by
+    have htsum : doublingK (bmCoord B) T s ω =
+        ∑ n ∈ Finset.range N,
+          if ω ∈ nonHitPrefix (bmCoord B) T n ∧ tGrid T n < s ∧
+              s ≤ tauHit (bmCoord B) T n ω
+            then doublingC (bmCoord B) T n ω else 0 :=
+      tsum_eq_sum fun n hn => by
+        have hge : N ≤ n := by
+          simp only [Finset.mem_range, not_lt] at hn
+          exact hn
+        simp [hvan n hge]
+    rw [htsum]
+    refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun n _ => ?_)
+    split_ifs
+    · exact le_rfl
+    · rw [abs_zero]; exact abs_nonneg _
+  calc ∫⁻ s in Icc 0 T, ENNReal.ofReal (doublingK (bmCoord B) T s ω ^ 2) ∂volume
+      ≤ ∫⁻ _s in Icc 0 T, ENNReal.ofReal (C ^ 2) ∂volume :=
+        setLIntegral_mono' measurableSet_Icc fun s _ =>
+          ENNReal.ofReal_le_ofReal (by
+            rw [← sq_abs]
+            exact pow_le_pow_left₀ (abs_nonneg _) (hK_le s) 2)
+    _ = ENNReal.ofReal (C ^ 2) * volume (Icc 0 T) := setLIntegral_const _ _
+    _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top (by
+        rw [Real.volume_Icc]; exact ENNReal.ofReal_lt_top)
 
 end SignatureVolatility
