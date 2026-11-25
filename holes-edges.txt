@@ -179,6 +179,7 @@ ItoCalculusKit.BrownianQuadVarAS -hard-> SignatureRiccatiKit.EntireTransfer
 ItoCalculusKit.BrownianQuadVarAS -hard-> SignatureRiccatiKit.IntegralExpBarrier
 ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.DoleansSigma
 ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.GBMMartingale
+ItoCalculusKit.ConstVol -hard-> Unwrapped
 ItoCalculusKit.CrossVariation -hard-> ProlongedBrownianSetup.PaperSigDynamics
 ItoCalculusKit.CrossVariation -hard-> SignatureRiccatiKit.CounterexampleV1LogBound
 ItoCalculusKit.CrossVariation -hard-> SignatureRiccatiKit.CounterexampleV1LogNonpos
@@ -333,6 +334,7 @@ MemTwDual -hard-> NormWDual
 MemTwDualOfMemL2w -hard-> Corollary36SigmaWellDefined
 NflvrDefs -hard-> NflvrCone
 NflvrDefs -hard-> NflvrDoubling
+NflvrDoubling -hard-> Unwrapped
 NflvrOfMartingaleMeasure -hard-> TheoremBOfSetupItoRiccatiKit
 Norm2w -hard-> ItoCalculusKit
 Norm2w -hard-> MemTwDualOfMemL2w
@@ -654,6 +656,7 @@ NflvrDoubling.bsPrice -hard-> NflvrDoubling.cutoffPred
 NflvrDoubling.cutoffPred -hard-> NflvrDoubling.doublingH
 NflvrDoubling.doublingH -hard-> NflvrDoubling.bsTransfer
 NflvrDoubling -hard-> NflvrDoubling.terminalBdd
-NflvrDoubling.bsTransfer -hard-> NflvrDoubling.challengeRefutations
-NflvrDoubling.terminalBdd -hard-> NflvrDoubling.challengeRefutations
+NflvrDoubling.bsTransfer -hard-> NflvrDoubling.unwrappedRefs
+NflvrDoubling.terminalBdd -hard-> NflvrDoubling.unwrappedRefs
+NflvrDoubling.unwrappedRefs -hard-> NflvrDoubling.challengeRefutations
 NflvrDoubling.challengeRefutations -hard-> NflvrDoubling.writeup

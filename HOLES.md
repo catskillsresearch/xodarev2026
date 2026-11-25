@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-25T16:20:41Z
-**`sorry` occurrences:** 0 · 1 open · 1 blocked · 227 done · 0 file(s) with `sorry`.
+**Updated:** 2026-11-25T16:37:09Z
+**`sorry` occurrences:** 0 · 1 open · 0 blocked · 229 done · 0 file(s) with `sorry`.
 **Paper claims refuted:** 6 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
 
 ## The affine / Riccati `<-` direction is refuted
@@ -54,7 +54,7 @@ _None._
 
 | Id | File |
 |---|---|
-| `NflvrDoubling.challengeRefutations` | `SignatureVolatilityComparator/Challenge.lean` |
+| `NflvrDoubling.writeup` | `Writeup/PalomarRegistration.md` |
 
 ## NflvrDoubling subtasks
 
@@ -77,8 +77,9 @@ Internal structure of the doubling counterexample. These are not separate Lean m
 | done | `NflvrDoubling.doublingH` | `4d9d645` | The transferred integrand H=K/(Sσ₀) is predictable and S-admissible for the closed-form BS price, and H S σ₀ equals K. Done in 4d9d645. |
 | done | `NflvrDoubling.bsTransfer` | `4d9d645` | Black–Scholes transfer H=K/(Sσ₀): the same doubling wealth is an admissible Itô integral in the BS market and ends at V_T=1 a.s., so both literal NFLVR and the terminal-only bounded-below version fail. Done in 4d9d645. |
 | done | `NflvrDoubling.terminalBdd` | `b8ea73f` | The same admissible doubling wealth ends at V_T=1≥0 a.s., so the terminal-only bounded-below cone also contains a nontrivial free lunch. Done in b8ea73f. |
-| open | `NflvrDoubling.challengeRefutations` | `—` | Library theorems not_literal_nflvr and not_terminal_bdd_nflvr, unwrapped forms in Challenge (≤1000 lines) and comparator.json, yaml main_results v0.4, and the strict compare. |
-| blocked | `NflvrDoubling.writeup` | `—` | Writeup pass using Carbon's notes: narratives, PROVENANCE.md Comparator section, COMPARATOR.md, PalomarRegistration.md, and project.description, crediting Carbon (Gemini). |
+| done | `NflvrDoubling.unwrappedRefs` | `7377f12` | Unwrapped compared theorems use sigPrice of blackScholesModel, which agrees with the closed-form bsPrice on [0,T]. Done in 7377f12. |
+| done | `NflvrDoubling.challengeRefutations` | `7377f12` | Challenge copies of the NFLVR defs and two sorry compared theorems, still 1000 lines; comparator.json and yaml main_results list 11 unwrapped theorems; strict compare matches 44831 constants. Done in 7377f12. |
+| open | `NflvrDoubling.writeup` | `—` | Writeup pass using Carbon's notes: narratives, PROVENANCE.md Comparator section, COMPARATOR.md, PalomarRegistration.md, and project.description, crediting Carbon (Gemini). |
 
 ## By group
 
@@ -324,13 +325,13 @@ Internal structure of the doubling counterexample. These are not separate Lean m
 |---|---|---|
 | done | `SignatureVolatilityModel.Sigma` | `SignatureVolatility/SignatureVolatilityModel/Sigma.lean` |
 
-### NflvrDoubling subtasks — 2 hole(s)
+### NflvrDoubling subtasks — 1 hole(s)
 
 | Status | Id | File |
 |---|---|---|
 | done | `NflvrDoubling.bsPrice` | `SignatureVolatility/NflvrDoubling.lean` |
 | done | `NflvrDoubling.bsTransfer` | `SignatureVolatility/NflvrDoubling.lean` |
-| open | `NflvrDoubling.challengeRefutations` | `SignatureVolatilityComparator/Challenge.lean` |
+| done | `NflvrDoubling.challengeRefutations` | `SignatureVolatilityComparator/Challenge.lean` |
 | done | `NflvrDoubling.cutoffPred` | `SignatureVolatility/NflvrDoubling.lean` |
 | done | `NflvrDoubling.doublingH` | `SignatureVolatility/NflvrDoubling.lean` |
 | done | `NflvrDoubling.evalAdapted` | `SignatureVolatility/NflvrDoubling.lean` |
@@ -343,8 +344,9 @@ Internal structure of the doubling counterexample. These are not separate Lean m
 | done | `NflvrDoubling.sAdmissible` | `SignatureVolatility/NflvrDoubling.lean` |
 | done | `NflvrDoubling.tauHit` | `SignatureVolatility/NflvrDoubling.lean` |
 | done | `NflvrDoubling.terminalBdd` | `SignatureVolatility/NflvrDoubling.lean` |
+| done | `NflvrDoubling.unwrappedRefs` | `SignatureVolatility/Unwrapped.lean` |
 | done | `NflvrDoubling.wealthProcess` | `SignatureVolatility/NflvrDoubling.lean` |
-| blocked | `NflvrDoubling.writeup` | `Writeup/PalomarRegistration.md` |
+| open | `NflvrDoubling.writeup` | `Writeup/PalomarRegistration.md` |
 
 ## Dependency sketch
 

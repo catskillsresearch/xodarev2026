@@ -320,14 +320,23 @@ SYNTHETIC_NODES: list[dict] = [
         "commits": "b8ea73f",
     },
     {
+        "id": "NflvrDoubling.unwrappedRefs",
+        "label": "not_literal_nflvr_unwrapped / not_terminal_bdd_nflvr_unwrapped (7377f12)",
+        "status": "done",
+        "detail": "Unwrapped compared theorems use sigPrice of blackScholesModel, which "
+                  "agrees with the closed-form bsPrice on [0,T]. Done in 7377f12.",
+        "file": "SignatureVolatility/Unwrapped.lean",
+        "commits": "7377f12",
+    },
+    {
         "id": "NflvrDoubling.challengeRefutations",
-        "label": "Challenge not_literal_nflvr / not_terminal_bdd_nflvr",
-        "status": "open",
-        "detail": "Library theorems not_literal_nflvr and not_terminal_bdd_nflvr, unwrapped "
-                  "forms in Challenge (≤1000 lines) and comparator.json, yaml main_results "
-                  "v0.4, and the strict compare.",
+        "label": "Challenge compared refutations, comparator, yaml (7377f12)",
+        "status": "done",
+        "detail": "Challenge copies of the NFLVR defs and two sorry compared theorems, "
+                  "still 1000 lines; comparator.json and yaml main_results list 11 "
+                  "unwrapped theorems; strict compare matches 44831 constants. Done in 7377f12.",
         "file": "SignatureVolatilityComparator/Challenge.lean",
-        "commits": "",
+        "commits": "7377f12",
     },
     {
         "id": "NflvrDoubling.writeup",
@@ -359,8 +368,9 @@ SYNTHETIC_EDGES: list[tuple[str, str]] = [
     ("NflvrDoubling.cutoffPred", "NflvrDoubling.doublingH"),
     ("NflvrDoubling.doublingH", "NflvrDoubling.bsTransfer"),
     ("NflvrDoubling", "NflvrDoubling.terminalBdd"),
-    ("NflvrDoubling.bsTransfer", "NflvrDoubling.challengeRefutations"),
-    ("NflvrDoubling.terminalBdd", "NflvrDoubling.challengeRefutations"),
+    ("NflvrDoubling.bsTransfer", "NflvrDoubling.unwrappedRefs"),
+    ("NflvrDoubling.terminalBdd", "NflvrDoubling.unwrappedRefs"),
+    ("NflvrDoubling.unwrappedRefs", "NflvrDoubling.challengeRefutations"),
     ("NflvrDoubling.challengeRefutations", "NflvrDoubling.writeup"),
 ]
 
