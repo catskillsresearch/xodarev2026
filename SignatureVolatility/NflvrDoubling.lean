@@ -1401,4 +1401,313 @@ lemma riemannRect_eventually {t a b : ℝ} (ht : 0 ≤ t) (ha : 0 ≤ a) (h : a 
     rw [hρ]
     exact ⟨hk_mul_gt, hk_mul_le⟩
 
+
+lemma find_riemann_pos {t a b : ℝ} (ha : 0 ≤ a) {n : ℕ}
+    (hex : ∃ k, k ≤ n ∧ riemannRect t a b n k) :
+    0 < Nat.find hex := by
+  have hspec := Nat.find_spec hex
+  refine Nat.pos_of_ne_zero fun h0 => ?_
+  have htime : riemannTime t n (Nat.find hex) = 0 := by rw [h0, riemannTime_zero]
+  have : a < 0 := by
+    have := hspec.2.1
+    rwa [htime] at this
+  exact this.not_ge ha
+
+lemma riemannTime_find_le_add_mesh {t a b : ℝ} (ht : 0 ≤ t) (ha : 0 ≤ a) {n : ℕ}
+    (hex : ∃ k, k ≤ n ∧ riemannRect t a b n k) :
+    riemannTime t n (Nat.find hex) ≤ a + t / (n + 1 : ℝ) := by
+  set kmin := Nat.find hex
+  have hspec := Nat.find_spec hex
+  have hkpos : 0 < kmin := find_riemann_pos ha hex
+  have hblk := riemannRect_block ht hex
+  have hkn : kmin - 1 < n + 1 :=
+    (Nat.sub_le kmin 1).trans_lt (Nat.lt_succ_of_le hspec.1)
+  have hprev : ¬ riemannRect t a b n (kmin - 1) := by
+    intro hrec
+    have hle : kmin ≤ kmin - 1 := ((hblk.2.2 (kmin - 1) hkn).mp hrec).1
+    exact (Nat.not_le_of_gt (Nat.sub_lt hkpos Nat.one_pos)) hle
+  have hsucc :
+      riemannTime t n kmin = riemannTime t n (kmin - 1) + t / (n + 1 : ℝ) := by
+    have hm := riemannTime_mesh t n (kmin - 1)
+    have : kmin - 1 + 1 = kmin := Nat.sub_add_cancel (Nat.succ_le_of_lt hkpos)
+    rw [this] at hm
+    linarith
+  have hprev_le : riemannTime t n (kmin - 1) ≤ a := by
+    have hnr : ¬ (a < riemannTime t n (kmin - 1) ∧ riemannTime t n (kmin - 1) ≤ b) := by
+      simpa [riemannRect] using hprev
+    by_contra hgt
+    have hlt' : a < riemannTime t n (kmin - 1) := lt_of_not_ge hgt
+    have hmax_P : riemannRect t a b n (Nat.findGreatest (fun k => riemannRect t a b n k) n) :=
+      Nat.findGreatest_spec (P := fun k => riemannRect t a b n k) hspec.1 hspec.2
+    have hle_b : riemannTime t n (kmin - 1) ≤ b := by
+      have hle1 : riemannTime t n (kmin - 1) ≤ riemannTime t n kmin :=
+        riemannTime_mono ht n (Nat.sub_le _ _)
+      have hle2 : riemannTime t n kmin ≤
+          riemannTime t n (Nat.findGreatest (fun k => riemannRect t a b n k) n) :=
+        riemannTime_mono ht n hblk.1
+      exact hle1.trans (hle2.trans hmax_P.2)
+    exact hnr ⟨hlt', hle_b⟩
+  linarith
+
+lemma riemannTime_findGreatest_succ_bounds {t a b : ℝ} (ht : 0 ≤ t) {n : ℕ}
+    (hex : ∃ k, k ≤ n ∧ riemannRect t a b n k) :
+    min t b ≤
+        riemannTime t n (Nat.findGreatest (fun k => riemannRect t a b n k) n + 1) ∧
+      riemannTime t n (Nat.findGreatest (fun k => riemannRect t a b n k) n + 1) ≤
+        min t b + t / (n + 1 : ℝ) := by
+  set kmax := Nat.findGreatest (fun k => riemannRect t a b n k) n
+  have hmax_le : kmax ≤ n := Nat.findGreatest_le n
+  have hmin := Nat.find_spec hex
+  have hmax_P : riemannRect t a b n kmax :=
+    Nat.findGreatest_spec (P := fun k => riemannRect t a b n k) hmin.1 hmin.2
+  have hmesh_eq := riemannTime_mesh t n kmax
+  have hle_t : riemannTime t n (kmax + 1) ≤ t :=
+    riemannTime_le_t ht n (Nat.succ_le_succ hmax_le)
+  have hle_bmesh : riemannTime t n (kmax + 1) ≤ b + t / (n + 1 : ℝ) := by
+    have : riemannTime t n kmax ≤ b := hmax_P.2
+    linarith
+  by_cases hkn : kmax = n
+  · constructor
+    · simp [hkn, riemannTime_last]
+    · -- `t - mesh ≤ b` when `kmax = n`, since `nδ ≤ b`.
+      have hb : riemannTime t n n ≤ b := by
+        convert hmax_P.2
+        exact hkn.symm
+      have : riemannTime t n (n + 1) ≤ min t b + t / (n + 1 : ℝ) := by
+        rw [riemannTime_last]
+        have htm : t = riemannTime t n n + t / (n + 1 : ℝ) := by
+          rw [riemannTime_n_eq]; ring
+        have h1 : t ≤ b + t / (n + 1 : ℝ) := by linarith
+        have h2 : t ≤ t + t / (n + 1 : ℝ) :=
+          le_add_of_nonneg_right (div_nonneg ht (by positivity))
+        simpa [min_add_add_right] using le_min h2 h1
+      simpa [hkn] using this
+  · have hlt : kmax < n := lt_of_le_of_ne hmax_le hkn
+    have hnext : kmax + 1 ≤ n := Nat.succ_le_of_lt hlt
+    have hnot : ¬ riemannRect t a b n (kmax + 1) := fun hrec =>
+      Nat.not_le_of_gt (Nat.lt_succ_self kmax) (Nat.le_findGreatest hnext hrec)
+    have hgt_a : a < riemannTime t n (kmax + 1) :=
+      lt_of_lt_of_le hmax_P.1 (riemannTime_mono ht n (Nat.le_succ kmax))
+    have hgt_b : b < riemannTime t n (kmax + 1) := by
+      have hnr : ¬ (a < riemannTime t n (kmax + 1) ∧ riemannTime t n (kmax + 1) ≤ b) := by
+        simpa [riemannRect] using hnot
+      exact lt_of_not_ge fun hle => hnr ⟨hgt_a, hle⟩
+    have hb_lt_t : b < t := hgt_b.trans_le hle_t
+    have hminb : min t b = b := min_eq_right hb_lt_t.le
+    constructor
+    · rw [hminb]; exact hgt_b.le
+    · rw [hminb]; exact hle_bmesh
+
+lemma itoRiemannSumIndicator_eq_zero_of_not_win (B : ℝ → Ω → ℝ) {t a b : ℝ}
+    (ht : 0 ≤ t) (h : ¬ a < min t b) (n : ℕ) (ω : Ω) :
+    itoRiemannSumIndicator B t a b n ω = 0 := by
+  refine itoRiemannSumIndicator_empty B ω fun k hk hrec => ?_
+  have hkt : riemannTime t n k ≤ t := riemannTime_le_t ht n (le_of_lt hk)
+  have : a < min t b :=
+    lt_min (hrec.1.trans_le hkt) (hrec.1.trans_le hrec.2)
+  exact h this
+
+lemma min_eq_of_not_win {t a b : ℝ} (hab : a ≤ b) (h : ¬ a < min t b) :
+    min t a = min t b := by
+  have hba : min t b ≤ a := le_of_not_gt h
+  exact le_antisymm (min_le_min_left t hab)
+    (le_min (min_le_left _ _) hba)
+
+lemma itoRiemannSumIndicator_block (B : ℝ → Ω → ℝ) {t a b : ℝ} (ht : 0 ≤ t)
+    {n : ℕ} (ω : Ω) (hex : ∃ k, k ≤ n ∧ riemannRect t a b n k) :
+    itoRiemannSumIndicator B t a b n ω =
+      B (riemannTime t n (Nat.findGreatest (fun k => riemannRect t a b n k) n + 1)) ω -
+        B (riemannTime t n (Nat.find hex)) ω := by
+  have hblk := riemannRect_block ht hex
+  exact itoRiemannSumIndicator_Icc B ω hblk.2.1 hblk.1 hblk.2.2
+
+
+/-- Left-point Riemann sums of `1_{(a,b]}` against a continuous path converge
+to the increment `B_{min(t,b)} - B_{min(t,a)}`. -/
+lemma tendsto_itoRiemannSum_indicator (B : ℝ → Ω → ℝ) {t a b : ℝ}
+    (ht : 0 ≤ t) (ha : 0 ≤ a) (hab : a ≤ b) (ω : Ω)
+    (hB : ContinuousOn (fun u => B u ω) (Icc 0 t)) :
+    Tendsto (fun n => itoRiemannSumIndicator B t a b n ω) atTop
+      (𝓝 (B (min t b) ω - B (min t a) ω)) := by
+  by_cases hwin : a < min t b
+  · have huc : UniformContinuousOn (fun u => B u ω) (Icc 0 t) :=
+      isCompact_Icc.uniformContinuousOn_of_continuous hB
+    refine Metric.tendsto_atTop.mpr fun ε hε => ?_
+    obtain ⟨δ, hδpos, hδuc⟩ := Metric.uniformContinuousOn_iff.mp huc (ε / 2) (half_pos hε)
+    obtain ⟨N₁, hN₁⟩ := eventually_atTop.mp (riemannRect_eventually ht ha hwin)
+    obtain ⟨N₂, hN₂⟩ :=
+      Metric.tendsto_atTop.mp (riemannTime_mesh_tendsto t) δ hδpos
+    refine ⟨max N₁ N₂, fun n hn => ?_⟩
+    have hex : ∃ k, k ≤ n ∧ riemannRect t a b n k :=
+      hN₁ n (le_trans (le_max_left N₁ N₂) hn)
+    have hmesh : t / (n + 1 : ℝ) < δ := by
+      have := hN₂ n (le_trans (le_max_right N₁ N₂) hn)
+      rw [Real.dist_eq, sub_zero, abs_of_nonneg (div_nonneg ht (by positivity))] at this
+      exact this
+    have ha_eq : min t a = a :=
+      min_eq_right (le_of_lt (lt_of_lt_of_le hwin (min_le_left _ _)))
+    have hleft : |riemannTime t n (Nat.find hex) - a| < δ := by
+      have hgt : a < riemannTime t n (Nat.find hex) := (Nat.find_spec hex).2.1
+      have hle := riemannTime_find_le_add_mesh ht ha hex
+      rw [abs_of_nonneg (sub_nonneg.mpr hgt.le)]
+      linarith
+    have hright := riemannTime_findGreatest_succ_bounds ht hex
+    have hright_abs :
+        |riemannTime t n (Nat.findGreatest (fun k => riemannRect t a b n k) n + 1) -
+          min t b| < δ := by
+      rw [abs_of_nonneg (sub_nonneg.mpr hright.1)]
+      linarith [hright.2]
+    have hsum := itoRiemannSumIndicator_block B ht ω hex
+    have hu :
+        riemannTime t n (Nat.findGreatest (fun k => riemannRect t a b n k) n + 1) ∈ Icc 0 t :=
+      ⟨riemannTime_nonneg ht n _,
+        riemannTime_le_t ht n (Nat.succ_le_succ (Nat.findGreatest_le n))⟩
+    have hv : riemannTime t n (Nat.find hex) ∈ Icc 0 t :=
+      ⟨riemannTime_nonneg ht n _,
+        riemannTime_le_t ht n (le_trans (Nat.find_spec hex).1 (Nat.le_succ n))⟩
+    have hp : min t b ∈ Icc 0 t :=
+      ⟨le_min ht (le_trans ha hab), min_le_left _ _⟩
+    have hq : min t a ∈ Icc 0 t :=
+      ⟨le_min ht ha, min_le_left _ _⟩
+    have hBu :
+        dist (B (riemannTime t n
+            (Nat.findGreatest (fun k => riemannRect t a b n k) n + 1)) ω)
+          (B (min t b) ω) < ε / 2 :=
+      hδuc _ hu _ hp (by simpa [Real.dist_eq] using hright_abs)
+    have hBv :
+        dist (B (riemannTime t n (Nat.find hex)) ω) (B (min t a) ω) < ε / 2 :=
+      hδuc _ hv _ hq (by simpa [Real.dist_eq, ha_eq] using hleft)
+    have htri :
+        dist (itoRiemannSumIndicator B t a b n ω) (B (min t b) ω - B (min t a) ω) < ε := by
+      rw [hsum, Real.dist_eq]
+      have hident :
+          |(B (riemannTime t n
+                (Nat.findGreatest (fun k => riemannRect t a b n k) n + 1)) ω -
+              B (riemannTime t n (Nat.find hex)) ω) -
+            (B (min t b) ω - B (min t a) ω)| =
+            |(B (riemannTime t n
+                (Nat.findGreatest (fun k => riemannRect t a b n k) n + 1)) ω -
+              B (min t b) ω) -
+            (B (riemannTime t n (Nat.find hex)) ω - B (min t a) ω)| := by
+        ring_nf
+      rw [Real.dist_eq] at hBu hBv
+      rw [hident]
+      refine (abs_sub _ _).trans_lt ?_
+      linarith
+    exact htri
+  · have hz : B (min t b) ω - B (min t a) ω = 0 := by
+      rw [min_eq_of_not_win hab hwin, sub_self]
+    have hconst : (fun n => itoRiemannSumIndicator B t a b n ω) = fun _ => 0 :=
+      funext fun n => itoRiemannSumIndicator_eq_zero_of_not_win B ht hwin n ω
+    rw [hz, hconst]
+    exact tendsto_const_nhds
+
+
+/-- Scalar multiple of an indicator block: the Riemann sums converge to
+`c · (B_{min(t,b)} - B_{min(t,a)})`. -/
+lemma tendsto_itoRiemannSum_const_indicator (B : ℝ → Ω → ℝ) (c : ℝ) {t a b : ℝ}
+    (ht : 0 ≤ t) (ha : 0 ≤ a) (hab : a ≤ b) (ω : Ω)
+    (hB : ContinuousOn (fun u => B u ω) (Icc 0 t)) :
+    Tendsto (fun n =>
+        itoRiemannSum (fun s _ => if a < s ∧ s ≤ b then c else 0) B t n ω) atTop
+      (𝓝 (c * (B (min t b) ω - B (min t a) ω))) := by
+  simpa [itoRiemannSum_const_indicator] using
+    (tendsto_itoRiemannSum_indicator B ht ha hab ω hB).const_mul c
+
+/-- After the first hit, the Riemann sum of `doublingK` at a fixed path is the
+corresponding finite sum of scaled indicator sums. -/
+lemma itoRiemannSum_doublingK_eq {T : ℝ} {N : ℕ} {ω : Ω} (B : ℝ → Ω → ℝ)
+    (hN : ω ∉ nonHitPrefix B T N) (t : ℝ) (m : ℕ) :
+    itoRiemannSum (doublingK B T) B t m ω =
+      ∑ n ∈ Finset.range N,
+        (if ω ∈ nonHitPrefix B T n then
+          doublingC B T n ω *
+            itoRiemannSumIndicator B t (tGrid T n) (tauHit B T n ω) m ω
+         else 0) := by
+  have hK :
+      itoRiemannSum (doublingK B T) B t m ω =
+        itoRiemannSum (fun s _ => ∑ n ∈ Finset.range N,
+          (if ω ∈ nonHitPrefix B T n ∧ tGrid T n < s ∧ s ≤ tauHit B T n ω
+            then doublingC B T n ω else 0)) B t m ω := by
+    simp only [itoRiemannSum]
+    refine Finset.sum_congr rfl fun k _ => ?_
+    congr 1
+    exact doublingK_eq_sum (B := B) hN _
+  rw [hK, itoRiemannSum_fun_sum]
+  refine Finset.sum_congr rfl fun n _ => ?_
+  by_cases hE : ω ∈ nonHitPrefix B T n
+  · have hpiece :
+        (fun s (_ : Ω) =>
+          if ω ∈ nonHitPrefix B T n ∧ tGrid T n < s ∧ s ≤ tauHit B T n ω
+            then doublingC B T n ω else 0) =
+        (fun s (_ : Ω) =>
+          if tGrid T n < s ∧ s ≤ tauHit B T n ω then doublingC B T n ω else 0) := by
+      funext s ω'
+      simp [hE]
+    rw [hpiece, itoRiemannSum_const_indicator]
+    simp [hE]
+  · have h0 :
+        (fun s (_ : Ω) =>
+          if ω ∈ nonHitPrefix B T n ∧ tGrid T n < s ∧ s ≤ tauHit B T n ω
+            then doublingC B T n ω else 0) =
+        fun _ _ => (0 : ℝ) := by
+      funext s ω'
+      simp [hE]
+    rw [h0]
+    simp [hE, itoRiemannSum]
+
+/-- The wealth piece equals the truncated increment `c_n (B_{min(t,τ_n)} - B_{min(t,t_n)})`. -/
+lemma doublingWealth_piece_eq_increment {T t : ℝ} (hT : 0 < T) (B : ℝ → Ω → ℝ)
+    (n : ℕ) (ω : Ω) :
+    (if ω ∈ nonHitPrefix B T n ∧ tGrid T n < t
+      then doublingC B T n ω * (B (min t (tauHit B T n ω)) ω - B (tGrid T n) ω)
+      else 0) =
+    (if ω ∈ nonHitPrefix B T n then
+      doublingC B T n ω * (B (min t (tauHit B T n ω)) ω - B (min t (tGrid T n)) ω)
+     else 0) := by
+  by_cases hE : ω ∈ nonHitPrefix B T n
+  · by_cases hlt : tGrid T n < t
+    · have hmin : min t (tGrid T n) = tGrid T n := min_eq_right hlt.le
+      simp [hE, hlt, hmin]
+    · have hmin_a : min t (tGrid T n) = t := min_eq_left (not_lt.mp hlt)
+      have hτ : tGrid T n ≤ tauHit B T n ω := (tauHit_mem_Icc hT B n ω).1
+      have hmin_b : min t (tauHit B T n ω) = t :=
+        min_eq_left (le_trans (not_lt.mp hlt) hτ)
+      simp [hE, hlt, hmin_a, hmin_b, sub_self]
+  · simp [hE]
+
+/-- After the first hit, left-point Riemann sums of `doublingK` converge pathwise
+to `doublingWealth` along a continuous driver. -/
+lemma tendsto_itoRiemannSum_doublingK {T : ℝ} (hT : 0 < T) (B : ℝ → Ω → ℝ)
+    {N : ℕ} {ω : Ω} (hN : ω ∉ nonHitPrefix B T N) {t : ℝ} (ht0 : 0 ≤ t)
+    (hB : ContinuousOn (fun u => B u ω) (Icc 0 t)) :
+    Tendsto (fun m => itoRiemannSum (doublingK B T) B t m ω) atTop
+      (𝓝 (doublingWealth B T t ω)) := by
+  have hW : doublingWealth B T t ω =
+      ∑ n ∈ Finset.range N,
+        (if ω ∈ nonHitPrefix B T n then
+          doublingC B T n ω *
+            (B (min t (tauHit B T n ω)) ω - B (min t (tGrid T n)) ω)
+         else 0) := by
+    rw [doublingWealth_eq_sum (B := B) hN t]
+    refine Finset.sum_congr rfl fun n _ => doublingWealth_piece_eq_increment hT B n ω
+  have hfun :
+      (fun m => itoRiemannSum (doublingK B T) B t m ω) =
+        fun m => ∑ n ∈ Finset.range N,
+          (if ω ∈ nonHitPrefix B T n then
+            doublingC B T n ω *
+              itoRiemannSumIndicator B t (tGrid T n) (tauHit B T n ω) m ω
+           else 0) :=
+    funext fun m => itoRiemannSum_doublingK_eq (B := B) hN t m
+  rw [hfun, hW]
+  refine tendsto_finsetSum (Finset.range N) fun n _ => ?_
+  by_cases hE : ω ∈ nonHitPrefix B T n
+  · simp only [hE, ↓reduceIte]
+    have ha : 0 ≤ tGrid T n := (tGrid_mem hT n).1
+    have hab : tGrid T n ≤ tauHit B T n ω := (tauHit_mem_Icc hT B n ω).1
+    exact (tendsto_itoRiemannSum_indicator B ht0 ha hab ω hB).const_mul
+      (doublingC B T n ω)
+  · simp only [hE, ↓reduceIte]
+    exact tendsto_const_nhds
+
 end SignatureVolatility
