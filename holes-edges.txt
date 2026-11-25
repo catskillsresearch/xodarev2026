@@ -172,11 +172,13 @@ ItoCalculusKit.BrownianQuadVarAS -hard-> ItoCalculusKit.MartingaleTransform
 ItoCalculusKit.BrownianQuadVarAS -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 ItoCalculusKit.BrownianQuadVarAS -hard-> SignatureRiccatiKit.BrownianScalingShiftedExponent
 ItoCalculusKit.BrownianQuadVarAS -hard-> SignatureRiccatiKit.ComplexTilt
+ItoCalculusKit.BrownianQuadVarAS -hard-> SignatureRiccatiKit.CounterexampleV1LogNonpos
 ItoCalculusKit.BrownianQuadVarAS -hard-> SignatureRiccatiKit.IntegralExpBarrier
 ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.DoleansSigma
 ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.CrossVariation -hard-> ProlongedBrownianSetup.PaperSigDynamics
 ItoCalculusKit.CrossVariation -hard-> SignatureRiccatiKit.CounterexampleV1LogBound
+ItoCalculusKit.CrossVariation -hard-> SignatureRiccatiKit.CounterexampleV1LogNonpos
 ItoCalculusKit.CrossVariation -hard-> SignatureRiccatiKit.ItoWordTiltClosedForm
 ItoCalculusKit.DoleansEnvelope -hard-> ItoCalculusKit.NovikovDoob
 ItoCalculusKit.DoleansEnvelope -hard-> ItoCalculusKit.StoppedRaw
@@ -199,11 +201,13 @@ ItoCalculusKit.EvenMoment -hard-> ItoCalculusKit.EvenTransform
 ItoCalculusKit.EvenTransform -hard-> ItoCalculusKit.CrossVariation
 ItoCalculusKit.EvenTransform -hard-> ItoCalculusKit.ItoIncrementEven
 ItoCalculusKit.EvenTransform -hard-> SignatureRiccatiKit.CounterexampleV1LogBound
+ItoCalculusKit.EvenTransform -hard-> SignatureRiccatiKit.CounterexampleV1LogNonpos
 ItoCalculusKit.ExpSupermartingale -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.ExpSupermartingale -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 ItoCalculusKit.ExpSupermartingale -hard-> SignatureRiccatiKit.LintegralExpShifted
 ItoCalculusKit.FourthMoment -hard-> ItoCalculusKit.BrownianQuadVarAS
 ItoCalculusKit.FourthMoment -hard-> ItoCalculusKit.EighthMoment
+ItoCalculusKit.FourthMoment -hard-> SignatureRiccatiKit.CounterexampleV1LogNonpos
 ItoCalculusKit.FourthMoment -hard-> SignatureRiccatiKit.ItoWordTiltClosedForm
 ItoCalculusKit.FrozenIncrement4 -hard-> ItoCalculusKit.CrossVariation
 ItoCalculusKit.FrozenIncrement4 -hard-> ItoCalculusKit.StoppedRaw
@@ -222,6 +226,7 @@ ItoCalculusKit.ItoIncrement -hard-> SignatureRiccatiKit.ItoWordTiltClosedForm
 ItoCalculusKit.ItoIncrement8 -hard-> ItoCalculusKit.FrozenIncrement8
 ItoCalculusKit.ItoIncrement8 -hard-> ItoCalculusKit.SigmaHolder8
 ItoCalculusKit.ItoIncrementEven -hard-> ItoCalculusKit.LebIncrementEven
+ItoCalculusKit.ItoIncrementEven -hard-> SignatureRiccatiKit.CounterexampleV1LogNonpos
 ItoCalculusKit.ItoIncrementEven -hard-> SignatureRiccatiKit.ItoWordTiltClosedForm
 ItoCalculusKit.ItoOrthogonal -hard-> ItoCalculusKit.FrozenIncrement4
 ItoCalculusKit.ItoOrthogonal -hard-> ItoCalculusKit.FrozenIncrement8
@@ -235,6 +240,7 @@ ItoCalculusKit.KitRaw -hard-> ItoCalculusKit.RiemannConvergence
 ItoCalculusKit.KolmogorovIto -hard-> ItoCalculusKit.DoleansQV
 ItoCalculusKit.KolmogorovIto -hard-> ItoCalculusKit.HolderPath
 ItoCalculusKit.LebIncrementEven -hard-> ItoCalculusKit.LevelBounds
+ItoCalculusKit.LebIncrementEven -hard-> SignatureRiccatiKit.CounterexampleV1LogNonpos
 ItoCalculusKit.LevelBounds -hard-> ItoCalculusKit.LevelDecay
 ItoCalculusKit.LevelBounds -hard-> SignatureRiccatiKit.ItoWordTiltClosedForm
 ItoCalculusKit.LevelDecay -hard-> ProlongedBrownianSetup.PaperSig
@@ -261,6 +267,7 @@ ItoCalculusKit.PathwiseExpIto -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.PathwiseExpIto -hard-> ItoCalculusKit.LebIncrementEven
 ItoCalculusKit.PathwiseExpIto -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 ItoCalculusKit.PathwiseExpIto -hard-> SignatureRiccatiKit.BrownianScalingShiftedExponent
+ItoCalculusKit.PathwiseExpIto -hard-> SignatureRiccatiKit.CounterexampleV1LogNonpos
 ItoCalculusKit.PathwiseExpIto -hard-> SignatureRiccatiKit.CounterexampleV1PosLe
 ItoCalculusKit.PathwiseExpIto -hard-> SignatureRiccatiKit.LintegralExpShifted
 ItoCalculusKit.QVTransform -hard-> ItoCalculusKit.GridDoob
@@ -269,6 +276,7 @@ ItoCalculusKit.QuadIncrement -hard-> ItoCalculusKit.LogDoleansIncrement
 ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.EvenTransform
 ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.ExpSupermartingale
 ItoCalculusKit.RiemannConvergence -hard-> ItoCalculusKit.ItoIncrement
+ItoCalculusKit.RiemannConvergence -hard-> SignatureRiccatiKit.CounterexampleV1LogNonpos
 ItoCalculusKit.RiemannConvergence -hard-> SignatureRiccatiKit.ItoWordTiltClosedForm
 ItoCalculusKit.RiemannRate8 -hard-> ItoCalculusKit.SubseqUniform
 ItoCalculusKit.SigmaBounds -hard-> ItoCalculusKit.SigmaContinuity
