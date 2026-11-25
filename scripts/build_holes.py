@@ -133,6 +133,10 @@ STATUS_DETAILS: dict[str, str] = {
         "<- direction and the full iff are false; their negations are in TheoremBMpr. The "
         "compared NFLVR conjunct is still AdmissibleGainsUnderP, not SatisfiesNFLVR_DS. "
         "The DS upgrade is tracked as TheoremB_DS board nodes.",
+    "NflvrBoundedBelow":
+        "Joint-filtration L² Itô integral (JointElem / SortedElem), the Itô isometry, "
+        "π-λ density of elementary processes, and the u-cancellation Riemann-sum bound "
+        "lintegral_riemann_sq_le (Carbon/Gemini). kitItoIntCont lives in MathFinBridge.",
     "NflvrDefs":
         "Paper NFLVR definitions (Mathlib-only, for later exact copy into the Challenge): "
         "S-admissible strategies, the three gain cones (literal / terminal-bounded-below / "
@@ -355,36 +359,37 @@ SYNTHETIC_NODES: list[dict] = [
     {
         "id": "TheoremB_DS.kitItoIntContVersion",
         "label": "kitItoInt contVersion patch",
-        "status": "open",
+        "status": "done",
         "section": 11,
-        "detail": "Redefine kitItoInt via contVersion of kitItoIntRaw when the raw "
-                  "integral is already pathFiltration-adapted, and kitQuadVar via "
-                  "kitQuadVarRaw similarly, so sol.S is genuinely a.s. continuous on "
-                  "[0,T]. Every existing downstream lemma must still build. Carbon "
-                  "(Gemini) patch; not yet applied.",
+        "detail": "kitItoIntCont and kitQuadVarCont sit beside the existing kitItoInt "
+                  "and kitQuadVar (Carbon/Gemini). When kitItoIntRaw is already "
+                  "pathFiltration-adapted, the continuous version uses contVersion; "
+                  "kitItoInt itself is unchanged so StoppedKit and ConstVol still build.",
         "file": "SignatureVolatility/ItoCalculusKit/MathFinBridge.lean",
+        "commits": "54fc9c8",
     },
     {
         "id": "TheoremB_DS.jointL2Ito",
         "label": "Joint-filtration L² Itô integral",
-        "status": "open",
+        "status": "done",
         "section": 11,
         "detail": "L² Itô integral on the joint d-dimensional raw pathFiltration, "
-                  "built from JointElem / SortedElem, indepFun_pathFiltration_wnnIncr, "
-                  "and the Itô isometry. MathFin's itoIntegralCLM is 1-D natFiltration "
-                  "only. Carbon (Gemini) draft is extracted but not yet compiling.",
+                  "built from JointElem / SortedElem, with the Itô isometry and π-λ "
+                  "density of elementary processes (Carbon/Gemini). MathFin's "
+                  "itoIntegralCLM is 1-D natFiltration only.",
         "file": "SignatureVolatility/NflvrBoundedBelow.lean",
+        "commits": "54fc9c8",
     },
     {
         "id": "TheoremB_DS.riemannL2",
         "label": "Riemann-sum L² bridge (lintegral_riemann_sq_le)",
-        "status": "open",
+        "status": "done",
         "section": 11,
-        "detail": "u-cancellation inequality lintegral_riemann_sq_le and convergence "
-                  "of left-point Riemann sums to the joint L² integral for a.e. t, "
-                  "so the integral matches IsItoIntegral. Follows the JointElem "
-                  "isometry. Carbon (Gemini) draft emitted; waiting on the L² integral.",
+        "detail": "u-cancellation inequality lintegral_riemann_sq_le and L² convergence "
+                  "of itoRiemannPrime to the joint integral on any JointElem "
+                  "(Carbon/Gemini).",
         "file": "SignatureVolatility/NflvrBoundedBelow.lean",
+        "commits": "54fc9c8",
     },
     {
         "id": "TheoremB_DS.localization",
@@ -394,8 +399,8 @@ SYNTHETIC_NODES: list[dict] = [
         "detail": "Left-continuous raw-filtration localization K^(m)=K 1_{Q≤m} of an "
                   "S-admissible integrand (pathwise ∫K²<∞, not necessarily L²(dt⊗P)), "
                   "so each stopped piece is in L² and the unstopped V is a local "
-                  "martingale. Not in Carbon's truncated reply; still to prove.",
-        "file": "SignatureVolatility/NflvrBoundedBelow.lean",
+                  "martingale. Next Part 2 task (NflvrContIto; Carbon/Gemini).",
+        "file": "SignatureVolatility/NflvrContIto.lean",
     },
     {
         "id": "TheoremB_DS.superMartingale",
@@ -659,6 +664,7 @@ VERIFIED: set[str] = {
     "MemTw",
     "MemTwDual",
     "MemTwDualOfMemL2w",
+    "NflvrBoundedBelow",
     "NflvrCone",
     "NflvrDefs",
     "NflvrDoubling",

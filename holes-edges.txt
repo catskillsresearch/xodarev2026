@@ -180,6 +180,7 @@ ItoCalculusKit.BrownianQuadVarAS -hard-> SignatureRiccatiKit.IntegralExpBarrier
 ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.DoleansSigma
 ItoCalculusKit.ConstVol -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.ConstVol -hard-> Unwrapped
+ItoCalculusKit.CrossVariation -hard-> NflvrBoundedBelow
 ItoCalculusKit.CrossVariation -hard-> ProlongedBrownianSetup.PaperSigDynamics
 ItoCalculusKit.CrossVariation -hard-> SignatureRiccatiKit.CounterexampleV1LogBound
 ItoCalculusKit.CrossVariation -hard-> SignatureRiccatiKit.CounterexampleV1LogNonpos
@@ -239,6 +240,7 @@ ItoCalculusKit.ItoOrthogonal -hard-> SignatureRiccatiKit.ItoWordTiltClosedForm
 ItoCalculusKit.ItoQuadDoleans -hard-> ItoCalculusKit.DoleansStrongClass
 ItoCalculusKit.JointPast -hard-> ItoCalculusKit.GBMMartingale
 ItoCalculusKit.JointPast -hard-> ItoCalculusKit.MartingaleTransform
+ItoCalculusKit.JointPast -hard-> NflvrBoundedBelow
 ItoCalculusKit.JointPast -hard-> SignatureRiccatiKit.BrownianScalingShiftedExponent
 ItoCalculusKit.JointPast -hard-> SignatureRiccatiKit.ComplexTilt
 ItoCalculusKit.JointPast -hard-> SignatureRiccatiKit.CondExpMulIndepDisintegrate
@@ -256,6 +258,7 @@ ItoCalculusKit.MartingaleTransform -hard-> SignatureRiccatiKit.ItoWordTiltClosed
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.ConstVol
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.ItoQuadDoleans
 ItoCalculusKit.MathFinBridge -hard-> ItoCalculusKit.KitRaw
+ItoCalculusKit.MathFinBridge -hard-> NflvrBoundedBelow
 ItoCalculusKit.MathFinBridge -hard-> NflvrDoubling
 ItoCalculusKit.MathFinBridgeSetup -hard-> ItoCalculusKit.ItoQuadDoleans
 ItoCalculusKit.MathFinBridgeSetup -hard-> ItoCalculusKit.NovikovDoob
@@ -332,6 +335,8 @@ MemTwDual -hard-> DualPairingLeNormWDualMulNormW
 MemTwDual -hard-> MemTwDualOfMemL2w
 MemTwDual -hard-> NormWDual
 MemTwDualOfMemL2w -hard-> Corollary36SigmaWellDefined
+NflvrCone -hard-> NflvrBoundedBelow
+NflvrDefs -hard-> NflvrBoundedBelow
 NflvrDefs -hard-> NflvrCone
 NflvrDefs -hard-> NflvrDoubling
 NflvrDoubling -hard-> Unwrapped
@@ -386,6 +391,7 @@ ProlongedBrownianSetup -hard-> SignatureVolatilityModel.Sigma
 ProlongedBrownianSetup -hard-> TheoremAOfBrownianSetupItoKit
 ProlongedBrownianSetup -hard-> TheoremBOfSetupItoRiccatiKit
 ProlongedBrownianSetup.BrownianFiltration -hard-> SignatureFiltrationEqBrownianFiltration
+ProlongedBrownianSetup.ContVersion -hard-> ItoCalculusKit.MathFinBridge
 ProlongedBrownianSetup.ContVersion -hard-> ProlongedBrownianSetup.ContVersionKolmogorov
 ProlongedBrownianSetup.ContVersion -hard-> ProlongedBrownianSetup.ItoWordIntegral
 ProlongedBrownianSetup.ContVersionKolmogorov -hard-> ItoCalculusKit.LevelBounds
@@ -403,6 +409,7 @@ ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.ItoWordIntegral
 ProlongedBrownianSetup.OfBrownian -hard-> ProlongedBrownianSetup.SignatureOfBM
 ProlongedBrownianSetup.OfBrownian -hard-> SignatureRiccatiKit.CounterexampleV1
 ProlongedBrownianSetup.PaperSig -hard-> ItoCalculusKit.SigmaBounds
+ProlongedBrownianSetup.PaperSig -hard-> NflvrBoundedBelow
 ProlongedBrownianSetup.PaperSig -hard-> ProlongedBrownianSetup.PaperSigDynamics
 ProlongedBrownianSetup.PaperSig -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 ProlongedBrownianSetup.PaperSig -hard-> SignatureRiccatiKit.CondExpMulIndepDisintegrate
@@ -413,6 +420,7 @@ ProlongedBrownianSetup.PaperSig -hard-> SignatureRiccatiKit.ItoWordTiltClosedFor
 ProlongedBrownianSetup.PaperSigChen -hard-> ProlongedBrownianSetup.StratonovichOfBM
 ProlongedBrownianSetup.PaperSigChen -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 ProlongedBrownianSetup.PaperSigChen -hard-> SignatureRiccatiKit.CounterexampleTensor
+ProlongedBrownianSetup.PaperSigDynamics -hard-> NflvrBoundedBelow
 ProlongedBrownianSetup.PaperSigDynamics -hard-> ProlongedBrownianSetup.ShiftedWordIntegral
 ProlongedBrownianSetup.PaperSigDynamics -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 ProlongedBrownianSetup.PaperSigDynamics -hard-> SignatureRiccatiKit.BrownianScalingShiftedExponent

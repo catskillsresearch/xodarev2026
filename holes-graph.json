@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-25T17:46:05Z",
+  "updated": "2026-11-25T20:49:26Z",
   "sorryCount": 0,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done (proved, counterexample or refuted; no sorry). Green = open. Grey = blocked. Counterexample / refutation labels are shown as text on the node.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: TheoremB_DS.kitItoIntContVersion, TheoremB_DS.jointL2Ito."
+    "Open tips: TheoremB_DS.localization."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -1521,6 +1521,20 @@
       "kind": null,
       "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
+      "paperKitGoal": false,
+      "synthetic": false,
+      "commits": null
+    },
+    {
+      "id": "NflvrBoundedBelow",
+      "label": "NflvrBoundedBelow",
+      "section": 1,
+      "file": "SignatureVolatility/NflvrBoundedBelow.lean",
+      "status": "done",
+      "kind": null,
+      "blocker": null,
+      "detail": "Joint-filtration L\u00b2 It\u00f4 integral (JointElem / SortedElem), the It\u00f4 isometry, \u03c0-\u03bb density of elementary processes, and the u-cancellation Riemann-sum bound lintegral_riemann_sq_le (Carbon/Gemini). kitItoIntCont lives in MathFinBridge.",
       "hasSorry": false,
       "paperKitGoal": false,
       "synthetic": false,
@@ -3253,52 +3267,52 @@
       "label": "kitItoInt contVersion patch",
       "section": 11,
       "file": "SignatureVolatility/ItoCalculusKit/MathFinBridge.lean",
-      "status": "open",
+      "status": "done",
       "kind": null,
       "blocker": null,
-      "detail": "Redefine kitItoInt via contVersion of kitItoIntRaw when the raw integral is already pathFiltration-adapted, and kitQuadVar via kitQuadVarRaw similarly, so sol.S is genuinely a.s. continuous on [0,T]. Every existing downstream lemma must still build. Carbon (Gemini) patch; not yet applied.",
+      "detail": "kitItoIntCont and kitQuadVarCont sit beside the existing kitItoInt and kitQuadVar (Carbon/Gemini). When kitItoIntRaw is already pathFiltration-adapted, the continuous version uses contVersion; kitItoInt itself is unchanged so StoppedKit and ConstVol still build.",
       "hasSorry": false,
       "paperKitGoal": false,
       "synthetic": true,
-      "commits": null
+      "commits": "54fc9c8"
     },
     {
       "id": "TheoremB_DS.jointL2Ito",
       "label": "Joint-filtration L\u00b2 It\u00f4 integral",
       "section": 11,
       "file": "SignatureVolatility/NflvrBoundedBelow.lean",
-      "status": "open",
+      "status": "done",
       "kind": null,
       "blocker": null,
-      "detail": "L\u00b2 It\u00f4 integral on the joint d-dimensional raw pathFiltration, built from JointElem / SortedElem, indepFun_pathFiltration_wnnIncr, and the It\u00f4 isometry. MathFin's itoIntegralCLM is 1-D natFiltration only. Carbon (Gemini) draft is extracted but not yet compiling.",
+      "detail": "L\u00b2 It\u00f4 integral on the joint d-dimensional raw pathFiltration, built from JointElem / SortedElem, with the It\u00f4 isometry and \u03c0-\u03bb density of elementary processes (Carbon/Gemini). MathFin's itoIntegralCLM is 1-D natFiltration only.",
       "hasSorry": false,
       "paperKitGoal": false,
       "synthetic": true,
-      "commits": null
+      "commits": "54fc9c8"
     },
     {
       "id": "TheoremB_DS.riemannL2",
       "label": "Riemann-sum L\u00b2 bridge (lintegral_riemann_sq_le)",
       "section": 11,
       "file": "SignatureVolatility/NflvrBoundedBelow.lean",
-      "status": "blocked",
+      "status": "done",
       "kind": null,
-      "blocker": "needs TheoremB_DS.jointL2Ito",
-      "detail": "u-cancellation inequality lintegral_riemann_sq_le and convergence of left-point Riemann sums to the joint L\u00b2 integral for a.e. t, so the integral matches IsItoIntegral. Follows the JointElem isometry. Carbon (Gemini) draft emitted; waiting on the L\u00b2 integral.",
+      "blocker": null,
+      "detail": "u-cancellation inequality lintegral_riemann_sq_le and L\u00b2 convergence of itoRiemannPrime to the joint integral on any JointElem (Carbon/Gemini).",
       "hasSorry": false,
       "paperKitGoal": false,
       "synthetic": true,
-      "commits": null
+      "commits": "54fc9c8"
     },
     {
       "id": "TheoremB_DS.localization",
       "label": "Localization K^(m)",
       "section": 11,
-      "file": "SignatureVolatility/NflvrBoundedBelow.lean",
-      "status": "blocked",
+      "file": "SignatureVolatility/NflvrContIto.lean",
+      "status": "open",
       "kind": null,
-      "blocker": "needs TheoremB_DS.riemannL2",
-      "detail": "Left-continuous raw-filtration localization K^(m)=K 1_{Q\u2264m} of an S-admissible integrand (pathwise \u222bK\u00b2<\u221e, not necessarily L\u00b2(dt\u2297P)), so each stopped piece is in L\u00b2 and the unstopped V is a local martingale. Not in Carbon's truncated reply; still to prove.",
+      "blocker": null,
+      "detail": "Left-continuous raw-filtration localization K^(m)=K 1_{Q\u2264m} of an S-admissible integrand (pathwise \u222bK\u00b2<\u221e, not necessarily L\u00b2(dt\u2297P)), so each stopped piece is in L\u00b2 and the unstopped V is a local martingale. Next Part 2 task (NflvrContIto; Carbon/Gemini).",
       "hasSorry": false,
       "paperKitGoal": false,
       "synthetic": true,
@@ -3339,7 +3353,7 @@
       "file": "SignatureVolatility/TheoremB.lean",
       "status": "blocked",
       "kind": null,
-      "blocker": "needs TheoremB_DS.nflvrDs, TheoremB_DS.kitItoIntContVersion",
+      "blocker": "needs TheoremB_DS.nflvrDs",
       "detail": "Replace the SatisfiesNFLVR P (AdmissibleGainsUnderP P) conjunct of theorem_B_mp and theorem_B_mp_unwrapped with SatisfiesNFLVR_DS P (BoundedBelowGains (sigFiltration B).\u03c3Alg P (fun t \u03c9 => B.W t \u03c9 (kitDriver M.hd)) S (sigVol M B) M.T). Of-setup variant too. Blocked on the DS lemma and the kitItoInt continuity patch.",
       "hasSorry": false,
       "paperKitGoal": false,
@@ -4259,6 +4273,16 @@
     {
       "from": "Norm2w",
       "to": "MemTwDualOfMemL2w",
+      "kind": "hard"
+    },
+    {
+      "from": "NflvrCone",
+      "to": "NflvrBoundedBelow",
+      "kind": "hard"
+    },
+    {
+      "from": "ProlongedBrownianSetup.PaperSigDynamics",
+      "to": "NflvrBoundedBelow",
       "kind": "hard"
     },
     {

@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-25T17:46:05Z
-**`sorry` occurrences:** 0 · 2 open · 7 blocked · 230 done · 0 file(s) with `sorry`.
+**Updated:** 2026-11-25T20:49:26Z
+**`sorry` occurrences:** 0 · 1 open · 5 blocked · 234 done · 0 file(s) with `sorry`.
 **Paper claims refuted:** 6 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
 
 ## The affine / Riccati `<-` direction is refuted
@@ -54,8 +54,7 @@ _None._
 
 | Id | File |
 |---|---|
-| `TheoremB_DS.jointL2Ito` | `SignatureVolatility/NflvrBoundedBelow.lean` |
-| `TheoremB_DS.kitItoIntContVersion` | `SignatureVolatility/ItoCalculusKit/MathFinBridge.lean` |
+| `TheoremB_DS.localization` | `SignatureVolatility/NflvrContIto.lean` |
 
 ## NflvrDoubling subtasks
 
@@ -88,10 +87,10 @@ Upgrade of `theorem_B_mp`'s NFLVR conjunct from `AdmissibleGainsUnderP` to `Sati
 
 | Status | Id | Commit(s) | What |
 |---|---|---|---|
-| open | `TheoremB_DS.kitItoIntContVersion` | `—` | Redefine kitItoInt via contVersion of kitItoIntRaw when the raw integral is already pathFiltration-adapted, and kitQuadVar via kitQuadVarRaw similarly, so sol.S is genuinely a.s. continuous on [0,T]. Every existing downstream lemma must still build. Carbon (Gemini) patch; not yet applied. |
-| open | `TheoremB_DS.jointL2Ito` | `—` | L² Itô integral on the joint d-dimensional raw pathFiltration, built from JointElem / SortedElem, indepFun_pathFiltration_wnnIncr, and the Itô isometry. MathFin's itoIntegralCLM is 1-D natFiltration only. Carbon (Gemini) draft is extracted but not yet compiling. |
-| blocked | `TheoremB_DS.riemannL2` | `—` | u-cancellation inequality lintegral_riemann_sq_le and convergence of left-point Riemann sums to the joint L² integral for a.e. t, so the integral matches IsItoIntegral. Follows the JointElem isometry. Carbon (Gemini) draft emitted; waiting on the L² integral. |
-| blocked | `TheoremB_DS.localization` | `—` | Left-continuous raw-filtration localization K^(m)=K 1_{Q≤m} of an S-admissible integrand (pathwise ∫K²<∞, not necessarily L²(dt⊗P)), so each stopped piece is in L² and the unstopped V is a local martingale. Not in Carbon's truncated reply; still to prove. |
+| done | `TheoremB_DS.kitItoIntContVersion` | `54fc9c8` | kitItoIntCont and kitQuadVarCont sit beside the existing kitItoInt and kitQuadVar (Carbon/Gemini). When kitItoIntRaw is already pathFiltration-adapted, the continuous version uses contVersion; kitItoInt itself is unchanged so StoppedKit and ConstVol still build. |
+| done | `TheoremB_DS.jointL2Ito` | `54fc9c8` | L² Itô integral on the joint d-dimensional raw pathFiltration, built from JointElem / SortedElem, with the Itô isometry and π-λ density of elementary processes (Carbon/Gemini). MathFin's itoIntegralCLM is 1-D natFiltration only. |
+| done | `TheoremB_DS.riemannL2` | `54fc9c8` | u-cancellation inequality lintegral_riemann_sq_le and L² convergence of itoRiemannPrime to the joint integral on any JointElem (Carbon/Gemini). |
+| open | `TheoremB_DS.localization` | `—` | Left-continuous raw-filtration localization K^(m)=K 1_{Q≤m} of an S-admissible integrand (pathwise ∫K²<∞, not necessarily L²(dt⊗P)), so each stopped piece is in L² and the unstopped V is a local martingale. Next Part 2 task (NflvrContIto; Carbon/Gemini). |
 | blocked | `TheoremB_DS.superMartingale` | `—` | A uniformly bounded-below local martingale is a supermartingale on [0,T]. Localize and apply Fatou (expectation_le_zero_of_bounded_below_local_martingale in NflvrCone) to get E[V_T]≤0. Still to prove. |
 | blocked | `TheoremB_DS.nflvrDs` | `—` | Every G in BoundedBelowGains is integrable with E[G]≤0, hence SatisfiesNFLVR_DS holds by nflvr_ds_of_nonpos_mean. No H3. Still to prove; Carbon (Gemini) planned this lemma but the reply was truncated before it. |
 | blocked | `TheoremB_DS` | `—` | Replace the SatisfiesNFLVR P (AdmissibleGainsUnderP P) conjunct of theorem_B_mp and theorem_B_mp_unwrapped with SatisfiesNFLVR_DS P (BoundedBelowGains (sigFiltration B).σAlg P (fun t ω => B.W t ω (kitDriver M.hd)) S (sigVol M B) M.T). Of-setup variant too. Blocked on the DS lemma and the kitItoInt continuity patch. |
@@ -193,6 +192,7 @@ Upgrade of `theorem_B_mp`'s NFLVR conjunct from `AdmissibleGainsUnderP` to `Sati
 | done | `MemTw` | `SignatureVolatility/MemTw.lean` |
 | done | `MemTwDual` | `SignatureVolatility/MemTwDual.lean` |
 | done | `MemTwDualOfMemL2w` | `SignatureVolatility/MemTwDualOfMemL2w.lean` |
+| done | `NflvrBoundedBelow` | `SignatureVolatility/NflvrBoundedBelow.lean` |
 | done | `NflvrCone` | `SignatureVolatility/NflvrCone.lean` |
 | done | `NflvrDefs` | `SignatureVolatility/NflvrDefs.lean` |
 | done | `NflvrDoubling` | `SignatureVolatility/NflvrDoubling.lean` |
@@ -365,17 +365,17 @@ Upgrade of `theorem_B_mp`'s NFLVR conjunct from `AdmissibleGainsUnderP` to `Sati
 | done | `NflvrDoubling.wealthProcess` | `SignatureVolatility/NflvrDoubling.lean` |
 | done | `NflvrDoubling.writeup` | `Writeup/PalomarRegistration.md` |
 
-### Theorem B DS NFLVR — 9 hole(s)
+### Theorem B DS NFLVR — 6 hole(s)
 
 | Status | Id | File |
 |---|---|---|
 | blocked | `TheoremB_DS` | `SignatureVolatility/TheoremB.lean` |
 | blocked | `TheoremB_DS.challenge` | `SignatureVolatilityComparator/Challenge.lean` |
-| open | `TheoremB_DS.jointL2Ito` | `SignatureVolatility/NflvrBoundedBelow.lean` |
-| open | `TheoremB_DS.kitItoIntContVersion` | `SignatureVolatility/ItoCalculusKit/MathFinBridge.lean` |
-| blocked | `TheoremB_DS.localization` | `SignatureVolatility/NflvrBoundedBelow.lean` |
+| done | `TheoremB_DS.jointL2Ito` | `SignatureVolatility/NflvrBoundedBelow.lean` |
+| done | `TheoremB_DS.kitItoIntContVersion` | `SignatureVolatility/ItoCalculusKit/MathFinBridge.lean` |
+| open | `TheoremB_DS.localization` | `SignatureVolatility/NflvrContIto.lean` |
 | blocked | `TheoremB_DS.nflvrDs` | `SignatureVolatility/NflvrBoundedBelow.lean` |
-| blocked | `TheoremB_DS.riemannL2` | `SignatureVolatility/NflvrBoundedBelow.lean` |
+| done | `TheoremB_DS.riemannL2` | `SignatureVolatility/NflvrBoundedBelow.lean` |
 | blocked | `TheoremB_DS.superMartingale` | `SignatureVolatility/NflvrBoundedBelow.lean` |
 | blocked | `TheoremB_DS.writeup` | `Writeup/COMPARATOR.md` |
 
