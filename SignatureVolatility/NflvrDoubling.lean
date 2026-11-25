@@ -1108,4 +1108,297 @@ lemma doublingWealth_continuousOn_ae (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 
       exact ContinuousOn.add ih (hpieces M)
   exact (hsumC N).congr fun t _ => hsum t
 
+
+/-- Uniform left-endpoint of the `n`-partition of `[0, t]`. -/
+def riemannTime (t : ℝ) (n k : ℕ) : ℝ := (k : ℝ) * t / (n + 1 : ℝ)
+
+lemma riemannTime_zero (t : ℝ) (n : ℕ) : riemannTime t n 0 = 0 := by
+  simp [riemannTime]
+
+lemma riemannTime_last (t : ℝ) (n : ℕ) : riemannTime t n (n + 1) = t := by
+  simp only [riemannTime, Nat.cast_add, Nat.cast_one]
+  exact mul_div_cancel_left₀ t (by positivity)
+
+lemma riemannTime_mono {t : ℝ} (ht : 0 ≤ t) (n : ℕ) {k l : ℕ} (hkl : k ≤ l) :
+    riemannTime t n k ≤ riemannTime t n l := by
+  simp only [riemannTime]
+  exact div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_right (Nat.cast_le.mpr hkl) ht)
+    (by positivity)
+
+lemma riemannTime_nonneg {t : ℝ} (ht : 0 ≤ t) (n k : ℕ) : 0 ≤ riemannTime t n k := by
+  simp only [riemannTime]
+  exact div_nonneg (mul_nonneg k.cast_nonneg ht) (by positivity)
+
+lemma riemannTime_le_t {t : ℝ} (ht : 0 ≤ t) (n : ℕ) {k : ℕ} (hk : k ≤ n + 1) :
+    riemannTime t n k ≤ t := by
+  simpa [riemannTime_last] using riemannTime_mono ht n hk
+
+lemma riemannTime_mesh (t : ℝ) (n k : ℕ) :
+    riemannTime t n (k + 1) - riemannTime t n k = t / (n + 1 : ℝ) := by
+  simp only [riemannTime, Nat.cast_succ]
+  field_simp
+  ring
+
+lemma riemannTime_sub_eq {t : ℝ} (n : ℕ) (k l : ℕ) :
+    riemannTime t n l - riemannTime t n k =
+      ((l : ℝ) - (k : ℝ)) * t / (n + 1 : ℝ) := by
+  simp only [riemannTime]
+  field_simp
+
+lemma itoRiemannSum_eq_riemannTime (K B : ℝ → Ω → ℝ) (t : ℝ) (n : ℕ) (ω : Ω) :
+    itoRiemannSum K B t n ω =
+      ∑ k : Fin (n + 1),
+        K (riemannTime t n k.val) ω *
+          (B (riemannTime t n (k.val + 1)) ω - B (riemannTime t n k.val) ω) := by
+  simp [itoRiemannSum, riemannTime]
+
+/-- Left-point Riemann sums of the indicator of `(a, b]` against a path `B`. -/
+def itoRiemannSumIndicator (B : ℝ → Ω → ℝ) (t a b : ℝ) (n : ℕ) (ω : Ω) : ℝ :=
+  ∑ k : Fin (n + 1),
+    if a < riemannTime t n k.val ∧ riemannTime t n k.val ≤ b then
+      B (riemannTime t n (k.val + 1)) ω - B (riemannTime t n k.val) ω
+    else 0
+
+lemma itoRiemannSum_indicator_eq (B : ℝ → Ω → ℝ) (t a b : ℝ) (n : ℕ) (ω : Ω) :
+    itoRiemannSum (fun s _ => if a < s ∧ s ≤ b then (1 : ℝ) else 0) B t n ω =
+      itoRiemannSumIndicator B t a b n ω := by
+  simp [itoRiemannSum_eq_riemannTime, itoRiemannSumIndicator, ite_mul, one_mul, zero_mul]
+
+
+lemma sum_Icc_successive_sub (g : ℕ → ℝ) {m n : ℕ} (hmn : m ≤ n) :
+    ∑ k ∈ Finset.Icc m n, (g (k + 1) - g k) = g (n + 1) - g m := by
+  induction n, hmn using Nat.le_induction with
+  | base => simp
+  | succ n hmn ih =>
+    rw [Finset.sum_Icc_succ_top (Nat.le_succ_of_le hmn), ih]
+    ring
+
+/-- The left endpoints of the partition that fall in `(a, b]`. -/
+def riemannRect (t a b : ℝ) (n k : ℕ) : Prop :=
+  a < riemannTime t n k ∧ riemannTime t n k ≤ b
+
+lemma itoRiemannSumIndicator_eq_sum_range (B : ℝ → Ω → ℝ) (t a b : ℝ) (n : ℕ) (ω : Ω) :
+    itoRiemannSumIndicator B t a b n ω =
+      ∑ k ∈ Finset.range (n + 1),
+        if a < riemannTime t n k ∧ riemannTime t n k ≤ b then
+          B (riemannTime t n (k + 1)) ω - B (riemannTime t n k) ω
+        else 0 := by
+  -- `∑ k : Fin (n+1), f k.val = ∑ k ∈ range (n+1), f k`
+  have hsum : ∀ f : ℕ → ℝ,
+      ∑ k : Fin (n + 1), f k.val = ∑ k ∈ Finset.range (n + 1), f k := fun f => by
+    refine Finset.sum_bij (fun (k : Fin (n + 1)) _ => (k.val : ℕ)) ?_ ?_ ?_ ?_
+    · intro k _
+      exact Finset.mem_range.mpr k.isLt
+    · intro k l _ _ hkl
+      exact Fin.ext hkl
+    · intro k hk
+      exact ⟨⟨k, Finset.mem_range.mp hk⟩, Finset.mem_univ _, rfl⟩
+    · intro k _
+      rfl
+  simp only [itoRiemannSumIndicator]
+  exact hsum fun k =>
+    if a < riemannTime t n k ∧ riemannTime t n k ≤ b then
+      B (riemannTime t n (k + 1)) ω - B (riemannTime t n k) ω
+    else 0
+
+lemma itoRiemannSumIndicator_empty (B : ℝ → Ω → ℝ) {t a b : ℝ} {n : ℕ} (ω : Ω)
+    (h : ∀ k < n + 1, ¬ riemannRect t a b n k) :
+    itoRiemannSumIndicator B t a b n ω = 0 := by
+  rw [itoRiemannSumIndicator_eq_sum_range]
+  exact Finset.sum_eq_zero fun k hk => by
+    have hlt : k < n + 1 := Finset.mem_range.mp hk
+    have hnr : ¬ (a < riemannTime t n k ∧ riemannTime t n k ≤ b) := by
+      simpa [riemannRect] using h k hlt
+    simp [hnr]
+
+/-- Witness: the last left endpoint `n · t / (n+1)` lies in `(a, b]` when the mesh is small
+and `b` reaches up to `t`. -/
+lemma riemannRect_last {t a b : ℝ} {n : ℕ} (_ht : 0 ≤ t)
+    (hmesh : t / (n + 1 : ℝ) < t - a) (hbn : t - t / (n + 1 : ℝ) ≤ b) :
+    riemannRect t a b n n := by
+  have htlt : riemannTime t n n = t - t / (n + 1 : ℝ) := by
+    have := riemannTime_mesh t n n
+    rw [riemannTime_last] at this
+    linarith
+  refine ⟨?_, ?_⟩
+  · rw [htlt]
+    linarith
+  · rw [htlt]
+    exact hbn
+
+
+lemma itoRiemannSumIndicator_Icc (B : ℝ → Ω → ℝ) {t a b : ℝ} {n kmin kmax : ℕ} (ω : Ω)
+    (hmax : kmax ≤ n) (hle : kmin ≤ kmax)
+    (hiff : ∀ k < n + 1, riemannRect t a b n k ↔ kmin ≤ k ∧ k ≤ kmax) :
+    itoRiemannSumIndicator B t a b n ω =
+      B (riemannTime t n (kmax + 1)) ω - B (riemannTime t n kmin) ω := by
+  rw [itoRiemannSumIndicator_eq_sum_range]
+  have hfilter :
+      (∑ k ∈ Finset.range (n + 1),
+          if a < riemannTime t n k ∧ riemannTime t n k ≤ b then
+            B (riemannTime t n (k + 1)) ω - B (riemannTime t n k) ω
+          else 0) =
+        ∑ k ∈ Finset.Icc kmin kmax,
+          (B (riemannTime t n (k + 1)) ω - B (riemannTime t n k) ω) := by
+    trans ∑ k ∈ (Finset.range (n + 1)).filter
+        (fun k => a < riemannTime t n k ∧ riemannTime t n k ≤ b),
+        (B (riemannTime t n (k + 1)) ω - B (riemannTime t n k) ω)
+    · simp [Finset.sum_ite]
+    · refine Finset.sum_congr ?_ (fun _ _ => rfl)
+      ext k
+      simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_Icc]
+      constructor
+      · intro ⟨hkn, hrec⟩
+        exact (hiff k hkn).mp (by simpa [riemannRect] using hrec)
+      · intro ⟨hk1, hk2⟩
+        have hkn : k < n + 1 := lt_of_le_of_lt hk2 (Nat.lt_succ_of_le hmax)
+        have hrec := (hiff k hkn).mpr ⟨hk1, hk2⟩
+        exact ⟨hkn, by simpa [riemannRect] using hrec⟩
+  rw [hfilter, sum_Icc_successive_sub (fun k => B (riemannTime t n k) ω) hle]
+
+/-- If some left endpoint falls in `(a, b]`, the contributing indices are a contiguous block. -/
+lemma riemannRect_block {t a b : ℝ} (ht : 0 ≤ t) {n : ℕ}
+    (hex : ∃ k, k ≤ n ∧ riemannRect t a b n k) :
+    let kmin := Nat.find hex
+    let kmax := Nat.findGreatest (fun k => riemannRect t a b n k) n
+    kmin ≤ kmax ∧ kmax ≤ n ∧
+      ∀ k < n + 1, riemannRect t a b n k ↔ kmin ≤ k ∧ k ≤ kmax := by
+  intro kmin kmax
+  have hmin := Nat.find_spec hex
+  have hmax_le : kmax ≤ n := Nat.findGreatest_le n
+  have hmax_P : riemannRect t a b n kmax :=
+    Nat.findGreatest_spec (P := fun k => riemannRect t a b n k) hmin.1 hmin.2
+  have hle : kmin ≤ kmax :=
+    Nat.le_findGreatest hmin.1 hmin.2
+  refine ⟨hle, hmax_le, fun k hkn => ⟨fun hrec => ?fwd, fun hmem => ?bwd⟩⟩
+  · have hk_le : k ≤ n := Nat.lt_succ_iff.mp hkn
+    exact ⟨Nat.find_min' hex ⟨hk_le, hrec⟩,
+      Nat.le_findGreatest hk_le hrec⟩
+  · have hmono₁ : riemannTime t n kmin ≤ riemannTime t n k :=
+      riemannTime_mono ht n hmem.1
+    have hmono₂ : riemannTime t n k ≤ riemannTime t n kmax :=
+      riemannTime_mono ht n hmem.2
+    have hminR : riemannRect t a b n kmin := hmin.2
+    have hmaxR : riemannRect t a b n kmax := hmax_P
+    refine ⟨lt_of_lt_of_le hminR.1 hmono₁, hmono₂.trans hmaxR.2⟩
+
+lemma itoRiemannSum_const_indicator (B : ℝ → Ω → ℝ) (c t a b : ℝ) (n : ℕ) (ω : Ω) :
+    itoRiemannSum (fun s _ => if a < s ∧ s ≤ b then c else 0) B t n ω =
+      c * itoRiemannSumIndicator B t a b n ω := by
+  simp only [itoRiemannSum_eq_riemannTime, itoRiemannSumIndicator, ite_mul, zero_mul]
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun k _ => ?_
+  simp only [mul_ite, mul_zero, mul_sub]
+
+lemma itoRiemannSum_add (K₁ K₂ B : ℝ → Ω → ℝ) (t : ℝ) (n : ℕ) (ω : Ω) :
+    itoRiemannSum (fun s ω => K₁ s ω + K₂ s ω) B t n ω =
+      itoRiemannSum K₁ B t n ω + itoRiemannSum K₂ B t n ω := by
+  simp [itoRiemannSum, add_mul, Finset.sum_add_distrib]
+
+lemma itoRiemannSum_fun_sum (Ks : ℕ → ℝ → Ω → ℝ) (B : ℝ → Ω → ℝ)
+    (t : ℝ) (N n : ℕ) (ω : Ω) :
+    itoRiemannSum (fun s ω => ∑ m ∈ Finset.range N, Ks m s ω) B t n ω =
+      ∑ m ∈ Finset.range N, itoRiemannSum (Ks m) B t n ω := by
+  induction N with
+  | zero => simp [itoRiemannSum]
+  | succ N ih =>
+    simp only [Finset.sum_range_succ]
+    rw [itoRiemannSum_add, ih]
+
+/-- After the first hit, `doublingK` is a finite sum of stopped blocks. -/
+lemma doublingK_eq_sum {T : ℝ} {N : ℕ} {ω : Ω} (B : ℝ → Ω → ℝ)
+    (hN : ω ∉ nonHitPrefix B T N) (s : ℝ) :
+    doublingK B T s ω =
+      ∑ n ∈ Finset.range N,
+        (if ω ∈ nonHitPrefix B T n ∧ tGrid T n < s ∧ s ≤ tauHit B T n ω
+          then doublingC B T n ω else 0) := by
+  have hvan : ∀ n ≥ N, ω ∉ nonHitPrefix B T n := by
+    intro n hn
+    induction hn with
+    | refl => exact hN
+    | step _ ih => exact fun h => ih h.1
+  exact tsum_eq_sum fun n hn => by
+    have hge : N ≤ n := by
+      simp only [Finset.mem_range, not_lt] at hn
+      exact hn
+    simp [hvan n hge]
+
+
+
+lemma riemannTime_mesh_tendsto (t : ℝ) :
+    Tendsto (fun n : ℕ => t / (n + 1 : ℝ)) atTop (𝓝 0) :=
+  tendsto_const_nhds.div_atTop
+    (tendsto_atTop_add_const_right atTop (1 : ℝ) tendsto_natCast_atTop_atTop)
+
+lemma riemannTime_n_eq (t : ℝ) (n : ℕ) :
+    riemannTime t n n = t - t / (n + 1 : ℝ) := by
+  have hm := riemannTime_mesh t n n
+  rw [riemannTime_last] at hm
+  linarith
+
+/-- If `0 ≤ a < min t b`, some left endpoint eventually falls in `(a, b]`. -/
+lemma riemannRect_eventually {t a b : ℝ} (ht : 0 ≤ t) (ha : 0 ≤ a) (h : a < min t b) :
+    ∀ᶠ n : ℕ in atTop, ∃ k, k ≤ n ∧ riemannRect t a b n k := by
+  have htpos : 0 < t :=
+    lt_of_le_of_lt ha (lt_of_lt_of_le h (min_le_left _ _))
+  have hpos : 0 < min t b - a := sub_pos.mpr h
+  obtain ⟨N, hN⟩ :=
+    Metric.tendsto_atTop.mp (riemannTime_mesh_tendsto t) ((min t b - a) / 2) (half_pos hpos)
+  refine eventually_atTop.mpr ⟨N, fun n hnN => ?_⟩
+  have hδ : t / (n + 1 : ℝ) < (min t b - a) / 2 := by
+    have := hN n hnN
+    rw [Real.dist_eq, sub_zero, abs_of_nonneg (div_nonneg ht (by positivity))] at this
+    exact this
+  have hmesh : t / (n + 1 : ℝ) < min t b - a := hδ.trans (half_lt_self hpos)
+  set δ : ℝ := t / (n + 1 : ℝ)
+  have hδpos : 0 < δ := div_pos htpos (by positivity)
+  by_cases hlast : riemannTime t n n ≤ min t b
+  · refine ⟨n, le_rfl, ⟨?_, hlast.trans (min_le_right _ _)⟩⟩
+    rw [riemannTime_n_eq]
+    linarith [hmesh.trans_le (sub_le_sub_right (min_le_left t b) a)]
+  · have hlt : min t b < riemannTime t n n := lt_of_not_ge hlast
+    have hle_t : riemannTime t n n ≤ t := riemannTime_le_t ht n (Nat.le_succ n)
+    have hmin_ne : min t b ≠ t := ne_of_lt (hlt.trans_le hle_t)
+    have hminb : min t b = b := by
+      rcases le_total t b with htb | hbt
+      · rw [min_eq_left htb] at hmin_ne ⊢
+        exact (hmin_ne rfl).elim
+      · exact min_eq_right hbt
+    let k := Nat.floor (b / δ)
+    have hb_nonneg : 0 ≤ b :=
+      le_trans ha (le_of_lt (lt_of_lt_of_le h (min_le_right _ _)))
+    have hk_le_n : k ≤ n := by
+      have hcast : (k : ℝ) < (n + 1 : ℝ) := by
+        have hk1 : (k : ℝ) ≤ b / δ := Nat.floor_le (div_nonneg hb_nonneg hδpos.le)
+        have hbt : b < t := by
+          rw [← hminb]
+          exact lt_of_le_of_ne (min_le_left _ _) hmin_ne
+        have htδ : t = (n + 1 : ℝ) * δ := by
+          simp only [δ]
+          field_simp
+        have : b / δ < (n + 1 : ℝ) := by
+          rw [div_lt_iff₀ hδpos, ← htδ]
+          exact hbt
+        exact hk1.trans_lt this
+      have hcast' : (k : ℝ) < (n.succ : ℝ) := by
+        simpa [Nat.cast_succ] using hcast
+      exact Nat.lt_succ_iff.mp (Nat.cast_lt.mp hcast')
+    have hk_mul_le : (k : ℝ) * δ ≤ b :=
+      (le_div_iff₀ hδpos).mp (Nat.floor_le (div_nonneg hb_nonneg hδpos.le))
+    have hk_mul_gt : a < (k : ℝ) * δ := by
+      have hfloor : b / δ < (k : ℝ) + 1 := Nat.lt_floor_add_one (b / δ)
+      have : b < ((k : ℝ) + 1) * δ := (div_lt_iff₀ hδpos).mp hfloor
+      have : b - δ < (k : ℝ) * δ := by linarith
+      have : a < b - δ := by
+        rw [← hminb] at hmesh
+        linarith
+      exact this.trans ‹b - δ < (k : ℝ) * δ›
+    refine ⟨k, hk_le_n, ?_⟩
+    have hρ : riemannTime t n k = (k : ℝ) * δ := by
+      simp only [riemannTime, δ]
+      ring
+    unfold riemannRect
+    rw [hρ]
+    exact ⟨hk_mul_gt, hk_mul_le⟩
+
 end SignatureVolatility
