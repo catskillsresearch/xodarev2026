@@ -181,6 +181,7 @@ VERIFIED: set[str] = {
     "SignatureRiccatiKit.CounterexampleV1CondExp",
     "SignatureRiccatiKit.BrownianScalingShiftedExponent",
     "SignatureRiccatiKit.SummableNormTermAndBound",
+    "SignatureRiccatiKit.ItoWordTiltClosedForm",
     "SignatureRiccatiKit.BarrierU",
     "SignatureRiccatiKit.CounterexampleTensor",
     "SignatureRiccatiKit.CounterexampleV1",
