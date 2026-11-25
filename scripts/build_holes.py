@@ -281,12 +281,13 @@ SYNTHETIC_NODES: list[dict] = [
     },
     {
         "id": "NflvrDoubling.terminalBdd",
-        "label": "theorem_terminal_bdd_nflvr_fails",
-        "status": "open",
-        "detail": "The same doubling strategy has V_T=1≥0 a.s., so the terminal-only "
-                  "bounded-below cone also contains a nontrivial free lunch.",
+        "label": "theorem_terminal_bdd_nflvr_fails (b8ea73f)",
+        "status": "done",
+        "detail": "The same admissible doubling wealth ends at V_T=1≥0 a.s., so the "
+                  "terminal-only bounded-below cone also contains a nontrivial free "
+                  "lunch. Done in b8ea73f.",
         "file": "SignatureVolatility/NflvrDoubling.lean",
-        "commits": "",
+        "commits": "b8ea73f",
     },
     {
         "id": "NflvrDoubling.challengeRefutations",

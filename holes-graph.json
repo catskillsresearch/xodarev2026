@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-25T16:09:20Z",
+  "updated": "2026-11-25T16:11:17Z",
   "sorryCount": 0,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done (proved, counterexample or refuted; no sorry). Green = open. Grey = blocked. Counterexample / refutation labels are shown as text on the node.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: NflvrDoubling.bsTransfer, NflvrDoubling.terminalBdd."
+    "Open tips: NflvrDoubling.bsTransfer."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -3152,17 +3152,17 @@
     },
     {
       "id": "NflvrDoubling.terminalBdd",
-      "label": "theorem_terminal_bdd_nflvr_fails",
+      "label": "theorem_terminal_bdd_nflvr_fails (b8ea73f)",
       "section": 10,
       "file": "SignatureVolatility/NflvrDoubling.lean",
-      "status": "open",
+      "status": "done",
       "kind": null,
       "blocker": null,
-      "detail": "The same doubling strategy has V_T=1\u22650 a.s., so the terminal-only bounded-below cone also contains a nontrivial free lunch.",
+      "detail": "The same admissible doubling wealth ends at V_T=1\u22650 a.s., so the terminal-only bounded-below cone also contains a nontrivial free lunch. Done in b8ea73f.",
       "hasSorry": false,
       "paperKitGoal": false,
       "synthetic": true,
-      "commits": null
+      "commits": "b8ea73f"
     },
     {
       "id": "NflvrDoubling.challengeRefutations",
@@ -3171,7 +3171,7 @@
       "file": "SignatureVolatilityComparator/Challenge.lean",
       "status": "blocked",
       "kind": null,
-      "blocker": "needs NflvrDoubling.bsTransfer, NflvrDoubling.terminalBdd",
+      "blocker": "needs NflvrDoubling.bsTransfer",
       "detail": "Library theorems not_literal_nflvr and not_terminal_bdd_nflvr, unwrapped forms in Challenge (\u22641000 lines) and comparator.json, yaml main_results v0.4, and the strict compare.",
       "hasSorry": false,
       "paperKitGoal": false,
