@@ -2,13 +2,13 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-25T16:40:03Z
-**`sorry` occurrences:** 0 · 0 open · 0 blocked · 230 done · 0 file(s) with `sorry`.
+**Updated:** 2026-11-25T17:46:05Z
+**`sorry` occurrences:** 0 · 2 open · 7 blocked · 230 done · 0 file(s) with `sorry`.
 **Paper claims refuted:** 6 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
 
 ## The affine / Riccati `<-` direction is refuted
 
-The false theorem `affine_riccati_duality_mpr` has been removed from the library. Its negation `not_affine_riccati_duality_mpr` is proved sorry-free in `SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample`; `not_affine_riccati_duality`, `not_theorem_B_mpr` and `not_theorem_B` follow from it. All four are compared in `comparator.json` in unwrapped form (`…_unwrapped` in `Unwrapped`; see `Writeup/narratives/`). `Solution.lean` has **0** `sorry` (the Challenge's compared proofs are `sorry` by design). `theorem_B_mp` (martingale, the price-independent `AdmissibleGainsUnderP` NFLVR conjunct, special semimartingale, `->` Riccati direction) is sorry-free and compared as `theorem_B_mp_unwrapped`; `affine_riccati_duality_mp` is sorry-free and not compared.
+The false theorem `affine_riccati_duality_mpr` has been removed from the library. Its negation `not_affine_riccati_duality_mpr` is proved sorry-free in `SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample`; `not_affine_riccati_duality`, `not_theorem_B_mpr` and `not_theorem_B` follow from it. All four are compared in `comparator.json` in unwrapped form (`…_unwrapped` in `Unwrapped`; see `Writeup/narratives/`). `Solution.lean` has **0** `sorry` (the Challenge's compared proofs are `sorry` by design). `theorem_B_mp` (martingale, the price-independent `AdmissibleGainsUnderP` NFLVR conjunct, special semimartingale, `->` Riccati direction) is sorry-free and compared as `theorem_B_mp_unwrapped`; `affine_riccati_duality_mp` is sorry-free and not compared. Upgrading that NFLVR conjunct to `SatisfiesNFLVR_DS` is tracked as ordinary open and blocked nodes under TheoremB_DS (not an open-problems category).
 
 
 ## Counterexamples and refuted paper claims
@@ -52,7 +52,10 @@ _None._
 
 ## Open now (Layer 0)
 
-_None — every module is blocked or verified._
+| Id | File |
+|---|---|
+| `TheoremB_DS.jointL2Ito` | `SignatureVolatility/NflvrBoundedBelow.lean` |
+| `TheoremB_DS.kitItoIntContVersion` | `SignatureVolatility/ItoCalculusKit/MathFinBridge.lean` |
 
 ## NflvrDoubling subtasks
 
@@ -78,6 +81,22 @@ Internal structure of the doubling counterexample. These are not separate Lean m
 | done | `NflvrDoubling.unwrappedRefs` | `7377f12` | Unwrapped compared theorems use sigPrice of blackScholesModel, which agrees with the closed-form bsPrice on [0,T]. Done in 7377f12. |
 | done | `NflvrDoubling.challengeRefutations` | `7377f12` | Challenge copies of the NFLVR defs and two sorry compared theorems, still 1000 lines; comparator.json and yaml main_results list 11 unwrapped theorems; strict compare matches 44831 constants. Done in 7377f12. |
 | done | `NflvrDoubling.writeup` | `ef49eff` | Writeup pass using Carbon's notes: narratives/nflvr_literal.md, Carbon appendix excerpt, PROVENANCE.md Comparator section, COMPARATOR.md, PalomarRegistration.md, and project.description, crediting Carbon (Gemini). Board, abstract and yaml scope updated to 11 compared theorems. |
+
+## Theorem B DS NFLVR
+
+Upgrade of `theorem_B_mp`'s NFLVR conjunct from `AdmissibleGainsUnderP` to `SatisfiesNFLVR_DS`. These are not separate Lean modules and not an open-problems category. Finished pieces will be ordinary done nodes with the landing commit; remaining work is ordinary open or blocked follow-on nodes.
+
+| Status | Id | Commit(s) | What |
+|---|---|---|---|
+| open | `TheoremB_DS.kitItoIntContVersion` | `—` | Redefine kitItoInt via contVersion of kitItoIntRaw when the raw integral is already pathFiltration-adapted, and kitQuadVar via kitQuadVarRaw similarly, so sol.S is genuinely a.s. continuous on [0,T]. Every existing downstream lemma must still build. Carbon (Gemini) patch; not yet applied. |
+| open | `TheoremB_DS.jointL2Ito` | `—` | L² Itô integral on the joint d-dimensional raw pathFiltration, built from JointElem / SortedElem, indepFun_pathFiltration_wnnIncr, and the Itô isometry. MathFin's itoIntegralCLM is 1-D natFiltration only. Carbon (Gemini) draft is extracted but not yet compiling. |
+| blocked | `TheoremB_DS.riemannL2` | `—` | u-cancellation inequality lintegral_riemann_sq_le and convergence of left-point Riemann sums to the joint L² integral for a.e. t, so the integral matches IsItoIntegral. Follows the JointElem isometry. Carbon (Gemini) draft emitted; waiting on the L² integral. |
+| blocked | `TheoremB_DS.localization` | `—` | Left-continuous raw-filtration localization K^(m)=K 1_{Q≤m} of an S-admissible integrand (pathwise ∫K²<∞, not necessarily L²(dt⊗P)), so each stopped piece is in L² and the unstopped V is a local martingale. Not in Carbon's truncated reply; still to prove. |
+| blocked | `TheoremB_DS.superMartingale` | `—` | A uniformly bounded-below local martingale is a supermartingale on [0,T]. Localize and apply Fatou (expectation_le_zero_of_bounded_below_local_martingale in NflvrCone) to get E[V_T]≤0. Still to prove. |
+| blocked | `TheoremB_DS.nflvrDs` | `—` | Every G in BoundedBelowGains is integrable with E[G]≤0, hence SatisfiesNFLVR_DS holds by nflvr_ds_of_nonpos_mean. No H3. Still to prove; Carbon (Gemini) planned this lemma but the reply was truncated before it. |
+| blocked | `TheoremB_DS` | `—` | Replace the SatisfiesNFLVR P (AdmissibleGainsUnderP P) conjunct of theorem_B_mp and theorem_B_mp_unwrapped with SatisfiesNFLVR_DS P (BoundedBelowGains (sigFiltration B).σAlg P (fun t ω => B.W t ω (kitDriver M.hd)) S (sigVol M B) M.T). Of-setup variant too. Blocked on the DS lemma and the kitItoInt continuity patch. |
+| blocked | `TheoremB_DS.challenge` | `—` | Copy IsUniformlyBoundedBelow and BoundedBelowGains into the Challenge (still sorry, ≤1000 lines / 100 KiB), keep the 11 theorem names and v0.4, and run the strict compare. Definition_names stays empty. |
+| blocked | `TheoremB_DS.writeup` | `—` | Update the Theorem B narrative, PROVENANCE.md and COMPARATOR.md so the compared conjunct is full Delbaen–Schachermayer NFLVR, crediting Carbon (Gemini). English must match Lean 100%. |
 
 ## By group
 
@@ -345,6 +364,20 @@ Internal structure of the doubling counterexample. These are not separate Lean m
 | done | `NflvrDoubling.unwrappedRefs` | `SignatureVolatility/Unwrapped.lean` |
 | done | `NflvrDoubling.wealthProcess` | `SignatureVolatility/NflvrDoubling.lean` |
 | done | `NflvrDoubling.writeup` | `Writeup/PalomarRegistration.md` |
+
+### Theorem B DS NFLVR — 9 hole(s)
+
+| Status | Id | File |
+|---|---|---|
+| blocked | `TheoremB_DS` | `SignatureVolatility/TheoremB.lean` |
+| blocked | `TheoremB_DS.challenge` | `SignatureVolatilityComparator/Challenge.lean` |
+| open | `TheoremB_DS.jointL2Ito` | `SignatureVolatility/NflvrBoundedBelow.lean` |
+| open | `TheoremB_DS.kitItoIntContVersion` | `SignatureVolatility/ItoCalculusKit/MathFinBridge.lean` |
+| blocked | `TheoremB_DS.localization` | `SignatureVolatility/NflvrBoundedBelow.lean` |
+| blocked | `TheoremB_DS.nflvrDs` | `SignatureVolatility/NflvrBoundedBelow.lean` |
+| blocked | `TheoremB_DS.riemannL2` | `SignatureVolatility/NflvrBoundedBelow.lean` |
+| blocked | `TheoremB_DS.superMartingale` | `SignatureVolatility/NflvrBoundedBelow.lean` |
+| blocked | `TheoremB_DS.writeup` | `Writeup/COMPARATOR.md` |
 
 ## Dependency sketch
 

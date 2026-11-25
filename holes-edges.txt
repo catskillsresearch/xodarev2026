@@ -660,3 +660,11 @@ NflvrDoubling.bsTransfer -hard-> NflvrDoubling.unwrappedRefs
 NflvrDoubling.terminalBdd -hard-> NflvrDoubling.unwrappedRefs
 NflvrDoubling.unwrappedRefs -hard-> NflvrDoubling.challengeRefutations
 NflvrDoubling.challengeRefutations -hard-> NflvrDoubling.writeup
+TheoremB_DS.jointL2Ito -hard-> TheoremB_DS.riemannL2
+TheoremB_DS.riemannL2 -hard-> TheoremB_DS.localization
+TheoremB_DS.localization -hard-> TheoremB_DS.superMartingale
+TheoremB_DS.superMartingale -hard-> TheoremB_DS.nflvrDs
+TheoremB_DS.nflvrDs -hard-> TheoremB_DS
+TheoremB_DS.kitItoIntContVersion -hard-> TheoremB_DS
+TheoremB_DS -hard-> TheoremB_DS.challenge
+TheoremB_DS.challenge -hard-> TheoremB_DS.writeup

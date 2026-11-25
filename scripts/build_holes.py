@@ -131,7 +131,8 @@ STATUS_DETAILS: dict[str, str] = {
         "the Palomar editorial audit flagged this as close to trivial), special semimartingale "
         "coordinates, and the -> direction of the Riccati transform equivalence. The paper's "
         "<- direction and the full iff are false; their negations are in TheoremBMpr. The "
-        "compared NFLVR conjunct is AdmissibleGainsUnderP, not SatisfiesNFLVR_DS.",
+        "compared NFLVR conjunct is still AdmissibleGainsUnderP, not SatisfiesNFLVR_DS. "
+        "The DS upgrade is tracked as TheoremB_DS board nodes.",
     "NflvrDefs":
         "Paper NFLVR definitions (Mathlib-only, for later exact copy into the Challenge): "
         "S-admissible strategies, the three gain cones (literal / terminal-bounded-below / "
@@ -349,10 +350,112 @@ SYNTHETIC_NODES: list[dict] = [
         "file": "Writeup/PalomarRegistration.md",
         "commits": "ef49eff",
     },
+    # Theorem B Delbaen–Schachermayer NFLVR upgrade (Carbon/Gemini). These are
+    # ordinary open / blocked nodes, not an "open problems" category.
+    {
+        "id": "TheoremB_DS.kitItoIntContVersion",
+        "label": "kitItoInt contVersion patch",
+        "status": "open",
+        "section": 11,
+        "detail": "Redefine kitItoInt via contVersion of kitItoIntRaw when the raw "
+                  "integral is already pathFiltration-adapted, and kitQuadVar via "
+                  "kitQuadVarRaw similarly, so sol.S is genuinely a.s. continuous on "
+                  "[0,T]. Every existing downstream lemma must still build. Carbon "
+                  "(Gemini) patch; not yet applied.",
+        "file": "SignatureVolatility/ItoCalculusKit/MathFinBridge.lean",
+    },
+    {
+        "id": "TheoremB_DS.jointL2Ito",
+        "label": "Joint-filtration L² Itô integral",
+        "status": "open",
+        "section": 11,
+        "detail": "L² Itô integral on the joint d-dimensional raw pathFiltration, "
+                  "built from JointElem / SortedElem, indepFun_pathFiltration_wnnIncr, "
+                  "and the Itô isometry. MathFin's itoIntegralCLM is 1-D natFiltration "
+                  "only. Carbon (Gemini) draft is extracted but not yet compiling.",
+        "file": "SignatureVolatility/NflvrBoundedBelow.lean",
+    },
+    {
+        "id": "TheoremB_DS.riemannL2",
+        "label": "Riemann-sum L² bridge (lintegral_riemann_sq_le)",
+        "status": "open",
+        "section": 11,
+        "detail": "u-cancellation inequality lintegral_riemann_sq_le and convergence "
+                  "of left-point Riemann sums to the joint L² integral for a.e. t, "
+                  "so the integral matches IsItoIntegral. Follows the JointElem "
+                  "isometry. Carbon (Gemini) draft emitted; waiting on the L² integral.",
+        "file": "SignatureVolatility/NflvrBoundedBelow.lean",
+    },
+    {
+        "id": "TheoremB_DS.localization",
+        "label": "Localization K^(m)",
+        "status": "open",
+        "section": 11,
+        "detail": "Left-continuous raw-filtration localization K^(m)=K 1_{Q≤m} of an "
+                  "S-admissible integrand (pathwise ∫K²<∞, not necessarily L²(dt⊗P)), "
+                  "so each stopped piece is in L² and the unstopped V is a local "
+                  "martingale. Not in Carbon's truncated reply; still to prove.",
+        "file": "SignatureVolatility/NflvrBoundedBelow.lean",
+    },
+    {
+        "id": "TheoremB_DS.superMartingale",
+        "label": "Bounded-below local martingale ⇒ supermartingale",
+        "status": "open",
+        "section": 11,
+        "detail": "A uniformly bounded-below local martingale is a supermartingale on "
+                  "[0,T]. Localize and apply Fatou "
+                  "(expectation_le_zero_of_bounded_below_local_martingale in NflvrCone) "
+                  "to get E[V_T]≤0. Still to prove.",
+        "file": "SignatureVolatility/NflvrBoundedBelow.lean",
+    },
+    {
+        "id": "TheoremB_DS.nflvrDs",
+        "label": "satisfiesNFLVR_DS_boundedBelowGains",
+        "status": "open",
+        "section": 11,
+        "detail": "Every G in BoundedBelowGains is integrable with E[G]≤0, hence "
+                  "SatisfiesNFLVR_DS holds by nflvr_ds_of_nonpos_mean. No H3. Still "
+                  "to prove; Carbon (Gemini) planned this lemma but the reply was "
+                  "truncated before it.",
+        "file": "SignatureVolatility/NflvrBoundedBelow.lean",
+    },
+    {
+        "id": "TheoremB_DS",
+        "label": "theorem_B_mp / unwrapped DS NFLVR upgrade",
+        "status": "open",
+        "section": 11,
+        "detail": "Replace the SatisfiesNFLVR P (AdmissibleGainsUnderP P) conjunct of "
+                  "theorem_B_mp and theorem_B_mp_unwrapped with SatisfiesNFLVR_DS P "
+                  "(BoundedBelowGains (sigFiltration B).σAlg P (fun t ω => B.W t ω "
+                  "(kitDriver M.hd)) S (sigVol M B) M.T). Of-setup variant too. "
+                  "Blocked on the DS lemma and the kitItoInt continuity patch.",
+        "file": "SignatureVolatility/TheoremB.lean",
+    },
+    {
+        "id": "TheoremB_DS.challenge",
+        "label": "Challenge / comparator lockstep",
+        "status": "open",
+        "section": 11,
+        "detail": "Copy IsUniformlyBoundedBelow and BoundedBelowGains into the Challenge "
+                  "(still sorry, ≤1000 lines / 100 KiB), keep the 11 theorem names and "
+                  "v0.4, and run the strict compare. Definition_names stays empty.",
+        "file": "SignatureVolatilityComparator/Challenge.lean",
+    },
+    {
+        "id": "TheoremB_DS.writeup",
+        "label": "Theorem B DS writeup (Carbon/Gemini)",
+        "status": "open",
+        "section": 11,
+        "detail": "Update the Theorem B narrative, PROVENANCE.md and COMPARATOR.md so "
+                  "the compared conjunct is full Delbaen–Schachermayer NFLVR, crediting "
+                  "Carbon (Gemini). English must match Lean 100%.",
+        "file": "Writeup/COMPARATOR.md",
+    },
 ]
 
 # Edges are dep → dependent (the dependent uses / follows the dep).
 # Done precursors chain into NflvrDoubling; remaining work follows it.
+# TheoremB_DS subtasks are a separate chain.
 SYNTHETIC_EDGES: list[tuple[str, str]] = [
     ("NflvrDoubling.tauHit", "NflvrDoubling.incrDecay"),
     ("NflvrDoubling.incrDecay", "NflvrDoubling.l2Bound"),
@@ -373,6 +476,14 @@ SYNTHETIC_EDGES: list[tuple[str, str]] = [
     ("NflvrDoubling.terminalBdd", "NflvrDoubling.unwrappedRefs"),
     ("NflvrDoubling.unwrappedRefs", "NflvrDoubling.challengeRefutations"),
     ("NflvrDoubling.challengeRefutations", "NflvrDoubling.writeup"),
+    ("TheoremB_DS.jointL2Ito", "TheoremB_DS.riemannL2"),
+    ("TheoremB_DS.riemannL2", "TheoremB_DS.localization"),
+    ("TheoremB_DS.localization", "TheoremB_DS.superMartingale"),
+    ("TheoremB_DS.superMartingale", "TheoremB_DS.nflvrDs"),
+    ("TheoremB_DS.nflvrDs", "TheoremB_DS"),
+    ("TheoremB_DS.kitItoIntContVersion", "TheoremB_DS"),
+    ("TheoremB_DS", "TheoremB_DS.challenge"),
+    ("TheoremB_DS.challenge", "TheoremB_DS.writeup"),
 ]
 
 
@@ -386,7 +497,7 @@ def apply_synthetic(
             raise RuntimeError(f"synthetic node id collides with a Lean module: {nid}")
         nodes_meta[nid] = {
             "label": item["label"],
-            "section": 10,
+            "section": item.get("section", 10),
             "file": item.get("file", "SignatureVolatility/NflvrDoubling.lean"),
             "detail": item["detail"],
             "_mod": nid,
@@ -907,8 +1018,8 @@ def build() -> dict:
         },
         "notes": [
             "File-level board: one node per SignatureVolatility .lean module, plus "
-            "synthetic subtask nodes under NflvrDoubling (internal progress, not a "
-            "separate Lean module and not an open-problems category).",
+            "synthetic subtask nodes under NflvrDoubling and TheoremB_DS (internal "
+            "progress, not separate Lean modules and not an open-problems category).",
             "Done = listed in VERIFIED and deps done and file contains no `sorry`.",
             "Any `sorry` forces open/blocked regardless of VERIFIED.",
             "Hard edge B→A: A imports B (direct, submodule files only; barrel omitted).",
@@ -944,6 +1055,7 @@ def write_md(data: dict) -> None:
         6: "SignatureVolatilityModel",
         99: "Root barrel",
         10: "NflvrDoubling subtasks",
+        11: "Theorem B DS NFLVR",
     }
 
     sorry_n = [n for n in data["nodes"] if n.get("hasSorry")]
@@ -977,7 +1089,9 @@ def write_md(data: dict) -> None:
         "`Solution.lean` has **0** `sorry` (the Challenge's compared proofs are `sorry` by design). "
         "`theorem_B_mp` (martingale, the price-independent `AdmissibleGainsUnderP` NFLVR "
         "conjunct, special semimartingale, `->` Riccati direction) is sorry-free and compared "
-        "as `theorem_B_mp_unwrapped`; `affine_riccati_duality_mp` is sorry-free and not compared.",
+        "as `theorem_B_mp_unwrapped`; `affine_riccati_duality_mp` is sorry-free and not compared. "
+        "Upgrading that NFLVR conjunct to `SatisfiesNFLVR_DS` is tracked as ordinary open "
+        "and blocked nodes under TheoremB_DS (not an open-problems category).",
         "",
         *[f"- **`{nid}`**: {txt}" for nid, txt in OPEN_PROBLEMS.items()],
         "",
@@ -1030,23 +1144,45 @@ def write_md(data: dict) -> None:
             lines.append(f"| `{n['id']}` | `{n['file']}` |")
     synth_n = [n for n in data["nodes"] if n.get("synthetic")]
     if synth_n:
-        lines += [
-            "",
-            "## NflvrDoubling subtasks",
-            "",
-            "Internal structure of the doubling counterexample. These are not separate "
-            "Lean modules. Finished pieces are ordinary done nodes with the landing "
-            "commit; remaining work is ordinary open or blocked follow-on nodes.",
-            "",
-            "| Status | Id | Commit(s) | What |",
-            "|---|---|---|---|",
-        ]
         order = {item["id"]: i for i, item in enumerate(SYNTHETIC_NODES)}
+        section_blurb = {
+            10: (
+                "## NflvrDoubling subtasks",
+                "Internal structure of the doubling counterexample. These are not "
+                "separate Lean modules. Finished pieces are ordinary done nodes with "
+                "the landing commit; remaining work is ordinary open or blocked "
+                "follow-on nodes.",
+            ),
+            11: (
+                "## Theorem B DS NFLVR",
+                "Upgrade of `theorem_B_mp`'s NFLVR conjunct from "
+                "`AdmissibleGainsUnderP` to `SatisfiesNFLVR_DS`. These are not "
+                "separate Lean modules and not an open-problems category. Finished "
+                "pieces will be ordinary done nodes with the landing commit; remaining "
+                "work is ordinary open or blocked follow-on nodes.",
+            ),
+        }
+        groups: dict[int, list] = {}
         for n in sorted(synth_n, key=lambda x: order.get(x["id"], 10_000)):
-            commits = n.get("commits") or "—"
-            lines.append(
-                f"| {n['status']} | `{n['id']}` | `{commits}` | {n['detail']} |"
+            groups.setdefault(n["section"], []).append(n)
+        for sec in sorted(groups):
+            title, blurb = section_blurb.get(
+                sec, (f"## Group {sec} subtasks", "Internal structure.")
             )
+            lines += [
+                "",
+                title,
+                "",
+                blurb,
+                "",
+                "| Status | Id | Commit(s) | What |",
+                "|---|---|---|---|",
+            ]
+            for n in groups[sec]:
+                commits = n.get("commits") or "—"
+                lines.append(
+                    f"| {n['status']} | `{n['id']}` | `{commits}` | {n['detail']} |"
+                )
     lines += ["", "## By group", ""]
     for sec in sorted(by_sec):
         rows = sorted(by_sec[sec], key=lambda x: x["id"])
