@@ -636,7 +636,7 @@ lemma counterexampleV1_log_nonpos (M : SignatureVolatilityModel)
       simp only [y]; field_simp
     have hftc := intervalIntegral.integral_eq_sub_of_hasDerivAt hd (hy_cont.intervalIntegrable_of_Icc hs₀.le)
     simp only [mul_zero, sub_zero, Real.log_one, neg_zero] at hftc
-    rw [hftc, abs_of_nonpos hx]; congr 1; ring
+    rw [hftc, show 1 - x * s₀ = 1 + s₀ * |x| by rw [abs_of_nonpos hx]; ring]
   have hg2 : gaussMoment 2 = 3 := gaussMoment_two
   have hys0 : y s₀ ≤ 0 := div_nonpos_of_nonpos_of_nonneg hx (le_of_lt (hU_sub ⟨hs₀.le, le_rfl⟩))
   refine le_trans ?_ hjensen
