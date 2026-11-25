@@ -94,7 +94,7 @@ private lemma integral_pow_odd_gaussianReal_zero (v : ℝ≥0) (k : ℕ) :
   have hnorm : Integrable (fun y : ℝ => |y| ^ (2 * k + 1)) (gaussianReal 0 v) := by
     simpa [Real.norm_eq_abs] using hLp.integrable_norm_pow (by simp)
   have hint : Integrable (fun y : ℝ => y ^ (2 * k + 1)) (gaussianReal 0 v) :=
-    hnorm.mono' (by fun_prop) (ae_of_all _ fun y => by simp [abs_pow])
+    hnorm.mono' (by fun_prop) (ae_of_all _ fun y => by simp)
   have hsym : (gaussianReal 0 v).map (fun y => -y) = gaussianReal 0 v := by
     simpa using gaussianReal_map_neg (μ := (0 : ℝ)) (v := v)
   have hμ : AEStronglyMeasurable (fun y : ℝ => y ^ (2 * k + 1))
@@ -168,7 +168,7 @@ private lemma integrable_W_pow {d : ℕ} (B : MultiBrownian Ω P d) (k : Fin d) 
   have hnorm : Integrable (fun y : ℝ => |y| ^ n) (gaussianReal 0 (Real.toNNReal r)) := by
     simpa [Real.norm_eq_abs] using hLp.integrable_norm_pow hn
   have hy : Integrable (fun y : ℝ => y ^ n) (gaussianReal 0 (Real.toNNReal r)) :=
-    hnorm.mono' (by fun_prop) (ae_of_all _ fun y => by simp [abs_pow])
+    hnorm.mono' (by fun_prop) (ae_of_all _ fun y => by simp)
   exact (hasLaw_W B k hr).integrable_comp hy
 
 private lemma integrable_addW_pow {d : ℕ} (B : MultiBrownian Ω P d) (k : Fin d) (n : ℕ)
@@ -185,6 +185,7 @@ private lemma integrable_addW_pow {d : ℕ} (B : MultiBrownian Ω P d) (k : Fin 
     (integrable_W_pow B k (n - m) hr).const_mul (x ^ m * (n.choose m : ℝ))
 
 
+omit [IsProbabilityMeasure P] in
 private lemma integral_add₃ {f0 f1 f2 f3 : Ω → ℝ}
     (I0 : Integrable f0 P) (I1 : Integrable f1 P) (I2 : Integrable f2 P)
     (I3 : Integrable f3 P) :
@@ -194,6 +195,7 @@ private lemma integral_add₃ {f0 f1 f2 f3 : Ω → ℝ}
   have I012 : Integrable (fun ω => f0 ω + f1 ω + f2 ω) P := I01.add I2
   rw [integral_add I012 I3, integral_add I01 I2, integral_add I0 I1]
 
+omit [IsProbabilityMeasure P] in
 private lemma integral_add₄ {f0 f1 f2 f3 f4 : Ω → ℝ}
     (I0 : Integrable f0 P) (I1 : Integrable f1 P) (I2 : Integrable f2 P)
     (I3 : Integrable f3 P) (I4 : Integrable f4 P) :
@@ -224,7 +226,7 @@ private lemma integral_addW_pow3 {d : ℕ} (B : MultiBrownian Ω P d) (k : Fin d
   rw [integral_congr_ae hcongr, integral_add₃ I0 I1 I2 I3, integral_const,
     integral_const_mul, integral_const_mul, integral_W B k hr, integral_W_sq B k hr,
     integral_W_pow3 B k hr]
-  simp [measure_univ]
+  simp
 
 private lemma integral_addW_pow4 {d : ℕ} (B : MultiBrownian Ω P d) (k : Fin d) {r : ℝ}
     (hr : 0 ≤ r) (x : ℝ) :
@@ -248,7 +250,7 @@ private lemma integral_addW_pow4 {d : ℕ} (B : MultiBrownian Ω P d) (k : Fin d
   rw [integral_congr_ae hcongr, integral_add₄ I0 I1 I2 I3 I4, integral_const,
     integral_const_mul, integral_const_mul, integral_const_mul, integral_W B k hr,
     integral_W_sq B k hr, integral_W_pow3 B k hr, integral_W_pow4 B k hr]
-  simp [measure_univ]
+  simp
 
 private lemma continuous_W_coord_logb {d : ℕ} (B : MultiBrownian Ω P d) (k : Fin d) (ω : Ω) :
     Continuous fun t : ℝ => MultiBrownian.W B t ω k :=
@@ -364,7 +366,7 @@ private lemma integrable_uncurry_addW {d : ℕ} (B : MultiBrownian Ω P d) (k : 
       simp only [Real.norm_eq_abs]
       refine htri.trans ?_
       rw [hsum, integral_const]
-      simp only [smul_eq_mul, probReal_univ, mul_one]
+      simp only [smul_eq_mul, probReal_univ]
       linarith [integral_abs_W_le_sqrt B k hr0]
     rw [Real.norm_eq_abs, abs_of_nonneg hnn]
     exact hle
@@ -382,7 +384,7 @@ private lemma integral_interval_addW {d : ℕ} (B : MultiBrownian Ω P d) (k : F
     have hW : Integrable (fun ω => MultiBrownian.W B r ω k) P :=
       (integrable_W_pow B k 1 hr).congr (ae_of_all _ fun ω => pow_one _)
     rw [integral_add (integrable_const _) hW, integral_const, integral_W B k hr]
-    simp [measure_univ]
+    simp
   have : (fun r : ℝ => ∫ ω, x + MultiBrownian.W B r ω k ∂P) =ᵐ[volume.restrict (uIoc 0 s)]
       fun _ => x := by
     rw [uIoc_of_le hs]
@@ -427,13 +429,12 @@ private lemma integral_interval_addW_pow4 {d : ℕ} (B : MultiBrownian Ω P d) (
     (continuous_const.mul (continuous_id.pow 2)).intervalIntegrable _ _
   have h_id : ∫ r in (0 : ℝ)..s, r = s ^ 2 / 2 := by
     have hderiv : ∀ r ∈ Ioo (0 : ℝ) s, HasDerivAt (fun t : ℝ => t ^ 2 / 2) r r := fun r _ => by
-      convert (hasDerivAt_pow 2 r).div_const 2 using 1 <;> ring_nf
+      convert (hasDerivAt_pow 2 r).div_const 2 using 1; ring_nf
     have hcont : ContinuousOn (fun t : ℝ => t ^ 2 / 2) (Icc 0 s) := by fun_prop
-    simpa [zero_pow, zero_div] using
-      intervalIntegral.integral_eq_sub_of_hasDerivAt_of_le hs hcont hderiv hid
+    simp [zero_pow]
   have h_sq : ∫ r in (0 : ℝ)..s, r ^ 2 = s ^ 3 / 3 := by
     have hderiv : ∀ r ∈ Ioo (0 : ℝ) s, HasDerivAt (fun t : ℝ => t ^ 3 / 3) (r ^ 2) r := fun r _ => by
-      convert (hasDerivAt_pow 3 r).div_const 3 using 1 <;> ring_nf
+      convert (hasDerivAt_pow 3 r).div_const 3 using 1; ring_nf
     have hcont : ContinuousOn (fun t : ℝ => t ^ 3 / 3) (Icc 0 s) := by fun_prop
     simpa [zero_pow, zero_div] using
       intervalIntegral.integral_eq_sub_of_hasDerivAt_of_le hs hcont hderiv hsqI
@@ -478,7 +479,7 @@ private lemma integral_exponent_eq {d : ℕ} (B : MultiBrownian Ω P d) (hd : 0 
   rw [integral_sub, integral_sub, integral_const_mul, integral_const_mul, integral_sub,
     integral_addW_pow3 B ⟨0, hd⟩ hs x, integral_const, integral_interval_addW B ⟨0, hd⟩ hs x,
     integral_interval_addW_pow4 B ⟨0, hd⟩ hs x]
-  · simp [measure_univ]; ring
+  · simp; ring
   · exact integrable_addW_pow B ⟨0, hd⟩ 3 hs x
   · exact integrable_const _
   · exact hcub'

@@ -257,7 +257,7 @@ theorem integral_itoWordIntegral_mul_complexTilt {d : ℕ}
             rw [hpull, integral_const_mul, hshift, ih hs0]
             split_ifs <;> push_cast <;> ring
           rw [Finset.sum_congr rfl hterm]
-          split_ifs <;> simp [Complex.ofReal_sum, Finset.mul_sum]
+          split_ifs <;> simp [Finset.mul_sum]
         · intro m hm
           obtain ⟨hs0, _⟩ := unifGrid_mem ht n.succ_pos (Finset.mem_range.mp hm).le
           exact (((memLp_itoWordIntegral B hs0 K le_rfl).integrable (by norm_num)).ofReal.mul_const _).mul_bdd
@@ -285,7 +285,7 @@ theorem integral_itoWordIntegral_mul_complexTilt {d : ℕ}
             push_cast; ring
           rw [hint] at hreal
           refine (((Complex.continuous_ofReal.tendsto _).comp hreal).const_mul _).congr fun n => ?_
-          simp [Function.comp_def, Complex.ofReal_sum, Complex.ofReal_mul]
+          simp [Complex.ofReal_sum, Complex.ofReal_mul]
         · exact tendsto_const_nhds
       exact tendsto_nhds_unique hL_tendsto hR_lim
     · -- Case `j = k.succ`: uniform Itô–Riemann sums + `tendsto_integral_of_ae_tendsto_of_L2_bdd`
@@ -400,7 +400,7 @@ theorem integral_itoWordIntegral_mul_complexTilt {d : ℕ}
                     Complex.exp (Complex.I * (ξ : ℂ) * (x : ℂ) +
                       ((ξ ^ 2 * Δ / 2 : ℝ) : ℂ))).comp_aestronglyMeasurable
                   (measurable_wnnIncr B ⟨0, hd⟩ s u).aestronglyMeasurable)
-              simp only [Function.comp_def, id, Pi.mul_apply] at hfactk ⊢
+              simp only [Function.comp_def] at hfactk ⊢
               rw [hfactk]
               have h0 : ∫ ω, (wnnIncr B k s u ω : ℂ) ∂P = 0 := by
                 rw [integral_complex_ofReal, integral_wnnIncr B k hs0 hsu, Complex.ofReal_zero]

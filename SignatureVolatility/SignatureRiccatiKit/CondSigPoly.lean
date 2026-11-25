@@ -38,7 +38,7 @@ lemma differentiable_condSigPoly {d : ℕ} (hd : 0 < d) (t : ℝ)
     Differentiable ℂ (condSigPoly hd t I) := by
   unfold condSigPoly hermitePoly
   induction contractions I.reverse with
-  | nil => simpa using differentiable_const (0 : ℂ)
+  | nil => simp
   | cons p L ih =>
     simp only [List.map_cons, List.sum_cons]
     refine Differentiable.add ?_ ih

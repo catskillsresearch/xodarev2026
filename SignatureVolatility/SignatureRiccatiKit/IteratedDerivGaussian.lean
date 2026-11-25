@@ -36,7 +36,7 @@ private lemma integrable_exp_mul_abs_gaussianReal (c : ℝ) {μ : ℝ} {v : ℝ�
 
 /-- The `j`-th derivative at `0` of
 `r ↦ ∫ exp(r (x + i √t y)) d(γ_t ⊗ γ_1)` is the corresponding moment. -/
-lemma iteratedDeriv_integral_cexp_gaussianReal_prod (j : ℕ) {t : ℝ} (ht : 0 ≤ t) :
+lemma iteratedDeriv_integral_cexp_gaussianReal_prod (j : ℕ) {t : ℝ} (_ht : 0 ≤ t) :
     iteratedDeriv j (fun r : ℂ =>
       ∫ p : ℝ × ℝ,
         Complex.exp (r * ((p.1 : ℂ) + Complex.I * (Real.sqrt t : ℂ) * (p.2 : ℂ)))
@@ -145,7 +145,7 @@ lemma iteratedDeriv_integral_cexp_gaussianReal_prod (j : ℕ) {t : ℝ} (ht : 0 
           fun ρ => ∫ p : ℝ × ℝ, Z p ^ (k + 1) * Complex.exp (ρ * Z p) ∂μ :=
         funext fun ρ => (hderiv k ρ).deriv
       rw [hder, ih (k + 1) r]
-      simp [add_assoc, add_comm, add_left_comm]
+      simp [add_comm, add_left_comm]
   have h0 := hgen 0 j 0
   simp only [zero_add, pow_zero, one_mul, zero_mul, Complex.exp_zero] at h0
   simpa [μ, Z] using h0

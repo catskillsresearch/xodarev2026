@@ -73,7 +73,7 @@ private lemma ae_zero_of_fourier_zero_real {μ : Measure ℝ} [IsFiniteMeasure �
       change (ENNReal.ofReal (up x)).toReal • Complex.exp (↑ξ * ↑x * I) =
         ↑(up x) * Complex.exp (I * ↑ξ * ↑x)
       rw [ENNReal.toReal_ofReal (hup_nn x), Complex.real_smul]
-      simp [mul_comm, mul_left_comm, mul_assoc]
+      simp [mul_comm, mul_left_comm]
     have h2 : charFun μm ξ =
         ∫ x : ℝ, (um x : ℂ) * Complex.exp (Complex.I * (ξ : ℂ) * (x : ℂ)) ∂μ := by
       rw [charFun_apply_real,
@@ -84,7 +84,7 @@ private lemma ae_zero_of_fourier_zero_real {μ : Measure ℝ} [IsFiniteMeasure �
       change (ENNReal.ofReal (um x)).toReal • Complex.exp (↑ξ * ↑x * I) =
         ↑(um x) * Complex.exp (I * ↑ξ * ↑x)
       rw [ENNReal.toReal_ofReal (hum_nn x), Complex.real_smul]
-      simp [mul_comm, mul_left_comm, mul_assoc]
+      simp [mul_comm, mul_left_comm]
     rw [h1, h2]
     have hsub :
         ∫ x : ℝ, (up x : ℂ) * Complex.exp (Complex.I * (ξ : ℂ) * (x : ℂ)) ∂μ -
@@ -146,7 +146,7 @@ lemma ae_eq_of_fourier_zero_gaussianReal {t : ℝ} (_ht : 0 < t)
       conj (g x * Complex.exp (I * ↑(-ξ) * ↑x))
     rw [map_mul, ← Complex.exp_conj]
     congr 1
-    simp [g, map_mul, map_neg, Complex.conj_ofReal, mul_comm, mul_left_comm, mul_assoc]
+    simp [map_mul, map_neg, Complex.conj_ofReal, mul_comm, mul_left_comm]
   have hre_ft : ∀ ξ : ℝ,
       ∫ x : ℝ, ((g x).re : ℂ) * Complex.exp (Complex.I * (ξ : ℂ) * (x : ℂ)) ∂μ = 0 := by
     intro ξ
@@ -160,7 +160,7 @@ lemma ae_eq_of_fourier_zero_gaussianReal {t : ℝ} (_ht : 0 < t)
         conj (g x) * Complex.exp (I * ↑ξ * ↑x)) / 2 =
       ↑(g x).re * Complex.exp (I * ↑ξ * ↑x)
     rw [← add_mul, Complex.add_conj, mul_div_right_comm]
-    simp [Complex.ofReal_mul, mul_comm, mul_left_comm, mul_assoc, mul_one, one_mul]
+    simp [Complex.ofReal_mul, mul_comm, mul_left_comm]
   have him_ft : ∀ ξ : ℝ,
       ∫ x : ℝ, ((g x).im : ℂ) * Complex.exp (Complex.I * (ξ : ℂ) * (x : ℂ)) ∂μ = 0 := by
     intro ξ

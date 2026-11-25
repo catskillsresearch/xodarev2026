@@ -68,7 +68,7 @@ private lemma integrable_ofReal_pow_gaussianReal (m : ℕ) (v : ℝ≥0) :
   refine Integrable.mono' hbd hmeas (ae_of_all _ fun x => ?_)
   simp [Complex.norm_real, Real.norm_eq_abs, norm_pow]
 
-private lemma integrable_monicHermite_gaussianReal (k : ℕ) {t : ℝ} (ht : 0 ≤ t) :
+private lemma integrable_monicHermite_gaussianReal (k : ℕ) {t : ℝ} (_ht : 0 ≤ t) :
     Integrable (fun x : ℝ => monicHermite k t (x : ℂ))
       (gaussianReal 0 (Real.toNNReal t)) := by
   simp_rw [monicHermite_eq_sum]
@@ -152,7 +152,7 @@ private lemma integral_cexp_tilt_prod (ξ : ℝ) {t : ℝ} (ht : 0 ≤ t) (ρ : 
           Real.exp ((ρ + Complex.I * (ξ : ℂ)).re * x) := by
         rw [Complex.norm_exp]
         simp [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im]
-      simp [hx, Real.norm_of_nonneg (Real.exp_nonneg _)]
+      simp [hx]
     exact hcexp.const_mul _
   have hgY : Integrable gY (gaussianReal 0 1) := by
     have hnorm : Integrable (fun y : ℝ => Real.exp ((ρ * Complex.I * (Real.sqrt t : ℂ)).re * y))
@@ -163,7 +163,7 @@ private lemma integral_cexp_tilt_prod (ξ : ℝ) {t : ℝ} (ht : 0 ≤ t) (ρ : 
       dsimp [gY]
       rw [Complex.norm_exp]
       simp [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im]
-    simp [hy, Real.norm_of_nonneg (Real.exp_nonneg _)]
+    simp [hy]
   have hprod : Integrable (fun p : ℝ × ℝ => fX p.1 * gY p.2)
       ((gaussianReal 0 (Real.toNNReal t)).prod (gaussianReal 0 1)) :=
     hfX.mul_prod hgY
@@ -203,17 +203,16 @@ private lemma integral_cexp_tilt_prod (ξ : ℝ) {t : ℝ} (ht : 0 ≤ t) (ρ : 
         (ρ * Complex.I * (Real.sqrt t : ℂ)) ^ 2 / 2 =
       ρ * (Complex.I * (ξ : ℂ) * (t : ℂ)) := by
     rw [max_eq_left ht]
-    push_cast
     ring_nf
     rw [hI2, hsqrt]
     ring
   -- Collapse the product of exponentials, then equate the exponents.
   -- Last printed goal was `cexp A = cexp B` with `hexp : A = B` syntactically matching.
-  simp [mul_zero, add_zero, zero_add, zero_mul, Complex.ofReal_zero, ← Complex.exp_add]
+  simp [mul_zero, zero_add, Complex.ofReal_zero, ← Complex.exp_add]
   exact congrArg Complex.exp hexp
 
 /-- Tilted counterpart of `iteratedDeriv_integral_cexp_gaussianReal_prod`. -/
-private lemma iteratedDeriv_integral_cexp_tilt (j : ℕ) (ξ : ℝ) {t : ℝ} (ht : 0 ≤ t) :
+private lemma iteratedDeriv_integral_cexp_tilt (j : ℕ) (ξ : ℝ) {t : ℝ} (_ht : 0 ≤ t) :
     iteratedDeriv j (fun r : ℂ =>
       ∫ p : ℝ × ℝ,
         Complex.exp (r * ((p.1 : ℂ) + Complex.I * (Real.sqrt t : ℂ) * (p.2 : ℂ)) +
@@ -344,7 +343,7 @@ private lemma iteratedDeriv_integral_cexp_tilt (j : ℕ) (ξ : ℝ) {t : ℝ} (h
           fun ρ => ∫ p : ℝ × ℝ, Z p ^ (k + 1) * Complex.exp (ρ * Z p) * E p ∂μ :=
         funext fun ρ => (hderiv k ρ).deriv
       rw [hder, ih (k + 1) r]
-      simp [add_assoc, add_comm, add_left_comm]
+      simp [add_comm, add_left_comm]
   have h0 := hgen 0 j 0
   simp only [zero_add, pow_zero, one_mul, zero_mul, Complex.exp_zero] at h0
   -- Restate the generating function in additive-exponent form.
@@ -385,7 +384,7 @@ private lemma integral_monicHermite_mul_complexTilt (k : ℕ) {t : ℝ} (ht : 0 
       have hnormZ : ‖Z p‖ ≤ |p.1| + Real.sqrt t * |p.2| := by
         refine (norm_add_le _ _).trans ?_
         rw [norm_mul, norm_mul, Complex.norm_I, one_mul]
-        simp [Z, Complex.norm_real, Real.norm_eq_abs, Real.norm_of_nonneg (Real.sqrt_nonneg t)]
+        simp [Complex.norm_real, Real.norm_eq_abs, Real.norm_of_nonneg (Real.sqrt_nonneg t)]
       simpa [one_mul] using hnormZ
     have hpow_le : ∀ p, ‖Z p‖ ^ k ≤ (k.factorial : ℝ) * Real.exp (‖Z p‖) := fun p => by
       have hx := Real.pow_div_factorial_le_exp (x := ‖Z p‖) (norm_nonneg (Z p)) k
@@ -449,7 +448,7 @@ lemma integral_paperSig2_eq_condSigPoly {d : ℕ} (B : MultiBrownian Ω P d)
           else 0).sum := by
     intro L
     induction L with
-    | nil => simp [integrable_zero]
+    | nil => simp
     | cons p L ih =>
       simp only [List.map_cons, List.sum_cons]
       have hintX : Integrable (fun ω => (itoWordIntegral B 0 t ω p.2 : ℂ)) P :=
@@ -504,7 +503,7 @@ lemma integral_paperSig2_eq_condSigPoly {d : ℕ} (B : MultiBrownian Ω P d)
         else 0).sum := by
     intro L
     induction L with
-    | nil => simp [integrable_zero]
+    | nil => simp
     | cons p L ih =>
       simp only [List.map_cons, List.sum_cons, add_mul]
       have hp_int : Integrable (fun x : ℝ =>
@@ -526,7 +525,7 @@ lemma integral_paperSig2_eq_condSigPoly {d : ℕ} (B : MultiBrownian Ω P d)
           convert hc using 1
           funext x
           simp [hermitePoly, mul_assoc, mul_left_comm, mul_comm]
-        · simpa using integrable_zero _ _ _
+        · simp
       refine ⟨hp_int.add ih.1, ?_⟩
       rw [integral_add hp_int ih.1, ih.2]
       congr 1

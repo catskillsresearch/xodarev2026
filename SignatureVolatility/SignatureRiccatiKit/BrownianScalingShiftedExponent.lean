@@ -105,7 +105,7 @@ lemma hasLaw_incrVec {d : ℕ} (B : MultiBrownian Ω P d) (hd : 0 < d)
 
 /-- Scaling a product of i.i.d. `N(0, Δ)` Gaussians by `c > 0` gives i.i.d. `N(0, c² Δ)`. -/
 private lemma hasLaw_smul_incrVec {d : ℕ} (B : MultiBrownian Ω P d) (hd : 0 < d)
-    {s c : ℝ} (hs : 0 < s) (hc : 0 < c) (N : ℕ) (hN : 0 < N) :
+    {s c : ℝ} (hs : 0 < s) (_hc : 0 < c) (N : ℕ) (hN : 0 < N) :
     let Δ := s / (N : ℝ)
     let Δ' := (c ^ 2 * s) / (N : ℝ)
     HasLaw (fun ω (k : Fin N) => c * wnnIncr B ⟨0, hd⟩ ((k : ℝ) * Δ) (((k : ℕ) + 1 : ℕ) * Δ) ω)

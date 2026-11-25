@@ -423,7 +423,7 @@ private lemma continuous_truncPhi (c s : ℝ) (n R : ℕ) :
 
 private lemma measurable_shiftIncrVec {d : ℕ} (B' : MultiBrownian Ω P d) (hd : 0 < d)
     (s : ℝ) (n : ℕ) : Measurable (shiftIncrVec B' hd s n) :=
-  measurable_pi_iff.mpr fun k => measurable_wnnIncr B' ⟨0, hd⟩ _ _
+  measurable_pi_iff.mpr fun _k => measurable_wnnIncr B' ⟨0, hd⟩ _ _
 
 private lemma measurable_MK_Wt_pair {d : ℕ} (B : MultiBrownian Ω P d)
     {t : ℝ} {MK Wt : Ω → ℝ}
@@ -592,10 +592,6 @@ private lemma tendsto_truncDiscV1_scaled {d : ℕ} (B' : MultiBrownian Ω P d) (
       (𝓝 (min (R : ℝ) (Real.exp (counterexampleV1ExponentScaled B' hd lam s x ω')))) := by
   set c : ℝ := lam ^ (1 / 3 : ℝ)
   unfold truncDiscV1 shiftIncrVec
-  change Tendsto (fun n => min (R : ℝ) (Real.exp (discV1Exp (n + 1) (c ^ 2 * s) (c * x)
-      (fun k => c * wnnIncr B' ⟨0, hd⟩ ((k : ℝ) * (s / ((n + 1 : ℕ) : ℝ)))
-        (((k : ℕ) + 1 : ℕ) * (s / ((n + 1 : ℕ) : ℝ))) ω')))) atTop
-    (𝓝 (min (R : ℝ) (Real.exp (counterexampleV1ExponentScaled B' hd lam s x ω'))))
   exact tendsto_const_nhds.min
     ((Real.continuous_exp.tendsto _).comp (tendsto_discV1Exp_scaled B' hd hlam hs x ω'))
 
@@ -616,7 +612,7 @@ private lemma tendsto_integral_truncDiscV1_inner {d : ℕ} (B' : MultiBrownian �
 
 set_option maxHeartbeats 1000000 in
 private lemma tendsto_integral_MK_truncDiscV1 {d : ℕ} (B : MultiBrownian Ω P d) (hd : 0 < d)
-    {lam t s : ℝ} (hlam : 0 < lam) (ht : 0 ≤ t) (hs : 0 < s)
+    {lam t s : ℝ} (hlam : 0 < lam) (_ht : 0 ≤ t) (hs : 0 < s)
     {MK Wt : Ω → ℝ} {K R : ℕ}
     (hMK_m : Measurable[(pathFiltration B).σAlg t] MK)
     (hWt_m : Measurable[(pathFiltration B).σAlg t] Wt)
@@ -632,7 +628,7 @@ private lemma tendsto_integral_MK_truncDiscV1 {d : ℕ} (B : MultiBrownian Ω P 
         ((measurable_Wt_ambient B hWt_m).prodMk
           (measurable_shiftIncrVec (B.shift t.toNNReal) hd s n)))).aestronglyMeasurable)
     (integrable_const _)
-    (fun n => ae_of_all _ fun ω =>
+    (fun _n => ae_of_all _ fun ω =>
       norm_MK_truncDiscV1_le (B' := B.shift t.toNNReal) (hd := hd) hMK_bd ω)
     (ae_of_all _ fun ω =>
       tendsto_const_nhds.mul
@@ -653,7 +649,7 @@ private lemma norm_MK_inner_trunc_le {d : ℕ} {B' : MultiBrownian Ω P d} {hd :
 
 set_option maxHeartbeats 1000000 in
 private lemma tendsto_integral_MK_inner_trunc {d : ℕ} (B : MultiBrownian Ω P d) (hd : 0 < d)
-    {lam t s : ℝ} (hlam : 0 < lam) (ht : 0 ≤ t) (hs : 0 < s)
+    {lam t s : ℝ} (hlam : 0 < lam) (_ht : 0 ≤ t) (hs : 0 < s)
     {MK Wt : Ω → ℝ} {K R : ℕ}
     (hMK_m : Measurable[(pathFiltration B).σAlg t] MK)
     (hWt_m : Measurable[(pathFiltration B).σAlg t] Wt)
@@ -689,7 +685,7 @@ private lemma integral_trunc_indep_disintegrate {d : ℕ} (B : MultiBrownian Ω 
         (Real.exp (counterexampleV1ExponentScaled (B.shift t.toNNReal) hd lam s (Wt ω) ω')) ∂P) ∂P :=
   tendsto_nhds_unique
     (tendsto_integral_MK_truncDiscV1 B hd hlam ht hs hMK_m hWt_m hMK_bd)
-    ((tendsto_integral_MK_inner_trunc B hd hlam ht hs hMK_m hWt_m hMK_bd).congr fun n =>
+    ((tendsto_integral_MK_inner_trunc B hd hlam ht hs hMK_m hWt_m hMK_bd).congr fun _n =>
       (integral_grid_indep_disintegrate B hd hlam ht hs hMK_m hWt_m hMK_bd).symm)
 
 
@@ -751,7 +747,7 @@ lemma condExp_mul_indep_disintegrate (M : SignatureVolatilityModel)
             MultiBrownian.W B t ω ⟨0, M.hd⟩ +
               MultiBrownian.W B' u ω ⟨0, M.hd⟩ := by
           simp [B', W_shift B ht hu.1]
-        simpa [hWu]
+        simp [hWu]
     have hc4 : ContinuousOn (fun r => MultiBrownian.W B r ω ⟨0, M.hd⟩ ^ 4) (Icc 0 M.T) :=
       fun r hr => (hc1 r hr).pow 4
     have hsplit4 : ∫ r in (0 : ℝ)..M.T, (MultiBrownian.W B r ω ⟨0, M.hd⟩) ^ 4 =
@@ -773,7 +769,7 @@ lemma condExp_mul_indep_disintegrate (M : SignatureVolatilityModel)
             MultiBrownian.W B t ω ⟨0, M.hd⟩ +
               MultiBrownian.W B' u ω ⟨0, M.hd⟩ := by
           simp [B', W_shift B ht hu.1]
-        simpa [hWu]
+        simp [hWu]
     have hWT : MultiBrownian.W B M.T ω ⟨0, M.hd⟩ =
         MultiBrownian.W B t ω ⟨0, M.hd⟩ + MultiBrownian.W B' s ω ⟨0, M.hd⟩ := by
       simp [B', s, W_shift B ht hs.le]

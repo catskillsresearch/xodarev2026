@@ -90,7 +90,7 @@ lemma integral_exp_complexTilt_gaussianReal (ξ : ℝ) (v : ℝ≥0) :
         Complex.exp (-((v : ℂ) * (ξ : ℂ) ^ 2 / 2)) := by
     convert hcf using 2
     ext x
-    simp [mul_comm, mul_left_comm, mul_assoc, Complex.ofReal_mul]
+    simp [mul_comm, Complex.ofReal_mul]
   rw [hexp, integral_const_mul, hcf', ← Complex.exp_add]
   have h0 : ((ξ ^ 2 * (v : ℝ) / 2 : ℝ) : ℂ) + -((v : ℂ) * (ξ : ℂ) ^ 2 / 2) = 0 := by
     push_cast; ring
@@ -129,10 +129,10 @@ lemma integral_mul_exp_complexTilt_gaussianReal (ξ : ℝ) (v : ℝ≥0) :
       fun η : ℝ => Complex.exp (-((η : ℂ) ^ 2 * (v : ℂ) / 2)) := by
     funext η
     have h := charFun_gaussianReal (μ := (0 : ℝ)) (v := v) η
-    simp only [charFun_apply_real, Complex.ofReal_zero, mul_zero, zero_sub] at h
+    simp only [charFun_apply_real, Complex.ofReal_zero, mul_zero] at h
     refine (integral_congr_ae (ae_of_all _ fun x => ?_)).trans (h.trans ?_)
-    · simp [mul_comm, mul_left_comm, mul_assoc]
-    · simp [mul_comm, mul_left_comm, mul_assoc]
+    · simp [mul_comm, mul_left_comm]
+    · simp [mul_comm]
   have hdiff2 : HasDerivAt
       (fun η : ℝ => Complex.exp (-((η : ℂ) ^ 2 * (v : ℂ) / 2)))
       ((-(ξ : ℂ) * (v : ℂ)) * Complex.exp (-((ξ : ℂ) ^ 2 * (v : ℂ) / 2))) ξ := by

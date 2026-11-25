@@ -203,7 +203,7 @@ private lemma sum_contrSum_targetWt {d : ℕ} (hd : 0 < d) (A B : ℝ) :
         by_cases ha0 : a = 0
         · simp only [ha0, ite_true]; exact contrSum_const_mul k A _
         · by_cases ha1 : a = firstSpace hd
-          · simp only [ha0, ha1, ite_false, ite_true]; exact contrSum_const_mul k B _
+          · simp only [ha1, ite_true]; exact contrSum_const_mul k B _
           · simp [ha0, ha1, contrSum]
       simp_rw [hterm]
       rw [Finset.sum_eq_add_of_mem (0 : Fin (d + 1)) (firstSpace hd)
@@ -286,7 +286,7 @@ private lemma integrable_exp_mul_gaussianReal_zero_one (c : ℝ) :
 private lemma integrable_list_contr {d : ℕ} {μ : Measure ℝ} {F : Word (d + 1) → ℝ → ℝ}
     (hF : ∀ J, Integrable (F J) μ) :
     ∀ L : List (ℝ × Word (d + 1)), Integrable (fun y => (L.map fun p => p.1 * F p.2 y).sum) μ
-  | [] => by simpa using integrable_zero _ _ _
+  | [] => by simp
   | p :: L => by
     simp only [List.map_cons, List.sum_cons]
     exact ((hF p.2).const_mul p.1).add (integrable_list_contr hF L)

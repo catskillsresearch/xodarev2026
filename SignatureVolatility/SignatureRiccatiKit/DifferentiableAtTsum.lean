@@ -54,7 +54,7 @@ lemma differentiableAt_tsum_of_locallyUniform (term : ℕ → ℂ → ℂ)
   have hM_G : ∀ w : ℂ, ‖w - z₀‖ = 2 → ‖G w‖ ≤ M := fun w hw =>
     (hG_norm w).trans <| mul_le_mul_of_nonneg_left (Real.exp_le_exp.mpr (hnorm_on_circle w hw)) hC0
   have hmap_dist : ∀ θ : ℝ, ‖circleMap z₀ 2 θ - z₀‖ = 2 := fun θ => by
-    simp [circleMap, abs_of_pos (by norm_num : (0 : ℝ) < 2)]
+    simp [circleMap]
   have hdist_z : ∀ {z : ℂ} (_hz : z ∈ ball z₀ 1) (θ : ℝ), 1 ≤ ‖circleMap z₀ 2 θ - z‖ :=
     fun {z} hz θ => by
       have h2 : ‖z - z₀‖ < 1 := by simpa [mem_ball, dist_eq_norm] using hz
@@ -104,7 +104,7 @@ lemma differentiableAt_tsum_of_locallyUniform (term : ℕ → ℂ → ℂ)
         have h := hleft.smul ((hS_diff N).continuous.comp (continuous_circleMap z₀ 2))
         convert h using 1
         ext θ
-        simp [Pi.smul_apply, deriv_circleMap, mul_assoc]
+        simp [deriv_circleMap, mul_assoc]
       exact hπ.aestronglyMeasurable
     · exact intervalIntegrable_const.1
     · intro N
@@ -135,7 +135,7 @@ lemma differentiableAt_tsum_of_locallyUniform (term : ℕ → ℂ → ℂ)
         ∮ w in C(z₀, 2), (w - z)⁻¹ • G w :=
       tendsto_nhds_unique (hlim_lhs.congr fun N => hSN N hz2) hlim_rhs
     have hI : (2 * Real.pi * Complex.I : ℂ) ≠ 0 := by
-      simp [mul_ne_zero, Real.pi_ne_zero, Complex.I_ne_zero]
+      simp [Real.pi_ne_zero, Complex.I_ne_zero]
     calc G z
         = (2 * Real.pi * Complex.I : ℂ)⁻¹ • ((2 * Real.pi * Complex.I : ℂ) • G z) :=
           (inv_smul_smul₀ hI _).symm

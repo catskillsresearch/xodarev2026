@@ -117,7 +117,7 @@ private lemma gaussian_1D_shift_lintegral {v : ℝ≥0} (hv : v ≠ 0) (c : ℝ)
           Real.exp (-(c / (v : ℝ)) * x - (1 / 2 : ℝ) * (c ^ 2 / (v : ℝ))) := by
       rw [← Real.exp_add]; congr 1; field_simp; ring
     rw [hexp]; ring
-  simp [Pi.mul_apply, hpdf, mul_assoc, mul_left_comm, mul_comm]
+  simp [hpdf, mul_left_comm, mul_comm]
 
 private lemma gaussian_vec_shift_lintegral {N : ℕ} {v : ℝ≥0} (hv : v ≠ 0) (δ : Fin N → ℝ)
     {F : (Fin N → ℝ) → ℝ≥0∞} (hF : Measurable F) :
@@ -137,7 +137,7 @@ private lemma gaussian_vec_shift_lintegral {N : ℕ} {v : ℝ≥0} (hv : v ≠ 0
         ∫⁻ p, F (e.symm p) ∂((gaussianReal 0 v).prod (Measure.pi fun _ : Fin N => gaussianReal 0 v)) := by
       calc ∫⁻ z, F z ∂(Measure.pi fun _ : Fin (N + 1) => gaussianReal 0 v)
           = ∫⁻ z, (F ∘ e.symm) (e z) ∂(Measure.pi fun _ : Fin (N + 1) => gaussianReal 0 v) := by
-              refine lintegral_congr fun z => by simp [Function.comp_def]
+              refine lintegral_congr fun z => by simp
         _ = ∫⁻ p, (F ∘ e.symm) p ∂((gaussianReal 0 v).prod
               (Measure.pi fun _ : Fin N => gaussianReal 0 v)) :=
               hmp.lintegral_comp (hF.comp e.symm.measurable)
@@ -158,7 +158,7 @@ private lemma gaussian_vec_shift_lintegral {N : ℕ} {v : ℝ≥0} (hv : v ≠ 0
           (1 / 2 : ℝ) * ∑ k : Fin (N + 1), δ k ^ 2 / (v : ℝ)))
       calc ∫⁻ z, FR z ∂(Measure.pi fun _ : Fin (N + 1) => gaussianReal 0 v)
           = ∫⁻ z, (FR ∘ e.symm) (e z) ∂(Measure.pi fun _ : Fin (N + 1) => gaussianReal 0 v) := by
-              refine lintegral_congr fun z => by simp [Function.comp_def]
+              refine lintegral_congr fun z => by simp
         _ = ∫⁻ p, (FR ∘ e.symm) p ∂((gaussianReal 0 v).prod
               (Measure.pi fun _ : Fin N => gaussianReal 0 v)) :=
               hmp.lintegral_comp (hmR.comp e.symm.measurable)
@@ -172,7 +172,7 @@ private lemma gaussian_vec_shift_lintegral {N : ℕ} {v : ℝ≥0} (hv : v ≠ 0
         ∂(Measure.pi fun _ : Fin N => gaussianReal 0 v)) :=
       Measurable.lintegral_prod_right (f := fun x y => F (e.symm (x, y))) (by
         have hunc : Function.uncurry (fun x y => F (e.symm (x, y))) = F ∘ e.symm := by
-          ext ⟨x, y⟩; simp [Function.uncurry, Function.comp_def]
+          ext ⟨x, y⟩; simp [Function.uncurry]
         rw [hunc]; exact hF.comp e.symm.measurable)
     rw [gaussian_1D_shift_lintegral hv (δ 0) hGmeas]
     refine lintegral_congr fun x => ?_
@@ -194,9 +194,7 @@ private lemma gaussian_vec_shift_lintegral {N : ℕ} {v : ℝ≥0} (hv : v ≠ 0
       ext k; refine Fin.cases ?_ (fun j => ?_) k <;> simp [e, Fin.tail]
     rw [heq, mul_assoc, ← ENNReal.ofReal_mul (Real.exp_pos _).le, ← Real.exp_add]
     congr 2
-    simp [Fin.sum_univ_succ, e, MeasurableEquiv.piFinSuccAbove_symm_apply,
-      Fin.insertNthEquiv_apply, Fin.insertNth_apply_same, Fin.insertNth_apply_succAbove,
-      Fin.succAbove_zero, Fin.tail]
+    simp [Fin.sum_univ_succ, e, MeasurableEquiv.piFinSuccAbove_symm_apply, Fin.tail]
     ring
 
 /-- Product MGF on `Measure.pi`: `∫⁻ z, exp(∑ (-2 (δ_k/v) z_k - δ_k²/v)) = ofReal (exp (∑ δ_k²/v))`. -/
@@ -228,7 +226,7 @@ private lemma lintegral_pi_exp_CM_sq {N : ℕ} {v : ℝ≥0} (hv : v ≠ 0) (δ 
             (Measure.pi fun _ : Fin N => gaussianReal 0 v)) := by
         calc ∫⁻ z, Fmgf z ∂(Measure.pi fun _ : Fin (N + 1) => gaussianReal 0 v)
             = ∫⁻ z, (Fmgf ∘ e.symm) (e z) ∂(Measure.pi fun _ : Fin (N + 1) => gaussianReal 0 v) := by
-                refine lintegral_congr fun z => by simp [Function.comp_def]
+                refine lintegral_congr fun z => by simp
           _ = ∫⁻ p, (Fmgf ∘ e.symm) p ∂((gaussianReal 0 v).prod
                 (Measure.pi fun _ : Fin N => gaussianReal 0 v)) :=
                 hmp.lintegral_comp (hm.comp e.symm.measurable)
@@ -238,7 +236,7 @@ private lemma lintegral_pi_exp_CM_sq {N : ℕ} {v : ℝ≥0} (hv : v ≠ 0) (δ 
       rw [← ENNReal.ofReal_mul (Real.exp_pos _).le, ← Real.exp_add]
       congr 2
       rw [Fin.sum_univ_succ]
-      simp [e, MeasurableEquiv.piFinSuccAbove_symm_apply, Fin.insertNth_zero,
+      simp [e, MeasurableEquiv.piFinSuccAbove_symm_apply,
         Fin.cons_zero, Fin.cons_succ, Fin.tail]
     have hmgf1 : Measurable (fun x : ℝ => ENNReal.ofReal
         (Real.exp (-2 * (δ 0 / (v : ℝ)) * x - δ 0 ^ 2 / (v : ℝ)))) := by fun_prop
@@ -284,7 +282,7 @@ private lemma contDiffOn_deriv_open {h : ℝ → ℝ} {U : Set ℝ}
 /-! ### Helper 4: Summation by parts + MVT for `CM_disc n ω → CM ω` -/
 
 private lemma tendsto_CM_disc_summation_by_parts {d : ℕ} (B : MultiBrownian Ω P d) (hd : 0 < d)
-    {s₀ : ℝ} (hs₀ : 0 < s₀) (h : ℝ → ℝ) (hh0 : h 0 = 0)
+    {s₀ : ℝ} (hs₀ : 0 < s₀) (h : ℝ → ℝ) (_hh0 : h 0 = 0)
     {U : Set ℝ} (hU_open : IsOpen U) (hU_sub : Set.Icc 0 s₀ ⊆ U) (hh_diff : ContDiffOn ℝ 2 h U)
     (ω : Ω) :
     let Δ : ℕ → ℝ := fun n => s₀ / ((n + 1 : ℕ) : ℝ)
@@ -411,7 +409,7 @@ private lemma tendsto_CM_disc_summation_by_parts {d : ℕ} (B : MultiBrownian Ω
         _ ≤ ∑ _k ∈ Finset.range (n + 1), (ε / (2 * s₀)) * Δ n := by
             refine Finset.sum_le_sum fun k hk => ?_
             have hk' := Finset.mem_range.mp hk
-            rw [dif_pos hk']
+            rw [dite_eq_left hk']
             obtain ⟨c, hc, hce⟩ := hmvt1 n ⟨k, hk'⟩
             have hrew : δ n ⟨k, hk'⟩ ^ 2 / Δ n = deriv h c ^ 2 * Δ n := by
               rw [← hce, div_pow, div_mul_eq_mul_div, sq (Δ n)]; field_simp [(hΔ_pos n).ne']
@@ -623,7 +621,7 @@ lemma cameronMartin_C2_shift {d : ℕ} (B : MultiBrownian Ω P d) (hd : 0 < d)
       have hsq : ∀ ω, (Real.exp (CM_disc n ω)) ^ 2 =
           Real.exp (∑ k : Fin (n + 1), (-2 * (δ n k / Δ n) * incr n ω k - δ n k ^ 2 / Δ n)) := fun ω => by
         rw [← Real.exp_nat_mul]; congr 1; simp only [CM_disc, Finset.mul_sum, ← Finset.sum_sub_distrib,
-          ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib]
+          ← Finset.sum_neg_distrib]
         push_cast; refine Finset.sum_congr rfl fun k _ => by ring
       simp_rw [hsq]
       have hm_z : Measurable (fun z : Fin (n + 1) → ℝ => ENNReal.ofReal (Real.exp
@@ -688,7 +686,7 @@ lemma cameronMartin_C2_shift {d : ℕ} (B : MultiBrownian Ω P d) (hd : 0 < d)
               simp [hjm, hlt, hne]
             · by_cases heq : (j : ℕ) = m
               · have hlt : (j : ℕ) < m + 1 := by omega
-                simp [hjm, heq, hlt]
+                simp [heq]
               · have hge : ¬ (j : ℕ) < m + 1 := by omega
                 simp [hjm, heq, hge]
           have hsing : (∑ j : Fin (n + 1), if (j : ℕ) = m then δ n j else 0) = δ n ⟨m, hm⟩ := by

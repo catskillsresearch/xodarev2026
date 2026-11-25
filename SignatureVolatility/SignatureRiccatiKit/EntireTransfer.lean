@@ -75,7 +75,7 @@ private lemma integrable_ofReal_pow_gaussianReal (m : ℕ) (v : ℝ≥0) :
   refine Integrable.mono' hbd hmeas (ae_of_all _ fun x => ?_)
   simp [Complex.norm_real, Real.norm_eq_abs, norm_pow]
 
-private lemma integrable_monicHermite_gaussianReal (k : ℕ) {t : ℝ} (ht : 0 ≤ t) :
+private lemma integrable_monicHermite_gaussianReal (k : ℕ) {t : ℝ} (_ht : 0 ≤ t) :
     Integrable (fun x : ℝ => monicHermite k t (x : ℂ))
       (gaussianReal 0 (Real.toNNReal t)) := by
   simp_rw [monicHermite_eq_sum]
@@ -305,7 +305,7 @@ lemma fawcett_transfer_to_f (M : SignatureVolatilityModel)
         rw [← lintegral_tsum hmeas_n]
         have hmeas_tsum : Measurable fun ω =>
             ∑' n, ENNReal.ofReal ((paperSig2 B 0 t ω).levelNorm n) :=
-          Measurable.ennreal_tsum fun n =>
+          Measurable.tsum fun n =>
             (measurable_paperSig2_levelNorm B t n).ennreal_ofReal
         have hW1 : Integrable (fun ω => ∑' n, (paperSig2 B 0 t ω).levelNorm n) P := by
           simpa [paperSetup_sig2_eq] using hfac.2

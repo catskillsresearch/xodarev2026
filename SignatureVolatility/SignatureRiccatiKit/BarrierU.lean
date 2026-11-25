@@ -47,7 +47,7 @@ lemma barrierU_initial_le {s₀ β A x : ℝ} (hs₀ : 0 < s₀) (hβ : 0 < β) 
     linarith
   have hy2 : A / x < s₀ - 0 := by linarith
   unfold barrierU
-  rw [if_pos ⟨hy1, hy2⟩, sub_zero]
+  rw [ite_eq_left ⟨hy1, hy2⟩, sub_zero]
   have hdiff : s₀ / 2 ≤ s₀ - A / x := by linarith
   have hcube : (s₀ / 2) ^ 3 ≤ (s₀ - A / x) ^ 3 := pow_le_pow_left₀ (by positivity) hdiff 3
   have h8 : (s₀ / 2) ^ 3 = s₀ ^ 3 / 8 := by ring

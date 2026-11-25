@@ -153,7 +153,7 @@ private lemma integral_pow_odd_gaussianReal_zero (v : ℝ≥0) (k : ℕ) :
   have hnorm : Integrable (fun y : ℝ => |y| ^ (2 * k + 1)) (gaussianReal 0 v) := by
     simpa [Real.norm_eq_abs] using hLp.integrable_norm_pow (by simp)
   have hint : Integrable (fun y : ℝ => y ^ (2 * k + 1)) (gaussianReal 0 v) :=
-    hnorm.mono' (by fun_prop) (ae_of_all _ fun y => by simp [abs_pow])
+    hnorm.mono' (by fun_prop) (ae_of_all _ fun y => by simp)
   have hsym : (gaussianReal 0 v).map (fun y => -y) = gaussianReal 0 v := by
     simpa using gaussianReal_map_neg (μ := (0 : ℝ)) (v := v)
   have hμ : AEStronglyMeasurable (fun y : ℝ => y ^ (2 * k + 1))
@@ -570,7 +570,7 @@ lemma counterexampleV1_log_nonpos (M : SignatureVolatilityModel)
     rw [e4, e3, e2, e1, e0, e01, integral_const_mul, integral_const_mul, hE1,
       hE3_all s₀ hs₀.le, integral_const, probReal_univ, smul_eq_mul, one_mul,
       mul_zero, add_zero]
-    simp only [ψ0, ψ1, ψy, ψw, ψ2, ψ3, ψ4]
+    simp only [ψw, ψ2, ψ3, ψ4]
     have h1_zero : ∫ ω, (∫ r in (0 : ℝ)..s₀, MultiBrownian.W B r ω ⟨0, M.hd⟩) ∂P = 0 := by
       have := hT1.2; simp only [one_mul, pow_one] at this; rw [this]
       have hz : ∀ r ∈ uIcc 0 s₀, (∫ ω, MultiBrownian.W B r ω ⟨0, M.hd⟩ ∂P) = (0 : ℝ) :=

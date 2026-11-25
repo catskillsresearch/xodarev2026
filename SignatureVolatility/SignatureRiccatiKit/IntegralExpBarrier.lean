@@ -38,7 +38,7 @@ private def barrierUyy (s₀ β A r y : ℝ) : ℝ :=
 
 /-- Clamped representation of `barrierU` and its partials on `[0, s₀] × ℝ` (no `let` in statement). -/
 private lemma barrierU_eq_clamped {s₀ β A r y : ℝ} (hs₀ : 0 < s₀) (hA : 0 < A)
-    (hr0 : 0 ≤ r) (hrs : r ≤ s₀) :
+    (hr0 : 0 ≤ r) (_hrs : r ≤ s₀) :
     barrierU s₀ β A r y = -β * (max (s₀ - r - A / max y (A / (2 * s₀))) 0) ^ 3 ∧
     barrierUr s₀ β A r y = 3 * β * (max (s₀ - r - A / max y (A / (2 * s₀))) 0) ^ 2 ∧
     barrierUy s₀ β A r y =
@@ -56,7 +56,7 @@ private lemma barrierU_eq_clamped {s₀ β A r y : ℝ} (hs₀ : 0 < s₀) (hA :
     rw [hy']
     by_cases h2 : A / y < s₀ - r
     · have hv : max (s₀ - r - A / y) 0 = s₀ - r - A / y := max_eq_left (sub_nonneg.mpr h2.le)
-      simp [barrierU, barrierUr, barrierUy, barrierUyy, h1, h2, and_self, ite_true, hv]
+      simp [barrierU, barrierUr, barrierUy, barrierUyy, h1, h2, and_self, hv]
     · have hv : max (s₀ - r - A / y) 0 = 0 := max_eq_right (sub_nonpos.mpr (not_lt.mp h2))
       simp [barrierU, barrierUr, barrierUy, barrierUyy, h1, h2, hv]
   · have hy'_le : max y (A / (2 * s₀)) ≤ A / s₀ := max_le (not_lt.mp h1) hhalf.le
@@ -588,6 +588,7 @@ private lemma sum_range_mul_eq_sum_Ico {α : Type*} [AddCommMonoid α] (a b : �
     congr 1
     rw [Finset.sum_Ico_eq_sum_range, Nat.succ_mul, Nat.add_sub_cancel_left]
 
+omit [IsProbabilityMeasure P] in
 private lemma ae_tendsto_zero_of_summable_integral_sq {A : ℕ → Ω → ℝ}
     (hmeas : ∀ n, Measurable (A n)) (hint : ∀ n, Integrable (fun ω => A n ω ^ 2) P)
     {b : ℕ → ℝ} (hb : Summable b) (hle : ∀ n, ∫ ω, A n ω ^ 2 ∂P ≤ b n) :
@@ -822,7 +823,7 @@ private lemma tendsto_dyadic_weighted_qv_of_subintervals {s₀ : ℝ} (hs₀ : 0
 
 /-! ### Part 5: Standalone pointwise limit of `logD n ω` (clean `sum_range_sub` + zero timeout!) -/
 
-private lemma tendsto_logD_of_qv {s₀ β A x K : ℝ} (hs₀ : 0 < s₀) (hβ : 0 < β) (hA : 0 < A)
+private lemma tendsto_logD_of_qv {s₀ β A x K : ℝ} (hs₀ : 0 < s₀) (_hβ : 0 < β) (hA : 0 < A)
     (hK0 : 0 ≤ K)
     (htay : ∀ r₁ r₂ y₁ y₂ : ℝ, 0 ≤ r₁ → r₁ ≤ r₂ → r₂ ≤ s₀ →
       |barrierU s₀ β A r₂ y₂ - barrierU s₀ β A r₁ y₁
@@ -1186,7 +1187,7 @@ lemma integral_exp_shiftedExponent_le_exp_barrierU {d : ℕ}
     {s₀ β A x : ℝ} (hs₀ : 0 < s₀) (hβ : 0 < β)
     (hA2 : 2 ≤ A) (hAs : 2 * Real.sqrt (s₀ ^ 3) ≤ A)
     (hAβ : 2 * Real.sqrt β * s₀ ^ 3 ≤ A)
-    (hx : 2 * A / s₀ ≤ x) :
+    (_hx : 2 * A / s₀ ≤ x) :
     (∫ ω, Real.exp (counterexampleV1Exponent B hd s₀ x ω) ∂P) ≤
       Real.exp (barrierU s₀ β A 0 x) := by
   have hA : 0 < A := by linarith

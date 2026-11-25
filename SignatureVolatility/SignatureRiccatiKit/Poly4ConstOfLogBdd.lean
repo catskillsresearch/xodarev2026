@@ -118,7 +118,7 @@ lemma poly4_const_of_log_bdd_nonpos {a₀ a₁ a₂ a₃ a₄ L s₀ : ℝ} (hs�
       refine (h1.abs).congr' ?_
       filter_upwards [eventually_ge_atTop 1] with n hn
       have hn0 : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
-      congr 1; field_simp <;> try ring
+      congr 1; field_simp; try ring
     have hle : |a₄| ≤ 0 := le_of_tendsto_of_tendsto hlim (hbound0 4 (by norm_num)) <| by
       filter_upwards [eventually_ge_atTop 1] with n hn
       rw [abs_div, abs_of_pos (by positivity : (0 : ℝ) < (n : ℝ) ^ 4)]
@@ -138,7 +138,7 @@ lemma poly4_const_of_log_bdd_nonpos {a₀ a₁ a₂ a₃ a₄ L s₀ : ℝ} (hs�
       refine (h1.abs).congr' ?_
       filter_upwards [eventually_ge_atTop 1] with n hn
       have hn0 : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
-      congr 1; field_simp <;> try ring
+      congr 1; field_simp; try ring
     have hle : |-a₃| ≤ 0 := le_of_tendsto_of_tendsto hlim (hbound0 3 (by norm_num)) <| by
       filter_upwards [eventually_ge_atTop 1] with n hn
       rw [abs_div, abs_of_pos (by positivity : (0 : ℝ) < (n : ℝ) ^ 3)]
@@ -156,7 +156,7 @@ lemma poly4_const_of_log_bdd_nonpos {a₀ a₁ a₂ a₃ a₄ L s₀ : ℝ} (hs�
       refine (h1.abs).congr' ?_
       filter_upwards [eventually_ge_atTop 1] with n hn
       have hn0 : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
-      congr 1; field_simp <;> try ring
+      congr 1; field_simp; try ring
     have hle : |a₂| ≤ 0 := le_of_tendsto_of_tendsto hlim (hbound0 2 (by norm_num)) <| by
       filter_upwards [eventually_ge_atTop 1] with n hn
       rw [abs_div, abs_of_pos (by positivity : (0 : ℝ) < (n : ℝ) ^ 2)]
@@ -173,7 +173,7 @@ lemma poly4_const_of_log_bdd_nonpos {a₀ a₁ a₂ a₃ a₄ L s₀ : ℝ} (hs�
       refine (h1.abs).congr' ?_
       filter_upwards [eventually_ge_atTop 1] with n hn
       have hn0 : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
-      congr 1; field_simp <;> try ring
+      congr 1; field_simp
     have hle : |-a₁| ≤ 0 := le_of_tendsto_of_tendsto hlim (hbound0 1 (by norm_num)) <| by
       filter_upwards [eventually_ge_atTop 1] with n hn
       rw [abs_div, abs_of_pos (by positivity : (0 : ℝ) < (n : ℝ) ^ 1)]
