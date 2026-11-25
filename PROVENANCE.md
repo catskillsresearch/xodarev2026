@@ -21,10 +21,13 @@ decomposition with weight-tail bounds).
 
 ## Comparator
 
-Compared declarations are `SignatureVolatility.theorem_A` …
-`SignatureVolatility.theorem_D`, stated Mathlib-only in
+Compared declarations are the 11 unwrapped theorems named in
+`comparator.json` (Theorems A–D, their refutations, and the two NFLVR
+definition-sharpness refutations `not_literal_nflvr_unwrapped` and
+`not_terminal_bdd_nflvr_unwrapped`). They are stated Mathlib-only in
 `SignatureVolatilityComparator/Challenge.lean` and proved in the
 `SignatureVolatility/` library imported by
-`SignatureVolatilityComparator/Solution.lean`. Configuration:
-`comparator.json`. Supporting scaffolding appears as type-only holes in
-`definition_names`.
+`SignatureVolatilityComparator/Solution.lean`. The unwrapped statements
+live in `SignatureVolatility/Unwrapped.lean`. Configuration:
+`comparator.json`. The field `definition_names` is empty: supporting
+lemmas in the Challenge are fully proved, not compared holes.

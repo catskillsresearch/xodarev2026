@@ -2,7 +2,7 @@
 
 Palomar registration: TBD.
 
-`comparator.json` lists Theorems A–D and their refutations, all proved in this repository with no `sorry`
+`comparator.json` lists 11 unwrapped theorems (Theorems A–D, their refutations, and the two NFLVR definition-sharpness refutations), all proved in this repository with no `sorry`
 (axioms: `propext`, `Quot.sound`, `Classical.choice`). They are compared in **unwrapped** form
 (`SignatureVolatility/Unwrapped.lean`): each `X_unwrapped` states the claim of the library theorem
 `X` using only definitions built directly from the Brownian driver `B` — the signature
@@ -40,11 +40,14 @@ and in the Solution, and requires the two lists to be identical.
 | `not_theorem_C_unwrapped` | Theorem C (Thm 56); complete = every `X ∈ L²(ℱ^S_T)` is a.s. `c + Σ_k a_k (S_T − k)^+ + G`, `G` in the `L²`-closed span of elementary Brownian integrals `Σ_p h_p (W_{p.2} − W_{p.1})` on `[0, T]` | **refuted** for Black–Scholes |
 | `theorem_D_unwrapped` | Theorem D / Thm 66, GKW projection | proved |
 | `theorem_D_residual_hypothesis_fails_unwrapped` | Theorem D, residual expansion "if `N^*_S < ∞`" | hypothesis fails for Black–Scholes |
+| `not_literal_nflvr_unwrapped` | Defs 2.17 and 4.3, literal NFLVR (no wealth lower bound) | **refuted** for Black–Scholes |
+| `not_terminal_bdd_nflvr_unwrapped` | Section 4.6, terminal-only lower bound on $V_T$ | **refuted** for Black–Scholes |
 
 Proved in the library (no `sorry`) but **not compared**: the wrapped forms `theorem_A`,
 `theorem_B_mp`, `not_affine_riccati_duality_mpr`, `not_affine_riccati_duality`,
 `not_theorem_B_mpr`, `not_theorem_B`, `not_theorem_C` (gains: MathFin's Itô integral of
-square-integrable predictable integrands), `theorem_D`, `theorem_D_residual_hypothesis_fails`;
+square-integrable predictable integrands), `theorem_D`, `theorem_D_residual_hypothesis_fails`,
+`not_literal_nflvr`, `not_terminal_bdd_nflvr`;
 `bsMarket_isCompleteWithCallsUnwrapped`; `affine_riccati_duality_mp` (Theorem
 4.2(ii) `→`), `theorem_C_refuted` (same iff failure as `not_theorem_C`),
 `blackScholes_isCompleteWithCalls`, `theorem_C_depth_infinite`,
@@ -70,8 +73,7 @@ the full `theorem_B` are not in the library; their negations are.
 ## Why each counterexample works
 
 Full short narratives are in [`Writeup/narratives/`](Writeup/narratives/README.md). Each one
-matches its Lean statement. The verbatim outside (Gemini "Carbon") source for the duality
-refutation is in [`Writeup/narratives/appendix/`](Writeup/narratives/appendix/carbon_affine_riccati_duality_mpr.md).
+matches its Lean statement. The verbatim outside (Gemini "Carbon") sources are in [`Writeup/narratives/appendix/`](Writeup/narratives/appendix/) (Riccati duality and the NFLVR audit).
 
 - **Theorem 4.2(ii) `←` / Theorem B** (`not_affine_riccati_duality_mpr_unwrapped`; for every model `M` and
   driver `B`).
@@ -98,6 +100,15 @@ refutation is in [`Writeup/narratives/appendix/`](Writeup/narratives/appendix/ca
   constants, and the depth is `∞ ≠ 0`.
 - **Theorem D residual** (`theorem_D_residual_hypothesis_fails_unwrapped`). The hypothesis `N^*_S < ∞`
   fails for Black–Scholes, so the clause is vacuous there. The expansion itself is not refuted.
+- **Literal and terminal-only NFLVR** (`not_literal_nflvr_unwrapped`, `not_terminal_bdd_nflvr_unwrapped`).
+  Carbon's geometric-grid doubling $K$ on $t_n=T(1-2^{-n})$, transferred to Black–Scholes by
+  $H=K/(S\sigma_0)$, is S-admissible and has $V_T=1$ a.s. So both the paper's literal cone
+  (no wealth lower bound) and the terminal-only bounded-below cone contain a free lunch.
+  The same $V$ is unbounded below on $[0,T]$, so this does not refute Delbaen–Schachermayer
+  NFLVR. Details: [`Writeup/narratives/nflvr_literal.md`](Writeup/narratives/nflvr_literal.md);
+  Carbon excerpt: [`Writeup/narratives/appendix/carbon_nflvr.md`](Writeup/narratives/appendix/carbon_nflvr.md).
+  The NFLVR conjunct of `theorem_B_mp_unwrapped` still uses `AdmissibleGainsUnderP`, not the
+  Delbaen–Schachermayer cone.
 - **Lemma 77** (`not_lemma77_shuffle_estimate`). We have `ℓ^k ⧢ ℓ = (k+1)ℓ^{k+1}`, so
   `‖e_{ℓ^k} ⧢ e_ℓ‖_w ≥ (k+1)w(k)`, against `w(k)w(1)`. No constant works, for any weight.
 - **Lemma 78** (`not_lemma78_local_lipschitz`). Take `w ≡ 1` and `u_k = e_{ℓ^{k+1}}`, which has norm 1.

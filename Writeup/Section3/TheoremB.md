@@ -6,7 +6,7 @@ Paper: Xodarev Theorem B. Under H1–H3 and a `SignatureRiccatiKit`:
 
 1. $S$ is a true $(\mathcal F^{\widehat W}_t,\mathbb P)$-martingale on $[0,T]$; 2. NFLVR holds for admissible gains; 3. every finite signature coordinate is a special semimartingale; 4. nonempty classical Riccati solutions are equivalent (via the kit) to the exponential-affine conditional transform representation.
 
-The proved entry point is `theorem_B_mp` (martingale, NFLVR, special-semimartingale coordinates, and the `→` Riccati direction). Clause (3) is stated with `Nonempty (IsSpecialSemimartingale …)` because the Lean object is a structure, not a `Prop`. The paper's full Theorem B (including the `←` iff) is false; see `not_theorem_B`.
+The proved entry point is `theorem_B_mp` (martingale, NFLVR, special-semimartingale coordinates, and the `→` Riccati direction). Clause (3) is stated with `Nonempty (IsSpecialSemimartingale …)` because the Lean object is a structure, not a `Prop`. The paper's full Theorem B (including the `←` iff) is false; see `not_theorem_B`. The NFLVR conjunct of `theorem_B_mp` is `SatisfiesNFLVR` for `AdmissibleGainsUnderP`, not Delbaen–Schachermayer NFLVR for uniformly bounded-below admissible gains. Literal NFLVR and the terminal-only bound are refuted for Black–Scholes; see [`narratives/nflvr_literal.md`](../narratives/nflvr_literal.md).
 
 **[SignatureVolatility/TheoremB.lean](../../SignatureVolatility/TheoremB.lean)**
 

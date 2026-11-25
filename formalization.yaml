@@ -23,7 +23,9 @@ project:
     not_affine_riccati_duality_mpr_unwrapped,
     not_affine_riccati_duality_unwrapped, not_theorem_B_mpr_unwrapped,
     not_theorem_B_unwrapped, not_theorem_C_unwrapped,
-    theorem_D_residual_hypothesis_fails_unwrapped (refutations). Proved:
+    theorem_D_residual_hypothesis_fails_unwrapped,
+    not_literal_nflvr_unwrapped, not_terminal_bdd_nflvr_unwrapped
+    (refutations). Proved:
     theorem_A_unwrapped — for every SignatureVolatilityModel (which includes
     d ≥ 1, T > 0, s₀ > 0, HypH1, HypH2, and parameter nondegeneracy ℓ ≠ 0)
     and every Brownian driver, under the additional analytic hypothesis HypH3
@@ -83,13 +85,23 @@ project:
     parameters as above), ¬ (N^*_S < ∞). This shows that the
     residual-expansion hypothesis of Theorem D fails for Black–Scholes; it
     does not refute the expansion identity on markets where the hypothesis
-    holds.
+    holds;
+    not_literal_nflvr_unwrapped — for Black–Scholes (T > 0, s₀ > 0, σ₀ ≠ 0,
+    1-dimensional Brownian motion), literal NFLVR (Defs 2.17 and 4.3, no
+    wealth lower bound) fails: a geometric-grid doubling strategy, transferred
+    by H = K/(S σ₀), is S-admissible and ends at V_T = 1 a.s.;
+    not_terminal_bdd_nflvr_unwrapped — the same free lunch is in the
+    terminal-only bounded-below cone of Section 4.6. Neither claim refutes
+    Delbaen–Schachermayer NFLVR, which requires a uniform-in-time lower bound.
+    Why: Writeup/narratives/nflvr_literal.md (Carbon excerpt in
+    Writeup/narratives/appendix/carbon_nflvr.md).
     Supporting results, proved in the library with no sorry but not compared:
     the wrapped forms theorem_A, theorem_B_mp, theorem_D,
     not_affine_riccati_duality_mpr, not_affine_riccati_duality,
     not_theorem_B_mpr, not_theorem_B, not_theorem_C (with MathFin's Itô
-    integral of square-integrable predictable integrands as the gains) and
-    theorem_D_residual_hypothesis_fails;
+    integral of square-integrable predictable integrands as the gains),
+    theorem_D_residual_hypothesis_fails, not_literal_nflvr and
+    not_terminal_bdd_nflvr;
     affine_riccati_duality_mp — for every model and driver and every finitely
     supported u₀ with finite signature transform, if the exponential-affine
     conditional-expectation formula holds through some classical Riccati
@@ -136,17 +148,18 @@ classification:
   - '68V20'
 status:
   scope: >-
-    Comparator family (comparator.json): 9 theorems, all proved with no
-    sorry. They are the 9 headline results below, in unwrapped form (Theorems
+    Comparator family (comparator.json): 11 theorems, all proved with no
+    sorry. They are the 11 headline results below, in unwrapped form (Theorems
     A, B, D proved parts and the Lean refutations of Theorem 4.2(ii) ←,
-    Theorem B, Theorem C and the Theorem D residual hypothesis).
+    Theorem B, Theorem C, the Theorem D residual hypothesis, and literal
+    and terminal-only NFLVR).
     Further refutations (Proposition 58, Lemmas 77 and 78), the wrapped forms
     of the compared theorems and supporting results are proved in the library
     but not compared. The library and
     SignatureVolatilityComparator/Solution.lean have no sorry and there are no
     axiom declarations; nothing is open. The Challenge
     (SignatureVolatilityComparator/Challenge.lean) is one file importing only
-    Lean core and Mathlib, with the 9 compared proofs replaced by sorry, as
+    Lean core and Mathlib, with the 11 compared proofs replaced by sorry, as
     the comparator requires.
   sorry_count: 0
   sorry_in_definitions: 0
@@ -441,6 +454,14 @@ alignment:
     status: proved
   - source: "Thm D residual-expansion hypothesis N^*_S < ∞ fails for Black–Scholes; the expansion identity itself is not refuted (CounterExample_TheoremD)."
     lean: theorem_D_residual_hypothesis_fails_unwrapped
+    module: SignatureVolatility.Unwrapped
+    status: proved
+  - source: "Literal NFLVR (Defs 2.17 and 4.3, no wealth lower bound) is false for Black–Scholes (T > 0, s₀ > 0, σ₀ ≠ 0, 1-dimensional Brownian motion): a geometric-grid doubling strategy transferred by H=K/(Sσ₀) is S-admissible and ends at V_T=1 a.s. Does not refute Delbaen–Schachermayer NFLVR."
+    lean: not_literal_nflvr_unwrapped
+    module: SignatureVolatility.Unwrapped
+    status: proved
+  - source: "Section 4.6 terminal-only bounded-below NFLVR is false for the same Black–Scholes market, by the same free lunch V_T=1 a.s. Does not refute Delbaen–Schachermayer NFLVR."
+    lean: not_terminal_bdd_nflvr_unwrapped
     module: SignatureVolatility.Unwrapped
     status: proved
   - source: "Prop 58 refuted: Black–Scholes completeness depth is not 0 (T > 0, s₀ > 0, σ₀ ≠ 0, 1-dimensional Brownian motion) (CounterExample_Prop58)."
