@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-25T01:01:44Z
-**`sorry` occurrences:** 7 · 4 open · 7 blocked · 197 done · 7 file(s) with `sorry`.
+**Updated:** 2026-11-25T01:49:28Z
+**`sorry` occurrences:** 6 · 4 open · 6 blocked · 198 done · 6 file(s) with `sorry`.
 **Paper claims refuted:** 5 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
 
 ## Open analytic leaves of the affine / Riccati counterexample
@@ -49,11 +49,10 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 
 | Status | Id | File |
 |---|---|---|
-| open | `SignatureRiccatiKit.CameronMartinC2Shift` | `SignatureVolatility/SignatureRiccatiKit/CameronMartinC2Shift.lean` |
 | open | `SignatureRiccatiKit.CondExpMulIndepDisintegrate` | `SignatureVolatility/SignatureRiccatiKit/CondExpMulIndepDisintegrate.lean` |
 | open | `SignatureRiccatiKit.CondSigPolyIdentification` | `SignatureVolatility/SignatureRiccatiKit/CondSigPolyIdentification.lean` |
 | blocked | `SignatureRiccatiKit.CounterexampleV1Decay` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1Decay.lean` |
-| blocked | `SignatureRiccatiKit.CounterexampleV1LogNonpos` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1LogNonpos.lean` |
+| open | `SignatureRiccatiKit.CounterexampleV1LogNonpos` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1LogNonpos.lean` |
 | blocked | `SignatureRiccatiKit.EntireTransfer` | `SignatureVolatility/SignatureRiccatiKit/EntireTransfer.lean` |
 | open | `SignatureRiccatiKit.IntegralExpBarrier` | `SignatureVolatility/SignatureRiccatiKit/IntegralExpBarrier.lean` |
 
@@ -61,14 +60,14 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 
 | Id | File |
 |---|---|
-| `SignatureRiccatiKit.CameronMartinC2Shift` | `SignatureVolatility/SignatureRiccatiKit/CameronMartinC2Shift.lean` |
 | `SignatureRiccatiKit.CondExpMulIndepDisintegrate` | `SignatureVolatility/SignatureRiccatiKit/CondExpMulIndepDisintegrate.lean` |
 | `SignatureRiccatiKit.CondSigPolyIdentification` | `SignatureVolatility/SignatureRiccatiKit/CondSigPolyIdentification.lean` |
+| `SignatureRiccatiKit.CounterexampleV1LogNonpos` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1LogNonpos.lean` |
 | `SignatureRiccatiKit.IntegralExpBarrier` | `SignatureVolatility/SignatureRiccatiKit/IntegralExpBarrier.lean` |
 
 ## By group
 
-### Top-level modules — 11 hole(s)
+### Top-level modules — 10 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -191,7 +190,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | blocked | `SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample` | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMprCounterexample.lean` |
 | done | `SignatureRiccatiKit.BarrierU` | `SignatureVolatility/SignatureRiccatiKit/BarrierU.lean` |
 | done | `SignatureRiccatiKit.BrownianScalingShiftedExponent` | `SignatureVolatility/SignatureRiccatiKit/BrownianScalingShiftedExponent.lean` |
-| open | `SignatureRiccatiKit.CameronMartinC2Shift` | `SignatureVolatility/SignatureRiccatiKit/CameronMartinC2Shift.lean` |
+| done | `SignatureRiccatiKit.CameronMartinC2Shift` | `SignatureVolatility/SignatureRiccatiKit/CameronMartinC2Shift.lean` |
 | done | `SignatureRiccatiKit.ComplexTilt` | `SignatureVolatility/SignatureRiccatiKit/ComplexTilt.lean` |
 | open | `SignatureRiccatiKit.CondExpMulIndepDisintegrate` | `SignatureVolatility/SignatureRiccatiKit/CondExpMulIndepDisintegrate.lean` |
 | done | `SignatureRiccatiKit.CondSigPoly` | `SignatureVolatility/SignatureRiccatiKit/CondSigPoly.lean` |
@@ -202,7 +201,7 @@ These must be sorry-free at **paper strength** (nontrivial Itô kit, Stratonovic
 | blocked | `SignatureRiccatiKit.CounterexampleV1CondExp` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1CondExp.lean` |
 | blocked | `SignatureRiccatiKit.CounterexampleV1Decay` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1Decay.lean` |
 | done | `SignatureRiccatiKit.CounterexampleV1LogBound` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1LogBound.lean` |
-| blocked | `SignatureRiccatiKit.CounterexampleV1LogNonpos` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1LogNonpos.lean` |
+| open | `SignatureRiccatiKit.CounterexampleV1LogNonpos` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1LogNonpos.lean` |
 | done | `SignatureRiccatiKit.CounterexampleV1PosLe` | `SignatureVolatility/SignatureRiccatiKit/CounterexampleV1PosLe.lean` |
 | done | `SignatureRiccatiKit.DifferentiableAtTsum` | `SignatureVolatility/SignatureRiccatiKit/DifferentiableAtTsum.lean` |
 | blocked | `SignatureRiccatiKit.EntireTransfer` | `SignatureVolatility/SignatureRiccatiKit/EntireTransfer.lean` |

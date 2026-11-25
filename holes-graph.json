@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-25T01:01:44Z",
-  "sorryCount": 7,
+  "updated": "2026-11-25T01:49:28Z",
+  "sorryCount": 6,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done (proved, counterexample or refuted; no sorry). Green = open. Grey = blocked. Counterexample / refutation labels are shown as text on the node.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: SignatureRiccatiKit.CameronMartinC2Shift, SignatureRiccatiKit.CondExpMulIndepDisintegrate, SignatureRiccatiKit.CondSigPolyIdentification, SignatureRiccatiKit.IntegralExpBarrier."
+    "Open tips: SignatureRiccatiKit.CondExpMulIndepDisintegrate, SignatureRiccatiKit.CondSigPolyIdentification, SignatureRiccatiKit.CounterexampleV1LogNonpos, SignatureRiccatiKit.IntegralExpBarrier."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -1907,7 +1907,7 @@
       "file": "SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMprCounterexample.lean",
       "status": "blocked",
       "kind": null,
-      "blocker": "needs SignatureRiccatiKit.CondSigPolyIdentification, SignatureRiccatiKit.EntireTransfer, SignatureRiccatiKit.IntegralExpBarrier, SignatureRiccatiKit.CameronMartinC2Shift, SignatureRiccatiKit.CondExpMulIndepDisintegrate, SignatureRiccatiKit.CounterexampleV1LogNonpos, SignatureRiccatiKit.CounterexampleV1Decay, SignatureRiccatiKit.CounterexampleV1CondExp",
+      "blocker": "needs SignatureRiccatiKit.CondSigPolyIdentification, SignatureRiccatiKit.EntireTransfer, SignatureRiccatiKit.IntegralExpBarrier, SignatureRiccatiKit.CondExpMulIndepDisintegrate, SignatureRiccatiKit.CounterexampleV1LogNonpos, SignatureRiccatiKit.CounterexampleV1Decay, SignatureRiccatiKit.CounterexampleV1CondExp",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -1941,11 +1941,11 @@
       "label": "B3a deterministic Cameron\u2013Martin shift",
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit/CameronMartinC2Shift.lean",
-      "status": "open",
+      "status": "done",
       "kind": null,
       "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
-      "hasSorry": true,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -2073,9 +2073,9 @@
       "label": "B3 log lower bound on (-\u221e, 0]",
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit/CounterexampleV1LogNonpos.lean",
-      "status": "blocked",
+      "status": "open",
       "kind": null,
-      "blocker": "needs SignatureRiccatiKit.CameronMartinC2Shift",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
       "hasSorry": true,
       "paperKitGoal": false
@@ -3862,7 +3862,7 @@
       "kind": "hard"
     },
     {
-      "from": "SignatureRiccatiKit.CounterexampleV1",
+      "from": "SignatureRiccatiKit.BrownianScalingShiftedExponent",
       "to": "SignatureRiccatiKit.CameronMartinC2Shift",
       "kind": "hard"
     },

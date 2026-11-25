@@ -392,6 +392,7 @@ ProlongedBrownianSetup.PaperSigChen -hard-> SignatureRiccatiKit.CounterexampleTe
 ProlongedBrownianSetup.PaperSigDynamics -hard-> ProlongedBrownianSetup.ShiftedWordIntegral
 ProlongedBrownianSetup.PaperSigDynamics -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 ProlongedBrownianSetup.PaperSigDynamics -hard-> SignatureRiccatiKit.BrownianScalingShiftedExponent
+ProlongedBrownianSetup.PaperSigDynamics -hard-> SignatureRiccatiKit.CameronMartinC2Shift
 ProlongedBrownianSetup.PaperSigDynamics -hard-> SignatureRiccatiKit.ComplexTilt
 ProlongedBrownianSetup.PaperSigDynamics -hard-> SignatureRiccatiKit.CounterexampleTensor
 ProlongedBrownianSetup.PaperSigDynamics -hard-> SignatureRiccatiKit.ItoWordTiltClosedForm
@@ -453,6 +454,7 @@ SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample -hard-> SignatureRicca
 SignatureRiccatiKit.BarrierU -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit.BarrierU -hard-> SignatureRiccatiKit.IntegralExpBarrier
 SignatureRiccatiKit.BrownianScalingShiftedExponent -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
+SignatureRiccatiKit.BrownianScalingShiftedExponent -hard-> SignatureRiccatiKit.CameronMartinC2Shift
 SignatureRiccatiKit.BrownianScalingShiftedExponent -hard-> SignatureRiccatiKit.CounterexampleV1CondExp
 SignatureRiccatiKit.CameronMartinC2Shift -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit.CameronMartinC2Shift -hard-> SignatureRiccatiKit.CounterexampleV1LogNonpos

@@ -182,6 +182,7 @@ VERIFIED: set[str] = {
     "SignatureRiccatiKit.BrownianScalingShiftedExponent",
     "SignatureRiccatiKit.SummableNormTermAndBound",
     "SignatureRiccatiKit.ItoWordTiltClosedForm",
+    "SignatureRiccatiKit.CameronMartinC2Shift",
     "SignatureRiccatiKit.BarrierU",
     "SignatureRiccatiKit.CounterexampleTensor",
     "SignatureRiccatiKit.CounterexampleV1",
