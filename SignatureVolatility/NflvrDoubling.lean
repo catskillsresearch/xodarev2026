@@ -942,4 +942,170 @@ lemma doublingC_sq_integral_le (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T)
     _ = ENNReal.ofReal ((2 : ℝ) ^ n / dtGrid T n) := by
         rw [← ENNReal.ofReal_mul (inv_nonneg.mpr (dtGrid_pos hT n).le), div_eq_inv_mul]
 
+
+/-- Pathwise doubling wealth at time `t`: the stochastic integral of `doublingK` against
+`B`, written as an explicit finite-on-almost-every-path sum of stopped increments. -/
+def doublingWealth (B : ℝ → Ω → ℝ) (T t : ℝ) (ω : Ω) : ℝ :=
+  ∑' n : ℕ, if ω ∈ nonHitPrefix B T n ∧ tGrid T n < t
+    then doublingC B T n ω * (B (min t (tauHit B T n ω)) ω - B (tGrid T n) ω)
+    else 0
+
+lemma doublingWealth_zero {T : ℝ} (hT : 0 < T) (B : ℝ → Ω → ℝ) (ω : Ω) :
+    doublingWealth B T 0 ω = 0 := by
+  unfold doublingWealth
+  have hterm :
+      (fun n : ℕ => if ω ∈ nonHitPrefix B T n ∧ tGrid T n < (0 : ℝ)
+        then doublingC B T n ω * (B (min (0 : ℝ) (tauHit B T n ω)) ω - B (tGrid T n) ω)
+        else 0) = fun _ => 0 :=
+    funext fun n => by
+      have hn : ¬ tGrid T n < (0 : ℝ) := not_lt.mpr (tGrid_mem hT n).1
+      simp [hn]
+  rw [hterm, tsum_zero]
+
+/-- The recursive grid wealth is the sum of the stopped increments up to `N`. -/
+lemma doublingX_eq_sum (B : ℝ → Ω → ℝ) (T : ℝ) :
+    ∀ N ω, doublingX B T N ω =
+      ∑ n ∈ Finset.range N,
+        (if ω ∈ nonHitPrefix B T n then
+          doublingC B T n ω * (B (tauHit B T n ω) ω - B (tGrid T n) ω) else 0) := by
+  intro N ω
+  induction N with
+  | zero => simp [doublingX]
+  | succ N ih =>
+    simp [doublingX, Finset.sum_range_succ, ih, doublingC]
+
+/-- After the first hit, later prefixes are empty, so the wealth tsum is a finite sum. -/
+lemma doublingWealth_eq_sum {T : ℝ} {N : ℕ} {ω : Ω} (B : ℝ → Ω → ℝ)
+    (hN : ω ∉ nonHitPrefix B T N) (t : ℝ) :
+    doublingWealth B T t ω =
+      ∑ n ∈ Finset.range N,
+        (if ω ∈ nonHitPrefix B T n ∧ tGrid T n < t
+          then doublingC B T n ω * (B (min t (tauHit B T n ω)) ω - B (tGrid T n) ω)
+          else 0) := by
+  have hvan : ∀ n ≥ N, ω ∉ nonHitPrefix B T n := by
+    intro n hn
+    induction hn with
+    | refl => exact hN
+    | step _ ih => exact fun h => ih h.1
+  exact tsum_eq_sum fun n hn => by
+    have hge : N ≤ n := by
+      simp only [Finset.mem_range, not_lt] at hn
+      exact hn
+    simp [hvan n hge]
+
+lemma doublingWealth_T_eq_doublingX {T : ℝ} (hT : 0 < T) (B : ℝ → Ω → ℝ)
+    {N : ℕ} {ω : Ω} (hN : ω ∉ nonHitPrefix B T N) :
+    doublingWealth B T T ω = doublingX B T N ω := by
+  rw [doublingWealth_eq_sum (B := B) hN T, doublingX_eq_sum B T N ω]
+  refine Finset.sum_congr rfl fun n hn => ?_
+  have htlt : tGrid T n < T := tGrid_lt_T hT n
+  have hτle : tauHit B T n ω ≤ T :=
+    (tauHit_mem_Icc hT B n ω).2.trans (tGrid_mem hT (n + 1)).2
+  by_cases hE : ω ∈ nonHitPrefix B T n
+  · simp [hE, htlt, min_eq_right hτle]
+  · simp [hE]
+
+/-- Almost every path has some first hit, after which grid wealth is `1`, so `V_T = 1` a.s. -/
+lemma doublingWealth_T_eq_one_ae (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) :
+    (fun ω => doublingWealth (bmCoord B) T T ω) =ᵐ[P] fun _ => (1 : ℝ) := by
+  have hhit : ∀ᵐ ω ∂P, ∃ N : ℕ, ω ∉ nonHitPrefix (bmCoord B) T N := by
+    have h0 := (nonHitPrefix_props B hT).2.2
+    refine (measure_eq_zero_iff_ae_notMem.mp h0).mono fun ω hω => ?_
+    simpa [mem_iInter] using hω
+  filter_upwards [hhit] with ω ⟨N, hN⟩
+  rw [doublingWealth_T_eq_doublingX hT (bmCoord B) hN]
+  exact (doublingX_closed_form B hT N ω).2 hN
+
+/-- On `{t_n < t}` the increment starts at `0` at `t = t_n`, so the piece equals the
+continuous process `c_n (B_{min (max t t_n) τ_n} - B_{t_n})` (or `0` off `E_n`). -/
+lemma doublingWealth_piece_eq {T t : ℝ} (hT : 0 < T) (B : ℝ → Ω → ℝ) (n : ℕ) (ω : Ω) :
+    (if ω ∈ nonHitPrefix B T n ∧ tGrid T n < t
+      then doublingC B T n ω * (B (min t (tauHit B T n ω)) ω - B (tGrid T n) ω)
+      else 0) =
+      (if ω ∈ nonHitPrefix B T n then
+        doublingC B T n ω *
+          (B (min (max t (tGrid T n)) (tauHit B T n ω)) ω - B (tGrid T n) ω)
+        else 0) := by
+  by_cases hE : ω ∈ nonHitPrefix B T n
+  · by_cases hlt : tGrid T n < t
+    · have hmax : max t (tGrid T n) = t := max_eq_left hlt.le
+      simp [hE, hlt, hmax]
+    · have hmax : max t (tGrid T n) = tGrid T n := max_eq_right (not_lt.mp hlt)
+      have hmin : min (tGrid T n) (tauHit B T n ω) = tGrid T n :=
+        min_eq_left (tauHit_mem_Icc hT B n ω).1
+      simp [hE, hlt, hmax, hmin]
+  · simp [hE]
+
+/-- On almost every path the wealth is a finite sum of continuous stopped increments. -/
+lemma doublingWealth_continuousOn_ae (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) :
+    ∀ᵐ ω ∂P, ContinuousOn (fun t => doublingWealth (bmCoord B) T t ω) (Icc 0 T) := by
+  have hhit : ∀ᵐ ω ∂P, ∃ N : ℕ, ω ∉ nonHitPrefix (bmCoord B) T N := by
+    have h0 := (nonHitPrefix_props B hT).2.2
+    refine (measure_eq_zero_iff_ae_notMem.mp h0).mono fun ω hω => ?_
+    simpa [mem_iInter] using hω
+  filter_upwards [hhit] with ω ⟨N, hN⟩
+  have hsum : ∀ t, doublingWealth (bmCoord B) T t ω =
+      ∑ n ∈ Finset.range N,
+        (if ω ∈ nonHitPrefix (bmCoord B) T n then
+          doublingC (bmCoord B) T n ω *
+            (bmCoord B (min (max t (tGrid T n)) (tauHit (bmCoord B) T n ω)) ω -
+              bmCoord B (tGrid T n) ω)
+          else 0) := fun t => by
+    rw [doublingWealth_eq_sum (B := bmCoord B) hN t]
+    refine Finset.sum_congr rfl fun n _ => ?_
+    exact doublingWealth_piece_eq hT (bmCoord B) n ω
+  set piece : ℕ → ℝ → ℝ := fun n t =>
+    if ω ∈ nonHitPrefix (bmCoord B) T n then
+      doublingC (bmCoord B) T n ω *
+        (bmCoord B (min (max t (tGrid T n)) (tauHit (bmCoord B) T n ω)) ω -
+          bmCoord B (tGrid T n) ω)
+    else 0
+  have hpieces : ∀ n, ContinuousOn (piece n) (Icc 0 T) := fun n => by
+    by_cases hE : ω ∈ nonHitPrefix (bmCoord B) T n
+    · have hB : ContinuousOn (fun t : ℝ => bmCoord B t ω) (Ici 0) := bmCoord_cont B ω
+      have harg : ContinuousOn
+          (fun t : ℝ => min (max t (tGrid T n)) (tauHit (bmCoord B) T n ω)) (Icc 0 T) := by
+        have hcont :
+            Continuous (fun t : ℝ =>
+              (t ⊔ tGrid T n) ⊓ tauHit (bmCoord B) T n ω) :=
+          Continuous.inf
+            (Continuous.sup (continuous_id : Continuous fun t : ℝ => t)
+              (continuous_const : Continuous fun _ : ℝ => tGrid T n))
+            (continuous_const : Continuous fun _ : ℝ => tauHit (bmCoord B) T n ω)
+        have heq :
+            (fun t : ℝ => min (max t (tGrid T n)) (tauHit (bmCoord B) T n ω)) =
+              fun t : ℝ => (t ⊔ tGrid T n) ⊓ tauHit (bmCoord B) T n ω :=
+          funext fun t => rfl
+        exact (heq ▸ hcont).continuousOn
+      have hnonneg : ∀ t ∈ Icc 0 T,
+          0 ≤ min (max t (tGrid T n)) (tauHit (bmCoord B) T n ω) := fun t ht =>
+        le_min (ht.1.trans (le_max_left _ _))
+          ((tGrid_mem hT n).1.trans (tauHit_mem_Icc hT (bmCoord B) n ω).1)
+      have hcomp : ContinuousOn
+          (fun t : ℝ =>
+            bmCoord B (min (max t (tGrid T n)) (tauHit (bmCoord B) T n ω)) ω)
+          (Icc 0 T) :=
+        hB.comp harg fun t ht => mem_Ici.mpr (hnonneg t ht)
+      have hconstC : ContinuousOn (fun _ : ℝ => doublingC (bmCoord B) T n ω) (Icc 0 T) :=
+        continuousOn_const
+      have hconstB : ContinuousOn (fun _ : ℝ => bmCoord B (tGrid T n) ω) (Icc 0 T) :=
+        continuousOn_const
+      refine (hconstC.mul (hcomp.sub hconstB)).congr fun t _ => ?_
+      simp [piece, hE]
+    · have h0 : ContinuousOn (fun _ : ℝ => (0 : ℝ)) (Icc 0 T) := continuousOn_const
+      refine h0.congr fun t _ => ?_
+      simp [piece, hE]
+  have hsumC : ∀ M : ℕ, ContinuousOn (fun t => ∑ n ∈ Finset.range M, piece n t) (Icc 0 T) := by
+    intro M
+    induction M with
+    | zero => simp; exact continuousOn_const
+    | succ M ih =>
+      have hrew :
+          (fun t => ∑ n ∈ Finset.range (M + 1), piece n t) =
+            fun t => (∑ n ∈ Finset.range M, piece n t) + piece M t :=
+        funext fun t => Finset.sum_range_succ (fun n => piece n t) M
+      rw [hrew]
+      exact ContinuousOn.add ih (hpieces M)
+  exact (hsumC N).congr fun t _ => hsum t
+
 end SignatureVolatility
