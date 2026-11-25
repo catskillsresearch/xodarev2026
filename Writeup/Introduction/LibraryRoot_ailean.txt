@@ -1,0 +1,1 @@
+This is the root barrel of the formalization. It publicly imports the first-party `SignatureVolatility` library modules so that the project can be used from a single import. It does not add theorems of its own. The headline results live in the modules named in `formalization.yaml` and `comparator.json`. The Lean source is `SignatureVolatility.lean`.

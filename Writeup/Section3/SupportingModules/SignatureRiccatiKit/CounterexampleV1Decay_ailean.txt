@@ -1,0 +1,1 @@
+This is the clause that makes the Doléans exponential a strict local martingale. The bound `v₁ x ≤ exp(u(0,x))` from `integral_exp_shiftedExponent_le_exp_barrierU`, together with `barrierU_initial_le`, gives an explicit exponential tail. Key declarations include lemmas `counterexampleV1_tendsto_zero`. The Lean source is `SignatureRiccatiKit/CounterexampleV1Decay.lean`.

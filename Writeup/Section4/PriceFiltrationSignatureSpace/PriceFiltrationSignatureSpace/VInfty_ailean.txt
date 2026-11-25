@@ -1,1 +1,0 @@
-**Definition** (`V_infty`). For a `PriceFiltrationSignatureSpace` $PFS$, we define the *infinite signature span* $\mathcal V^{(\infty)}_S$ to be the topological closure of the linear span of all projected signature coordinates $\{Y_I\}_I$ in $H_S$.

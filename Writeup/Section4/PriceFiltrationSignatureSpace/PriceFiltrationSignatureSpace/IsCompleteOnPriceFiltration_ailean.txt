@@ -1,1 +1,0 @@
-**Definition** (`IsCompleteOnPriceFiltration`). We say that a `PriceFiltrationSignatureSpace` $PFS$ is *complete on the price filtration* at strikes $\mathcal K$ and signature depth $N$ when the topological closure of the augmented market span $\mathrm{augmentedMarketSpan}(PFS,\mathcal K,N)$ is the whole space $H_S$.

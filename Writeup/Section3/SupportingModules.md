@@ -12,3 +12,8 @@
 - [Finite shuffle](SupportingModules/ShuffleFinite.md)
 - [Remark 2.19: Black–Scholes Riccati check](SupportingModules/Remark219BlackScholesRiccati.md)
 - [Affine / Riccati duality, `←` direction (false; counterexample proved and compared)](SupportingModules/AffineRiccatiDualityMpr.md)
+- [Lemma77 Shuffle Estimate False](SupportingModules/Lemma77ShuffleEstimateFalse.md)
+- [Lemma78 Riccati Lipschitz False](SupportingModules/Lemma78RiccatiLipschitzFalse.md)
+- [Theorem B Mpr](SupportingModules/TheoremBMpr.md)
+- [Theorem B Of Setup Ito Riccati Kit](SupportingModules/TheoremBOfSetupItoRiccatiKit.md)
+- [Signature Riccati kit modules](SupportingModules/SignatureRiccatiKitModules.md)

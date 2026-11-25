@@ -1,1 +1,0 @@
-**Definition** (`completenessDepth`). For a `PriceFiltrationSignatureSpace` $PFS$, we define its *completeness depth* to be the infimum in $\mathbb N \cup \{\infty\}$ of those depths $N$ for which the topological closure of the depth-$N$ signature subspace $PFS.\mathcal V^{(N)}_S$ equals the full infinite signature span $PFS.\mathcal V^{(\infty)}_S$.

@@ -400,6 +400,47 @@ def escape_latex_caption(text: str) -> str:
     return "".join(out)
 
 
+
+def wrap_paper_ascriptions(text: str) -> str:
+    """Turn top-level ``Paper: ...`` paragraphs into fenced ``source`` blocks
+    so they become green sourcequote boxes."""
+    lines = text.splitlines(keepends=True)
+    out: list[str] = []
+    i = 0
+    in_fence = False
+    while i < len(lines):
+        ln = lines[i]
+        if ln.startswith("```"):
+            in_fence = not in_fence
+            out.append(ln)
+            i += 1
+            continue
+        if not in_fence and ln.startswith("Paper:"):
+            para = [ln]
+            i += 1
+            while (
+                i < len(lines)
+                and lines[i].strip()
+                and not lines[i].startswith("```")
+                and not lines[i].startswith("#")
+                and not lines[i].startswith("Paper:")
+            ):
+                para.append(lines[i])
+                i += 1
+            body = "".join(para).strip()
+            rest = body[len("Paper:"):].strip()
+            first = rest.split(".")[0].strip()
+            if 0 < len(first) <= 140:
+                title = first if first.lower().startswith("xodarev") else f"Xodarev, {first}"
+            else:
+                title = "Xodarev, arXiv:2605.17142 (2026)"
+            out.append(f"\n```source\n**{title}**\n\n{rest}\n```\n\n")
+            continue
+        out.append(ln)
+        i += 1
+    return "".join(out)
+
+
 def extract_lean_titles(text: str) -> dict[str, str]:
     titles: dict[str, str] = {}
     lean_starts = [m.start() for m in re.finditer(r"^```lean\s*$", text, re.MULTILINE)]
@@ -742,6 +783,7 @@ def main() -> int:
     abstract_md, body = extract_abstract(body)
     body = strip_manual_section_numbers(body)
     body = github_math_to_tex(body)
+    body = wrap_paper_ascriptions(body)
     body, placeholders = replace_fences(body, figure_captions)
     body = pandoc_cites_to_latex_cite(body)
     if abstract_md:
@@ -776,6 +818,7 @@ def main() -> int:
     # Combining macron (e.g. "z̄" in generated prose): pdfLaTeX cannot place a
     # combining glyph, so rewrite letter + U+0304 as a math bar.
     document = re.sub(r"([A-Za-z])\u0304", r"\\ensuremath{\\bar{\1}}", document)
+    document = re.sub(r"([A-Za-z])\u0303", r"\\ensuremath{\\tilde{\1}}", document)
     OUT.write_text(document, encoding="utf-8")
     n_listings = sum(1 for p in LISTINGS_DIR.iterdir() if p.is_file())
     n_figures = sum(1 for p in FIGURES_DIR.glob("*.png"))

@@ -1,0 +1,1 @@
+This module is `SignatureRiccatiKit/CondSigPoly.lean`. It contributes `hermitePoly`, `condSigPoly`, `differentiable_condSigPoly` to the `SignatureVolatility` library. The abbrev `hermitePoly`: Reuse the monic Hermite core from C1. The Lean source is `SignatureRiccatiKit/CondSigPoly.lean`.

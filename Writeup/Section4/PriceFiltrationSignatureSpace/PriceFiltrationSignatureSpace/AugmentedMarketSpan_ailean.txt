@@ -1,4 +1,0 @@
-**Definition** (`augmentedMarketSpan`). For a `PriceFiltrationSignatureSpace` $PFS$, a strike set $\mathcal K \subset (0,\infty)$, and a signature depth $N$, we define the *augmented market span* to be the sum (as submodules of $H_S$) of
-
-- the dynamic gain subspace of $PFS$, and
-- the linear span of European call payoffs $(S_T-K)^+$ with $K \in \mathcal K$ together with all projected signature coordinates $Y_I$ for words $I$ of length at most $N$.

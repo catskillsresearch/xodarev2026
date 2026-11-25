@@ -1,0 +1,1 @@
+A process with continuous paths on `[0, T]` and `𝔼 (X_v - X_u)⁸ ≤ K (v - u)⁴` has, almost surely, `7/20`-Hölder paths on `[0, T]` (`ae_holder_of_moment8`, Kolmogorov–Chentsov plus density). Key declarations include theorems `ae_holder_of_moment8`, `ae_holder_wnn`, `ae_holder_signatureSigma`. The Lean source is `ItoCalculusKit/HolderPath.lean`.

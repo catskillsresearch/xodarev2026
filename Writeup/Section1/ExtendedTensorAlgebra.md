@@ -13,3 +13,8 @@
 - [ShuffleBasis](ExtendedTensorAlgebra/ExtTensorAlgebra/ShuffleBasis.md)
 - [EvalShuffleBasis](ExtendedTensorAlgebra/ExtTensorAlgebra/EvalShuffleBasis.md)
 - [Antipode](ExtendedTensorAlgebra/ExtTensorAlgebra/Antipode.md)
+- [Concat Assoc](ExtendedTensorAlgebra/ExtTensorAlgebra/ConcatAssoc.md)
+- [Tensor Exp](ExtendedTensorAlgebra/ExtTensorAlgebra/TensorExp.md)
+- [Tensor Exp Level Norm](ExtendedTensorAlgebra/ExtTensorAlgebra/TensorExpLevelNorm.md)
+- [Tensor Exp Neg](ExtendedTensorAlgebra/ExtTensorAlgebra/TensorExpNeg.md)
+- [Tensor Exp Shuffle](ExtendedTensorAlgebra/ExtTensorAlgebra/TensorExpShuffle.md)
