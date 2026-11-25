@@ -9,6 +9,7 @@ namespace SignatureVolatility
 
 namespace Weight
 
+/-- The constant weight `w_n = 1`. -/
 def constOne : Weight where
   toFun _ := 1
   w_zero := rfl

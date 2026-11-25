@@ -11,6 +11,7 @@ noncomputable section
 
 namespace SignatureVolatility
 
+/-- The weighted norm `‖a‖_w = ∑_n w_n ‖a^{(n)}‖`. -/
 def normW {d : ℕ} (w : Weight) (a : ExtTensorAlgebra d) : ℝ :=
   ∑' n : ℕ, w n * a.levelNorm n
 

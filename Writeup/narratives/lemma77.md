@@ -1,7 +1,7 @@
 # Why Lemma 77 (Lemma B.1, weighted shuffle estimate) fails
 
 **Lean:** `not_lemma77_shuffle_estimate`, `not_lemma77_of_hypH2`
-(`Lemma77ShuffleEstimateFalse.lean`). Both are compared.
+(`Lemma77ShuffleEstimateFalse.lean`). Both are proved in the library; they are not compared.
 
 **Claim.** Under H2 there is `C` with `‖a ⧢ b‖_w ≤ C ‖a‖_w ‖b‖_w` on `T_w`.
 

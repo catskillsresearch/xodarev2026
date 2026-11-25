@@ -1,0 +1,65 @@
+/-
+Strict Palomar-style closure fingerprint (mirrors Comparator/Compare.lean `loop`).
+Usage: copied to a temporary file with `@@MODULE@@` and `@@TARGETS@@` substituted (see
+scripts/compare_challenge_solution_strict.sh). Prints one `name <TAB> fingerprint` line per
+constant reached from the theorem targets: targets contribute only their type (and the constants
+in it); every other reached constant contributes its full `ConstantInfo` (type, value, safety,
+hints, inductive data), including generated `._proof_N` lemmas and Mathlib constants.
+-/
+import @@MODULE@@
+open Lean
+deriving instance Repr for Lean.ReducibilityHints
+deriving instance Repr for Lean.QuotKind
+
+def fpLevels (ls : List Name) : String := toString ls
+
+def fpConst (ci : ConstantInfo) : String :=
+  let base := s!"{fpLevels ci.levelParams}|T{ci.type.hash}"
+  match ci with
+  | .axiomInfo v => s!"axiom|{base}|{v.isUnsafe}"
+  | .defnInfo v => s!"defn|{base}|V{v.value.hash}|{repr v.safety}|{repr v.hints}|{v.all}"
+  | .thmInfo v => s!"thm|{base}|V{v.value.hash}|{v.all}"
+  | .opaqueInfo v => s!"opaque|{base}|V{v.value.hash}|{v.isUnsafe}|{v.all}"
+  | .quotInfo v => s!"quot|{base}|{repr v.kind}"
+  | .inductInfo v => s!"induct|{base}|{v.numParams}|{v.numIndices}|{v.all}|{v.ctors}|{v.numNested}|{v.isRec}|{v.isUnsafe}|{v.isReflexive}"
+  | .ctorInfo v => s!"ctor|{base}|{v.induct}|{v.cidx}|{v.numParams}|{v.numFields}|{v.isUnsafe}"
+  | .recInfo v => s!"rec|{base}|{v.all}|{v.numParams}|{v.numIndices}|{v.numMotives}|{v.numMinors}|{v.k}|{v.isUnsafe}|" ++
+      String.intercalate ";" (v.rules.map fun r => s!"{r.ctor},{r.nfields},{r.rhs.hash}")
+
+def usedConsts (ci : ConstantInfo) : Array Name := Id.run do
+  let mut out := ci.type.getUsedConstants.push ci.name
+  if let some v := ci.value? (allowOpaque := true) then out := out ++ v.getUsedConstants
+  match ci with
+  | .inductInfo v => out := out ++ v.ctors.toArray ++ v.all.toArray
+  | .ctorInfo v => out := out.push v.induct
+  | .recInfo v => for r in v.rules do out := (out.push r.ctor) ++ r.rhs.getUsedConstants
+  | _ => pure ()
+  return out
+
+run_cmd do
+  let env ← getEnv
+  let targets : Array Name := #[@@TARGETS@@]
+  let tset : Std.HashSet Name := Std.HashSet.ofArray targets
+  let mut work : Array Name := #[]
+  let mut checked : Std.HashSet Name := {}
+  let mut lines : Array String := #[]
+  for t in targets do
+    let some ci := env.find? t | throwError "missing target {t}"
+    unless ci matches .thmInfo _ do throwError "target {t} is not a theorem"
+    lines := lines.push s!"{t}\tTARGET|{fpLevels ci.levelParams}|T{ci.type.hash}"
+    work := work ++ ci.type.getUsedConstants
+    checked := checked.insert t
+  while !work.isEmpty do
+    let n := work.back!
+    work := work.pop
+    if checked.contains n then continue
+    checked := checked.insert n
+    let some ci := env.find? n | throwError "missing constant {n}"
+    if tset.contains n then
+      work := work ++ ci.type.getUsedConstants
+    else
+      lines := lines.push s!"{n}\t{fpConst ci}"
+      for m in usedConsts ci do
+        unless checked.contains m do work := work.push m
+  let sorted := lines.qsort (· < ·)
+  IO.println (String.intercalate "\n" sorted.toList)

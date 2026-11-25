@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-# Diff Challenge vs Solution types for every comparator.json name, then walk
-# the project-namespace declaration closure the way Palomar Compare.loop does.
+# Diff Challenge vs Solution types for every comparator.json name, then run the strict
+# closure check (scripts/compare_challenge_solution_strict.sh: every reachable constant in
+# every namespace, `._proof_N` included, as Palomar Compare.loop does), then the readable
+# pretty-printed project-namespace dump diff below (a debugging aid only).
 #
 # Named theorem_names / definition_names are holes (types only). Everything
 # else in the project's namespace prefix(es) must match as a full constant,
@@ -181,6 +183,9 @@ for path in sys.argv[1:]:
 print("\n".join(ordered))
 PY
 )
+
+# Strict closure check (all namespaces, `._proof_N` included), mirroring Compare.loop.
+bash scripts/compare_challenge_solution_strict.sh
 
 if [[ ${#BODY_NAMES[@]} -eq 0 || -z "${BODY_NAMES[0]:-}" ]]; then
   echo "OK: no definition bodies to compare yet."

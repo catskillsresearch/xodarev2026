@@ -471,8 +471,10 @@ SignatureRiccatiKit -hard-> SignatureRiccatiKit.AffineRiccatiDualityMp
 SignatureRiccatiKit -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit -hard-> TheoremBOfSetupItoRiccatiKit
 SignatureRiccatiKit.AffineRiccatiDuality -hard-> TheoremBMpr
+SignatureRiccatiKit.AffineRiccatiDuality -hard-> Unwrapped
 SignatureRiccatiKit.AffineRiccatiDualityMp -hard-> TheoremB
 SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample -hard-> SignatureRiccatiKit.AffineRiccatiDuality
+SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample -hard-> Unwrapped
 SignatureRiccatiKit.BarrierU -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 SignatureRiccatiKit.BarrierU -hard-> SignatureRiccatiKit.IntegralExpBarrier
 SignatureRiccatiKit.BrownianScalingShiftedExponent -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
@@ -566,8 +568,13 @@ TheoremA -hard-> PriceFiltrationSignatureSpace.OfMarket
 TheoremAOfBrownianSetupItoKit -hard-> TheoremA
 TheoremAOfBrownianSetupItoKit -hard-> TheoremBOfSetupItoRiccatiKit
 TheoremB -hard-> TheoremBMpr
+TheoremB -hard-> Unwrapped
+TheoremBMpr -hard-> Unwrapped
 TheoremBOfSetupItoRiccatiKit -hard-> TheoremB
 TheoremCCounterExample -hard-> TheoremC
+TheoremCCounterExample -hard-> Unwrapped
+TheoremD -hard-> Unwrapped
+TheoremDCounterExample -hard-> Unwrapped
 TimeReindex -hard-> ProlongedBrownianSetup.ItoIntegralAgainstBM
 TimeReindex -hard-> ProlongedBrownianSetup.OfBrownian
 Weight -hard-> BanachAlgebraConcatBound

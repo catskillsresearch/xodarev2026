@@ -10,6 +10,7 @@ namespace SignatureVolatility
 
 namespace ExtTensorAlgebra
 
+/-- Squared Euclidean norm of the level-`n` component: `∑_{|I| = n} a_I²`. -/
 def levelNormSq {d : ℕ} (a : ExtTensorAlgebra d) (n : ℕ) : ℝ :=
   ∑ I ∈ wordsOfLength d n, (a.coeff I) ^ 2
 

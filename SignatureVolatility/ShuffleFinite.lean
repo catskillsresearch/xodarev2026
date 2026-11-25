@@ -11,6 +11,8 @@ noncomputable section
 
 namespace SignatureVolatility
 
+/-- The shuffle product `a ⧢ b` restricted to pairs of words `I, J` of length at most
+`supportBound`: `∑_{|I|, |J| ≤ supportBound} a_I b_J (e_I ⧢ e_J)`. -/
 def shuffleFinite {d : ℕ} (a b : ExtTensorAlgebra (d + 1)) (supportBound : ℕ) :
     ExtTensorAlgebra (d + 1) :=
   ⟨fun K =>

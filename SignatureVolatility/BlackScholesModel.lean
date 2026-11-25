@@ -13,6 +13,8 @@ noncomputable section
 
 namespace SignatureVolatility
 
+/-- The Black–Scholes model as a signature volatility model: `d = 1`, constant weight, and
+`ℓ = σ₀ e_∅`, so the volatility is the constant `σ₀ ≠ 0`. -/
 def blackScholesModel (T s₀ σ₀ : ℝ) (hT : 0 < T) (hs₀ : 0 < s₀) (hσ₀ : σ₀ ≠ 0) :
     SignatureVolatilityModel where
   d := 1

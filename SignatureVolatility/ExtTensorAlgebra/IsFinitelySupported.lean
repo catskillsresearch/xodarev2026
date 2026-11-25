@@ -9,6 +9,7 @@ namespace SignatureVolatility
 
 namespace ExtTensorAlgebra
 
+/-- `a` is finitely supported: all coefficients of words longer than some `N` vanish. -/
 def IsFinitelySupported {d : ℕ} (a : ExtTensorAlgebra d) : Prop :=
   ∃ N : ℕ, ∀ I : Word d, N < I.length → a.coeff I = 0
 

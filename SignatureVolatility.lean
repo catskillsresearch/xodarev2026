@@ -129,6 +129,7 @@ public import SignatureVolatility.TheoremBMpr
 public import SignatureVolatility.TheoremC
 public import SignatureVolatility.TheoremD
 public import SignatureVolatility.TheoremDCounterExample
+public import SignatureVolatility.Unwrapped
 public import SignatureVolatility.Tw
 public import SignatureVolatility.Weight.ConstOne
 public import SignatureVolatility.Weight.Geometric

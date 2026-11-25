@@ -1,6 +1,6 @@
 # Why Lemma 78 (Lemma B.2 / (2.20), local Lipschitz bound for `ℛ`) fails
 
-**Lean:** `not_lemma78_local_lipschitz` (`Lemma78RiccatiLipschitzFalse.lean`), compared.
+**Lean:** `not_lemma78_local_lipschitz` (`Lemma78RiccatiLipschitzFalse.lean`), proved in the library, not compared.
 
 **Claim.** The Riccati operator `ℛ` is locally Lipschitz on bounded subsets of `T_w`.
 

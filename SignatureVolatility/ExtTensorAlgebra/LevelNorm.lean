@@ -14,6 +14,7 @@ namespace SignatureVolatility
 
 namespace ExtTensorAlgebra
 
+/-- Euclidean norm of the level-`n` component: `(∑_{|I| = n} a_I²)^{1/2}`. -/
 def levelNorm {d : ℕ} (a : ExtTensorAlgebra d) (n : ℕ) : ℝ :=
   Real.sqrt (levelNormSq a n)
 

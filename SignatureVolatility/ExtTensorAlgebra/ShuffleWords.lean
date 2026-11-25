@@ -10,6 +10,7 @@ namespace SignatureVolatility
 
 namespace ExtTensorAlgebra
 
+/-- The list (with multiplicity) of all shuffles of the words `I` and `J`. -/
 def shuffleWords {d : ℕ} : Word d → Word d → List (Word d)
   | [], J => [J]
   | i :: I, [] => [i :: I]

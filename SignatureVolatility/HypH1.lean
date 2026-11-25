@@ -11,6 +11,7 @@ noncomputable section
 
 namespace SignatureVolatility
 
+/-- **Hypothesis H1**: the volatility functional satisfies `ℓ ∈ ℓ²_w`. -/
 structure HypH1 {d : ℕ} (w : Weight) (ℓ : ExtTensorAlgebra (d + 1)) : Prop where
   mem_l2w : MemL2w w ℓ
 

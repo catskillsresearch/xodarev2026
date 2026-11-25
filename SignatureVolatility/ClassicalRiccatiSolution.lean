@@ -15,6 +15,9 @@ open Set
 
 namespace SignatureVolatility
 
+/-- A classical solution `ψ` on `[0, T]` of the Riccati equation `ψ' = R(ψ)`, `ψ(0) = u₀`: each
+`ψ t ∈ T^w`, uniformly `‖·‖_w`-bounded, with each coefficient satisfying the integral equation
+with a continuous integrand. -/
 structure ClassicalRiccatiSolution {d : ℕ} (w : Weight) (T : ℝ)
     (R_op : ExtTensorAlgebra (d + 1) → ExtTensorAlgebra (d + 1))
     (u₀ : ExtTensorAlgebra (d + 1)) where

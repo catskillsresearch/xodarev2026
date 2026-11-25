@@ -7,3 +7,4 @@ Subsections follow Lean import order; labels are mathematical English.
 - [Theorem D (statement and proof)](Section5/TheoremD.md)
 - [Supporting modules](Section5/SupportingModules.md)
 - [Theorem D Counter Example](Section5/TheoremDCounterExample.md)
+- [Unwrapped compared statements](Section5/Unwrapped.md)

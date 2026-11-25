@@ -1,7 +1,7 @@
 # Why Proposition 58 (PDF Prop. 5.5) fails
 
 **Lean:** `not_prop58_blackScholes_depth_zero`, `blackScholes_completenessDepth_eq_top`
-(`Prop58BlackScholesDepthFalse.lean`). Both are compared.
+(`Prop58BlackScholesDepthFalse.lean`). Both are proved in the library; they are not compared.
 
 **Claim.** Black–Scholes has `(N^*_S, K) = (0, 1)`.
 

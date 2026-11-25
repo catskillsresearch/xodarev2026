@@ -11,6 +11,9 @@ noncomputable section
 
 namespace SignatureVolatility
 
+/-- **NFLVR** for the given admissible terminal gains: if admissible gains `G_n` with uniformly
+vanishing negative parts, integrable with `𝔼 G_n ≤ 0`, converge a.s. to an integrable `f ≥ 0`,
+then `f = 0` a.s. -/
 def SatisfiesNFLVR {Ω : Type*} [MeasurableSpace Ω] (ℙ : Measure Ω)
     (AdmissibleTerminalGains : Set (Ω → ℝ)) : Prop :=
   ∀ (G : ℕ → Ω → ℝ) (f : Ω → ℝ),

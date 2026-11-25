@@ -11,6 +11,7 @@ namespace SignatureVolatility
 
 namespace ExtTensorAlgebra
 
+/-- The basis element `e_I`: coefficient `1` at the word `I` and `0` elsewhere. -/
 def basisWord {d : ℕ} (I : Word d) : ExtTensorAlgebra d :=
   ⟨fun J => if J = I then 1 else 0⟩
 

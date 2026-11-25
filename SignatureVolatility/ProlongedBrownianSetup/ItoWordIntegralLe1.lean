@@ -21,9 +21,8 @@ variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasur
 
 /-- Space letter `j : Fin (d+1)` with `j ≠ 0` as a Brownian coordinate index. -/
 def spaceLetterIndex (j : Fin (d + 1)) (hj : (j : ℕ) ≠ 0) : Fin d :=
-  ⟨j.1 - 1, by
-    have : j.1 < d + 1 := j.isLt
-    omega⟩
+  ⟨j.1 - 1, (Nat.sub_lt_iff_lt_add (Nat.one_le_iff_ne_zero.mpr hj)).mpr
+    j.isLt⟩
 
 /-- Level-1 (and empty) Itô coordinates of `wAug`, fully explicit. -/
 def itoWordIntegral_le1 (B : MultiBrownian Ω P d) (s t : ℝ) (ω : Ω) :

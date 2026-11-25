@@ -9,6 +9,8 @@ public import SignatureVolatility.Weight.Geometric
 
 namespace SignatureVolatility
 
+/-- **Hypothesis H2** (admissible weight): `w (m + n) ≤ C_w w_m w_n` for some `C_w ≥ 1`, and
+`∑_n w_n Rⁿ / n! < ∞` for every `R > 0`. -/
 structure HypH2 (w : Weight) where
   C_w : ℝ
   one_le_Cw : 1 ≤ C_w
@@ -47,6 +49,7 @@ lemma le_geometric {w : Weight} (hw : HypH2 w) :
           mul_le_mul_of_nonneg_right (le_max_right _ _) (pow_nonneg hr0 _)
       _ = (max 1 (hw.C_w * w 1)) ^ (n + 1) := (pow_succ' _ _).symm
 
+/-- The geometric weight `rⁿ` (`r ≥ 1`) is admissible, with `C_w = 1`. -/
 def geometric_admissible (r : ℝ) (hr : 1 ≤ r) : HypH2 (Weight.geometric r hr) where
   C_w := 1
   one_le_Cw := le_rfl
@@ -59,6 +62,7 @@ def geometric_admissible (r : ℝ) (hr : 1 ≤ r) : HypH2 (Weight.geometric r hr
     rw [hrew]
     exact Real.summable_pow_div_factorial (r * R)
 
+/-- The constant weight `1` is admissible, with `C_w = 1`. -/
 def constOne_admissible : HypH2 Weight.constOne where
   C_w := 1
   one_le_Cw := le_rfl

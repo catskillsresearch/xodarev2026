@@ -9,6 +9,7 @@ public import SignatureVolatility.Preliminaries
 
 namespace SignatureVolatility
 
+/-- The finite set of all words of length `n` over `Fin d`. -/
 def wordsOfLength (d : ℕ) : ℕ → Finset (Word d)
   | 0 => {[]}
   | n + 1 =>

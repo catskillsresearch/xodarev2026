@@ -2,13 +2,13 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-25T05:50:10Z
-**`sorry` occurrences:** 0 · 0 open · 0 blocked · 208 done · 0 file(s) with `sorry`.
+**Updated:** 2026-11-25T07:10:01Z
+**`sorry` occurrences:** 0 · 0 open · 0 blocked · 209 done · 0 file(s) with `sorry`.
 **Paper claims refuted:** 6 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
 
 ## The affine / Riccati `<-` direction is refuted
 
-The false theorem `affine_riccati_duality_mpr` has been removed from the library. Its negation `not_affine_riccati_duality_mpr` is proved sorry-free in `SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample`; `not_affine_riccati_duality`, `not_theorem_B_mpr` and `not_theorem_B` follow from it. All four are compared in `comparator.json` (see `Writeup/narratives/`). The Challenge and `Solution.lean` have **0** `sorry`. `theorem_B_mp` (martingale, NFLVR, special semimartingale, `->` Riccati direction) and `affine_riccati_duality_mp` are sorry-free and compared in `comparator.json`.
+The false theorem `affine_riccati_duality_mpr` has been removed from the library. Its negation `not_affine_riccati_duality_mpr` is proved sorry-free in `SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample`; `not_affine_riccati_duality`, `not_theorem_B_mpr` and `not_theorem_B` follow from it. All four are compared in `comparator.json` in unwrapped form (`…_unwrapped` in `Unwrapped`; see `Writeup/narratives/`). `Solution.lean` has **0** `sorry` (the Challenge's compared proofs are `sorry` by design). `theorem_B_mp` (martingale, NFLVR, special semimartingale, `->` Riccati direction) is sorry-free and compared as `theorem_B_mp_unwrapped`; `affine_riccati_duality_mp` is sorry-free and not compared.
 
 
 ## Counterexamples and refuted paper claims
@@ -221,6 +221,7 @@ _None — every module is blocked or verified._
 | done | `TheoremDCounterExample` | `SignatureVolatility/TheoremDCounterExample.lean` |
 | done | `TimeReindex` | `SignatureVolatility/TimeReindex.lean` |
 | done | `Tw` | `SignatureVolatility/Tw.lean` |
+| done | `Unwrapped` | `SignatureVolatility/Unwrapped.lean` |
 | done | `Weight` | `SignatureVolatility/Weight.lean` |
 | done | `WeightedTruncationEstimates` | `SignatureVolatility/WeightedTruncationEstimates.lean` |
 | done | `Word` | `SignatureVolatility/Word.lean` |

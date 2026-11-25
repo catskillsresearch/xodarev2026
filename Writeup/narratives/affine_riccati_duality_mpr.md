@@ -4,7 +4,11 @@
 (`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMprCounterexample.lean`), with
 corollaries `not_affine_riccati_duality` (`SignatureRiccatiKit/AffineRiccatiDuality.lean`),
 `not_theorem_B_mpr` and `not_theorem_B` (`TheoremBMpr.lean`). Axioms: `propext`,
-`Classical.choice`, `Quot.sound`. All four are in `comparator.json`.
+`Classical.choice`, `Quot.sound`. All four are compared in unwrapped form
+(`SignatureVolatility/Unwrapped.lean`: `not_affine_riccati_duality_mpr_unwrapped`,
+`not_affine_riccati_duality_unwrapped`, `not_theorem_B_mpr_unwrapped`, `not_theorem_B_unwrapped`;
+same statements, with the signature, its filtration and the price written directly in terms of
+the Brownian driver).
 
 **What Lean proves.** `not_affine_riccati_duality_mpr` takes any model `M` (so `d ≥ 1`, `T > 0`,
 `s₀ > 0`, and the model's `HypH1`, `HypH2`, and parameter nondegeneracy `ℓ ≠ 0`) and any

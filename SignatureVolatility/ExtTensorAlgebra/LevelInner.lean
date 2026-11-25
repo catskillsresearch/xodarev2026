@@ -14,6 +14,7 @@ namespace SignatureVolatility
 
 namespace ExtTensorAlgebra
 
+/-- Level-`n` inner product `∑_{|I| = n} ℓ_I a_I`. -/
 def levelInner {d : ℕ} (ℓ a : ExtTensorAlgebra d) (n : ℕ) : ℝ :=
   ∑ I ∈ wordsOfLength d n, ℓ.coeff I * a.coeff I
 

@@ -365,6 +365,7 @@ VERIFIED: set[str] = {
     "TheoremC",
     "TheoremD",
     "TheoremDCounterExample",
+    "Unwrapped",
     "TimeReindex",
     "Tw",
     "Word",
@@ -706,10 +707,12 @@ def write_md(data: dict) -> None:
         "Its negation `not_affine_riccati_duality_mpr` is proved sorry-free in "
         "`SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample`; "
         "`not_affine_riccati_duality`, `not_theorem_B_mpr` and `not_theorem_B` follow from it. "
-        "All four are compared in `comparator.json` (see `Writeup/narratives/`). "
-        "The Challenge and `Solution.lean` have **0** `sorry`. "
-        "`theorem_B_mp` (martingale, NFLVR, special semimartingale, `->` Riccati direction) and "
-        "`affine_riccati_duality_mp` are sorry-free and compared in `comparator.json`.",
+        "All four are compared in `comparator.json` in unwrapped form (`…_unwrapped` in "
+        "`Unwrapped`; see `Writeup/narratives/`). "
+        "`Solution.lean` has **0** `sorry` (the Challenge's compared proofs are `sorry` by design). "
+        "`theorem_B_mp` (martingale, NFLVR, special semimartingale, `->` Riccati direction) is "
+        "sorry-free and compared as `theorem_B_mp_unwrapped`; `affine_riccati_duality_mp` is "
+        "sorry-free and not compared.",
         "",
         *[f"- **`{nid}`**: {txt}" for nid, txt in OPEN_PROBLEMS.items()],
         "",

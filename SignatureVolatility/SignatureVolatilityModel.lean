@@ -16,6 +16,9 @@ noncomputable section
 
 namespace SignatureVolatility
 
+/-- A signature volatility model: `d ≥ 1` Brownian coordinates, horizon `T > 0`, weight `w`,
+volatility functional `ℓ ∈ T((ℝ^{d+1}))`, initial price `s₀ > 0`, and hypotheses H1, H2 and
+`ℓ ≠ 0`. -/
 structure SignatureVolatilityModel where
   d : ℕ
   hd : 0 < d

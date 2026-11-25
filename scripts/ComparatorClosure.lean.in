@@ -5,12 +5,12 @@ def localMods : List Name := [`SignatureVolatility, `MathFin, `BrownianMotion, `
 
 def isLocalMod (m : Name) : Bool := localMods.any (·.isPrefixOf m)
 
-def targets : List Name := [`SignatureVolatility.theorem_A, `SignatureVolatility.theorem_B_mp,
-    `SignatureVolatility.not_affine_riccati_duality_mpr,
-    `SignatureVolatility.not_affine_riccati_duality,
-    `SignatureVolatility.not_theorem_B_mpr, `SignatureVolatility.not_theorem_B,
-    `SignatureVolatility.not_theorem_C,
-    `SignatureVolatility.theorem_D, `SignatureVolatility.theorem_D_residual_hypothesis_fails]
+def targets : List Name := [`SignatureVolatility.theorem_A_unwrapped, `SignatureVolatility.theorem_B_mp_unwrapped,
+    `SignatureVolatility.not_affine_riccati_duality_mpr_unwrapped,
+    `SignatureVolatility.not_affine_riccati_duality_unwrapped,
+    `SignatureVolatility.not_theorem_B_mpr_unwrapped, `SignatureVolatility.not_theorem_B_unwrapped,
+    `SignatureVolatility.not_theorem_C_unwrapped,
+    `SignatureVolatility.theorem_D_unwrapped, `SignatureVolatility.theorem_D_residual_hypothesis_fails_unwrapped]
 
 /-- Strip generated suffixes to get the source-level declaration. -/
 partial def parentDecl (env : Environment) (n : Name) : Name :=

@@ -9,6 +9,7 @@ namespace SignatureVolatility
 
 namespace Weight
 
+/-- The geometric weight `w_n = rⁿ` for `r ≥ 1`. -/
 def geometric (r : ℝ) (hr : 1 ≤ r) : Weight where
   toFun n := r ^ n
   w_zero := pow_zero r
