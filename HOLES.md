@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-25T16:11:17Z
-**`sorry` occurrences:** 0 · 1 open · 2 blocked · 223 done · 0 file(s) with `sorry`.
+**Updated:** 2026-11-25T16:20:41Z
+**`sorry` occurrences:** 0 · 1 open · 1 blocked · 227 done · 0 file(s) with `sorry`.
 **Paper claims refuted:** 6 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
 
 ## The affine / Riccati `<-` direction is refuted
@@ -54,7 +54,7 @@ _None._
 
 | Id | File |
 |---|---|
-| `NflvrDoubling.bsTransfer` | `SignatureVolatility/NflvrDoubling.lean` |
+| `NflvrDoubling.challengeRefutations` | `SignatureVolatilityComparator/Challenge.lean` |
 
 ## NflvrDoubling subtasks
 
@@ -72,9 +72,12 @@ Internal structure of the doubling counterexample. These are not separate Lean m
 | done | `NflvrDoubling.predictableK` | `024652f, 1d57446` | Left-open stochastic intervals (t_n,τ_n] are predictable (1d57446); uncurry doublingK is a pointwise limit of those stopped blocks, hence predictable (024652f). |
 | done | `NflvrDoubling.sAdmissible` | `024652f` | IntegrableOn of K² on [0,T] a.s., hence the doubling strategy is S-admissible for S=σ=1. Done in 024652f. |
 | done | `NflvrDoubling.literalFails` | `024652f` | Literal NFLVR fails: the doubling strategy is admissible, V_T=1 a.s., and this is a nontrivial free lunch in the Delbaen–Schachermayer cone. Done in 024652f. |
-| open | `NflvrDoubling.bsTransfer` | `—` | Transfer the doubling integrand to the Black–Scholes market by H=K/(Sσ₀), so H S σ₀ = K and the same V_T=1 a.s. free lunch applies with the paper's price and constant volatility. |
+| done | `NflvrDoubling.bsPrice` | `4d9d645` | Closed-form Black–Scholes price s₀ exp(σ₀ B_t - ½ σ₀² t) is continuous, strictly positive, and F_t-adapted. Done in 4d9d645. |
+| done | `NflvrDoubling.cutoffPred` | `4d9d645` | Dyadic left-endpoint approximations converge pathwise to the (0,T] cutoff of a continuous adapted process, hence that cutoff is predictable. Done in 4d9d645. |
+| done | `NflvrDoubling.doublingH` | `4d9d645` | The transferred integrand H=K/(Sσ₀) is predictable and S-admissible for the closed-form BS price, and H S σ₀ equals K. Done in 4d9d645. |
+| done | `NflvrDoubling.bsTransfer` | `4d9d645` | Black–Scholes transfer H=K/(Sσ₀): the same doubling wealth is an admissible Itô integral in the BS market and ends at V_T=1 a.s., so both literal NFLVR and the terminal-only bounded-below version fail. Done in 4d9d645. |
 | done | `NflvrDoubling.terminalBdd` | `b8ea73f` | The same admissible doubling wealth ends at V_T=1≥0 a.s., so the terminal-only bounded-below cone also contains a nontrivial free lunch. Done in b8ea73f. |
-| blocked | `NflvrDoubling.challengeRefutations` | `—` | Library theorems not_literal_nflvr and not_terminal_bdd_nflvr, unwrapped forms in Challenge (≤1000 lines) and comparator.json, yaml main_results v0.4, and the strict compare. |
+| open | `NflvrDoubling.challengeRefutations` | `—` | Library theorems not_literal_nflvr and not_terminal_bdd_nflvr, unwrapped forms in Challenge (≤1000 lines) and comparator.json, yaml main_results v0.4, and the strict compare. |
 | blocked | `NflvrDoubling.writeup` | `—` | Writeup pass using Carbon's notes: narratives, PROVENANCE.md Comparator section, COMPARATOR.md, PalomarRegistration.md, and project.description, crediting Carbon (Gemini). |
 
 ## By group
@@ -321,12 +324,15 @@ Internal structure of the doubling counterexample. These are not separate Lean m
 |---|---|---|
 | done | `SignatureVolatilityModel.Sigma` | `SignatureVolatility/SignatureVolatilityModel/Sigma.lean` |
 
-### NflvrDoubling subtasks — 3 hole(s)
+### NflvrDoubling subtasks — 2 hole(s)
 
 | Status | Id | File |
 |---|---|---|
-| open | `NflvrDoubling.bsTransfer` | `SignatureVolatility/NflvrDoubling.lean` |
-| blocked | `NflvrDoubling.challengeRefutations` | `SignatureVolatilityComparator/Challenge.lean` |
+| done | `NflvrDoubling.bsPrice` | `SignatureVolatility/NflvrDoubling.lean` |
+| done | `NflvrDoubling.bsTransfer` | `SignatureVolatility/NflvrDoubling.lean` |
+| open | `NflvrDoubling.challengeRefutations` | `SignatureVolatilityComparator/Challenge.lean` |
+| done | `NflvrDoubling.cutoffPred` | `SignatureVolatility/NflvrDoubling.lean` |
+| done | `NflvrDoubling.doublingH` | `SignatureVolatility/NflvrDoubling.lean` |
 | done | `NflvrDoubling.evalAdapted` | `SignatureVolatility/NflvrDoubling.lean` |
 | done | `NflvrDoubling.incrDecay` | `SignatureVolatility/NflvrDoubling.lean` |
 | done | `NflvrDoubling.itoIntegral` | `SignatureVolatility/NflvrDoubling.lean` |

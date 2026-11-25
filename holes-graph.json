@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-25T16:11:17Z",
+  "updated": "2026-11-25T16:20:41Z",
   "sorryCount": 0,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done (proved, counterexample or refuted; no sorry). Green = open. Grey = blocked. Counterexample / refutation labels are shown as text on the node.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: NflvrDoubling.bsTransfer."
+    "Open tips: NflvrDoubling.challengeRefutations."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -3137,18 +3137,60 @@
       "commits": "024652f"
     },
     {
-      "id": "NflvrDoubling.bsTransfer",
-      "label": "Black\u2013Scholes transfer H=K/(S\u03c3\u2080)",
+      "id": "NflvrDoubling.bsPrice",
+      "label": "bsPrice continuous, positive, adapted (4d9d645)",
       "section": 10,
       "file": "SignatureVolatility/NflvrDoubling.lean",
-      "status": "open",
+      "status": "done",
       "kind": null,
       "blocker": null,
-      "detail": "Transfer the doubling integrand to the Black\u2013Scholes market by H=K/(S\u03c3\u2080), so H S \u03c3\u2080 = K and the same V_T=1 a.s. free lunch applies with the paper's price and constant volatility.",
+      "detail": "Closed-form Black\u2013Scholes price s\u2080 exp(\u03c3\u2080 B_t - \u00bd \u03c3\u2080\u00b2 t) is continuous, strictly positive, and F_t-adapted. Done in 4d9d645.",
       "hasSorry": false,
       "paperKitGoal": false,
       "synthetic": true,
-      "commits": null
+      "commits": "4d9d645"
+    },
+    {
+      "id": "NflvrDoubling.cutoffPred",
+      "label": "predictable cutoff of a continuous adapted process (4d9d645)",
+      "section": 10,
+      "file": "SignatureVolatility/NflvrDoubling.lean",
+      "status": "done",
+      "kind": null,
+      "blocker": null,
+      "detail": "Dyadic left-endpoint approximations converge pathwise to the (0,T] cutoff of a continuous adapted process, hence that cutoff is predictable. Done in 4d9d645.",
+      "hasSorry": false,
+      "paperKitGoal": false,
+      "synthetic": true,
+      "commits": "4d9d645"
+    },
+    {
+      "id": "NflvrDoubling.doublingH",
+      "label": "sAdmissible_doublingH, H S \u03c3\u2080 = K (4d9d645)",
+      "section": 10,
+      "file": "SignatureVolatility/NflvrDoubling.lean",
+      "status": "done",
+      "kind": null,
+      "blocker": null,
+      "detail": "The transferred integrand H=K/(S\u03c3\u2080) is predictable and S-admissible for the closed-form BS price, and H S \u03c3\u2080 equals K. Done in 4d9d645.",
+      "hasSorry": false,
+      "paperKitGoal": false,
+      "synthetic": true,
+      "commits": "4d9d645"
+    },
+    {
+      "id": "NflvrDoubling.bsTransfer",
+      "label": "not_literal_nflvr / not_terminal_bdd_nflvr (4d9d645)",
+      "section": 10,
+      "file": "SignatureVolatility/NflvrDoubling.lean",
+      "status": "done",
+      "kind": null,
+      "blocker": null,
+      "detail": "Black\u2013Scholes transfer H=K/(S\u03c3\u2080): the same doubling wealth is an admissible It\u00f4 integral in the BS market and ends at V_T=1 a.s., so both literal NFLVR and the terminal-only bounded-below version fail. Done in 4d9d645.",
+      "hasSorry": false,
+      "paperKitGoal": false,
+      "synthetic": true,
+      "commits": "4d9d645"
     },
     {
       "id": "NflvrDoubling.terminalBdd",
@@ -3169,9 +3211,9 @@
       "label": "Challenge not_literal_nflvr / not_terminal_bdd_nflvr",
       "section": 10,
       "file": "SignatureVolatilityComparator/Challenge.lean",
-      "status": "blocked",
+      "status": "open",
       "kind": null,
-      "blocker": "needs NflvrDoubling.bsTransfer",
+      "blocker": null,
       "detail": "Library theorems not_literal_nflvr and not_terminal_bdd_nflvr, unwrapped forms in Challenge (\u22641000 lines) and comparator.json, yaml main_results v0.4, and the strict compare.",
       "hasSorry": false,
       "paperKitGoal": false,
@@ -5061,6 +5103,21 @@
     },
     {
       "from": "NflvrDoubling",
+      "to": "NflvrDoubling.bsPrice",
+      "kind": "hard"
+    },
+    {
+      "from": "NflvrDoubling.bsPrice",
+      "to": "NflvrDoubling.cutoffPred",
+      "kind": "hard"
+    },
+    {
+      "from": "NflvrDoubling.cutoffPred",
+      "to": "NflvrDoubling.doublingH",
+      "kind": "hard"
+    },
+    {
+      "from": "NflvrDoubling.doublingH",
       "to": "NflvrDoubling.bsTransfer",
       "kind": "hard"
     },

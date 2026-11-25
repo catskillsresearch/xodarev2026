@@ -270,14 +270,44 @@ SYNTHETIC_NODES: list[dict] = [
         "commits": "024652f",
     },
     {
-        "id": "NflvrDoubling.bsTransfer",
-        "label": "Black–Scholes transfer H=K/(Sσ₀)",
-        "status": "open",
-        "detail": "Transfer the doubling integrand to the Black–Scholes market by "
-                  "H=K/(Sσ₀), so H S σ₀ = K and the same V_T=1 a.s. free lunch applies "
-                  "with the paper's price and constant volatility.",
+        "id": "NflvrDoubling.bsPrice",
+        "label": "bsPrice continuous, positive, adapted (4d9d645)",
+        "status": "done",
+        "detail": "Closed-form Black–Scholes price s₀ exp(σ₀ B_t - ½ σ₀² t) is "
+                  "continuous, strictly positive, and F_t-adapted. Done in 4d9d645.",
         "file": "SignatureVolatility/NflvrDoubling.lean",
-        "commits": "",
+        "commits": "4d9d645",
+    },
+    {
+        "id": "NflvrDoubling.cutoffPred",
+        "label": "predictable cutoff of a continuous adapted process (4d9d645)",
+        "status": "done",
+        "detail": "Dyadic left-endpoint approximations converge pathwise to the "
+                  "(0,T] cutoff of a continuous adapted process, hence that cutoff "
+                  "is predictable. Done in 4d9d645.",
+        "file": "SignatureVolatility/NflvrDoubling.lean",
+        "commits": "4d9d645",
+    },
+    {
+        "id": "NflvrDoubling.doublingH",
+        "label": "sAdmissible_doublingH, H S σ₀ = K (4d9d645)",
+        "status": "done",
+        "detail": "The transferred integrand H=K/(Sσ₀) is predictable and "
+                  "S-admissible for the closed-form BS price, and H S σ₀ equals K. "
+                  "Done in 4d9d645.",
+        "file": "SignatureVolatility/NflvrDoubling.lean",
+        "commits": "4d9d645",
+    },
+    {
+        "id": "NflvrDoubling.bsTransfer",
+        "label": "not_literal_nflvr / not_terminal_bdd_nflvr (4d9d645)",
+        "status": "done",
+        "detail": "Black–Scholes transfer H=K/(Sσ₀): the same doubling wealth is "
+                  "an admissible Itô integral in the BS market and ends at V_T=1 a.s., "
+                  "so both literal NFLVR and the terminal-only bounded-below version "
+                  "fail. Done in 4d9d645.",
+        "file": "SignatureVolatility/NflvrDoubling.lean",
+        "commits": "4d9d645",
     },
     {
         "id": "NflvrDoubling.terminalBdd",
@@ -324,7 +354,10 @@ SYNTHETIC_EDGES: list[tuple[str, str]] = [
     ("NflvrDoubling.predictableK", "NflvrDoubling.sAdmissible"),
     ("NflvrDoubling.sAdmissible", "NflvrDoubling.literalFails"),
     ("NflvrDoubling.literalFails", "NflvrDoubling"),
-    ("NflvrDoubling", "NflvrDoubling.bsTransfer"),
+    ("NflvrDoubling", "NflvrDoubling.bsPrice"),
+    ("NflvrDoubling.bsPrice", "NflvrDoubling.cutoffPred"),
+    ("NflvrDoubling.cutoffPred", "NflvrDoubling.doublingH"),
+    ("NflvrDoubling.doublingH", "NflvrDoubling.bsTransfer"),
     ("NflvrDoubling", "NflvrDoubling.terminalBdd"),
     ("NflvrDoubling.bsTransfer", "NflvrDoubling.challengeRefutations"),
     ("NflvrDoubling.terminalBdd", "NflvrDoubling.challengeRefutations"),

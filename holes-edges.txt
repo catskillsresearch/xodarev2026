@@ -649,7 +649,10 @@ NflvrDoubling.evalAdapted -hard-> NflvrDoubling.predictableK
 NflvrDoubling.predictableK -hard-> NflvrDoubling.sAdmissible
 NflvrDoubling.sAdmissible -hard-> NflvrDoubling.literalFails
 NflvrDoubling.literalFails -hard-> NflvrDoubling
-NflvrDoubling -hard-> NflvrDoubling.bsTransfer
+NflvrDoubling -hard-> NflvrDoubling.bsPrice
+NflvrDoubling.bsPrice -hard-> NflvrDoubling.cutoffPred
+NflvrDoubling.cutoffPred -hard-> NflvrDoubling.doublingH
+NflvrDoubling.doublingH -hard-> NflvrDoubling.bsTransfer
 NflvrDoubling -hard-> NflvrDoubling.terminalBdd
 NflvrDoubling.bsTransfer -hard-> NflvrDoubling.challengeRefutations
 NflvrDoubling.terminalBdd -hard-> NflvrDoubling.challengeRefutations
