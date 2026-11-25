@@ -2614,4 +2614,302 @@ theorem theorem_terminal_bdd_nflvr_fails (B : MultiBrownian Ω P 1) {T : ℝ}
     ⟨doublingK (bmCoord B) T, doublingWealth (bmCoord B) T, 0, hadm, hterm, hIto, rfl⟩
   exact not_satisfiesNFLVR_DS_of_unit_gain hG (doublingWealth_T_eq_one_ae B hT)
 
+
+
+/-- Closed-form Black–Scholes price driven by the first Brownian coordinate. -/
+def bsPrice (s₀ σ₀ : ℝ) (B : MultiBrownian Ω P 1) : ℝ → Ω → ℝ :=
+  fun t ω => s₀ * Real.exp (σ₀ * bmCoord B (max 0 t) ω - (1 / 2 : ℝ) * σ₀ ^ 2 * max 0 t)
+
+lemma bsPrice_pos (s₀ σ₀ : ℝ) (hs₀ : 0 < s₀) (B : MultiBrownian Ω P 1) (t : ℝ) (ω : Ω) :
+    0 < bsPrice s₀ σ₀ B t ω :=
+  mul_pos hs₀ (Real.exp_pos _)
+
+lemma bsPrice_ne_zero (s₀ σ₀ : ℝ) (hs₀ : 0 < s₀) (B : MultiBrownian Ω P 1) (t : ℝ) (ω : Ω) :
+    bsPrice s₀ σ₀ B t ω ≠ 0 :=
+  (bsPrice_pos s₀ σ₀ hs₀ B t ω).ne'
+
+lemma continuous_bsPrice (s₀ σ₀ : ℝ) (B : MultiBrownian Ω P 1) (ω : Ω) :
+    Continuous (fun t : ℝ => bsPrice s₀ σ₀ B t ω) := by
+  unfold bsPrice
+  exact continuous_const.mul
+    (Real.continuous_exp.comp
+      ((continuous_const.mul (continuous_bmCoord_max B ω)).sub
+        (continuous_const.mul (continuous_const.max continuous_id))))
+
+lemma measurable_exp_σAlg {m : MeasurableSpace Ω} {f : Ω → ℝ}
+    (hf : @Measurable Ω ℝ m inferInstance f) :
+    @Measurable Ω ℝ m inferInstance (fun ω => Real.exp (f ω)) :=
+  hf.exp
+
+lemma measurable_div_σAlg {m : MeasurableSpace Ω} {f g : Ω → ℝ}
+    (hf : @Measurable Ω ℝ m inferInstance f)
+    (hg : @Measurable Ω ℝ m inferInstance g) :
+    @Measurable Ω ℝ m inferInstance (fun ω => f ω / g ω) :=
+  hf.div hg
+
+lemma measurable_bsPrice_adapted (s₀ σ₀ : ℝ) (B : MultiBrownian Ω P 1) (t : ℝ) :
+    Measurable[(pathFiltration B).σAlg t] (bsPrice s₀ σ₀ B t) := by
+  unfold bsPrice
+  exact measurable_mul_σAlg
+    (measurable_const_σAlg (m := (pathFiltration B).σAlg t) s₀)
+    (measurable_exp_σAlg
+      (measurable_sub_σAlg
+        (measurable_mul_σAlg
+          (measurable_const_σAlg (m := (pathFiltration B).σAlg t) σ₀)
+          (measurable_bmCoord_max_adapted B t))
+        (measurable_const_σAlg
+          (m := (pathFiltration B).σAlg t)
+          ((1 / 2 : ℝ) * σ₀ ^ 2 * max 0 t))))
+
+/-- Constant time `c ∈ [0, T]` is a stopping time of `σAlg`. -/
+lemma isStoppingTimeOn_const {σAlg : ℝ → MeasurableSpace Ω} {T c : ℝ}
+    (hc : c ∈ Icc 0 T) :
+    IsStoppingTimeOn σAlg T (fun _ => c) :=
+  ⟨fun _ => hc, fun t _ht => by
+    by_cases h : c ≤ t
+    · have : {ω : Ω | c ≤ t} = Set.univ := by ext; simp [h]
+      rw [this]; exact @MeasurableSet.univ Ω (σAlg t)
+    · have : {ω : Ω | c ≤ t} = (∅ : Set Ω) := by ext; simp [h]
+      rw [this]; exact @MeasurableSet.empty Ω (σAlg t)⟩
+
+/-- Uncurried left-endpoint block `(a, b] ∩ (0, T]` of an `F_a`-measurable weight. -/
+lemma measurable_uncurry_leftEndpoint {σAlg : ℝ → MeasurableSpace Ω} {T a b : ℝ}
+    (hT : 0 < T) (ha0 : 0 ≤ a) (hab : a ≤ b) (hbT : b ≤ T) {f : Ω → ℝ}
+    (hf : Measurable[σAlg a] f) :
+    Measurable[predSigma σAlg T]
+      (fun p : ℝ × Ω => if a < p.1 ∧ p.1 ≤ b ∧ p.1 ≤ T then f p.2 else 0) :=
+  measurable_uncurry_stoppedBlock hT ha0 (hab.trans hbT) (fun _ => b)
+    (isStoppingTimeOn_const ⟨ha0.trans hab, hbT⟩) hf
+
+/-- Dyadic left-endpoint approximation of a process on `(0, T]`. -/
+def dyadicLeftApprox (X : ℝ → Ω → ℝ) (T : ℝ) (m : ℕ) (p : ℝ × Ω) : ℝ :=
+  ∑ k ∈ Finset.range (2 ^ m),
+    if (k : ℝ) * T / (2 ^ m : ℝ) < p.1 ∧
+        p.1 ≤ ((k + 1 : ℕ) : ℝ) * T / (2 ^ m : ℝ) ∧ p.1 ≤ T
+      then X ((k : ℝ) * T / (2 ^ m : ℝ)) p.2 else 0
+
+lemma measurable_dyadicLeftApprox {σAlg : ℝ → MeasurableSpace Ω} {T : ℝ}
+    (hT : 0 < T) (X : ℝ → Ω → ℝ)
+    (hX : ∀ t, t ∈ Icc 0 T → Measurable[σAlg t] (X t)) (m : ℕ) :
+    Measurable[predSigma σAlg T] (dyadicLeftApprox X T m) :=
+  Finset.measurable_fun_sum _ fun k hk => by
+    have hk1 : k + 1 ≤ 2 ^ m := Nat.succ_le_of_lt (Finset.mem_range.mp hk)
+    have htk0 := dyadic_point_nonneg hT.le m k
+    have hmono := dyadic_point_mono hT.le m k
+    have htk1T := dyadic_point_le_T hT.le hk1
+    exact measurable_uncurry_leftEndpoint hT htk0 hmono htk1T
+      (hX _ ⟨htk0, hmono.trans htk1T⟩)
+
+lemma tendsto_div_two_pow (T : ℝ) :
+    Tendsto (fun n : ℕ => T / (2 ^ n : ℝ)) atTop (𝓝 0) := by
+  have hinv : Tendsto (fun n : ℕ => ((1 / 2 : ℝ) ^ n)) atTop (𝓝 0) :=
+    tendsto_pow_atTop_nhds_zero_of_lt_one (by positivity) (by norm_num)
+  have heq : (fun n : ℕ => T / (2 ^ n : ℝ)) = fun n => T * (1 / 2 : ℝ) ^ n := by
+    funext n
+    rw [div_eq_mul_inv, one_div, inv_pow]
+  simpa [heq] using tendsto_const_nhds.mul hinv
+
+/-- Pathwise, the dyadic left-endpoint sums converge to the cutoff of a continuous path. -/
+lemma tendsto_dyadicLeftApprox {T : ℝ} (hT : 0 < T) (X : ℝ → Ω → ℝ)
+    (hcont : ∀ ω, ContinuousOn (fun t => X t ω) (Icc 0 T)) (s : ℝ) (ω : Ω) :
+    Tendsto (fun m => dyadicLeftApprox X T m (s, ω)) atTop
+      (𝓝 (if s ∈ Ioc 0 T then X s ω else 0)) := by
+  by_cases hs : s ∈ Ioc 0 T
+  · have huc : UniformContinuousOn (fun t => X t ω) (Icc 0 T) :=
+      isCompact_Icc.uniformContinuousOn_of_continuous (hcont ω)
+    refine Metric.tendsto_atTop.mpr fun ε hε => ?_
+    obtain ⟨δ, hδ0, hδ⟩ := (Metric.uniformContinuousOn_iff.mp huc) ε hε
+    obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp
+      ((tendsto_order.mp (tendsto_div_two_pow T)).2 δ hδ0)
+    refine ⟨N, fun m hm => ?_⟩
+    obtain ⟨k, hk1, hlt, hle⟩ := exists_dyadic_Ioc hT hs.1 hs.2 m
+    have hkmem : k ∈ Finset.range (2 ^ m) :=
+      Finset.mem_range.mpr (Nat.lt_of_succ_le hk1)
+    have hleNat : s ≤ ((k + 1 : ℕ) : ℝ) * T / (2 ^ m : ℝ) := by
+      simpa [Nat.cast_succ] using hle
+    have hifLive :
+        (k : ℝ) * T / (2 ^ m : ℝ) < s ∧
+          s ≤ ((k + 1 : ℕ) : ℝ) * T / (2 ^ m : ℝ) ∧ s ≤ T :=
+      ⟨hlt, hleNat, hs.2⟩
+    have hsum : dyadicLeftApprox X T m (s, ω) =
+        X ((k : ℝ) * T / (2 ^ m : ℝ)) ω := by
+      unfold dyadicLeftApprox
+      simp only
+      rw [Finset.sum_eq_single
+        (s := Finset.range (2 ^ m))
+        (f := fun k : ℕ =>
+          if (k : ℝ) * T / (2 ^ m : ℝ) < s ∧
+              s ≤ ((k + 1 : ℕ) : ℝ) * T / (2 ^ m : ℝ) ∧ s ≤ T
+            then X ((k : ℝ) * T / (2 ^ m : ℝ)) ω else 0)
+        (a := k)]
+      · exact ite_eq_left hifLive
+      · intro k' hk' hne
+        have hnot :
+            ¬ ((k' : ℝ) * T / (2 ^ m : ℝ) < s ∧
+              s ≤ ((k' + 1 : ℕ) : ℝ) * T / (2 ^ m : ℝ) ∧ s ≤ T) := by
+          intro h
+          exact hne (dyadic_Ioc_unique hT ⟨h.1, h.2.1⟩ ⟨hlt, hleNat⟩)
+        exact ite_eq_right hnot
+      · intro hnotmem
+        exact (hnotmem hkmem).elim
+    have htmem : (k : ℝ) * T / (2 ^ m : ℝ) ∈ Icc 0 T :=
+      dyadic_point_mem_Icc hT.le (Nat.le_of_succ_le hk1)
+    have hsmem : s ∈ Icc 0 T := ⟨hs.1.le, hs.2⟩
+    have hdist : dist ((k : ℝ) * T / (2 ^ m : ℝ)) s < δ := by
+      have hle' : s - (k : ℝ) * T / (2 ^ m : ℝ) ≤ T / (2 ^ m : ℝ) := by
+        have := sub_le_sub_right hleNat ((k : ℝ) * T / (2 ^ m : ℝ))
+        have hw := dyadic_width T m k
+        linarith
+      have hnn : 0 ≤ s - (k : ℝ) * T / (2 ^ m : ℝ) := sub_nonneg.mpr hlt.le
+      have : dist ((k : ℝ) * T / (2 ^ m : ℝ)) s =
+          s - (k : ℝ) * T / (2 ^ m : ℝ) := by
+        rw [Real.dist_eq, abs_sub_comm, abs_of_nonneg hnn]
+      exact this ▸ (hle'.trans_lt (hN m hm))
+    have hgoal : dist (X ((k : ℝ) * T / (2 ^ m : ℝ)) ω) (X s ω) < ε :=
+      hδ _ htmem _ hsmem hdist
+    simpa [hsum, hs] using hgoal
+  · have hzero : ∀ m, dyadicLeftApprox X T m (s, ω) = 0 := fun m => by
+      unfold dyadicLeftApprox
+      refine Finset.sum_eq_zero fun k _hk => ?_
+      have hnot :
+          ¬ ((k : ℝ) * T / (2 ^ m : ℝ) < s ∧
+            s ≤ ((k + 1 : ℕ) : ℝ) * T / (2 ^ m : ℝ) ∧ s ≤ T) := by
+        intro h
+        exact hs ⟨(dyadic_point_nonneg hT.le m k).trans_lt h.1, h.2.2⟩
+      split_ifs with hif'
+      · exact (hnot hif').elim
+      · rfl
+    have hfun : (fun m => dyadicLeftApprox X T m (s, ω)) = fun _ => (0 : ℝ) :=
+      funext hzero
+    have htarget : (if s ∈ Ioc 0 T then X s ω else 0) = (0 : ℝ) :=
+      ite_eq_right hs
+    rw [hfun, htarget]
+    exact tendsto_const_nhds
+
+/-- The cutoff of a continuous adapted process on `[0, T]` is predictable. -/
+lemma measurable_uncurry_cutoff_of_continuous_adapted
+    {σAlg : ℝ → MeasurableSpace Ω} {T : ℝ} (hT : 0 < T) (X : ℝ → Ω → ℝ)
+    (hX : ∀ t, t ∈ Icc 0 T → Measurable[σAlg t] (X t))
+    (hcont : ∀ ω, ContinuousOn (fun t => X t ω) (Icc 0 T)) :
+    Measurable[predSigma σAlg T]
+      (fun p : ℝ × Ω => if p.1 ∈ Ioc 0 T then X p.1 p.2 else 0) :=
+  @measurable_of_tendsto_metrizable (ℝ × Ω) ℝ (predSigma σAlg T) _ _ _ _
+    (fun m => dyadicLeftApprox X T m)
+    (fun p => if p.1 ∈ Ioc 0 T then X p.1 p.2 else 0)
+    (fun m => measurable_dyadicLeftApprox hT X hX m)
+    (tendsto_pi_nhds.mpr fun p => tendsto_dyadicLeftApprox hT X hcont p.1 p.2)
+
+lemma continuousOn_invBsPrice (s₀ σ₀ : ℝ) (hs₀ : 0 < s₀) (hσ₀ : σ₀ ≠ 0)
+    (B : MultiBrownian Ω P 1) {T : ℝ} (ω : Ω) :
+    ContinuousOn (fun t => (bsPrice s₀ σ₀ B t ω * σ₀)⁻¹) (Icc 0 T) :=
+  ((continuous_bsPrice s₀ σ₀ B ω).mul continuous_const).continuousOn.inv₀
+    fun t _ht => mul_ne_zero (bsPrice_ne_zero s₀ σ₀ hs₀ B t ω) hσ₀
+
+lemma measurable_invBsPrice_adapted (s₀ σ₀ : ℝ) (_hs₀ : 0 < s₀) (_hσ₀ : σ₀ ≠ 0)
+    (B : MultiBrownian Ω P 1) {T : ℝ} (t : ℝ) (_ht : t ∈ Icc 0 T) :
+    Measurable[(pathFiltration B).σAlg t]
+      (fun ω => (bsPrice s₀ σ₀ B t ω * σ₀)⁻¹) := by
+  have heq : (fun ω => (bsPrice s₀ σ₀ B t ω * σ₀)⁻¹) =
+      fun ω => 1 / (bsPrice s₀ σ₀ B t ω * σ₀) :=
+    funext fun _ => inv_eq_one_div _
+  rw [heq]
+  exact measurable_div_σAlg
+    (measurable_const_σAlg (m := (pathFiltration B).σAlg t) 1)
+    (measurable_mul_σAlg (measurable_bsPrice_adapted s₀ σ₀ B t)
+      (measurable_const_σAlg (m := (pathFiltration B).σAlg t) σ₀))
+
+lemma measurable_uncurry_invBsPrice (s₀ σ₀ : ℝ) (hs₀ : 0 < s₀) (hσ₀ : σ₀ ≠ 0)
+    (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) :
+    Measurable[predSigma (pathFiltration B).σAlg T]
+      (fun p =>
+        if p.1 ∈ Ioc 0 T then (bsPrice s₀ σ₀ B p.1 p.2 * σ₀)⁻¹ else 0) :=
+  measurable_uncurry_cutoff_of_continuous_adapted hT
+    (fun t ω => (bsPrice s₀ σ₀ B t ω * σ₀)⁻¹)
+    (fun t ht => measurable_invBsPrice_adapted s₀ σ₀ hs₀ hσ₀ B t ht)
+    (fun ω => continuousOn_invBsPrice s₀ σ₀ hs₀ hσ₀ B ω)
+
+/-- Black–Scholes transfer of the doubling integrand: `H = K / (S σ₀)`. -/
+def doublingH (s₀ σ₀ : ℝ) (B : MultiBrownian Ω P 1) (T : ℝ) : ℝ → Ω → ℝ :=
+  fun s ω => doublingK (bmCoord B) T s ω / (bsPrice s₀ σ₀ B s ω * σ₀)
+
+lemma doublingH_mul (s₀ σ₀ : ℝ) (hs₀ : 0 < s₀) (hσ₀ : σ₀ ≠ 0)
+    (B : MultiBrownian Ω P 1) (T : ℝ) :
+    (fun t ω => doublingH s₀ σ₀ B T t ω * bsPrice s₀ σ₀ B t ω * σ₀) =
+      doublingK (bmCoord B) T := by
+  funext t ω
+  have hS : bsPrice s₀ σ₀ B t ω ≠ 0 := bsPrice_ne_zero s₀ σ₀ hs₀ B t ω
+  unfold doublingH
+  field_simp [hS, hσ₀]
+
+lemma isPredictableProcess_doublingH (s₀ σ₀ : ℝ) (hs₀ : 0 < s₀) (hσ₀ : σ₀ ≠ 0)
+    (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) :
+    IsPredictableProcess (pathFiltration B).σAlg T (doublingH s₀ σ₀ B T) := by
+  have hK := isPredictableProcess_doublingK B hT
+  have hinv := measurable_uncurry_invBsPrice s₀ σ₀ hs₀ hσ₀ B hT
+  have heq :
+      Function.uncurry (doublingH s₀ σ₀ B T) =
+        fun p => Function.uncurry (doublingK (bmCoord B) T) p *
+          (if p.1 ∈ Ioc 0 T then (bsPrice s₀ σ₀ B p.1 p.2 * σ₀)⁻¹ else 0) := by
+    funext p
+    by_cases hs : p.1 ∈ Ioc 0 T
+    · simp [Function.uncurry, doublingH, hs, div_eq_mul_inv]
+    · have hK0 : doublingK (bmCoord B) T p.1 p.2 = 0 :=
+        doublingK_eq_zero_of_not_mem_Ioo hT (bmCoord B)
+          (fun h => hs ⟨h.1, h.2.le⟩) p.2
+      simp [Function.uncurry, doublingH, hs, hK0]
+  rw [IsPredictableProcess, heq]
+  exact hK.mul hinv
+
+lemma sAdmissible_doublingH (s₀ σ₀ : ℝ) (hs₀ : 0 < s₀) (hσ₀ : σ₀ ≠ 0)
+    (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) :
+    SAdmissible (pathFiltration B).σAlg P
+      (bsPrice s₀ σ₀ B) (fun _ _ => σ₀) T (doublingH s₀ σ₀ B T) := by
+  refine ⟨isPredictableProcess_doublingH s₀ σ₀ hs₀ hσ₀ B hT, ?_⟩
+  filter_upwards [integrableOn_doublingK_sq B hT] with ω hInt
+  have heq :
+      (fun s => (doublingH s₀ σ₀ B T s ω * bsPrice s₀ σ₀ B s ω * σ₀) ^ 2) =
+        (fun s => doublingK (bmCoord B) T s ω ^ 2) := by
+    funext s
+    rw [congr_fun (congr_fun (doublingH_mul s₀ σ₀ hs₀ hσ₀ B T) s) ω]
+  simpa [heq] using hInt
+
+theorem not_literal_nflvr
+    {T s₀ σ₀ : ℝ} (hT : 0 < T) (hs₀ : 0 < s₀) (hσ₀ : σ₀ ≠ 0)
+    (B : MultiBrownian Ω P 1) :
+    ¬ SatisfiesNFLVR_DS P
+        (LiteralGains (pathFiltration B).σAlg P (bmCoord B)
+          (bsPrice s₀ σ₀ B) (fun _ _ => σ₀) T) := by
+  have hadm := sAdmissible_doublingH s₀ σ₀ hs₀ hσ₀ B hT
+  have hIto : IsItoIntegral P (bmCoord B)
+      (fun t ω => doublingH s₀ σ₀ B T t ω * bsPrice s₀ σ₀ B t ω * σ₀)
+      (doublingWealth (bmCoord B) T) T := by
+    rw [doublingH_mul s₀ σ₀ hs₀ hσ₀ B T]
+    exact isItoIntegral_doublingWealth B hT
+  have hG : (fun ω => doublingWealth (bmCoord B) T T ω) ∈
+      LiteralGains (pathFiltration B).σAlg P (bmCoord B)
+        (bsPrice s₀ σ₀ B) (fun _ _ => σ₀) T :=
+    ⟨doublingH s₀ σ₀ B T, doublingWealth (bmCoord B) T, hadm, hIto, rfl⟩
+  exact not_satisfiesNFLVR_DS_of_unit_gain hG (doublingWealth_T_eq_one_ae B hT)
+
+theorem not_terminal_bdd_nflvr
+    {T s₀ σ₀ : ℝ} (hT : 0 < T) (hs₀ : 0 < s₀) (hσ₀ : σ₀ ≠ 0)
+    (B : MultiBrownian Ω P 1) :
+    ¬ SatisfiesNFLVR_DS P
+        (TerminalBoundedBelowGains (pathFiltration B).σAlg P (bmCoord B)
+          (bsPrice s₀ σ₀ B) (fun _ _ => σ₀) T) := by
+  have hadm := sAdmissible_doublingH s₀ σ₀ hs₀ hσ₀ B hT
+  have hIto : IsItoIntegral P (bmCoord B)
+      (fun t ω => doublingH s₀ σ₀ B T t ω * bsPrice s₀ σ₀ B t ω * σ₀)
+      (doublingWealth (bmCoord B) T) T := by
+    rw [doublingH_mul s₀ σ₀ hs₀ hσ₀ B T]
+    exact isItoIntegral_doublingWealth B hT
+  have hterm : IsTerminalBoundedBelow P (doublingWealth (bmCoord B) T) T 0 :=
+    ⟨le_rfl, (doublingWealth_T_eq_one_ae B hT).mono fun ω hω => by
+      simp [hω]⟩
+  have hG : (fun ω => doublingWealth (bmCoord B) T T ω) ∈
+      TerminalBoundedBelowGains (pathFiltration B).σAlg P (bmCoord B)
+        (bsPrice s₀ σ₀ B) (fun _ _ => σ₀) T :=
+    ⟨doublingH s₀ σ₀ B T, doublingWealth (bmCoord B) T, 0, hadm, hterm, hIto, rfl⟩
+  exact not_satisfiesNFLVR_DS_of_unit_gain hG (doublingWealth_T_eq_one_ae B hT)
+
 end SignatureVolatility
