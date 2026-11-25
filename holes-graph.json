@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-25T02:42:33Z",
-  "sorryCount": 3,
+  "updated": "2026-11-25T03:15:12Z",
+  "sorryCount": 2,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done (proved, counterexample or refuted; no sorry). Green = open. Grey = blocked. Counterexample / refutation labels are shown as text on the node.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: SignatureRiccatiKit.CondExpMulIndepDisintegrate, SignatureRiccatiKit.CondSigPolyIdentification."
+    "Open tips: SignatureRiccatiKit.CondExpMulIndepDisintegrate, SignatureRiccatiKit.EntireTransfer."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -1907,7 +1907,7 @@
       "file": "SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMprCounterexample.lean",
       "status": "blocked",
       "kind": null,
-      "blocker": "needs SignatureRiccatiKit.CondSigPolyIdentification, SignatureRiccatiKit.EntireTransfer, SignatureRiccatiKit.CondExpMulIndepDisintegrate, SignatureRiccatiKit.CounterexampleV1CondExp",
+      "blocker": "needs SignatureRiccatiKit.EntireTransfer, SignatureRiccatiKit.CondExpMulIndepDisintegrate, SignatureRiccatiKit.CounterexampleV1CondExp",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -1989,11 +1989,11 @@
       "label": "C2c paperSig2 = condSigPoly under tilt",
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit/CondSigPolyIdentification.lean",
-      "status": "open",
+      "status": "done",
       "kind": null,
       "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
-      "hasSorry": true,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -2109,9 +2109,9 @@
       "label": "C3 transfer to f (Pillar C)",
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit/EntireTransfer.lean",
-      "status": "blocked",
+      "status": "open",
       "kind": null,
-      "blocker": "needs SignatureRiccatiKit.CondSigPolyIdentification",
+      "blocker": null,
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
       "hasSorry": true,
       "paperKitGoal": false
