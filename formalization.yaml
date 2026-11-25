@@ -236,6 +236,24 @@ status:
     - Quot.sound
     comparator_config: comparator.json
     literature_dependencies: []
+  - declaration: SignatureVolatility.not_literal_nflvr_unwrapped
+    file: SignatureVolatility/Unwrapped.lean
+    sorry_count: 0
+    axioms:
+    - propext
+    - Classical.choice
+    - Quot.sound
+    comparator_config: comparator.json
+    literature_dependencies: []
+  - declaration: SignatureVolatility.not_terminal_bdd_nflvr_unwrapped
+    file: SignatureVolatility/Unwrapped.lean
+    sorry_count: 0
+    axioms:
+    - propext
+    - Classical.choice
+    - Quot.sound
+    comparator_config: comparator.json
+    literature_dependencies: []
 
 comparator_config: comparator.json
 

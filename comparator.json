@@ -10,7 +10,9 @@
     "SignatureVolatility.not_theorem_B_unwrapped",
     "SignatureVolatility.not_theorem_C_unwrapped",
     "SignatureVolatility.theorem_D_unwrapped",
-    "SignatureVolatility.theorem_D_residual_hypothesis_fails_unwrapped"
+    "SignatureVolatility.theorem_D_residual_hypothesis_fails_unwrapped",
+    "SignatureVolatility.not_literal_nflvr_unwrapped",
+    "SignatureVolatility.not_terminal_bdd_nflvr_unwrapped"
   ],
   "definition_names": [],
   "permitted_axioms": [

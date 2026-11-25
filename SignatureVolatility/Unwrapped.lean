@@ -11,6 +11,8 @@ public import SignatureVolatility.SignatureRiccatiKit.AffineRiccatiDualityMprCou
 public import SignatureVolatility.TheoremCCounterExample
 public import SignatureVolatility.TheoremD
 public import SignatureVolatility.TheoremDCounterExample
+public import SignatureVolatility.NflvrDoubling
+public import SignatureVolatility.ItoCalculusKit.ConstVol
 
 @[expose] public section
 
@@ -419,6 +421,138 @@ theorem not_theorem_C_unwrapped (B : MultiBrownian Ω P 1) (strikes : Finset ℝ
       (bsMarket T s₀ σ₀ hT hs₀ hσ₀ B).completenessDepth < ⊤) := fun h =>
   theorem_D_residual_hypothesis_fails_unwrapped T s₀ σ₀ hT hs₀ hσ₀ B
     (h.mp (bsMarket_isCompleteWithCallsUnwrapped T s₀ σ₀ hT hs₀ hσ₀ B strikes))
+
+lemma bmCoord_eq_Wnn_toNNReal (B : MultiBrownian Ω P 1) {t : ℝ} (ht : 0 ≤ t) (ω : Ω) :
+    bmCoord B t ω = B.Wnn (Real.toNNReal t) ω (kitDriver (Nat.succ_pos 0)) := by
+  rw [bmCoord_eq_wnn B ht, Real.toNNReal_of_nonneg ht]
+  rfl
+
+lemma kitItoInt_sigVol_blackScholes (B : MultiBrownian Ω P 1) {t : ℝ} (ht : 0 ≤ t)
+    (ω : Ω) :
+    kitItoInt B (sigVol (blackScholesModel T s₀ σ₀ hT hs₀ hσ₀) B) t ω =
+      σ₀ * bmCoord B t ω := by
+  have hσ : sigVol (blackScholesModel T s₀ σ₀ hT hs₀ hσ₀) B = fun _ _ => σ₀ :=
+    funext fun _ => funext fun _ => sigVol_blackScholes T s₀ σ₀ hT hs₀ hσ₀ B _ _
+  rw [hσ, kitItoInt_const B (Nat.succ_pos 0) σ₀ ht ω, bmCoord_eq_Wnn_toNNReal B ht ω]
+
+lemma kitQuadVar_sigVol_blackScholes (B : MultiBrownian Ω P 1) {t : ℝ} (ht : 0 ≤ t)
+    (ω : Ω) :
+    kitQuadVar B (sigVol (blackScholesModel T s₀ σ₀ hT hs₀ hσ₀) B) t ω =
+      σ₀ ^ 2 * t := by
+  have hσ : sigVol (blackScholesModel T s₀ σ₀ hT hs₀ hσ₀) B = fun _ _ => σ₀ :=
+    funext fun _ => funext fun _ => sigVol_blackScholes T s₀ σ₀ hT hs₀ hσ₀ B _ _
+  rw [hσ, kitQuadVar_const B (Nat.succ_pos 0) σ₀ ht ω]
+
+lemma bsPrice_eq_sigPrice (B : MultiBrownian Ω P 1) {t : ℝ} (ht : 0 ≤ t) (ω : Ω) :
+    sigPrice (blackScholesModel T s₀ σ₀ hT hs₀ hσ₀) B t ω = bsPrice s₀ σ₀ B t ω := by
+  have hexp :
+      kitItoInt B (sigVol (blackScholesModel T s₀ σ₀ hT hs₀ hσ₀) B) t ω -
+          (1 / 2 : ℝ) * kitQuadVar B (sigVol (blackScholesModel T s₀ σ₀ hT hs₀ hσ₀) B) t ω =
+        σ₀ * bmCoord B t ω - (1 / 2 : ℝ) * σ₀ ^ 2 * t := by
+    have hI := kitItoInt_sigVol_blackScholes T s₀ σ₀ hT hs₀ hσ₀ B ht ω
+    have hQ := kitQuadVar_sigVol_blackScholes T s₀ σ₀ hT hs₀ hσ₀ B ht ω
+    rw [hI, hQ, mul_assoc]
+  have hs0 : (blackScholesModel T s₀ σ₀ hT hs₀ hσ₀).s₀ = s₀ := rfl
+  simp only [sigPrice, bsPrice, hs0, max_eq_right ht]
+  exact congrArg (fun z => s₀ * Real.exp z) hexp
+
+lemma sAdmissible_congr_S {σAlg : ℝ → MeasurableSpace Ω}
+    {S S' σ : ℝ → Ω → ℝ} {T : ℝ} {H : ℝ → Ω → ℝ}
+    (hS : ∀ t ∈ Icc 0 T, S t = S' t) :
+    SAdmissible σAlg P S σ T H ↔ SAdmissible σAlg P S' σ T H := by
+  constructor <;> intro h
+  · refine ⟨h.1, ?_⟩
+    filter_upwards [h.2] with ω hInt
+    have hEq : Set.EqOn (fun s => (H s ω * S s ω * σ s ω) ^ 2)
+        (fun s => (H s ω * S' s ω * σ s ω) ^ 2) (Icc 0 T) := by
+      intro s hs; simp [hS s hs]
+    exact (integrableOn_congr_fun hEq measurableSet_Icc).mp hInt
+  · refine ⟨h.1, ?_⟩
+    filter_upwards [h.2] with ω hInt
+    have hEq : Set.EqOn (fun s => (H s ω * S' s ω * σ s ω) ^ 2)
+        (fun s => (H s ω * S s ω * σ s ω) ^ 2) (Icc 0 T) := by
+      intro s hs; simp [hS s hs]
+    exact (integrableOn_congr_fun hEq measurableSet_Icc).mp hInt
+
+lemma itoRiemannSum_congr {K K' B : ℝ → Ω → ℝ} {t : ℝ} (ht0 : 0 ≤ t)
+    (hK : ∀ u ∈ Icc 0 t, K u = K' u) (n : ℕ) (ω : Ω) :
+    itoRiemannSum K B t n ω = itoRiemannSum K' B t n ω := by
+  unfold itoRiemannSum
+  refine Finset.sum_congr rfl fun k _ => ?_
+  have hk0 : (0 : ℝ) ≤ (k : ℝ) * t / (n + 1 : ℝ) :=
+    div_nonneg (mul_nonneg (Nat.cast_nonneg _) ht0) (by positivity)
+  have hkT : (k : ℝ) * t / (n + 1 : ℝ) ≤ t := by
+    have hk : (k : ℝ) ≤ (n + 1 : ℝ) := by
+      exact_mod_cast (le_of_lt k.isLt)
+    have : (k : ℝ) * t ≤ t * (n + 1 : ℝ) := by
+      rw [mul_comm t]; exact mul_le_mul_of_nonneg_right hk ht0
+    exact (div_le_iff₀ (by positivity : 0 < (n + 1 : ℝ))).mpr this
+  rw [hK _ ⟨hk0, hkT⟩]
+
+lemma isItoIntegral_congr_K {B K K' V : ℝ → Ω → ℝ} {T : ℝ}
+    (hK : ∀ u ∈ Icc 0 T, K u = K' u) :
+    IsItoIntegral P B K V T ↔ IsItoIntegral P B K' V T := by
+  have hsum : ∀ t ∈ Icc 0 T, ∀ n ω,
+      itoRiemannSum K B t n ω = itoRiemannSum K' B t n ω :=
+    fun t ht n ω => itoRiemannSum_congr ht.1 (fun u hu => hK u ⟨hu.1, hu.2.trans ht.2⟩) n ω
+  constructor <;> intro h
+  · refine ⟨h.1, h.2.1, fun t ht => ?_⟩
+    have heq : (fun n => itoRiemannSum K' B t n) = fun n => itoRiemannSum K B t n :=
+      funext fun n => funext fun ω => (hsum t ht n ω).symm
+    simpa [heq] using h.2.2 t ht
+  · refine ⟨h.1, h.2.1, fun t ht => ?_⟩
+    have heq : (fun n => itoRiemannSum K B t n) = fun n => itoRiemannSum K' B t n :=
+      funext fun n => funext fun ω => hsum t ht n ω
+    simpa [heq] using h.2.2 t ht
+
+lemma literalGains_congr_S {σAlg : ℝ → MeasurableSpace Ω} {B S S' σ : ℝ → Ω → ℝ} {T : ℝ}
+    (hS : ∀ t ∈ Icc 0 T, S t = S' t) :
+    LiteralGains σAlg P B S σ T = LiteralGains σAlg P B S' σ T := by
+  ext G; constructor
+  · rintro ⟨H, V, hadm, hIto, rfl⟩
+    refine ⟨H, V, (sAdmissible_congr_S hS).mp hadm, ?_, rfl⟩
+    exact (isItoIntegral_congr_K (fun t ht => by simp [hS t ht])).mp hIto
+  · rintro ⟨H, V, hadm, hIto, rfl⟩
+    refine ⟨H, V, (sAdmissible_congr_S hS).mpr hadm, ?_, rfl⟩
+    exact (isItoIntegral_congr_K (fun t ht => by simp [hS t ht])).mpr hIto
+
+lemma terminalBoundedBelowGains_congr_S {σAlg : ℝ → MeasurableSpace Ω}
+    {B S S' σ : ℝ → Ω → ℝ} {T : ℝ}
+    (hS : ∀ t ∈ Icc 0 T, S t = S' t) :
+    TerminalBoundedBelowGains σAlg P B S σ T =
+      TerminalBoundedBelowGains σAlg P B S' σ T := by
+  ext G; constructor
+  · rintro ⟨H, V, a, hadm, hterm, hIto, rfl⟩
+    refine ⟨H, V, a, (sAdmissible_congr_S hS).mp hadm, hterm, ?_, rfl⟩
+    exact (isItoIntegral_congr_K (fun t ht => by simp [hS t ht])).mp hIto
+  · rintro ⟨H, V, a, hadm, hterm, hIto, rfl⟩
+    refine ⟨H, V, a, (sAdmissible_congr_S hS).mpr hadm, hterm, ?_, rfl⟩
+    exact (isItoIntegral_congr_K (fun t ht => by simp [hS t ht])).mpr hIto
+
+/-- Literal NFLVR fails in the unwrapped Black–Scholes market: the doubling strategy
+transferred by `H = K/(S σ₀)` is admissible and ends at `V_T = 1` a.s. -/
+theorem not_literal_nflvr_unwrapped (B : MultiBrownian Ω P 1) :
+    ¬ SatisfiesNFLVR_DS P
+        (LiteralGains (pathFiltration B).σAlg P (bmCoord B)
+          (sigPrice (blackScholesModel T s₀ σ₀ hT hs₀ hσ₀) B)
+          (fun _ _ => σ₀) T) := by
+  have hS : ∀ t ∈ Icc 0 T, sigPrice (blackScholesModel T s₀ σ₀ hT hs₀ hσ₀) B t =
+      bsPrice s₀ σ₀ B t := fun t ht => funext fun ω =>
+    bsPrice_eq_sigPrice T s₀ σ₀ hT hs₀ hσ₀ B ht.1 ω
+  rw [literalGains_congr_S hS]
+  exact not_literal_nflvr hT hs₀ hσ₀ B
+
+/-- Terminal-only bounded-below NFLVR also fails in the unwrapped Black–Scholes market. -/
+theorem not_terminal_bdd_nflvr_unwrapped (B : MultiBrownian Ω P 1) :
+    ¬ SatisfiesNFLVR_DS P
+        (TerminalBoundedBelowGains (pathFiltration B).σAlg P (bmCoord B)
+          (sigPrice (blackScholesModel T s₀ σ₀ hT hs₀ hσ₀) B)
+          (fun _ _ => σ₀) T) := by
+  have hS : ∀ t ∈ Icc 0 T, sigPrice (blackScholesModel T s₀ σ₀ hT hs₀ hσ₀) B t =
+      bsPrice s₀ σ₀ B t := fun t ht => funext fun ω =>
+    bsPrice_eq_sigPrice T s₀ σ₀ hT hs₀ hσ₀ B ht.1 ω
+  rw [terminalBoundedBelowGains_congr_S hS]
+  exact not_terminal_bdd_nflvr hT hs₀ hσ₀ B
 
 end Completeness
 

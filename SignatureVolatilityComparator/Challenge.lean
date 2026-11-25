@@ -8,6 +8,7 @@ public import Lean.Meta.Tactic.Grind.RegisterCommand
 public import Std.Tactic.BVDecide.Normalize.Prop
 meta import Lean.Meta.Tactic.AuxLemma
 @[expose] public section
+set_option warn.classDefReducibility false
 noncomputable section
 set_option warn.sorry false
 open MeasureTheory Filter Topology Set
@@ -183,10 +184,7 @@ def constOne_admissible : HypH2 Weight.constOne where
   subfactorial R _ := by
     simpa [Weight.constOne] using Real.summable_pow_div_factorial R
 end HypH2
-/-- **Hypothesis H3** (paper): for every `λ > 0`,
-`𝔼[exp(λ ∫₀ᵀ ξ_s² ds)] < ∞`, where `ξ` is the signature-volatility integrand.
-This is the Novikov / exponential-integrability input to the square-integrable
-stochastic-exponential construction (not the obsolete `ℓ ≠ 0` stub). -/
+/-- Hypothesis H3: `𝔼[exp(λ ∫₀ᵀ ξ_s² ds)] < ∞` for every `λ > 0`. -/
 def HypH3 {Ω : Type*} [MeasurableSpace Ω]
     (P : Measure Ω) (T : ℝ) (ξ : ℝ → Ω → ℝ) : Prop :=
   ∀ lam : ℝ, 0 < lam →
@@ -197,9 +195,7 @@ structure HypH3Param {d : ℕ} (hd : 0 < d) (ℓ : ExtTensorAlgebra (d + 1)) : P
   nonZero : ℓ ≠ 0
 section
 open scoped Classical RealInnerProductSpace
-/-- A signature volatility model: `d ≥ 1` Brownian coordinates, horizon `T > 0`, weight `w`,
-volatility functional `ℓ ∈ T((ℝ^{d+1}))`, initial price `s₀ > 0`, and hypotheses H1, H2 and
-`ℓ ≠ 0`. -/
+/-- A signature volatility model: horizon `T > 0`, weight, `ℓ`, `s₀ > 0`, and H1–H2, `ℓ ≠ 0`. -/
 structure SignatureVolatilityModel where
   d : ℕ
   hd : 0 < d
@@ -332,20 +328,7 @@ def priceFiltration {Ω : Type*} [MeasurableSpace Ω]
     (S : ℝ → Ω → ℝ) (hS_meas : ∀ t, Measurable (S t)) : IndexedFiltration Ω :=
   generatedFiltration (fun t (_ : Unit) ω => S t ω) (fun t _ => hS_meas t)
 run_cmd Lean.modifyEnv fun env => Lean.Meta.auxLemmasExt.setState env {}
-/-- **Kit strong-solution class.** The kit's stand-in for the paper's strong solutions of
-`dS = S σ dW` on `[0, T]` (used together with adaptedness to the signature filtration):
-
-* a square-integrable envelope of `sup_{t ∈ [0,T]} |S_t|` (the paper's `L²` solution class), and
-* the SDE integrand `S σ` is `L⁴` with a Kolmogorov-type bound `𝔼 (S_v σ_v - S_u σ_u)⁴ ≤ K (v - u)²`
-  on `[0, T]`.
-
-The second clause is the minimal time regularity under which the kit's Riemann-sum integral
-`itoInt` is a genuine (linear, martingale, `L²`) Itô integral of `S σ`; every strong solution of
-the linear signature SDE under H1–H3 has it (BDG), and the constructed Doléans solution is proved to
-have it (`doleans_strong_class`). Without such a class, uniqueness for the kit equation is not
-provable: `itoInt` only samples the integrand at the grid points `q t`, `q ∈ ℚ`, and returns `0`
-for integrands whose pair is not integrable, so arbitrary adapted processes are not semimartingale
-solutions in the paper's sense. -/
+/-- Square-integrable envelope of `sup |S_t|` and an `L⁴` Kolmogorov bound on `S σ`. -/
 def KitStrongSolutionClass {Ω : Type*} [MeasurableSpace Ω] (ℙ : Measure Ω) (T : ℝ)
     (σ S : ℝ → Ω → ℝ) : Prop :=
   (∃ S_sup : Ω → ℝ, Measurable S_sup ∧ (∀ᵐ ω ∂ℙ, ∀ t ∈ Icc 0 T, |S t ω| ≤ S_sup ω) ∧
@@ -388,14 +371,7 @@ lemma measurable_reindexProcessFin {Ω : Type*} [MeasurableSpace Ω] {d : ℕ}
   hX _ _
 section
 open ProbabilityTheory
-/-- A `d`-dimensional Brownian driver on `ℝ≥0`, packaged for reindexing to the
-signature-volatility `ℝ`-time API. Coordinates are one-dimensional Brownian
-motions in the sense of Mathlib's `IsBrownianReal`, with **everywhere**-continuous
-paths and coordinate **processes** that are mutually independent (so `W` is a
-`d`-dimensional Brownian motion in its own joint filtration and joint-filtration
-martingale calculi are available; a.s.-only continuity and coordinates that are
-independent at each fixed time but entangled across times — e.g. one coordinate
-anticipating the future of another — are excluded). -/
+/-- A `d`-dimensional Brownian driver on `ℝ≥0` with continuous independent coordinates. -/
 structure MultiBrownian (Ω : Type*) [m₀ : MeasurableSpace Ω]
     (P : Measure Ω) [IsProbabilityMeasure P] (d : ℕ) where
   /-- Coordinate processes on Mathlib time `ℝ≥0`. -/
@@ -405,10 +381,7 @@ structure MultiBrownian (Ω : Type*) [m₀ : MeasurableSpace Ω]
   Wnn_meas : ∀ t i, Measurable (fun ω => Wnn t ω i)
   /-- Paths are continuous at every `ω` (not merely almost every). -/
   pathContinuous : ∀ (i : Fin d) (ω : Ω), Continuous fun t : ℝ≥0 => Wnn t ω i
-  /-- The coordinate **processes** `ω ↦ (t ↦ W_t^i(ω))` are mutually independent (path space
-  `ℝ≥0 → ℝ` with the product σ-algebra). Strictly stronger than independence of the coordinates
-  at each fixed time (`coordsIndep_eval`): it rules out future-entangled coordinates, for which
-  an integrand `σ(t, W_t)` would anticipate the driver and Novikov / the Doléans SDE fail. -/
+  /-- Coordinate processes are mutually independent (stronger than fixed-time independence). -/
   coordsIndep : iIndepFun (fun i : Fin d => fun ω => fun t : ℝ≥0 => Wnn t ω i) P
 namespace MultiBrownian
 /-- Reindexed driver `ℝ → Ω → Fin d → ℝ` (negative times read time `0`). -/
@@ -563,11 +536,7 @@ lemma measurable_itoWordIntegral (B : MultiBrownian Ω P d) (s t : ℝ) (I : Wor
 end
 section
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}
-/-- Weighted contraction list of `I` (paper Appendix): every choice `Γ` of non-overlapping
-adjacent equal space-letter pairs, each pair replaced by the time letter `0`, paired with its
-weight `(1/2)^|Γ|`. Built by recursion on the first letter: either it is left alone, or (when
-it is a space letter equal to the next one) the first pair is contracted. The head entry is the
-empty contraction `(1, I)`. -/
+/-- Weighted contraction list of `I` (paper Appendix). -/
 def contractions : Word (d + 1) → List (ℝ × Word (d + 1))
   | [] => [(1, [])]
   | [j] => [(1, [j])]
@@ -617,6 +586,67 @@ variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasur
 /-- Path filtration of `W` (same generators as `sig_adapted_to_W`). -/
 def pathFiltration (B : MultiBrownian Ω P d) : IndexedFiltration Ω :=
   generatedFiltration (fun u i ω => MultiBrownian.W B u ω i) (MultiBrownian.W_meas B)
+end
+
+section
+variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P]
+def bmCoord (B : MultiBrownian Ω P 1) : ℝ → Ω → ℝ :=
+  fun t ω => B.W t ω ⟨0, Nat.succ_pos 0⟩
+end
+section
+open Filter Topology
+def predSigma {Ω : Type*} [MeasurableSpace Ω] (σAlg : ℝ → MeasurableSpace Ω) (T : ℝ) :
+    MeasurableSpace (ℝ × Ω) :=
+  MeasurableSpace.generateFrom
+    {S | ∃ (a b : ℝ) (A : Set Ω), 0 ≤ a ∧ a ≤ b ∧ b ≤ T ∧ MeasurableSet[σAlg a] A ∧
+      S = Ioc a b ×ˢ A}
+def IsPredictableProcess {Ω : Type*} [MeasurableSpace Ω] (σAlg : ℝ → MeasurableSpace Ω)
+    (T : ℝ) (H : ℝ → Ω → ℝ) : Prop :=
+  Measurable[predSigma σAlg T] (Function.uncurry H)
+def SAdmissible {Ω : Type*} [MeasurableSpace Ω] (σAlg : ℝ → MeasurableSpace Ω)
+    (P : Measure Ω) (S σ : ℝ → Ω → ℝ) (T : ℝ) (H : ℝ → Ω → ℝ) : Prop :=
+  IsPredictableProcess σAlg T H ∧
+  (∀ᵐ ω ∂P, IntegrableOn (fun s => (H s ω * S s ω * σ s ω) ^ 2) (Icc 0 T) volume)
+def IsTerminalBoundedBelow {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω)
+    (V : ℝ → Ω → ℝ) (T : ℝ) (a : ℝ) : Prop :=
+  0 ≤ a ∧ ∀ᵐ ω ∂P, -a ≤ V T ω
+def itoRiemannSum {Ω : Type*} (K B : ℝ → Ω → ℝ) (t : ℝ) (n : ℕ) (ω : Ω) : ℝ :=
+  ∑ k : Fin (n + 1),
+    K (k * t / (n + 1 : ℝ)) ω *
+      (B ((k + 1 : ℕ) * t / (n + 1 : ℝ)) ω - B (k * t / (n + 1 : ℝ)) ω)
+def IsItoIntegral {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω)
+    (B K V : ℝ → Ω → ℝ) (T : ℝ) : Prop :=
+  (∀ ω, V 0 ω = 0) ∧
+  (∀ᵐ ω ∂P, ContinuousOn (fun t => V t ω) (Icc 0 T)) ∧
+  ∀ t ∈ Icc 0 T, TendstoInMeasure P (fun n => itoRiemannSum K B t n) atTop (V t)
+def LiteralGains {Ω : Type*} [MeasurableSpace Ω] (σAlg : ℝ → MeasurableSpace Ω)
+    (P : Measure Ω) (B S σ : ℝ → Ω → ℝ) (T : ℝ) : Set (Ω → ℝ) :=
+  {G | ∃ (H V : ℝ → Ω → ℝ),
+    SAdmissible σAlg P S σ T H ∧
+    IsItoIntegral P B (fun t ω => H t ω * S t ω * σ t ω) V T ∧
+    G = V T}
+def TerminalBoundedBelowGains {Ω : Type*} [MeasurableSpace Ω]
+    (σAlg : ℝ → MeasurableSpace Ω) (P : Measure Ω) (B S σ : ℝ → Ω → ℝ) (T : ℝ) :
+    Set (Ω → ℝ) :=
+  {G | ∃ (H V : ℝ → Ω → ℝ) (a : ℝ),
+    SAdmissible σAlg P S σ T H ∧
+    IsTerminalBoundedBelow P V T a ∧
+    IsItoIntegral P B (fun t ω => H t ω * S t ω * σ t ω) V T ∧
+    G = V T}
+def nflvrCone {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω) (K : Set (Ω → ℝ)) :
+    Set (Ω → ℝ) :=
+  {g | MemLp g ∞ P ∧ ∃ V ∈ K, ∃ u : Ω → ℝ, (∀ᵐ ω ∂P, 0 ≤ u ω) ∧
+    g =ᵐ[P] fun ω => V ω - u ω}
+def InWeakStarClosure {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω)
+    (C : Set (Ω → ℝ)) (f : Ω → ℝ) : Prop :=
+  MemLp f ∞ P ∧
+  ∀ ε > 0, ∀ (gs : Finset (Ω → ℝ)),
+    (∀ g ∈ gs, Integrable g P) →
+    ∃ h ∈ C, MemLp h ∞ P ∧ ∀ g ∈ gs,
+      |∫ ω, (h ω - f ω) * g ω ∂P| < ε
+def SatisfiesNFLVR_DS {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω)
+    (K : Set (Ω → ℝ)) : Prop :=
+  ∀ f : Ω → ℝ, (∀ᵐ ω ∂P, 0 ≤ f ω) → InWeakStarClosure P (nflvrCone P K) f → f =ᵐ[P] 0
 end
 section
 run_cmd Lean.modifyEnv fun env => Lean.Meta.auxLemmasExt.setState env {}
@@ -744,10 +774,7 @@ def sigVol (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d) (t : ℝ)
 def SigTransformFinite {d : ℕ} (B : MultiBrownian Ω P d) (T : ℝ)
     (u₀ : ExtTensorAlgebra (d + 1)) : Prop :=
   ∀ t ∈ Icc 0 T, Integrable (fun ω => Real.exp (dualPairing u₀ (paperSig2 B 0 t ω))) P
-/-- `S` is a signature-price solution of `dS = S σ dW`, `S_0 = s₀` (paper Theorem A): it is
-measurable, adapted to the signature filtration, strictly positive, equal everywhere to the
-Doléans exponential `s₀ exp(∫σ dW - ½ ∫σ² dt)`, solves the SDE a.s. at each `t ∈ [0, T]`, has a
-square-integrable running supremum, and is a martingale on `[0, T]`. -/
+/-- Signature-price solution of `dS = S σ dW`, `S_0 = s₀` (paper Theorem A). -/
 structure IsSignaturePrice (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
     (S : ℝ → Ω → ℝ) : Prop where
   S_zero : ∀ ω, S 0 ω = M.s₀
@@ -883,10 +910,7 @@ def gainsSet (mkt : Market Ω P) : Set (Lp ℝ 2 P) :=
 /-- **Definition 65.** `H0`, the closed span of the constant `1` and the gains `gainsSet`. -/
 def H0 (mkt : Market Ω P) : Submodule ℝ (Lp ℝ 2 P) :=
   (Submodule.span ℝ (insert (Market.oneLp P) mkt.gainsSet)).topologicalClosure
-/-- The terminal signature coordinate `⟨e_I, Ŵ_T⟩` as an `L²(ℙ)` class: the `MemLp.toLp`
-embedding when the coordinate is square-integrable, and `0` otherwise. Every `Market`
-has square-integrable coordinates (`memLp_coord`), so on the markets that appear in
-the compared theorems this is the genuine coordinate. -/
+/-- Terminal signature coordinate `⟨e_I, Ŵ_T⟩` as an `L²` class (or `0`). -/
 def coord (mkt : Market Ω P) (I : Word (mkt.M.d + 1)) : Lp ℝ 2 P :=
   haveI := Classical.dec (MemLp (fun ω => (paperSig2 mkt.B 0 mkt.M.T ω).coeff I) 2 P)
   if h : MemLp (fun ω => (paperSig2 mkt.B 0 mkt.M.T ω).coeff I) 2 P then h.toLp _ else 0
@@ -945,10 +969,7 @@ def elemGains (B : MultiBrownian Ω P 1) : Set (Lp ℝ 2 P) :=
       Measurable[⨆ u ≤ p.1, MeasurableSpace.comap (fun ω => B.Wnn u ω 0) inferInstance] (h p) ∧
       ∃ C : ℝ, ∀ ω, |h p ω| ≤ C) ∧
     (G : Ω → ℝ) =ᵐ[P] fun ω => ∑ p ∈ V, h p ω * (B.Wnn p.2 ω 0 - B.Wnn p.1 ω 0)}
-/-- **Completeness with finitely many calls** (Theorem C, left-hand side; unwrapped), for the
-Black–Scholes market: every claim `X ∈ L²(ℱ^S_T)` is a.s. equal to a cash position `c`, static
-call positions `a k` at the strikes, and dynamic gains `G` in the `L²(ℙ)`-closed span of the
-elementary Brownian gains on `[0, T]` (the space of Itô integrals `∫_0^T φ dW`). -/
+/-- Completeness with finitely many calls (Theorem C, unwrapped). -/
 def IsCompleteWithCallsUnwrapped (B : MultiBrownian Ω P 1) (strikes : Finset ℝ) : Prop :=
   ∀ X : Lp ℝ 2 P, X ∈ (bsMarket T s₀ σ₀ hT hs₀ hσ₀ B).L2S →
     ∃ (c : ℝ) (a : ℝ → ℝ), ∃ G ∈ (Submodule.span ℝ (elemGains T B)).topologicalClosure,
@@ -960,6 +981,18 @@ call strikes, "complete with calls ⇔ `N^*_S < ∞`" is false: the market is co
 theorem not_theorem_C_unwrapped (B : MultiBrownian Ω P 1) (strikes : Finset ℝ) :
     ¬ (IsCompleteWithCallsUnwrapped T s₀ σ₀ hT hs₀ hσ₀ B strikes ↔
       (bsMarket T s₀ σ₀ hT hs₀ hσ₀ B).completenessDepth < ⊤) := by sorry
+/-- Literal NFLVR fails for unwrapped Black–Scholes. -/
+theorem not_literal_nflvr_unwrapped (B : MultiBrownian Ω P 1) :
+    ¬ SatisfiesNFLVR_DS P
+        (LiteralGains (pathFiltration B).σAlg P (bmCoord B)
+          (sigPrice (blackScholesModel T s₀ σ₀ hT hs₀ hσ₀) B)
+          (fun _ _ => σ₀) T) := by sorry
+/-- Terminal-only bounded-below NFLVR also fails in the unwrapped Black–Scholes market. -/
+theorem not_terminal_bdd_nflvr_unwrapped (B : MultiBrownian Ω P 1) :
+    ¬ SatisfiesNFLVR_DS P
+        (TerminalBoundedBelowGains (pathFiltration B).σAlg P (bmCoord B)
+          (sigPrice (blackScholesModel T s₀ σ₀ hT hs₀ hσ₀) B)
+          (fun _ _ => σ₀) T) := by sorry
 end Completeness
 end
 end SignatureVolatility
