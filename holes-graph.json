@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-25T02:36:13Z",
-  "sorryCount": 4,
+  "updated": "2026-11-25T02:42:33Z",
+  "sorryCount": 3,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
     "blocked": "Waiting on unfinished imported modules",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done (proved, counterexample or refuted; no sorry). Green = open. Grey = blocked. Counterexample / refutation labels are shown as text on the node.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: SignatureRiccatiKit.CondExpMulIndepDisintegrate, SignatureRiccatiKit.CondSigPolyIdentification, SignatureRiccatiKit.CounterexampleV1Decay."
+    "Open tips: SignatureRiccatiKit.CondExpMulIndepDisintegrate, SignatureRiccatiKit.CondSigPolyIdentification."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -1907,7 +1907,7 @@
       "file": "SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMprCounterexample.lean",
       "status": "blocked",
       "kind": null,
-      "blocker": "needs SignatureRiccatiKit.CondSigPolyIdentification, SignatureRiccatiKit.EntireTransfer, SignatureRiccatiKit.CondExpMulIndepDisintegrate, SignatureRiccatiKit.CounterexampleV1Decay, SignatureRiccatiKit.CounterexampleV1CondExp",
+      "blocker": "needs SignatureRiccatiKit.CondSigPolyIdentification, SignatureRiccatiKit.EntireTransfer, SignatureRiccatiKit.CondExpMulIndepDisintegrate, SignatureRiccatiKit.CounterexampleV1CondExp",
       "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
       "hasSorry": false,
       "paperKitGoal": false
@@ -2049,11 +2049,11 @@
       "label": "B4 decay to 0",
       "section": 1,
       "file": "SignatureVolatility/SignatureRiccatiKit/CounterexampleV1Decay.lean",
-      "status": "open",
+      "status": "done",
       "kind": null,
       "blocker": null,
-      "detail": "Unverified TBD \u2014 treat as a hole until reviewed. Contains `sorry` (paper gap).",
-      "hasSorry": true,
+      "detail": "Unverified TBD \u2014 treat as a hole until reviewed.",
+      "hasSorry": false,
       "paperKitGoal": false
     },
     {
@@ -3954,6 +3954,11 @@
     {
       "from": "SignatureRiccatiKit.CondExpMulIndepDisintegrate",
       "to": "SignatureRiccatiKit.CounterexampleV1CondExp",
+      "kind": "hard"
+    },
+    {
+      "from": "SignatureRiccatiKit.CounterexampleV1PosLe",
+      "to": "SignatureRiccatiKit.CounterexampleV1Decay",
       "kind": "hard"
     },
     {
