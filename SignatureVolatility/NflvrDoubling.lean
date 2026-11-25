@@ -808,4 +808,138 @@ lemma measurable_stdIncr (B : MultiBrownian Ω P 1) {T : ℝ} (_hT : 0 < T) (n :
     Measurable (stdIncr (bmCoord B) T n) :=
   ((bmCoord_meas B (tGrid T (n + 1))).sub (bmCoord_meas B (tGrid T n))).div_const _
 
+/-- `∫ (1 - Z)² dγ = 2` for `Z ~ N(0,1)`. -/
+lemma integral_one_sub_stdIncr_sq (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) (m : ℕ) :
+    ∫⁻ ω, ENNReal.ofReal ((1 - stdIncr (bmCoord B) T m ω) ^ 2) ∂P = ENNReal.ofReal 2 := by
+  have hlaw := stdIncr_law B hT m
+  have hi : Integrable (fun x : ℝ => (1 - x) ^ 2) (gaussianReal 0 1) :=
+    ((memLp_const (1 : ℝ)).sub (memLp_id_gaussianReal' 2 (by simp))).integrable_sq
+  have hsq : ∫ x : ℝ, x ^ 2 ∂(gaussianReal 0 1) = 1 := by
+    have hvar :=
+      variance_of_integral_eq_zero (μ := gaussianReal 0 1) (X := id)
+        aemeasurable_id' integral_id_gaussianReal
+    simpa [variance_id_gaussianReal, id] using hvar.symm
+  have hval : ∫ x : ℝ, (1 - x) ^ 2 ∂(gaussianReal 0 1) = 2 := by
+    have hexp : (fun x : ℝ => (1 - x) ^ 2) = fun x => (1 : ℝ) - 2 * x + x ^ 2 :=
+      funext fun x => by ring
+    have hi1 : Integrable (fun x : ℝ => x) (gaussianReal 0 1) :=
+      (memLp_id_gaussianReal' 1 (by simp)).integrable le_rfl
+    have hi2 : Integrable (fun x : ℝ => x ^ 2) (gaussianReal 0 1) :=
+      (memLp_id_gaussianReal' 2 (by simp)).integrable_sq
+    have hf : Integrable (fun x : ℝ => (1 : ℝ) - 2 * x) (gaussianReal 0 1) := by
+      have h := (integrable_const (1 : ℝ)).sub (hi1.const_mul 2)
+      have heq : ((fun _ : ℝ => (1 : ℝ)) - fun x => (2 : ℝ) * x) =
+          fun x => (1 : ℝ) - 2 * x :=
+        funext fun x => by simp [Pi.sub_apply]
+      rwa [heq] at h
+    rw [hexp]
+    change (∫ x : ℝ, ((fun y : ℝ => (1 : ℝ) - 2 * y) x + (fun y : ℝ => y ^ 2) x)
+      ∂(gaussianReal 0 1)) = 2
+    rw [integral_add hf hi2, integral_sub (integrable_const (1 : ℝ)) (hi1.const_mul 2),
+      integral_const_mul, integral_id_gaussianReal, integral_const, probReal_univ,
+      one_smul, hsq]
+    ring
+  have hmap :
+      (∫⁻ x, ENNReal.ofReal ((1 - x) ^ 2) ∂Measure.map (stdIncr (bmCoord B) T m) P) =
+        ∫⁻ ω, ENNReal.ofReal ((1 - stdIncr (bmCoord B) T m ω) ^ 2) ∂P :=
+    lintegral_map
+      (f := fun x : ℝ => ENNReal.ofReal ((1 - x) ^ 2))
+      (g := stdIncr (bmCoord B) T m)
+      (ENNReal.measurable_ofReal.comp ((measurable_const.sub measurable_id).pow_const 2))
+      (measurable_stdIncr B hT m)
+  rw [← hmap, hlaw.map_eq, ← ofReal_integral_eq_lintegral_ofReal hi
+    (ae_of_all _ fun _ => sq_nonneg _), hval]
+
+
+/-- The product second-moment identity `𝔼[∏_{j<m} (1-Z_j)²] = 2^m`. -/
+lemma lintegral_prod_one_sub_stdIncr_sq (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) :
+    ∀ m : ℕ,
+      ∫⁻ ω, ENNReal.ofReal
+          (∏ j ∈ Finset.range m, (1 - stdIncr (bmCoord B) T j ω) ^ 2) ∂P =
+        ENNReal.ofReal ((2 : ℝ) ^ m) := by
+  intro m
+  induction m with
+  | zero => simp
+  | succ m ih =>
+    simp_rw [Finset.prod_range_succ,
+      ENNReal.ofReal_mul (Finset.prod_nonneg fun _ _ => sq_nonneg _)]
+    have hm1 : Measurable[(pathFiltration B).σAlg (tGrid T m)]
+        (fun ω => ∏ j ∈ Finset.range m, (1 - stdIncr (bmCoord B) T j ω) ^ 2) := by
+      refine Finset.measurable_prod _ fun j hj => ?_
+      have hjm : j < m := Finset.mem_range.mp hj
+      have hle1 : tGrid T (j + 1) ≤ tGrid T m := tGrid_mono hT (Nat.succ_le_of_lt hjm)
+      have hle0 : tGrid T j ≤ tGrid T m := (tGrid_lt_succ hT j).le.trans hle1
+      have hB1 := bmCoord_adapted (T := tGrid T m) B
+        ⟨(tGrid_mem hT (j + 1)).1, hle1⟩
+      have hB0 := bmCoord_adapted (T := tGrid T m) B
+        ⟨(tGrid_mem hT j).1, hle0⟩
+      exact (measurable_const.sub ((hB1.sub hB0).div_const _)).pow_const 2
+    set incrProc : Ω → ({u : ℝ // tGrid T m ≤ u ∧ u ≤ T} → ℝ) :=
+      fun ω u => bmCoord B u.1 ω - bmCoord B (tGrid T m) ω
+    have hZ_fut : Measurable[MeasurableSpace.comap incrProc MeasurableSpace.pi]
+        (fun ω => ENNReal.ofReal ((1 - stdIncr (bmCoord B) T m ω) ^ 2)) := by
+      have hu : tGrid T m ≤ tGrid T (m + 1) ∧ tGrid T (m + 1) ≤ T :=
+        ⟨(tGrid_lt_succ hT m).le, (tGrid_mem hT (m + 1)).2⟩
+      have hinc : Measurable[MeasurableSpace.comap incrProc MeasurableSpace.pi]
+          (fun ω => incrProc ω ⟨tGrid T (m + 1), hu⟩) :=
+        (measurable_pi_apply
+          (⟨tGrid T (m + 1), hu⟩ : {u : ℝ // tGrid T m ≤ u ∧ u ≤ T})).comp
+          (comap_measurable incrProc)
+      exact ((measurable_const.sub (hinc.div_const _)).pow_const 2).ennreal_ofReal
+    have hind : IndepFun
+        (fun ω => ENNReal.ofReal
+          (∏ j ∈ Finset.range m, (1 - stdIncr (bmCoord B) T j ω) ^ 2))
+        (fun ω => ENNReal.ofReal ((1 - stdIncr (bmCoord B) T m ω) ^ 2)) P := by
+      rw [IndepFun_iff_Indep]
+      exact (indep_of_indep_of_le
+        (bmCoord_incr_indep B (tGrid_mem hT m).1 (tGrid_mem hT m).2)
+        hZ_fut.comap_le (hm1.ennreal_ofReal).comap_le).symm
+    have hf : Measurable
+        (fun ω => ENNReal.ofReal
+          (∏ j ∈ Finset.range m, (1 - stdIncr (bmCoord B) T j ω) ^ 2)) :=
+      (hm1.mono ((pathFiltration B).le_ambient (tGrid T m)) le_rfl).ennreal_ofReal
+    have hg : Measurable
+        (fun ω => ENNReal.ofReal ((1 - stdIncr (bmCoord B) T m ω) ^ 2)) :=
+      ((measurable_const.sub (measurable_stdIncr B hT m)).pow_const 2).ennreal_ofReal
+    have hmul := lintegral_mul_eq_lintegral_mul_lintegral_of_indepFun hf hg hind
+    simp only [Pi.mul_apply] at hmul
+    rw [hmul, ih, integral_one_sub_stdIncr_sq B hT m,
+      ← ENNReal.ofReal_mul (pow_nonneg (by norm_num : (0 : ℝ) ≤ 2) _), pow_succ]
+
+/-- Exact `L²` bound `𝔼[(1_{E_n} c_n)²] ≤ 2^n / Δt_n`. -/
+lemma doublingC_sq_integral_le (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) (n : ℕ) :
+    ∫⁻ ω, ENNReal.ofReal
+        ((if ω ∈ nonHitPrefix (bmCoord B) T n then doublingC (bmCoord B) T n ω else 0) ^ 2) ∂P ≤
+      ENNReal.ofReal ((2 : ℝ) ^ n / dtGrid T n) := by
+  have hpt : ∀ ω,
+      ENNReal.ofReal
+          ((if ω ∈ nonHitPrefix (bmCoord B) T n then doublingC (bmCoord B) T n ω else 0) ^ 2) ≤
+        ENNReal.ofReal ((dtGrid T n)⁻¹) *
+          ENNReal.ofReal (∏ j ∈ Finset.range n, (1 - stdIncr (bmCoord B) T j ω) ^ 2) := fun ω => by
+    rw [← ENNReal.ofReal_mul (inv_nonneg.mpr (dtGrid_pos hT n).le)]
+    apply ENNReal.ofReal_le_ofReal
+    by_cases hEn : ω ∈ nonHitPrefix (bmCoord B) T n
+    · have hform := (doublingX_closed_form B hT n ω).1 hEn
+      have hpos : 0 < dtGrid T n := dtGrid_pos hT n
+      simp only [hEn, ite_true, doublingC]
+      rw [div_pow, Real.sq_sqrt hpos.le, hform, Finset.prod_pow, div_eq_inv_mul]
+    · simp only [hEn, ite_false]
+      rw [zero_pow (by exact two_ne_zero)]
+      exact mul_nonneg (inv_nonneg.mpr (dtGrid_pos hT n).le)
+        (Finset.prod_nonneg fun _ _ => sq_nonneg _)
+  have hmeas : Measurable
+      (fun ω => ∏ j ∈ Finset.range n, (1 - stdIncr (bmCoord B) T j ω) ^ 2) :=
+    Finset.measurable_prod _ fun j _ =>
+      (measurable_const.sub (measurable_stdIncr B hT j)).pow_const 2
+  calc ∫⁻ ω, ENNReal.ofReal
+        ((if ω ∈ nonHitPrefix (bmCoord B) T n then doublingC (bmCoord B) T n ω else 0) ^ 2) ∂P
+      ≤ ∫⁻ ω, ENNReal.ofReal ((dtGrid T n)⁻¹) *
+          ENNReal.ofReal (∏ j ∈ Finset.range n, (1 - stdIncr (bmCoord B) T j ω) ^ 2) ∂P :=
+        lintegral_mono hpt
+    _ = ENNReal.ofReal ((dtGrid T n)⁻¹) * ENNReal.ofReal ((2 : ℝ) ^ n) := by
+        rw [lintegral_const_mul _ hmeas.ennreal_ofReal,
+          lintegral_prod_one_sub_stdIncr_sq B hT n]
+    _ = ENNReal.ofReal ((2 : ℝ) ^ n / dtGrid T n) := by
+        rw [← ENNReal.ofReal_mul (inv_nonneg.mpr (dtGrid_pos hT n).le), div_eq_inv_mul]
+
 end SignatureVolatility
