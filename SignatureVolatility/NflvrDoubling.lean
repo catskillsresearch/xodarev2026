@@ -311,4 +311,274 @@ def nonHitPrefix (B : ℝ → Ω → ℝ) (T : ℝ) : ℕ → Set Ω
   | 0 => Set.univ
   | n + 1 => nonHitPrefix B T n ∩ noHitEvent B T n
 
+
+/-- Increments of `bmCoord` after time `s` are independent of the path filtration at `s`. -/
+lemma bmCoord_incr_indep (B : MultiBrownian Ω P 1) {s T : ℝ} (hs : 0 ≤ s) (_hsT : s ≤ T) :
+    Indep
+      (MeasurableSpace.comap
+        (fun ω (u : {u : ℝ // s ≤ u ∧ u ≤ T}) => bmCoord B u.1 ω - bmCoord B s ω)
+        MeasurableSpace.pi)
+      ((pathFiltration B).σAlg s) P := by
+  have hshift :=
+    (B.isBrownian ⟨0, Nat.succ_pos 0⟩).toIsPreBrownianReal.indepFun_shift (Real.toNNReal s)
+  rw [IndepFun_iff_Indep] at hshift
+  -- `hshift`: Indep (comap φ π) (comap past π) P, with
+  --   φ ω t = Wnn (s.toNNReal + t) ω 0 - Wnn s.toNNReal ω 0, t : ℝ≥0
+  --   past ω t = Wnn t.1 ω 0, t : Iic s.toNNReal
+  refine indep_of_indep_of_le hshift ?hfut ?hpast
+  · -- The `[s, T]` increment map factors through the Mathlib shift process `φ`.
+    set φ : Ω → (ℝ≥0 → ℝ) := fun ω t =>
+      B.Wnn (Real.toNNReal s + t) ω ⟨0, Nat.succ_pos 0⟩ -
+        B.Wnn (Real.toNNReal s) ω ⟨0, Nat.succ_pos 0⟩
+    set f : (ℝ≥0 → ℝ) → ({u : ℝ // s ≤ u ∧ u ≤ T} → ℝ) := fun g u =>
+      g (Real.toNNReal (u.1 - s))
+    have hψ :
+        (fun ω (u : {u : ℝ // s ≤ u ∧ u ≤ T}) => bmCoord B u.1 ω - bmCoord B s ω) =
+          f ∘ φ := by
+      funext ω u
+      have hus : 0 ≤ u.1 - s := sub_nonneg.mpr u.2.1
+      have hsum : Real.toNNReal s + Real.toNNReal (u.1 - s) = Real.toNNReal u.1 := by
+        rw [← Real.toNNReal_add hs hus, add_sub_cancel]
+      change
+        B.Wnn (toNNRealTime u.1) ω ⟨0, Nat.succ_pos 0⟩ -
+            B.Wnn (toNNRealTime s) ω ⟨0, Nat.succ_pos 0⟩ =
+          φ ω (Real.toNNReal (u.1 - s))
+      simp only [φ, toNNRealTime, hsum]
+    have hf : Measurable f :=
+      measurable_pi_iff.mpr fun u => measurable_pi_apply _
+    rw [hψ, ← MeasurableSpace.comap_comp]
+    exact MeasurableSpace.comap_mono hf.comap_le
+  · refine iSup_le fun u => iSup_le fun i => ?_
+    have hi : i = ⟨0, Nat.succ_pos 0⟩ := Subsingleton.elim _ _
+    have hu : Real.toNNReal u.1 ∈ Set.Iic (Real.toNNReal s) := by
+      simpa [Set.mem_Iic, Real.toNNReal_le_toNNReal_iff hs] using u.2.2
+    have hgen :
+        ((fun (v : ℝ) (j : Fin 1) (ω : Ω) => MultiBrownian.W B v ω j) u.1 i) =
+          fun ω => MultiBrownian.W B u.1 ω i :=
+      rfl
+    have heq : (fun ω => MultiBrownian.W B u.1 ω i) =
+        (fun (g : Set.Iic (Real.toNNReal s) → ℝ) => g ⟨Real.toNNReal u.1, hu⟩) ∘
+          (fun ω (t : Set.Iic (Real.toNNReal s)) =>
+            B.Wnn t.1 ω ⟨0, Nat.succ_pos 0⟩) := by
+      funext ω
+      simp [hi, MultiBrownian.W, reindexProcessFin, toNNRealTime]
+    rw [hgen, heq, ← MeasurableSpace.comap_comp]
+    exact MeasurableSpace.comap_mono (measurable_pi_apply _).comap_le
+
+
+/-- `noHitEvent` is measurable in the increment σ-algebra after `t_n` (hence independent of
+the path filtration at `t_n`), measurable in `ℱ_{t_{n+1}}`, and contained in `{Z_n < 1}`. -/
+lemma noHitEvent_props (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) (n : ℕ) :
+    MeasurableSet[(pathFiltration B).σAlg (tGrid T (n + 1))]
+      (noHitEvent (bmCoord B) T n) ∧
+    (∀ F : Set Ω, MeasurableSet[(pathFiltration B).σAlg (tGrid T n)] F →
+      P (F ∩ noHitEvent (bmCoord B) T n) = P F * P (noHitEvent (bmCoord B) T n)) ∧
+    noHitEvent (bmCoord B) T n ⊆ {ω | stdIncr (bmCoord B) T n ω < 1} := by
+  set a := tGrid T n
+  set b := tGrid T (n + 1)
+  set c := Real.sqrt (dtGrid T n)
+  have haT : a ≤ T := (tGrid_mem hT n).2
+  have hbT : b ≤ T := (tGrid_mem hT (n + 1)).2
+  have hab0 : Icc a b ⊆ Ici (0 : ℝ) := fun t ht => (tGrid_mem hT n).1.trans ht.1
+  have hcompl_eq : (noHitEvent (bmCoord B) T n)ᶜ =
+      ⋂ k : ℕ, (⋃ q : ℚ, if a ≤ (q : ℝ) ∧ (q : ℝ) ≤ b then
+        {ω | c - 1 / ((k : ℝ) + 1) < bmCoord B q ω - bmCoord B a ω} else ∅) ∪
+        {ω | c ≤ bmCoord B b ω - bmCoord B a ω} := by
+    ext ω
+    have hneg : ω ∈ (noHitEvent (bmCoord B) T n)ᶜ ↔
+        ∃ s ∈ Icc a b, c ≤ bmCoord B s ω - bmCoord B a ω := by
+      simp only [noHitEvent, a, b, c, mem_compl_iff, mem_setOf, not_forall, not_lt, mem_Icc]
+      constructor
+      · rintro ⟨s, ⟨hs1, hs2⟩, hsc⟩; exact ⟨s, ⟨hs1, hs2⟩, hsc⟩
+      · rintro ⟨s, ⟨hs1, hs2⟩, hsc⟩; exact ⟨s, ⟨hs1, hs2⟩, hsc⟩
+    have hf : ContinuousOn (fun u => bmCoord B u ω - bmCoord B a ω) (Icc a b) :=
+      ((bmCoord_cont B ω).mono hab0).sub continuousOn_const
+    rw [hneg, exists_hit_iff_rat (tGrid_lt_succ hT n).le hf]
+    simp only [Set.mem_iInter, Set.mem_union, Set.mem_iUnion]
+    refine forall_congr' fun k => or_congr_left (exists_congr fun q => ?_)
+    by_cases hq : a ≤ (q : ℝ) ∧ (q : ℝ) ≤ b
+    · simp [a, b, hq]
+    · simp only [if_neg hq, mem_empty_iff_false, a, b]
+      constructor
+      · intro h
+        exact hq ⟨h.1, h.2.1⟩
+      · intro h
+        exact h.elim
+  -- Increment process after `t_n`. Not a `let` of type `MeasurableSpace`, which would
+  -- become a local instance and conflict with the ambient space.
+  set incrProc : Ω → ({u : ℝ // a ≤ u ∧ u ≤ T} → ℝ) :=
+    fun ω u => bmCoord B u.1 ω - bmCoord B a ω
+  have hproc :
+      Measurable[MeasurableSpace.comap incrProc MeasurableSpace.pi] incrProc :=
+    comap_measurable _
+  have hlt (u : {u : ℝ // a ≤ u ∧ u ≤ T}) (p : ℝ) :
+      MeasurableSet[MeasurableSpace.comap incrProc MeasurableSpace.pi]
+        {ω | p < incrProc ω u} := by
+    change MeasurableSet[MeasurableSpace.comap incrProc MeasurableSpace.pi]
+      (incrProc ⁻¹' {g | p < g u})
+    exact hproc (measurableSet_lt measurable_const (measurable_pi_apply u))
+  have hle (u : {u : ℝ // a ≤ u ∧ u ≤ T}) (p : ℝ) :
+      MeasurableSet[MeasurableSpace.comap incrProc MeasurableSpace.pi]
+        {ω | p ≤ incrProc ω u} := by
+    change MeasurableSet[MeasurableSpace.comap incrProc MeasurableSpace.pi]
+      (incrProc ⁻¹' {g | p ≤ g u})
+    exact hproc (measurableSet_le measurable_const (measurable_pi_apply u))
+  have hfut : MeasurableSet[MeasurableSpace.comap incrProc MeasurableSpace.pi]
+      (noHitEvent (bmCoord B) T n) := by
+    refine @MeasurableSet.of_compl Ω (noHitEvent (bmCoord B) T n)
+      (MeasurableSpace.comap incrProc MeasurableSpace.pi) ?_
+    rw [hcompl_eq]
+    refine @MeasurableSet.iInter Ω ℕ (MeasurableSpace.comap incrProc MeasurableSpace.pi) _ _
+      (fun k => ?_)
+    refine @MeasurableSet.union Ω (MeasurableSpace.comap incrProc MeasurableSpace.pi) _ _ ?_ ?_
+    · refine @MeasurableSet.iUnion Ω ℚ (MeasurableSpace.comap incrProc MeasurableSpace.pi) _ _
+        (fun q => ?_)
+      split_ifs with hq
+      · exact hlt ⟨q, hq.1, hq.2.trans hbT⟩ (c - 1 / ((k : ℝ) + 1))
+      · exact @MeasurableSet.empty Ω (MeasurableSpace.comap incrProc MeasurableSpace.pi)
+    · exact hle ⟨b, (tGrid_lt_succ hT n).le, hbT⟩ c
+  have hmeas_b : MeasurableSet[(pathFiltration B).σAlg b]
+      (noHitEvent (bmCoord B) T n) := by
+    refine @MeasurableSet.of_compl Ω (noHitEvent (bmCoord B) T n)
+      ((pathFiltration B).σAlg b) ?_
+    rw [hcompl_eq]
+    refine @MeasurableSet.iInter Ω ℕ ((pathFiltration B).σAlg b) _ _ (fun k => ?_)
+    refine @MeasurableSet.union Ω ((pathFiltration B).σAlg b) _ _ ?_ ?_
+    · refine @MeasurableSet.iUnion Ω ℚ ((pathFiltration B).σAlg b) _ _ (fun q => ?_)
+      split_ifs with hq
+      · have h1 := bmCoord_adapted B ⟨(tGrid_mem hT n).1.trans hq.1, hq.2⟩
+        have h2 := bmCoord_adapted B ⟨(tGrid_mem hT n).1, (tGrid_lt_succ hT n).le⟩
+        change MeasurableSet[(pathFiltration B).σAlg b]
+          ((fun ω => bmCoord B (q : ℝ) ω - bmCoord B a ω) ⁻¹'
+            Ioi (c - 1 / ((k : ℝ) + 1)))
+        exact (h1.sub h2) measurableSet_Ioi
+      · exact @MeasurableSet.empty Ω ((pathFiltration B).σAlg b)
+    · have h1 := bmCoord_adapted B ⟨(tGrid_mem hT (n + 1)).1, le_rfl⟩
+      have h2 := bmCoord_adapted B ⟨(tGrid_mem hT n).1, (tGrid_lt_succ hT n).le⟩
+      change MeasurableSet[(pathFiltration B).σAlg b]
+        ((fun ω => bmCoord B b ω - bmCoord B a ω) ⁻¹' Ici c)
+      exact (h1.sub h2) measurableSet_Ici
+  refine ⟨hmeas_b, fun F hF => ?_, noHitEvent_subset_stdIncr hT _ n⟩
+  have hind :=
+    (Indep_iff _ _ _).mp
+      (bmCoord_incr_indep B (tGrid_mem hT n).1 haT).symm
+  exact hind F (noHitEvent (bmCoord B) T n) hF hfut
+
+/-- **Lemma 4.2**: The non-hitting prefixes decay geometrically: `P(E_n) ≤ q^n`,
+where `q = P(Z < 1) < 1` for `Z ~ N(0, 1)`, hence `P(⋂ E_n) = 0`. -/
+lemma nonHitPrefix_props (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) :
+    (∀ n, MeasurableSet[(pathFiltration B).σAlg (tGrid T n)]
+      (nonHitPrefix (bmCoord B) T n)) ∧
+    (∀ n, P (nonHitPrefix (bmCoord B) T n) ≤
+      ((gaussianReal 0 1) (Iio (1 : ℝ))) ^ n) ∧
+    P (⋂ n : ℕ, nonHitPrefix (bmCoord B) T n) = 0 := by
+  have hmeas : ∀ n, MeasurableSet[(pathFiltration B).σAlg (tGrid T n)]
+      (nonHitPrefix (bmCoord B) T n) := by
+    intro n; induction n with
+    | zero => exact MeasurableSet.univ
+    | succ n ih =>
+      have hle : ∀ s, MeasurableSet[(pathFiltration B).σAlg (tGrid T n)] s →
+          MeasurableSet[(pathFiltration B).σAlg (tGrid T (n + 1))] s :=
+        (pathFiltration B).mono (tGrid_lt_succ hT n).le
+      exact (hle _ ih).inter (noHitEvent_props B hT n).1
+  have hprob : ∀ n, P (nonHitPrefix (bmCoord B) T n) ≤
+      ((gaussianReal 0 1) (Iio (1 : ℝ))) ^ n := by
+    intro n; induction n with
+    | zero => simp [nonHitPrefix]
+    | succ n ih =>
+      rw [nonHitPrefix, (noHitEvent_props B hT n).2.1 _ (hmeas n), pow_succ]
+      have hAn : P (noHitEvent (bmCoord B) T n) ≤ (gaussianReal 0 1) (Iio (1 : ℝ)) := by
+        calc P (noHitEvent (bmCoord B) T n)
+            ≤ P {ω | stdIncr (bmCoord B) T n ω < 1} :=
+              measure_mono (noHitEvent_props B hT n).2.2
+          _ = (gaussianReal 0 1) (Iio (1 : ℝ)) := by
+              rw [← (stdIncr_law B hT n).map_eq,
+                Measure.map_apply_of_aemeasurable
+                  (stdIncr_law B hT n).aemeasurable measurableSet_Iio]
+              rfl
+      exact mul_le_mul' ih hAn
+  refine ⟨hmeas, hprob, ?_⟩
+  refine le_antisymm ?_ bot_le
+  have hlim : Tendsto (fun n : ℕ => ((gaussianReal 0 1) (Iio (1 : ℝ))) ^ n) atTop (𝓝 0) :=
+    ENNReal.tendsto_pow_atTop_nhds_zero_of_lt_one gaussian_Iio_one_lt_one
+  exact le_of_tendsto_of_tendsto tendsto_const_nhds hlim (Eventually.of_forall fun n =>
+    (measure_mono (Set.iInter_subset (nonHitPrefix (bmCoord B) T) n)).trans (hprob n))
+
+
+/-- Recursive doubling wealth `X_n` at the grid time `t_n`. -/
+def doublingX (B : ℝ → Ω → ℝ) (T : ℝ) : ℕ → Ω → ℝ
+  | 0, _ => 0
+  | n + 1, ω =>
+    let c := (1 - doublingX B T n ω) / Real.sqrt (dtGrid T n)
+    doublingX B T n ω +
+      (if ω ∈ nonHitPrefix B T n then c * (B (tauHit B T n ω) ω - B (tGrid T n) ω) else 0)
+
+/-- Position on the nth grid interval: `c_n = (1 - X_n) / √(Δt_n)`. -/
+def doublingC (B : ℝ → Ω → ℝ) (T : ℝ) (n : ℕ) (ω : Ω) : ℝ :=
+  (1 - doublingX B T n ω) / Real.sqrt (dtGrid T n)
+
+/-- Exact closed form on `E_n` and exact value `1` on `E_nᶜ`. -/
+lemma doublingX_closed_form (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) :
+    ∀ n ω,
+      (ω ∈ nonHitPrefix (bmCoord B) T n →
+        1 - doublingX (bmCoord B) T n ω =
+          ∏ j ∈ Finset.range n, (1 - stdIncr (bmCoord B) T j ω)) ∧
+      (ω ∉ nonHitPrefix (bmCoord B) T n → doublingX (bmCoord B) T n ω = 1)
+  | 0, ω => ⟨fun _ => by simp [doublingX], fun h => absurd (Set.mem_univ ω) h⟩
+  | n + 1, ω => by
+    obtain ⟨ihE, ihEc⟩ := doublingX_closed_form B hT n ω
+    constructor
+    · intro hEn1
+      have hEn : ω ∈ nonHitPrefix (bmCoord B) T n := hEn1.1
+      have hAn : ω ∈ noHitEvent (bmCoord B) T n := hEn1.2
+      have htau : tauHit (bmCoord B) T n ω = tGrid T (n + 1) :=
+        ((tauHit_spec B hT n ω).1 hAn).1
+      simp only [doublingX, hEn, ite_true, htau, Finset.prod_range_succ, ← ihE hEn]
+      have hZ :
+          (1 - doublingX (bmCoord B) T n ω) / Real.sqrt (dtGrid T n) *
+            (bmCoord B (tGrid T (n + 1)) ω - bmCoord B (tGrid T n) ω) =
+          (1 - doublingX (bmCoord B) T n ω) * stdIncr (bmCoord B) T n ω := by
+        simp only [stdIncr]; ring
+      rw [hZ]; ring
+    · intro hnEn1
+      by_cases hEn : ω ∈ nonHitPrefix (bmCoord B) T n
+      · have hnAn : ω ∉ noHitEvent (bmCoord B) T n := fun hAn => hnEn1 ⟨hEn, hAn⟩
+        have hhit := (tauHit_spec B hT n ω).2 hnAn
+        have hsq : Real.sqrt (dtGrid T n) ≠ 0 := (Real.sqrt_pos.mpr (dtGrid_pos hT n)).ne'
+        simp only [doublingX, hEn, ite_true, hhit]
+        field_simp [hsq]
+        ring
+      · simp only [doublingX, hEn, ite_false, add_zero]
+        exact ihEc hEn
+
+/-- Almost every path hits the threshold on some grid interval, after which wealth stays at `1`.
+Hence `X_n → 1` almost surely (and `X_n = 1` for all large `n`). -/
+lemma doublingX_eq_one_eventually (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) :
+    ∀ᵐ ω ∂P, ∃ N : ℕ, ∀ n ≥ N, doublingX (bmCoord B) T n ω = 1 := by
+  have hnull : P (⋂ n, nonHitPrefix (bmCoord B) T n) = 0 := (nonHitPrefix_props B hT).2.2
+  refine (measure_eq_zero_iff_ae_notMem.mp hnull).mono fun ω hω => ?_
+  have hex : ∃ N, ω ∉ nonHitPrefix (bmCoord B) T N := by
+    by_contra h
+    simp only [not_exists, not_not] at h
+    exact hω (mem_iInter.mpr h)
+  obtain ⟨N, hN⟩ := hex
+  refine ⟨N, fun n hn => ?_⟩
+  have hnot : ω ∉ nonHitPrefix (bmCoord B) T n := by
+    induction n, hn using Nat.le_induction with
+    | base => exact hN
+    | succ k hk ih =>
+      intro hmem
+      exact ih hmem.1
+  exact (doublingX_closed_form B hT n ω).2 hnot
+
+/-- Terminal doubling wealth: `1` off the null set `⋂ E_n`. -/
+def doublingVT (B : ℝ → Ω → ℝ) (T : ℝ) (ω : Ω) : ℝ :=
+  if ω ∈ ⋂ n, nonHitPrefix B T n then 0 else 1
+
+lemma doublingVT_eq_one_ae (B : MultiBrownian Ω P 1) {T : ℝ} (hT : 0 < T) :
+    doublingVT (bmCoord B) T =ᵐ[P] fun _ => (1 : ℝ) := by
+  have hnull : P (⋂ n, nonHitPrefix (bmCoord B) T n) = 0 := (nonHitPrefix_props B hT).2.2
+  refine (measure_eq_zero_iff_ae_notMem.mp hnull).mono fun ω hω => ?_
+  simp [doublingVT, hω]
+
 end SignatureVolatility
