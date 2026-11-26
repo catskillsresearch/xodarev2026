@@ -566,6 +566,15 @@ SYNTHETIC_NODES: list[dict] = [
         "file": "Writeup/Abstract.md",
         "commits": "0f975dc",
     },
+    {
+        "id": "Docs_PalomarRegistration",
+        "label": "Palomar badges and registration link",
+        "status": "done",
+        "section": 12,
+        "detail": "Lean CI and Palomar registration badges added to README.md. Documentation TBDs replaced by PALOMAR-2026-11-26-000043 version 1, linked to the registry entry. The report title page and abstract carry a clickable Palomar registration link. Palomar submission files left unchanged.",
+        "file": "README.md",
+        "commits": "979b359",
+    },
 ]
 
 # Edges are dep → dependent (the dependent uses / follows the dep).
@@ -610,6 +619,7 @@ SYNTHETIC_EDGES: list[tuple[str, str]] = [
     ("TheoremB_GenuineIto.challenge", "TheoremB_GenuineIto"),
     ("TheoremB_GenuineIto.prose", "TheoremB_GenuineIto"),
     ("TheoremB_GenuineIto", "TheoremB_RiccatiProse"),
+    ("TheoremB_RiccatiProse", "Docs_PalomarRegistration"),
 ]
 
 

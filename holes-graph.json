@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-26T04:04:17Z",
+  "updated": "2026-11-26T12:26:26Z",
   "sorryCount": 0,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -3555,6 +3555,20 @@
       "paperKitGoal": false,
       "synthetic": true,
       "commits": "0f975dc"
+    },
+    {
+      "id": "Docs_PalomarRegistration",
+      "label": "Palomar badges and registration link",
+      "section": 12,
+      "file": "README.md",
+      "status": "done",
+      "kind": null,
+      "blocker": null,
+      "detail": "Lean CI and Palomar registration badges added to README.md. Documentation TBDs replaced by PALOMAR-2026-11-26-000043 version 1, linked to the registry entry. The report title page and abstract carry a clickable Palomar registration link. Palomar submission files left unchanged.",
+      "hasSorry": false,
+      "paperKitGoal": false,
+      "synthetic": true,
+      "commits": "979b359"
     }
   ],
   "edges": [
@@ -5611,6 +5625,11 @@
     {
       "from": "TheoremB_GenuineIto",
       "to": "TheoremB_RiccatiProse",
+      "kind": "hard"
+    },
+    {
+      "from": "TheoremB_RiccatiProse",
+      "to": "Docs_PalomarRegistration",
       "kind": "hard"
     }
   ]
