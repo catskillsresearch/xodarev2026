@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-26T03:32:10Z",
+  "updated": "2026-11-26T04:04:17Z",
   "sorryCount": 0,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -2318,7 +2318,7 @@
       "status": "done",
       "kind": null,
       "blocker": null,
-      "detail": "Proved -> direction of the affine / Riccati duality (paper Thm 4.2(ii)): an exponential-affine conditional transform through a classical Riccati solution gives a solution. Compared in comparator.json. The <- direction is false (`not_affine_riccati_duality_mpr`).",
+      "detail": "Records the immediate implication (paper Thm 4.2(ii) as stated, not compared): a classical Riccati solution satisfying the exponential dual formula yields a classical Riccati solution. Not a substantive forward pricing result. The <- direction is false (`not_affine_riccati_duality_mpr`).",
       "hasSorry": false,
       "paperKitGoal": false,
       "synthetic": false,
@@ -2850,7 +2850,7 @@
       "status": "done",
       "kind": null,
       "blocker": null,
-      "detail": "theorem_B_mp (proved, compared): martingale on the signature filtration, Delbaen\u2013Schachermayer NFLVR for BoundedBelowGains of uniformly bounded-below strategies with H S \u03c3 in F^W-predictable L\u00b2 and wealth a continuous genuine L\u00b2 It\u00f4 integral against W\u2070 (narrower than the paper's local class), special semimartingale coordinates, and the -> direction of the Riccati transform equivalence. The paper's <- direction and the full iff are false; their negations are in TheoremBMpr. The genuine-L\u00b2 cone upgrade is tracked as TheoremB_GenuineIto board nodes. Paper kit / theorem goal.",
+      "detail": "theorem_B_mp (proved, compared): martingale on the signature filtration, Delbaen\u2013Schachermayer NFLVR for BoundedBelowGains of uniformly bounded-below strategies with H S \u03c3 in F^W-predictable L\u00b2 and wealth a continuous genuine L\u00b2 It\u00f4 integral against W\u2070 (narrower than the paper's local class), special semimartingale coordinates, and the immediate Riccati implication that a classical Riccati solution satisfying the exponential dual formula yields a classical Riccati solution (recorded as stated, not a substantive forward pricing result). The paper's <- direction and the full iff are false; their negations are in TheoremBMpr. The genuine-L\u00b2 cone upgrade is tracked as TheoremB_GenuineIto board nodes. Paper kit / theorem goal.",
       "hasSorry": false,
       "paperKitGoal": true,
       "synthetic": false,
@@ -3541,6 +3541,20 @@
       "paperKitGoal": false,
       "synthetic": true,
       "commits": "2b6ba09"
+    },
+    {
+      "id": "TheoremB_RiccatiProse",
+      "label": "Riccati conjunct wording (Palomar)",
+      "section": 12,
+      "file": "Writeup/Abstract.md",
+      "status": "done",
+      "kind": null,
+      "blocker": null,
+      "detail": "Every description of theorem_B_mp's Riccati conjunct now states the immediate implication that a classical Riccati solution satisfying the exponential dual formula yields a classical Riccati solution, recorded as stated and not a substantive forward pricing result. No Lean statements changed.",
+      "hasSorry": false,
+      "paperKitGoal": false,
+      "synthetic": true,
+      "commits": "0f975dc"
     }
   ],
   "edges": [
@@ -5592,6 +5606,11 @@
     {
       "from": "TheoremB_GenuineIto.prose",
       "to": "TheoremB_GenuineIto",
+      "kind": "hard"
+    },
+    {
+      "from": "TheoremB_GenuineIto",
+      "to": "TheoremB_RiccatiProse",
       "kind": "hard"
     }
   ]

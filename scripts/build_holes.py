@@ -134,8 +134,10 @@ STATUS_DETAILS: dict[str, str] = {
         "Delbaen–Schachermayer NFLVR for BoundedBelowGains of uniformly bounded-below "
         "strategies with H S σ in F^W-predictable L² and wealth a continuous genuine "
         "L² Itô integral against W⁰ (narrower than the paper's local class), special "
-        "semimartingale coordinates, and the -> direction of the Riccati transform "
-        "equivalence. The paper's <- direction and the full iff are false; their "
+        "semimartingale coordinates, and the immediate Riccati implication that a "
+        "classical Riccati solution satisfying the exponential dual formula yields "
+        "a classical Riccati solution (recorded as stated, not a substantive forward "
+        "pricing result). The paper's <- direction and the full iff are false; their "
         "negations are in TheoremBMpr. The genuine-L² cone upgrade is tracked as "
         "TheoremB_GenuineIto board nodes.",
     "NflvrBoundedBelow":
@@ -164,10 +166,10 @@ STATUS_DETAILS: dict[str, str] = {
         "open follow-on nodes: Black–Scholes transfer H=K/(Sσ₀), the terminal-only "
         "refutation, Challenge compared theorems, and the writeup (Carbon/Gemini).",
     "SignatureRiccatiKit.AffineRiccatiDualityMp":
-        "Proved -> direction of the affine / Riccati duality (paper Thm 4.2(ii)): an exponential-"
-        "affine conditional transform through a classical Riccati solution gives a solution. "
-        "Compared in comparator.json. The <- direction is false "
-        "(`not_affine_riccati_duality_mpr`).",
+        "Records the immediate implication (paper Thm 4.2(ii) as stated, not compared): "
+        "a classical Riccati solution satisfying the exponential dual formula yields a "
+        "classical Riccati solution. Not a substantive forward pricing result. The <- "
+        "direction is false (`not_affine_riccati_duality_mpr`).",
     "SignatureRiccatiKit.AffineRiccatiDuality":
         "not_affine_riccati_duality: the paper iff fails as a statement over all finitely "
         "supported u0 with finite signature transform. Proved from "
@@ -555,6 +557,15 @@ SYNTHETIC_NODES: list[dict] = [
         "file": "SignatureVolatility/TheoremB.lean",
         "commits": "2b6ba09",
     },
+    {
+        "id": "TheoremB_RiccatiProse",
+        "label": "Riccati conjunct wording (Palomar)",
+        "status": "done",
+        "section": 12,
+        "detail": "Every description of theorem_B_mp's Riccati conjunct now states the immediate implication that a classical Riccati solution satisfying the exponential dual formula yields a classical Riccati solution, recorded as stated and not a substantive forward pricing result. No Lean statements changed.",
+        "file": "Writeup/Abstract.md",
+        "commits": "0f975dc",
+    },
 ]
 
 # Edges are dep → dependent (the dependent uses / follows the dep).
@@ -598,6 +609,7 @@ SYNTHETIC_EDGES: list[tuple[str, str]] = [
     ("TheoremB_GenuineIto.nflvr", "TheoremB_GenuineIto"),
     ("TheoremB_GenuineIto.challenge", "TheoremB_GenuineIto"),
     ("TheoremB_GenuineIto.prose", "TheoremB_GenuineIto"),
+    ("TheoremB_GenuineIto", "TheoremB_RiccatiProse"),
 ]
 
 
