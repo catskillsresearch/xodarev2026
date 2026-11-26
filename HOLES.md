@@ -2,13 +2,13 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-26T02:38:25Z
-**`sorry` occurrences:** 0 · 0 open · 0 blocked · 244 done · 0 file(s) with `sorry`.
+**Updated:** 2026-11-26T03:32:10Z
+**`sorry` occurrences:** 0 · 0 open · 0 blocked · 251 done · 0 file(s) with `sorry`.
 **Paper claims refuted:** 6 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
 
 ## The affine / Riccati `<-` direction is refuted
 
-The false theorem `affine_riccati_duality_mpr` has been removed from the library. Its negation `not_affine_riccati_duality_mpr` is proved sorry-free in `SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample`; `not_affine_riccati_duality`, `not_theorem_B_mpr` and `not_theorem_B` follow from it. All four are compared in `comparator.json` in unwrapped form (`…_unwrapped` in `Unwrapped`; see `Writeup/narratives/`). `Solution.lean` has **0** `sorry` (the Challenge's compared proofs are `sorry` by design). `theorem_B_mp` (martingale, the price-independent `AdmissibleGainsUnderP` NFLVR conjunct, special semimartingale, `->` Riccati direction) is sorry-free and compared as `theorem_B_mp_unwrapped`; `affine_riccati_duality_mp` is sorry-free and not compared. Upgrading that NFLVR conjunct to `SatisfiesNFLVR_DS` is tracked as ordinary open and blocked nodes under TheoremB_DS (not an open-problems category).
+The false theorem `affine_riccati_duality_mpr` has been removed from the library. Its negation `not_affine_riccati_duality_mpr` is proved sorry-free in `SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample`; `not_affine_riccati_duality`, `not_theorem_B_mpr` and `not_theorem_B` follow from it. All four are compared in `comparator.json` in unwrapped form (`…_unwrapped` in `Unwrapped`; see `Writeup/narratives/`). `Solution.lean` has **0** `sorry` (the Challenge's compared proofs are `sorry` by design). `theorem_B_mp` (martingale, the price-independent `AdmissibleGainsUnderP` NFLVR conjunct, special semimartingale, `->` Riccati direction) is sorry-free and compared as `theorem_B_mp_unwrapped`; `affine_riccati_duality_mp` is sorry-free and not compared. Upgrading that NFLVR conjunct to `SatisfiesNFLVR_DS` is tracked as ordinary done nodes under TheoremB_DS (not an open-problems category). The Palomar follow-on, replacing the Riemann-sum gain cone by a genuine `L²` Itô cone, is tracked as ordinary open or blocked nodes under TheoremB_GenuineIto (not an open-problems category).
 
 
 ## Counterexamples and refuted paper claims
@@ -95,6 +95,19 @@ Upgrade of `theorem_B_mp`'s NFLVR conjunct from `AdmissibleGainsUnderP` to `Sati
 | done | `TheoremB_DS` | `5516ccf` | Way A: IsSignaturePrice.doleans_repr is a.s. path-continuity on [0, T] and a.s. equality at each t to the Doléans exponential (kitItoInt / kitQuadVar). theorem_B_mp_unwrapped asserts SatisfiesNFLVR_DS for BoundedBelowGains of that S itself (witness sigPriceCont). Bundled theorem_B_mp keeps the pointwise SignaturePriceSolution from theorem_A and asserts DS NFLVR for sigPriceCont, which equals sol.S a.s. at each t. theorem_B_of_Setup_Ito_Riccati_Kit is unchanged (no MultiBrownian). not_theorem_B and not_theorem_B_unwrapped negate the same conjuncts. SignaturePriceSolution and theorem_A are unchanged. |
 | done | `TheoremB_DS.challenge` | `5516ccf` | IsUniformlyBoundedBelow and BoundedBelowGains copied into the Challenge; IsSignaturePrice.doleans_repr and the NFLVR conjuncts of theorem_B_mp_unwrapped and not_theorem_B_unwrapped match the solution. Still sorry, 1000 lines / 54955 bytes, 11 theorem names, definition_names empty. Strict compare matched 44832 constants. |
 | done | `TheoremB_DS.writeup` | `4b5c8bc` | The writeup is a paper for mathematicians: no file names or build detail, Lean pretty-printed as in lyasoff2016 and Nowakowska. IsSignaturePrice is a.s. continuous with an a.s. Doléans representation; Theorem B's NFLVR is Delbaen–Schachermayer over bounded-below admissible gains. Palomar English matches. Carbon (Gemini) is credited for the scaled-tensor and doubling arguments. |
+
+## Theorem B genuine L² Itô NFLVR
+
+Palomar follow-on: replace the Riemann-sum gain cone by a genuine `L²` Itô integral against `W⁰` on the signature filtration. The claim is narrower than the paper's local class. These are not separate Lean modules and not an open-problems category. Finished pieces will be ordinary done nodes with the landing commit; remaining work is ordinary open or blocked follow-on nodes.
+
+| Status | Id | Commit(s) | What |
+|---|---|---|---|
+| done | `TheoremB_GenuineIto.cone` | `2b6ba09` | BoundedBelowGains now requires H S σ in F^W-predictable L² and wealth a continuous genuine L² Itô integral (ElemPredProcess / IsL2ItoIntegral) against W⁰. Literal and terminal-only cones keep the Riemann-sum IsItoIntegral. |
+| done | `TheoremB_GenuineIto.library` | `2b6ba09` | New module NflvrL2Ito (in the barrel): joint-filtration L² construction and expectation_eq_zero_of_isL2ItoIntegral, hence E[V_T]=0. Uniqueness and non-vacuity were not required for NFLVR and were omitted. |
+| done | `TheoremB_GenuineIto.nflvr` | `2b6ba09` | NflvrDS entry points retargeted so satisfiesNFLVR_DS_boundedBelowGains and expectation_le_zero_of_boundedBelowGain use the genuine L² cone (same signatures; the compared witness remains sigPriceCont). |
+| done | `TheoremB_GenuineIto.challenge` | `2b6ba09` | ElemPredProcess / IsL2ItoIntegral and the new BoundedBelowGains copied into the Challenge in lockstep. An aux-lemma reset keeps the strict compare identical (44866 constants). 994 lines / 56973 bytes. |
+| done | `TheoremB_GenuineIto.prose` | `2b6ba09` | Writeup and Palomar English state NFLVR for uniformly bounded-below admissible strategies with H S σ in F^W-predictable L² and wealth a continuous genuine Itô integral against W⁰, narrower than the paper's local class. PDF rebuilt. |
+| done | `TheoremB_GenuineIto` | `2b6ba09` | Compared Theorem B NFLVR uses the genuine L² Itô cone; the library and Challenge agree; the prose matches that strength (narrower than the paper's local class). Full lake build green, no linter warnings, strict compare 44866 constants. |
 
 ## By group
 
@@ -197,6 +210,7 @@ Upgrade of `theorem_B_mp`'s NFLVR conjunct from `AdmissibleGainsUnderP` to `Sati
 | done | `NflvrDS` | `SignatureVolatility/NflvrDS.lean` |
 | done | `NflvrDefs` | `SignatureVolatility/NflvrDefs.lean` |
 | done | `NflvrDoubling` | `SignatureVolatility/NflvrDoubling.lean` |
+| done | `NflvrL2Ito` | `SignatureVolatility/NflvrL2Ito.lean` |
 | done | `NflvrOfMartingaleMeasure` | `SignatureVolatility/NflvrOfMartingaleMeasure.lean` |
 | done | `Norm2w` | `SignatureVolatility/Norm2w.lean` |
 | done | `Norm2wInv` | `SignatureVolatility/Norm2wInv.lean` |
@@ -381,6 +395,17 @@ Upgrade of `theorem_B_mp`'s NFLVR conjunct from `AdmissibleGainsUnderP` to `Sati
 | done | `TheoremB_DS.riemannL2` | `SignatureVolatility/NflvrBoundedBelow.lean` |
 | done | `TheoremB_DS.superMartingale` | `SignatureVolatility/NflvrDS.lean` |
 | done | `TheoremB_DS.writeup` | `Writeup/PalomarRegistration.md` |
+
+### Theorem B genuine L² Itô NFLVR — 0 hole(s)
+
+| Status | Id | File |
+|---|---|---|
+| done | `TheoremB_GenuineIto` | `SignatureVolatility/TheoremB.lean` |
+| done | `TheoremB_GenuineIto.challenge` | `SignatureVolatilityComparator/Challenge.lean` |
+| done | `TheoremB_GenuineIto.cone` | `SignatureVolatility/NflvrDefs.lean` |
+| done | `TheoremB_GenuineIto.library` | `SignatureVolatility/NflvrL2Ito.lean` |
+| done | `TheoremB_GenuineIto.nflvr` | `SignatureVolatility/NflvrDS.lean` |
+| done | `TheoremB_GenuineIto.prose` | `Writeup/PalomarRegistration.md` |
 
 ## Dependency sketch
 

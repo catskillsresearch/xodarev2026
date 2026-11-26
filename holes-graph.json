@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-26T02:38:25Z",
+  "updated": "2026-11-26T03:32:10Z",
   "sorryCount": 0,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -7,7 +7,7 @@
     "done": "Verified (listed in VERIFIED and deps done)"
   },
   "notes": [
-    "File-level board: one node per SignatureVolatility .lean module, plus synthetic subtask nodes under NflvrDoubling and TheoremB_DS (internal progress, not separate Lean modules and not an open-problems category).",
+    "File-level board: one node per SignatureVolatility .lean module, plus synthetic subtask nodes under NflvrDoubling, TheoremB_DS, and TheoremB_GenuineIto (internal progress, not separate Lean modules and not an open-problems category).",
     "Done = listed in VERIFIED and deps done and file contains no `sorry`.",
     "Any `sorry` forces open/blocked regardless of VERIFIED.",
     "Hard edge B\u2192A: A imports B (direct, submodule files only; barrel omitted).",
@@ -1590,7 +1590,7 @@
       "status": "done",
       "kind": null,
       "blocker": null,
-      "detail": "Paper NFLVR definitions (Mathlib-only, for later exact copy into the Challenge): S-admissible strategies, the three gain cones (literal / terminal-bounded-below / uniformly bounded-below), and SatisfiesNFLVR_DS. Definitions only; no compared theorems in this file.",
+      "detail": "Paper NFLVR definitions (Mathlib-only, copied into the Challenge): S-admissible strategies, the three gain cones (literal and terminal-bounded-below still use the Riemann-sum IsItoIntegral; uniformly bounded-below uses the genuine L\u00b2 IsL2ItoIntegral), and SatisfiesNFLVR_DS. Definitions only; no compared theorems in this file.",
       "hasSorry": false,
       "paperKitGoal": false,
       "synthetic": false,
@@ -1605,6 +1605,20 @@
       "kind": null,
       "blocker": null,
       "detail": "Geometric-grid doubling construction for the literal and terminal-only NFLVR refutations. theorem_literal_nflvr_fails is proved (024652f): the doubling strategy is S-admissible and V_T=1 a.s., so literal NFLVR fails for Brownian motion. Subtask nodes below record the internal port. Still to come, as ordinary open follow-on nodes: Black\u2013Scholes transfer H=K/(S\u03c3\u2080), the terminal-only refutation, Challenge compared theorems, and the writeup (Carbon/Gemini).",
+      "hasSorry": false,
+      "paperKitGoal": false,
+      "synthetic": false,
+      "commits": null
+    },
+    {
+      "id": "NflvrL2Ito",
+      "label": "NflvrL2Ito",
+      "section": 1,
+      "file": "SignatureVolatility/NflvrL2Ito.lean",
+      "status": "done",
+      "kind": null,
+      "blocker": null,
+      "detail": "Genuine L\u00b2 It\u00f4 integral on the signature filtration: elementary predictable processes, L\u00b2 approximation, and expectation_eq_zero_of_isL2ItoIntegral (E[V_T]=0). Used by satisfiesNFLVR_DS_boundedBelowGains. No sorry.",
       "hasSorry": false,
       "paperKitGoal": false,
       "synthetic": false,
@@ -2836,7 +2850,7 @@
       "status": "done",
       "kind": null,
       "blocker": null,
-      "detail": "theorem_B_mp (proved, compared): martingale on the signature filtration, the price-independent AdmissibleGainsUnderP NFLVR conjunct (any integrable G with E[G]\u22640; the Palomar editorial audit flagged this as close to trivial), special semimartingale coordinates, and the -> direction of the Riccati transform equivalence. The paper's <- direction and the full iff are false; their negations are in TheoremBMpr. The compared NFLVR conjunct is still AdmissibleGainsUnderP, not SatisfiesNFLVR_DS. The DS upgrade is tracked as TheoremB_DS board nodes. Paper kit / theorem goal.",
+      "detail": "theorem_B_mp (proved, compared): martingale on the signature filtration, Delbaen\u2013Schachermayer NFLVR for BoundedBelowGains of uniformly bounded-below strategies with H S \u03c3 in F^W-predictable L\u00b2 and wealth a continuous genuine L\u00b2 It\u00f4 integral against W\u2070 (narrower than the paper's local class), special semimartingale coordinates, and the -> direction of the Riccati transform equivalence. The paper's <- direction and the full iff are false; their negations are in TheoremBMpr. The genuine-L\u00b2 cone upgrade is tracked as TheoremB_GenuineIto board nodes. Paper kit / theorem goal.",
       "hasSorry": false,
       "paperKitGoal": true,
       "synthetic": false,
@@ -3443,6 +3457,90 @@
       "paperKitGoal": false,
       "synthetic": true,
       "commits": "4b5c8bc"
+    },
+    {
+      "id": "TheoremB_GenuineIto.cone",
+      "label": "Genuine L\u00b2 It\u00f4 gain cone",
+      "section": 12,
+      "file": "SignatureVolatility/NflvrDefs.lean",
+      "status": "done",
+      "kind": null,
+      "blocker": null,
+      "detail": "BoundedBelowGains now requires H S \u03c3 in F^W-predictable L\u00b2 and wealth a continuous genuine L\u00b2 It\u00f4 integral (ElemPredProcess / IsL2ItoIntegral) against W\u2070. Literal and terminal-only cones keep the Riemann-sum IsItoIntegral.",
+      "hasSorry": false,
+      "paperKitGoal": false,
+      "synthetic": true,
+      "commits": "2b6ba09"
+    },
+    {
+      "id": "TheoremB_GenuineIto.library",
+      "label": "NflvrL2Ito library (mean-zero / isometry)",
+      "section": 12,
+      "file": "SignatureVolatility/NflvrL2Ito.lean",
+      "status": "done",
+      "kind": null,
+      "blocker": null,
+      "detail": "New module NflvrL2Ito (in the barrel): joint-filtration L\u00b2 construction and expectation_eq_zero_of_isL2ItoIntegral, hence E[V_T]=0. Uniqueness and non-vacuity were not required for NFLVR and were omitted.",
+      "hasSorry": false,
+      "paperKitGoal": false,
+      "synthetic": true,
+      "commits": "2b6ba09"
+    },
+    {
+      "id": "TheoremB_GenuineIto.nflvr",
+      "label": "NFLVR proof on the genuine L\u00b2 cone",
+      "section": 12,
+      "file": "SignatureVolatility/NflvrDS.lean",
+      "status": "done",
+      "kind": null,
+      "blocker": null,
+      "detail": "NflvrDS entry points retargeted so satisfiesNFLVR_DS_boundedBelowGains and expectation_le_zero_of_boundedBelowGain use the genuine L\u00b2 cone (same signatures; the compared witness remains sigPriceCont).",
+      "hasSorry": false,
+      "paperKitGoal": false,
+      "synthetic": true,
+      "commits": "2b6ba09"
+    },
+    {
+      "id": "TheoremB_GenuineIto.challenge",
+      "label": "Challenge lockstep (genuine L\u00b2 cone)",
+      "section": 12,
+      "file": "SignatureVolatilityComparator/Challenge.lean",
+      "status": "done",
+      "kind": null,
+      "blocker": null,
+      "detail": "ElemPredProcess / IsL2ItoIntegral and the new BoundedBelowGains copied into the Challenge in lockstep. An aux-lemma reset keeps the strict compare identical (44866 constants). 994 lines / 56973 bytes.",
+      "hasSorry": false,
+      "paperKitGoal": false,
+      "synthetic": true,
+      "commits": "2b6ba09"
+    },
+    {
+      "id": "TheoremB_GenuineIto.prose",
+      "label": "Writeup and Palomar English",
+      "section": 12,
+      "file": "Writeup/PalomarRegistration.md",
+      "status": "done",
+      "kind": null,
+      "blocker": null,
+      "detail": "Writeup and Palomar English state NFLVR for uniformly bounded-below admissible strategies with H S \u03c3 in F^W-predictable L\u00b2 and wealth a continuous genuine It\u00f4 integral against W\u2070, narrower than the paper's local class. PDF rebuilt.",
+      "hasSorry": false,
+      "paperKitGoal": false,
+      "synthetic": true,
+      "commits": "2b6ba09"
+    },
+    {
+      "id": "TheoremB_GenuineIto",
+      "label": "theorem_B_mp genuine L\u00b2 It\u00f4 NFLVR",
+      "section": 12,
+      "file": "SignatureVolatility/TheoremB.lean",
+      "status": "done",
+      "kind": null,
+      "blocker": null,
+      "detail": "Compared Theorem B NFLVR uses the genuine L\u00b2 It\u00f4 cone; the library and Challenge agree; the prose matches that strength (narrower than the paper's local class). Full lake build green, no linter warnings, strict compare 44866 constants.",
+      "hasSorry": false,
+      "paperKitGoal": false,
+      "synthetic": true,
+      "commits": "2b6ba09"
     }
   ],
   "edges": [
@@ -4352,7 +4450,7 @@
       "kind": "hard"
     },
     {
-      "from": "NflvrContIto",
+      "from": "NflvrL2Ito",
       "to": "NflvrDS",
       "kind": "hard"
     },
@@ -4364,6 +4462,11 @@
     {
       "from": "ItoCalculusKit.MathFinBridge",
       "to": "NflvrDoubling",
+      "kind": "hard"
+    },
+    {
+      "from": "NflvrContIto",
+      "to": "NflvrL2Ito",
       "kind": "hard"
     },
     {
@@ -5444,6 +5547,51 @@
     {
       "from": "TheoremB_DS.challenge",
       "to": "TheoremB_DS.writeup",
+      "kind": "hard"
+    },
+    {
+      "from": "TheoremB_DS.writeup",
+      "to": "TheoremB_GenuineIto.cone",
+      "kind": "hard"
+    },
+    {
+      "from": "TheoremB_DS.writeup",
+      "to": "TheoremB_GenuineIto.library",
+      "kind": "hard"
+    },
+    {
+      "from": "TheoremB_DS.writeup",
+      "to": "TheoremB_GenuineIto.nflvr",
+      "kind": "hard"
+    },
+    {
+      "from": "TheoremB_DS.writeup",
+      "to": "TheoremB_GenuineIto.challenge",
+      "kind": "hard"
+    },
+    {
+      "from": "TheoremB_GenuineIto.cone",
+      "to": "TheoremB_GenuineIto",
+      "kind": "hard"
+    },
+    {
+      "from": "TheoremB_GenuineIto.library",
+      "to": "TheoremB_GenuineIto",
+      "kind": "hard"
+    },
+    {
+      "from": "TheoremB_GenuineIto.nflvr",
+      "to": "TheoremB_GenuineIto",
+      "kind": "hard"
+    },
+    {
+      "from": "TheoremB_GenuineIto.challenge",
+      "to": "TheoremB_GenuineIto",
+      "kind": "hard"
+    },
+    {
+      "from": "TheoremB_GenuineIto.prose",
+      "to": "TheoremB_GenuineIto",
       "kind": "hard"
     }
   ]

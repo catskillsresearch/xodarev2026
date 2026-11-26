@@ -130,22 +130,28 @@ STATUS_LABELS: dict[str, str] = {
 }
 STATUS_DETAILS: dict[str, str] = {
     "TheoremB":
-        "theorem_B_mp (proved, compared): martingale on the signature filtration, the "
-        "price-independent AdmissibleGainsUnderP NFLVR conjunct (any integrable G with E[G]≤0; "
-        "the Palomar editorial audit flagged this as close to trivial), special semimartingale "
-        "coordinates, and the -> direction of the Riccati transform equivalence. The paper's "
-        "<- direction and the full iff are false; their negations are in TheoremBMpr. The "
-        "compared NFLVR conjunct is still AdmissibleGainsUnderP, not SatisfiesNFLVR_DS. "
-        "The DS upgrade is tracked as TheoremB_DS board nodes.",
+        "theorem_B_mp (proved, compared): martingale on the signature filtration, "
+        "Delbaen–Schachermayer NFLVR for BoundedBelowGains of uniformly bounded-below "
+        "strategies with H S σ in F^W-predictable L² and wealth a continuous genuine "
+        "L² Itô integral against W⁰ (narrower than the paper's local class), special "
+        "semimartingale coordinates, and the -> direction of the Riccati transform "
+        "equivalence. The paper's <- direction and the full iff are false; their "
+        "negations are in TheoremBMpr. The genuine-L² cone upgrade is tracked as "
+        "TheoremB_GenuineIto board nodes.",
     "NflvrBoundedBelow":
         "Joint-filtration L² Itô integral (JointElem / SortedElem), the Itô isometry, "
         "π-λ density of elementary processes, and the u-cancellation Riemann-sum bound "
         "lintegral_riemann_sq_le (Carbon/Gemini). kitItoIntCont lives in MathFinBridge.",
+    "NflvrL2Ito":
+        "Genuine L² Itô integral on the signature filtration: elementary predictable "
+        "processes, L² approximation, and expectation_eq_zero_of_isL2ItoIntegral "
+        "(E[V_T]=0). Used by satisfiesNFLVR_DS_boundedBelowGains. No sorry.",
     "NflvrDefs":
-        "Paper NFLVR definitions (Mathlib-only, for later exact copy into the Challenge): "
-        "S-admissible strategies, the three gain cones (literal / terminal-bounded-below / "
-        "uniformly bounded-below), and SatisfiesNFLVR_DS. Definitions only; no compared "
-        "theorems in this file.",
+        "Paper NFLVR definitions (Mathlib-only, copied into the Challenge): S-admissible "
+        "strategies, the three gain cones (literal and terminal-bounded-below still use "
+        "the Riemann-sum IsItoIntegral; uniformly bounded-below uses the genuine L² "
+        "IsL2ItoIntegral), and SatisfiesNFLVR_DS. Definitions only; no compared theorems "
+        "in this file.",
     "NflvrCone":
         "If every uniformly bounded-below gain has integrable nonpositive mean, then "
         "SatisfiesNFLVR_DS holds (weak-* pairing with 1; no H3). Fatou gives nonpositive mean "
@@ -493,6 +499,62 @@ SYNTHETIC_NODES: list[dict] = [
         "file": "Writeup/PalomarRegistration.md",
         "commits": "4b5c8bc",
     },
+    # Theorem B genuine L² Itô cone (Palomar follow-on). Ordinary open / blocked
+    # nodes, not an "open problems" category.
+    {
+        "id": "TheoremB_GenuineIto.cone",
+        "label": "Genuine L² Itô gain cone",
+        "status": "done",
+        "section": 12,
+        "detail": "BoundedBelowGains now requires H S σ in F^W-predictable L² and wealth a continuous genuine L² Itô integral (ElemPredProcess / IsL2ItoIntegral) against W⁰. Literal and terminal-only cones keep the Riemann-sum IsItoIntegral.",
+        "file": "SignatureVolatility/NflvrDefs.lean",
+        "commits": "2b6ba09",
+    },
+    {
+        "id": "TheoremB_GenuineIto.library",
+        "label": "NflvrL2Ito library (mean-zero / isometry)",
+        "status": "done",
+        "section": 12,
+        "detail": "New module NflvrL2Ito (in the barrel): joint-filtration L² construction and expectation_eq_zero_of_isL2ItoIntegral, hence E[V_T]=0. Uniqueness and non-vacuity were not required for NFLVR and were omitted.",
+        "file": "SignatureVolatility/NflvrL2Ito.lean",
+        "commits": "2b6ba09",
+    },
+    {
+        "id": "TheoremB_GenuineIto.nflvr",
+        "label": "NFLVR proof on the genuine L² cone",
+        "status": "done",
+        "section": 12,
+        "detail": "NflvrDS entry points retargeted so satisfiesNFLVR_DS_boundedBelowGains and expectation_le_zero_of_boundedBelowGain use the genuine L² cone (same signatures; the compared witness remains sigPriceCont).",
+        "file": "SignatureVolatility/NflvrDS.lean",
+        "commits": "2b6ba09",
+    },
+    {
+        "id": "TheoremB_GenuineIto.challenge",
+        "label": "Challenge lockstep (genuine L² cone)",
+        "status": "done",
+        "section": 12,
+        "detail": "ElemPredProcess / IsL2ItoIntegral and the new BoundedBelowGains copied into the Challenge in lockstep. An aux-lemma reset keeps the strict compare identical (44866 constants). 994 lines / 56973 bytes.",
+        "file": "SignatureVolatilityComparator/Challenge.lean",
+        "commits": "2b6ba09",
+    },
+    {
+        "id": "TheoremB_GenuineIto.prose",
+        "label": "Writeup and Palomar English",
+        "status": "done",
+        "section": 12,
+        "detail": "Writeup and Palomar English state NFLVR for uniformly bounded-below admissible strategies with H S σ in F^W-predictable L² and wealth a continuous genuine Itô integral against W⁰, narrower than the paper's local class. PDF rebuilt.",
+        "file": "Writeup/PalomarRegistration.md",
+        "commits": "2b6ba09",
+    },
+    {
+        "id": "TheoremB_GenuineIto",
+        "label": "theorem_B_mp genuine L² Itô NFLVR",
+        "status": "done",
+        "section": 12,
+        "detail": "Compared Theorem B NFLVR uses the genuine L² Itô cone; the library and Challenge agree; the prose matches that strength (narrower than the paper's local class). Full lake build green, no linter warnings, strict compare 44866 constants.",
+        "file": "SignatureVolatility/TheoremB.lean",
+        "commits": "2b6ba09",
+    },
 ]
 
 # Edges are dep → dependent (the dependent uses / follows the dep).
@@ -527,6 +589,15 @@ SYNTHETIC_EDGES: list[tuple[str, str]] = [
     ("TheoremB_DS.kitItoIntContVersion", "TheoremB_DS"),
     ("TheoremB_DS", "TheoremB_DS.challenge"),
     ("TheoremB_DS.challenge", "TheoremB_DS.writeup"),
+    ("TheoremB_DS.writeup", "TheoremB_GenuineIto.cone"),
+    ("TheoremB_DS.writeup", "TheoremB_GenuineIto.library"),
+    ("TheoremB_DS.writeup", "TheoremB_GenuineIto.nflvr"),
+    ("TheoremB_DS.writeup", "TheoremB_GenuineIto.challenge"),
+    ("TheoremB_GenuineIto.cone", "TheoremB_GenuineIto"),
+    ("TheoremB_GenuineIto.library", "TheoremB_GenuineIto"),
+    ("TheoremB_GenuineIto.nflvr", "TheoremB_GenuineIto"),
+    ("TheoremB_GenuineIto.challenge", "TheoremB_GenuineIto"),
+    ("TheoremB_GenuineIto.prose", "TheoremB_GenuineIto"),
 ]
 
 
@@ -706,6 +777,7 @@ VERIFIED: set[str] = {
     "NflvrCone",
     "NflvrContIto",
     "NflvrDefs",
+    "NflvrL2Ito",
     "NflvrDS",
     "NflvrDoubling",
     "NflvrOfMartingaleMeasure",
@@ -1065,7 +1137,7 @@ def build() -> dict:
         },
         "notes": [
             "File-level board: one node per SignatureVolatility .lean module, plus "
-            "synthetic subtask nodes under NflvrDoubling and TheoremB_DS (internal "
+            "synthetic subtask nodes under NflvrDoubling, TheoremB_DS, and TheoremB_GenuineIto (internal "
             "progress, not separate Lean modules and not an open-problems category).",
             "Done = listed in VERIFIED and deps done and file contains no `sorry`.",
             "Any `sorry` forces open/blocked regardless of VERIFIED.",
@@ -1103,6 +1175,7 @@ def write_md(data: dict) -> None:
         99: "Root barrel",
         10: "NflvrDoubling subtasks",
         11: "Theorem B DS NFLVR",
+        12: "Theorem B genuine L² Itô NFLVR",
     }
 
     sorry_n = [n for n in data["nodes"] if n.get("hasSorry")]
@@ -1137,8 +1210,11 @@ def write_md(data: dict) -> None:
         "`theorem_B_mp` (martingale, the price-independent `AdmissibleGainsUnderP` NFLVR "
         "conjunct, special semimartingale, `->` Riccati direction) is sorry-free and compared "
         "as `theorem_B_mp_unwrapped`; `affine_riccati_duality_mp` is sorry-free and not compared. "
-        "Upgrading that NFLVR conjunct to `SatisfiesNFLVR_DS` is tracked as ordinary open "
-        "and blocked nodes under TheoremB_DS (not an open-problems category).",
+        "Upgrading that NFLVR conjunct to `SatisfiesNFLVR_DS` is tracked as ordinary done "
+        "nodes under TheoremB_DS (not an open-problems category). The Palomar follow-on, "
+        "replacing the Riemann-sum gain cone by a genuine `L²` Itô cone, is tracked as "
+        "ordinary open or blocked nodes under TheoremB_GenuineIto (not an open-problems "
+        "category).",
         "",
         *[f"- **`{nid}`**: {txt}" for nid, txt in OPEN_PROBLEMS.items()],
         "",
@@ -1204,6 +1280,15 @@ def write_md(data: dict) -> None:
                 "## Theorem B DS NFLVR",
                 "Upgrade of `theorem_B_mp`'s NFLVR conjunct from "
                 "`AdmissibleGainsUnderP` to `SatisfiesNFLVR_DS`. These are not "
+                "separate Lean modules and not an open-problems category. Finished "
+                "pieces will be ordinary done nodes with the landing commit; remaining "
+                "work is ordinary open or blocked follow-on nodes.",
+            ),
+            12: (
+                "## Theorem B genuine L² Itô NFLVR",
+                "Palomar follow-on: replace the Riemann-sum gain cone by a genuine "
+                "`L²` Itô integral against `W⁰` on the signature filtration. The "
+                "claim is narrower than the paper's local class. These are not "
                 "separate Lean modules and not an open-problems category. Finished "
                 "pieces will be ordinary done nodes with the landing commit; remaining "
                 "work is ordinary open or blocked follow-on nodes.",
