@@ -26,8 +26,7 @@ structure Weight where
 instance : CoeFun Weight (fun _ => ℕ → ℝ) := ⟨Weight.toFun⟩
 abbrev Letter (d : ℕ) := Fin d
 abbrev Word (d : ℕ) := List (Letter d)
-/-- **Definition 2.3 (Extended tensor algebra)**: `T((ℝ^d)) = ∏_{n ≥ 0} (ℝ^d)^{⊗ n}`,
-represented via word-indexed formal series. -/
+/-- **Definition 2.3 (Extended tensor algebra)**: `T((ℝ^d)) = ∏_{n ≥ 0} (ℝ^d)^{⊗ n}`, represented via word-indexed formal series. -/
 @[ext]
 structure ExtTensorAlgebra (d : ℕ) where
   coeff : Word d → ℝ
