@@ -142,8 +142,7 @@ def geometric (r : ℝ) (hr : 1 ≤ r) : Weight where
   mono _ _ hmn := pow_le_pow_right₀ hr hmn
 end Weight
 run_cmd Lean.modifyEnv fun env => Lean.Meta.auxLemmasExt.setState env {}
-/-- **Hypothesis H2** (admissible weight): `w (m + n) ≤ C_w w_m w_n` for some `C_w ≥ 1`, and
-`∑_n w_n Rⁿ / n! < ∞` for every `R > 0`. -/
+/-- **Hypothesis H2** (admissible weight): `w (m + n) ≤ C_w w_m w_n` for some `C_w ≥ 1`, and `∑_n w_n Rⁿ / n! < ∞` for every `R > 0`. -/
 structure HypH2 (w : Weight) where
   C_w : ℝ
   one_le_Cw : 1 ≤ C_w
@@ -173,8 +172,7 @@ def HypH3 {Ω : Type*} [MeasurableSpace Ω]
     (P : Measure Ω) (T : ℝ) (ξ : ℝ → Ω → ℝ) : Prop :=
   ∀ lam : ℝ, 0 < lam →
     Integrable (fun ω => Real.exp (lam * ∫ s in (0 : ℝ)..T, (ξ s ω) ^ 2)) P
-/-- Parameter-level remnant used by `SignatureVolatilityModel`: `ℓ` is nontrivial.
-The analytic H3 above is imposed separately on `(P, T, ξ)` when building kits. -/
+/-- Parameter-level remnant used by `SignatureVolatilityModel`: `ℓ` is nontrivial. The analytic H3 above is imposed separately on `(P, T, ξ)` when building kits. -/
 structure HypH3Param {d : ℕ} (hd : 0 < d) (ℓ : ExtTensorAlgebra (d + 1)) : Prop where
   nonZero : ℓ ≠ 0
 section
@@ -196,8 +194,7 @@ structure SignatureVolatilityModel where
   h3 : HypH3Param hd ℓ
 end
 run_cmd Lean.modifyEnv fun env => Lean.Meta.auxLemmasExt.setState env {}
-/-- The Black–Scholes model as a signature volatility model: `d = 1`, constant weight, and
-`ℓ = σ₀ e_∅`, so the volatility is the constant `σ₀ ≠ 0`. -/
+/-- The Black–Scholes model as a signature volatility model: `d = 1`, constant weight, and `ℓ = σ₀ e_∅`, so the volatility is the constant `σ₀ ≠ 0`. -/
 def blackScholesModel (T s₀ σ₀ : ℝ) (hT : 0 < T) (hs₀ : 0 < s₀) (hσ₀ : σ₀ ≠ 0) :
     SignatureVolatilityModel where
   d := 1
@@ -253,8 +250,7 @@ namespace ExtTensorAlgebra
 def shuffleBasis {d : ℕ} (I J : Word d) : ExtTensorAlgebra d :=
   ⟨fun K => ((shuffleWords I J).map fun L => if K = L then (1 : ℝ) else 0).sum⟩
 end ExtTensorAlgebra
-/-- The shuffle product `a ⧢ b` restricted to pairs of words `I, J` of length at most
-`supportBound`: `∑_{|I|, |J| ≤ supportBound} a_I b_J (e_I ⧢ e_J)`. -/
+/-- The shuffle product `a ⧢ b` restricted to pairs of words `I, J` of length at most `supportBound`: `∑_{|I|, |J| ≤ supportBound} a_I b_J (e_I ⧢ e_J)`. -/
 def shuffleFinite {d : ℕ} (a b : ExtTensorAlgebra (d + 1)) (supportBound : ℕ) :
     ExtTensorAlgebra (d + 1) :=
   ⟨fun K =>
@@ -527,8 +523,7 @@ def contractions : Word (d + 1) → List (ℝ × Word (d + 1))
 /-- Combinatorial conversion coefficient `a_{I,J}` (Appendix); empty `Γ` excluded. -/
 def stratItoCoeff (I J : Word (d + 1)) : ℝ :=
   (((contractions I).tail.filter (fun p => decide (p.2 = J))).map Prod.fst).sum
-/-- Correction polynomial. Vanishes for `|I| ≤ 1`; for longer words, finite sum of
-`stratItoCoeff I J * itoWordIntegral … J` over `|J| < |I|`. -/
+/-- Correction polynomial. Vanishes for `|I| ≤ 1`; for longer words, finite sum of `stratItoCoeff I J * itoWordIntegral … J` over `|J| < |I|`. -/
 def stratItoCorrection (B : MultiBrownian Ω P d) (s t : ℝ) (ω : Ω) :
     Word (d + 1) → ℝ
   | [] => 0
