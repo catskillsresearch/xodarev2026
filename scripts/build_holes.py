@@ -487,7 +487,7 @@ SYNTHETIC_NODES: list[dict] = [
                   "bounded-below admissible gains. Palomar English matches. "
                   "Carbon (Gemini) is credited for the scaled-tensor and doubling arguments.",
         "file": "Writeup/PalomarRegistration.md",
-        "commits": "pending",
+        "commits": "4b5c8bc",
     },
 ]
 
