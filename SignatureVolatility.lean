@@ -51,6 +51,7 @@ public import SignatureVolatility.NflvrDoubling
 public import SignatureVolatility.NflvrBoundedBelow
 public import SignatureVolatility.NflvrContIto
 public import SignatureVolatility.NflvrDS
+public import SignatureVolatility.SigPriceCont
 public import SignatureVolatility.Norm2w
 public import SignatureVolatility.Norm2wInv
 public import SignatureVolatility.NormW

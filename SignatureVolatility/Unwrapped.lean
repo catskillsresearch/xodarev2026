@@ -27,7 +27,7 @@ the wrapped theorem `X`; the unwrapped definitions agree with the wrapped ones d
 for the price `S`, pointwise (by the Doléans representation of Theorem A).
 -/
 
-open MeasureTheory Set
+open MeasureTheory Filter Topology Set
 open scoped RealInnerProductSpace
 
 noncomputable section
@@ -52,17 +52,20 @@ def SigTransformFinite {d : ℕ} (B : MultiBrownian Ω P d) (T : ℝ)
   ∀ t ∈ Icc 0 T, Integrable (fun ω => Real.exp (dualPairing u₀ (paperSig2 B 0 t ω))) P
 
 /-- `S` is a signature-price solution of `dS = S σ dW`, `S_0 = s₀` (paper Theorem A): it is
-measurable, adapted to the signature filtration, strictly positive, equal everywhere to the
-Doléans exponential `s₀ exp(∫σ dW - ½ ∫σ² dt)`, solves the SDE a.s. at each `t ∈ [0, T]`, has a
-square-integrable running supremum, and is a martingale on `[0, T]`. -/
+measurable, adapted to the signature filtration, strictly positive, has almost surely continuous
+paths on `[0, T]`, equals the Doléans exponential `s₀ exp(∫σ dW - ½ ∫σ² dt)` almost surely at
+each `t ∈ [0, T]`, solves the SDE a.s. at each `t ∈ [0, T]`, has a square-integrable running
+supremum, and is a martingale on `[0, T]`. -/
 structure IsSignaturePrice (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
     (S : ℝ → Ω → ℝ) : Prop where
   S_zero : ∀ ω, S 0 ω = M.s₀
   S_meas : ∀ t, Measurable (S t)
   S_adapted : ∀ t (s : {s : ℝ // 0 ≤ s ∧ s ≤ t}), Measurable[(sigFiltration B).σAlg t] (S s.1)
   S_strictly_pos : ∀ t ω, 0 < S t ω
-  doleans_repr : ∀ t ω, S t ω = M.s₀ * Real.exp (kitItoInt B (sigVol M B) t ω -
-    (1 / 2 : ℝ) * kitQuadVar B (sigVol M B) t ω)
+  doleans_repr : (∀ᵐ ω ∂P, ContinuousOn (fun t => S t ω) (Icc 0 M.T)) ∧
+    ∀ t ∈ Icc 0 M.T, S t =ᵐ[P] fun ω =>
+      M.s₀ * Real.exp (kitItoInt B (sigVol M B) t ω -
+        (1 / 2 : ℝ) * kitQuadVar B (sigVol M B) t ω)
   solves_sde : ∀ t ∈ Icc 0 M.T, ∀ᵐ ω ∂P,
     S t ω = M.s₀ + kitItoInt B (fun s ω' => S s ω' * sigVol M B s ω') t ω
   sup_l2_integrable : ∃ S_sup : Ω → ℝ, Measurable S_sup ∧
@@ -71,17 +74,118 @@ structure IsSignaturePrice (M : SignatureVolatilityModel) (B : MultiBrownian Ω 
     Integrable (S t) P ∧ P[S t | (sigFiltration B).σAlg s] =ᵐ[P] S s
 
 lemma isSignaturePrice_of_solution {M : SignatureVolatilityModel} {B : MultiBrownian Ω P M.d}
-    (sol : SignaturePriceSolution M (paperSetup B M.hT) (itoCalculusKit_of_mathfin B M.hT)) :
+    (sol : SignaturePriceSolution M (paperSetup B M.hT) (itoCalculusKit_of_mathfin B M.hT))
+    (hcont : ∀ᵐ ω ∂P, ContinuousOn (fun t => sol.S t ω) (Icc 0 M.T)) :
     IsSignaturePrice M B sol.S :=
-  ⟨sol.S_zero, sol.S_meas, sol.S_adapted, sol.S_strictly_pos, sol.doleans_repr, sol.solves_sde,
-    sol.sup_l2_integrable, sol.is_martingale⟩
+  ⟨sol.S_zero, sol.S_meas, sol.S_adapted, sol.S_strictly_pos,
+    ⟨hcont, fun t _ => Filter.Eventually.of_forall fun ω => sol.doleans_repr t ω⟩,
+    sol.solves_sde, sol.sup_l2_integrable, sol.is_martingale⟩
 
-/-- Repackage an unwrapped signature price as a `SignaturePriceSolution`. -/
-def solutionOfIsSignaturePrice {M : SignatureVolatilityModel} {B : MultiBrownian Ω P M.d}
-    {S : ℝ → Ω → ℝ} (h : IsSignaturePrice M B S) :
-    SignaturePriceSolution M (paperSetup B M.hT) (itoCalculusKit_of_mathfin B M.hT) :=
-  ⟨S, h.S_zero, h.S_meas, h.S_adapted, h.S_strictly_pos, h.doleans_repr, h.solves_sde,
-    h.sup_l2_integrable, h.is_martingale⟩
+lemma measurable_sigVol (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d) (t : ℝ) :
+    Measurable (sigVol M B t) := by
+  change Measurable fun ω => ∑' n : ℕ, M.ℓ.levelInner (paperSig2 B 0 t ω) n
+  exact Measurable.tsum fun n => measurable_levelInner_paperSig2 B M.ℓ t n
+
+lemma sigPriceCont_ae_eq_sol {M : SignatureVolatilityModel} {B : MultiBrownian Ω P M.d}
+    (h3 : HypH3 P M.T (sigVol M B))
+    (sol : SignaturePriceSolution M (paperSetup B M.hT) (itoCalculusKit_of_mathfin B M.hT))
+    {t : ℝ} (ht : t ∈ Icc 0 M.T) :
+    sigPriceCont M B t =ᵐ[P] sol.S t := by
+  filter_upwards [sigPriceCont_ae_eq_doleans M B h3 ht] with ω h
+  rw [h, sol.doleans_repr t ω]
+  rfl
+
+lemma closure_Icc_inter_rat {a b : ℝ} (hab : a < b) :
+    closure (Icc a b ∩ Set.range ((↑) : ℚ → ℝ)) = Icc a b := by
+  refine subset_antisymm (closure_minimal inter_subset_left isClosed_Icc) ?_
+  intro x hx
+  refine Metric.mem_closure_iff.2 fun ε hε => ?_
+  have hopen : max a (x - ε) < min b (x + ε) := by
+    rcases le_total a (x - ε) with h1 | h1 <;>
+      rcases le_total (x + ε) b with h2 | h2
+    · rw [max_eq_right h1, min_eq_right h2]; linarith
+    · rw [max_eq_right h1, min_eq_left h2]; linarith [hx.2, hε]
+    · rw [max_eq_left h1, min_eq_right h2]; linarith [hx.1, hε]
+    · rw [max_eq_left h1, min_eq_left h2]; linarith [hab]
+  obtain ⟨q, hq1, hq2⟩ := exists_rat_btwn hopen
+  have hqI : (q : ℝ) ∈ Icc a b :=
+    ⟨(le_max_left a (x - ε)).trans hq1.le, hq2.le.trans (min_le_left b (x + ε))⟩
+  have hd : dist (q : ℝ) x < ε := by
+    have hxl : x - ε ≤ max a (x - ε) := le_max_right _ _
+    have hxr : min b (x + ε) ≤ x + ε := min_le_right _ _
+    rw [Real.dist_eq, abs_sub_lt_iff]
+    exact ⟨by linarith, by linarith⟩
+  exact ⟨(q : ℝ), ⟨hqI, ⟨q, rfl⟩⟩, dist_comm (q : ℝ) x ▸ hd⟩
+
+set_option maxHeartbeats 800000
+
+/-- The continuous Doléans exponential is a signature-price solution in the unwrapped sense. -/
+lemma isSignaturePrice_sigPriceCont (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
+    (h3 : HypH3 P M.T (sigVol M B)) :
+    IsSignaturePrice M B (sigPriceCont M B) := by
+  obtain ⟨sol, _huniq⟩ := theorem_A M B h3
+  have hae : ∀ t ∈ Icc 0 M.T, sigPriceCont M B t =ᵐ[P] sol.S t :=
+    fun t ht => sigPriceCont_ae_eq_sol h3 sol ht
+  refine ⟨sigPriceCont_zero M B, measurable_sigPriceCont M B, ?adapt,
+    sigPriceCont_strictly_pos M B, ?doleans, ?sde, ?sup, ?mart⟩
+  · intro t s
+    rw [sigFiltration, sigFiltration_eq_pathFiltration B t]
+    exact sigPriceCont_adapted_path M B t s
+  · exact ⟨ae_continuousOn_sigPriceCont M B, fun t ht =>
+      sigPriceCont_ae_eq_doleans M B h3 ht⟩
+  · intro t ht
+    have hsol := sol.solves_sde t ht
+    have hcongr :=
+      kitItoInt_congr_ae (H := fun s ω' => sigPriceCont M B s ω' * sigVol M B s ω')
+        (H' := fun s ω' => sol.S s ω' * sigVol M B s ω') B ht.1
+        (fun u => (measurable_sigPriceCont M B u).mul (measurable_sigVol M B u))
+        (fun u => (sol.S_meas u).mul (measurable_sigVol M B u))
+        (fun u hu => (hae u ⟨hu.1, hu.2.trans ht.2⟩).mul (EventuallyEq.refl _ _))
+    filter_upwards [hae t ht, hsol, hcongr] with ω h1 h2 h3
+    rw [h1, h2, h3]
+    rfl
+  · obtain ⟨S_sup, hSm, hSbd, hSint⟩ := sol.sup_l2_integrable
+    refine ⟨S_sup, hSm, ?_, hSint⟩
+    have hq : ∀ q : ℚ, ∀ᵐ ω ∂P,
+        (q : ℝ) ∈ Icc 0 M.T → sigPriceCont M B (q : ℝ) ω = sol.S (q : ℝ) ω := by
+      intro q
+      by_cases hqI : (q : ℝ) ∈ Icc 0 M.T
+      · filter_upwards [hae _ hqI] with ω hω _; exact hω
+      · exact Filter.Eventually.of_forall fun _ h' => (hqI h').elim
+    have hq' : ∀ᵐ ω ∂P, ∀ q : ℚ,
+        (q : ℝ) ∈ Icc 0 M.T → sigPriceCont M B (q : ℝ) ω = sol.S (q : ℝ) ω := by
+      rw [ae_all_iff]; exact hq
+    filter_upwards [hSbd, ae_continuousOn_sigPriceCont M B, hq'] with ω hbd hcont hqω
+    intro t ht
+    have hcl := closure_Icc_inter_rat (a := (0 : ℝ)) (b := M.T) M.hT
+    have htcl : t ∈ closure (Icc 0 M.T ∩ Set.range ((↑) : ℚ → ℝ)) := by
+      rw [hcl]; exact ht
+    obtain ⟨u, huD, hut⟩ := mem_closure_iff_seq_limit.mp htcl
+    have hbound : ∀ n, |sigPriceCont M B (u n) ω| ≤ S_sup ω := by
+      intro n
+      have huI : u n ∈ Icc 0 M.T := (huD n).1
+      obtain ⟨q, hq⟩ := (huD n).2
+      have hqI : (q : ℝ) ∈ Icc 0 M.T := hq.symm ▸ huI
+      rw [← hq, hqω q hqI]
+      exact hbd _ hqI
+    have hut' : Filter.Tendsto u atTop (nhdsWithin t (Icc 0 M.T)) :=
+      tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _
+        hut (Filter.Eventually.of_forall fun n => (huD n).1)
+    have htu : Filter.Tendsto (fun n => sigPriceCont M B (u n) ω) atTop
+        (nhds (sigPriceCont M B t ω)) :=
+      (hcont.continuousWithinAt ht).tendsto.comp hut'
+    have htend : Filter.Tendsto (fun n => |sigPriceCont M B (u n) ω|) atTop
+        (nhds |sigPriceCont M B t ω|) :=
+      (continuous_abs.tendsto (sigPriceCont M B t ω)).comp htu
+    exact le_of_tendsto htend (Filter.Eventually.of_forall hbound)
+  · intro s t hs hst htT
+    have hsol := sol.is_martingale hs hst htT
+    have htI : t ∈ Icc 0 M.T := ⟨hs.trans hst, htT⟩
+    have hsI : s ∈ Icc 0 M.T := ⟨hs, hst.trans htT⟩
+    refine ⟨hsol.1.congr (hae t htI).symm, ?_⟩
+    filter_upwards [condExp_congr_ae (m := (sigFiltration B).σAlg s) (hae t htI),
+      hsol.2, hae s hsI] with ω h1 h2 h3
+    exact h1.trans (h2.trans h3.symm)
 
 /-- **Paper Theorem A (unwrapped).** Under the analytic H3 hypothesis there is a signature-price
 solution `S`, unique (up to modification on `[0, T]`) among adapted strong solutions in
@@ -95,8 +199,12 @@ theorem theorem_A_unwrapped (M : SignatureVolatilityModel) (B : MultiBrownian Ω
         (∀ t ∈ Icc 0 M.T, ∀ᵐ ω ∂P,
           S_tilde t ω = M.s₀ + kitItoInt B (fun s ω' => S_tilde s ω' * sigVol M B s ω') t ω) →
         ∀ t ∈ Icc 0 M.T, ∀ᵐ ω ∂P, S_tilde t ω = S t ω := by
-  obtain ⟨sol, h⟩ := theorem_A M B h3
-  exact ⟨sol.S, isSignaturePrice_of_solution sol, h⟩
+  obtain ⟨sol, huniq⟩ := theorem_A M B h3
+  refine ⟨sigPriceCont M B, isSignaturePrice_sigPriceCont M B h3, ?_⟩
+  intro S_tilde hadapt hclass hsde t ht
+  filter_upwards [huniq S_tilde hadapt hclass hsde t ht,
+    sigPriceCont_ae_eq_sol h3 sol ht] with ω h1 h2
+  exact h1.trans h2.symm
 
 /-- **Paper Theorem B, `→` direction (unwrapped).** The signature price is a martingale, the
 market satisfies NFLVR, every signature coordinate is a special semimartingale, and a classical
@@ -106,7 +214,10 @@ theorem theorem_B_mp_unwrapped (M : SignatureVolatilityModel) (B : MultiBrownian
     ∃ S : ℝ → Ω → ℝ, IsSignaturePrice M B S ∧
       (∀ ⦃s t : ℝ⦄, 0 ≤ s → s ≤ t → t ≤ M.T →
         Integrable (S t) P ∧ P[S t | (sigFiltration B).σAlg s] =ᵐ[P] S s) ∧
-      SatisfiesNFLVR P (AdmissibleGainsUnderP P) ∧
+      SatisfiesNFLVR_DS P
+        (BoundedBelowGains (sigFiltration B).σAlg P
+          (fun t ω => B.W t ω (kitDriver M.hd))
+          S (sigVol M B) M.T) ∧
       (∀ I : Word (M.d + 1), Nonempty (IsSpecialSemimartingale P (sigFiltration B) M.T
         (fun t ω => (paperSig2 B 0 t ω).coeff I))) ∧
       (∀ u₀ : ExtTensorAlgebra.FreeTensorAlgebra (M.d + 1),
@@ -118,8 +229,9 @@ theorem theorem_B_mp_unwrapped (M : SignatureVolatilityModel) (B : MultiBrownian
               (sigFiltration B).σAlg t] =ᵐ[P]
               fun ω => Real.exp (dualPairing (rSol.ψ (M.T - t)) (paperSig2 B 0 t ω))) →
         Nonempty (ClassicalRiccatiSolution M.w M.T riccatiOp u₀.1)) := by
-  obtain ⟨sol, h⟩ := theorem_B_mp M B h3
-  exact ⟨sol.S, isSignaturePrice_of_solution sol, h⟩
+  obtain ⟨sol, _hmart, hnflvr, hsemi, hric⟩ := theorem_B_mp M B h3
+  exact ⟨sigPriceCont M B, isSignaturePrice_sigPriceCont M B h3,
+    (isSignaturePrice_sigPriceCont M B h3).is_martingale, hnflvr, hsemi, hric⟩
 
 /-- **Refutation of the affine/Riccati `←` direction (unwrapped).** -/
 theorem not_affine_riccati_duality_mpr_unwrapped (M : SignatureVolatilityModel)
@@ -169,7 +281,10 @@ theorem not_theorem_B_unwrapped (M : SignatureVolatilityModel) (B : MultiBrownia
     ¬ ∃ S : ℝ → Ω → ℝ, IsSignaturePrice M B S ∧
       (∀ ⦃s t : ℝ⦄, 0 ≤ s → s ≤ t → t ≤ M.T →
         Integrable (S t) P ∧ P[S t | (sigFiltration B).σAlg s] =ᵐ[P] S s) ∧
-      SatisfiesNFLVR P (AdmissibleGainsUnderP P) ∧
+      SatisfiesNFLVR_DS P
+        (BoundedBelowGains (sigFiltration B).σAlg P
+          (fun t ω => B.W t ω (kitDriver M.hd))
+          S (sigVol M B) M.T) ∧
       (∀ I : Word (M.d + 1), Nonempty (IsSpecialSemimartingale P (sigFiltration B) M.T
         (fun t ω => (paperSig2 B 0 t ω).coeff I))) ∧
       (∀ u₀ : ExtTensorAlgebra.FreeTensorAlgebra (M.d + 1),
@@ -181,8 +296,8 @@ theorem not_theorem_B_unwrapped (M : SignatureVolatilityModel) (B : MultiBrownia
               (sigFiltration B).σAlg t] =ᵐ[P]
               fun ω => Real.exp (dualPairing (rSol.ψ (M.T - t)) (paperSig2 B 0 t ω))) ↔
         Nonempty (ClassicalRiccatiSolution M.w M.T riccatiOp u₀.1))) := by
-  rintro ⟨S, hS, h⟩
-  exact not_theorem_B M B h3 ⟨solutionOfIsSignaturePrice hS, h⟩
+  rintro ⟨S, hS, hmart, hnflvr, hsemi, hiff⟩
+  exact not_affine_riccati_duality M B hiff
 
 /-- The signature price `S_t = s₀ exp(∫_0^t σ dW - ½ ∫_0^t σ² ds)` (the Doléans exponential of
 Theorem A), with the Itô integral `kitItoInt B` and quadratic variation `kitQuadVar B`. -/

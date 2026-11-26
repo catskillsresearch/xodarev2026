@@ -23,11 +23,8 @@ structure Weight where
   w_zero : toFun 0 = 1
   pos : ∀ n : ℕ, 0 < toFun n
   mono : Monotone toFun
-/-- A weight is used as its underlying function `ℕ → ℝ`. -/
 instance : CoeFun Weight (fun _ => ℕ → ℝ) := ⟨Weight.toFun⟩
-/-- Letters of the alphabet `{0, …, d-1}`. -/
 abbrev Letter (d : ℕ) := Fin d
-/-- Words (finite lists of letters) over the alphabet `Fin d`. -/
 abbrev Word (d : ℕ) := List (Letter d)
 /-- **Definition 2.3 (Extended tensor algebra)**: `T((ℝ^d)) = ∏_{n ≥ 0} (ℝ^d)^{⊗ n}`,
 represented via word-indexed formal series. -/
@@ -35,17 +32,11 @@ represented via word-indexed formal series. -/
 structure ExtTensorAlgebra (d : ℕ) where
   coeff : Word d → ℝ
 namespace ExtTensorAlgebra
-/-- Zero series: every coefficient is `0`. -/
 instance {d : ℕ} : Zero (ExtTensorAlgebra d) := ⟨⟨fun _ => 0⟩⟩
-/-- Coefficientwise addition. -/
 instance {d : ℕ} : Add (ExtTensorAlgebra d) := ⟨fun a b => ⟨fun I => a.coeff I + b.coeff I⟩⟩
-/-- Coefficientwise negation. -/
 instance {d : ℕ} : Neg (ExtTensorAlgebra d) := ⟨fun a => ⟨fun I => -a.coeff I⟩⟩
-/-- Coefficientwise subtraction. -/
 instance {d : ℕ} : Sub (ExtTensorAlgebra d) := ⟨fun a b => ⟨fun I => a.coeff I - b.coeff I⟩⟩
-/-- Coefficientwise real scalar multiplication. -/
 instance {d : ℕ} : SMul ℝ (ExtTensorAlgebra d) := ⟨fun c a => ⟨fun I => c * a.coeff I⟩⟩
-/-- The coefficientwise additive group structure. -/
 instance {d : ℕ} : AddCommGroup (ExtTensorAlgebra d) where
   add_assoc a b c := by ext I; exact add_assoc _ _ _
   zero_add a := by ext I; exact zero_add _
@@ -54,7 +45,6 @@ instance {d : ℕ} : AddCommGroup (ExtTensorAlgebra d) where
   zsmul := zsmulRec
   neg_add_cancel a := by ext I; exact neg_add_cancel _
   add_comm a b := by ext I; exact add_comm _ _
-/-- The coefficientwise real vector-space structure. -/
 instance {d : ℕ} : Module ℝ (ExtTensorAlgebra d) where
   one_smul a := by ext I; exact one_mul _
   mul_smul r s a := by ext I; exact mul_assoc _ _ _
@@ -63,7 +53,6 @@ instance {d : ℕ} : Module ℝ (ExtTensorAlgebra d) where
   add_smul r s a := by ext I; exact add_mul _ _ _
   zero_smul a := by ext I; exact zero_mul _
 end ExtTensorAlgebra
-/-- The finite set of all words of length `n` over `Fin d`. -/
 def wordsOfLength (d : ℕ) : ℕ → Finset (Word d)
   | 0 => {[]}
   | n + 1 =>
@@ -142,13 +131,11 @@ lemma hypH1_of_isFinitelySupported {d : ℕ} (w : Weight) {ℓ : ExtTensorAlgebr
   rw [hl0, zero_div]
 namespace Weight
 run_cmd Lean.modifyEnv fun env => Lean.Meta.auxLemmasExt.setState env {}
-/-- The constant weight `w_n = 1`. -/
 def constOne : Weight where
   toFun _ := 1
   w_zero := rfl
   pos _ := zero_lt_one
   mono _ _ _ := le_rfl
-/-- The geometric weight `w_n = rⁿ` for `r ≥ 1`. -/
 def geometric (r : ℝ) (hr : 1 ≤ r) : Weight where
   toFun n := r ^ n
   w_zero := pow_zero r
@@ -164,7 +151,6 @@ structure HypH2 (w : Weight) where
   submult : ∀ m n : ℕ, w (m + n) ≤ C_w * w m * w n
   subfactorial : ∀ R : ℝ, 0 < R → Summable (fun n : ℕ => w n * (R ^ n / (n.factorial : ℝ)))
 namespace HypH2
-/-- The geometric weight `rⁿ` (`r ≥ 1`) is admissible, with `C_w = 1`. -/
 def geometric_admissible (r : ℝ) (hr : 1 ≤ r) : HypH2 (Weight.geometric r hr) where
   C_w := 1
   one_le_Cw := le_rfl
@@ -176,7 +162,6 @@ def geometric_admissible (r : ℝ) (hr : 1 ≤ r) : HypH2 (Weight.geometric r hr
       simp [Weight.geometric, mul_pow, mul_div_assoc]
     rw [hrew]
     exact Real.summable_pow_div_factorial (r * R)
-/-- The constant weight `1` is admissible, with `C_w = 1`. -/
 def constOne_admissible : HypH2 Weight.constOne where
   C_w := 1
   one_le_Cw := le_rfl
@@ -256,7 +241,6 @@ def generatedFiltration {Ω ι : Type*} [m₀ : MeasurableSpace Ω]
     MeasurableSpace.comap (Z s.1 i) inferInstance
   mono _ _ hst := iSup_le fun u => le_iSup_of_le ⟨u.1, u.2.1, u.2.2.trans hst⟩ le_rfl
   le_ambient _ := iSup_le fun u => iSup_le fun i => (hmeas u.1 i).comap_le
-/-- Right shift by the letter `k`: `(rightShift k u)_I = u_{I k}`. -/
 def rightShift {d : ℕ} (k : Letter (d + 1)) (u : ExtTensorAlgebra (d + 1)) :
     ExtTensorAlgebra (d + 1) :=
   ⟨fun I => u.coeff (I ++ [k])⟩
@@ -347,10 +331,8 @@ def riccatiOp {d : ℕ} (u : ExtTensorAlgebra (d + 1)) : ExtTensorAlgebra (d + 1
 end
 section
 run_cmd Lean.modifyEnv fun env => Lean.Meta.auxLemmasExt.setState env {}
-/-- Left dyadic approximant `⌊t 2ⁿ⌋₊ / 2ⁿ` of `t`. -/
 def dyadicFloor (n : ℕ) (t : ℝ) : ℝ := (⌊t * 2 ^ n⌋₊ : ℝ) / 2 ^ n
 variable {Ω : Type*}
-/-- Continuous version of `X` read along left dyadic approximants. -/
 def contVersion (X : ℝ → Ω → ℝ) (t : ℝ) (ω : Ω) : ℝ :=
   limUnder atTop fun n => X (dyadicFloor n t) ω
 lemma measurable_contVersion {m : MeasurableSpace Ω} (X : ℝ → Ω → ℝ) (t : ℝ)
@@ -358,7 +340,6 @@ lemma measurable_contVersion {m : MeasurableSpace Ω} (X : ℝ → Ω → ℝ) (
   haveI : T0Space ℝ := T6Space.toT0Space
   (StronglyMeasurable.limUnder fun n => (hX n).stronglyMeasurable).measurable
 end
-/-- Clamp a real time to nonnegative (`max t 0`). -/
 noncomputable def toNNRealTime (t : ℝ) : ℝ≥0 := Real.toNNReal t
 /-- Coordinatewise reindex for `Fin d`-valued drivers. -/
 noncomputable def reindexProcessFin {Ω : Type*} {d : ℕ}
@@ -610,6 +591,9 @@ def SAdmissible {Ω : Type*} [MeasurableSpace Ω] (σAlg : ℝ → MeasurableSpa
 def IsTerminalBoundedBelow {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω)
     (V : ℝ → Ω → ℝ) (T : ℝ) (a : ℝ) : Prop :=
   0 ≤ a ∧ ∀ᵐ ω ∂P, -a ≤ V T ω
+def IsUniformlyBoundedBelow {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω)
+    (V : ℝ → Ω → ℝ) (T : ℝ) (a : ℝ) : Prop :=
+  0 ≤ a ∧ ∀ᵐ ω ∂P, ∀ t ∈ Icc 0 T, -a ≤ V t ω
 def itoRiemannSum {Ω : Type*} (K B : ℝ → Ω → ℝ) (t : ℝ) (n : ℕ) (ω : Ω) : ℝ :=
   ∑ k : Fin (n + 1),
     K (k * t / (n + 1 : ℝ)) ω *
@@ -631,6 +615,14 @@ def TerminalBoundedBelowGains {Ω : Type*} [MeasurableSpace Ω]
   {G | ∃ (H V : ℝ → Ω → ℝ) (a : ℝ),
     SAdmissible σAlg P S σ T H ∧
     IsTerminalBoundedBelow P V T a ∧
+    IsItoIntegral P B (fun t ω => H t ω * S t ω * σ t ω) V T ∧
+    G = V T}
+def BoundedBelowGains {Ω : Type*} [MeasurableSpace Ω]
+    (σAlg : ℝ → MeasurableSpace Ω) (P : Measure Ω) (B S σ : ℝ → Ω → ℝ) (T : ℝ) :
+    Set (Ω → ℝ) :=
+  {G | ∃ (H V : ℝ → Ω → ℝ) (a : ℝ),
+    SAdmissible σAlg P S σ T H ∧
+    IsUniformlyBoundedBelow P V T a ∧
     IsItoIntegral P B (fun t ω => H t ω * S t ω * σ t ω) V T ∧
     G = V T}
 def nflvrCone {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω) (K : Set (Ω → ℝ)) :
@@ -781,8 +773,10 @@ structure IsSignaturePrice (M : SignatureVolatilityModel) (B : MultiBrownian Ω 
   S_meas : ∀ t, Measurable (S t)
   S_adapted : ∀ t (s : {s : ℝ // 0 ≤ s ∧ s ≤ t}), Measurable[(sigFiltration B).σAlg t] (S s.1)
   S_strictly_pos : ∀ t ω, 0 < S t ω
-  doleans_repr : ∀ t ω, S t ω = M.s₀ * Real.exp (kitItoInt B (sigVol M B) t ω -
-    (1 / 2 : ℝ) * kitQuadVar B (sigVol M B) t ω)
+  doleans_repr : (∀ᵐ ω ∂P, ContinuousOn (fun t => S t ω) (Icc 0 M.T)) ∧
+    ∀ t ∈ Icc 0 M.T, S t =ᵐ[P] fun ω =>
+      M.s₀ * Real.exp (kitItoInt B (sigVol M B) t ω -
+        (1 / 2 : ℝ) * kitQuadVar B (sigVol M B) t ω)
   solves_sde : ∀ t ∈ Icc 0 M.T, ∀ᵐ ω ∂P,
     S t ω = M.s₀ + kitItoInt B (fun s ω' => S s ω' * sigVol M B s ω') t ω
   sup_l2_integrable : ∃ S_sup : Ω → ℝ, Measurable S_sup ∧
@@ -809,7 +803,10 @@ theorem theorem_B_mp_unwrapped (M : SignatureVolatilityModel) (B : MultiBrownian
     ∃ S : ℝ → Ω → ℝ, IsSignaturePrice M B S ∧
       (∀ ⦃s t : ℝ⦄, 0 ≤ s → s ≤ t → t ≤ M.T →
         Integrable (S t) P ∧ P[S t | (sigFiltration B).σAlg s] =ᵐ[P] S s) ∧
-      SatisfiesNFLVR P (AdmissibleGainsUnderP P) ∧
+      SatisfiesNFLVR_DS P
+        (BoundedBelowGains (sigFiltration B).σAlg P
+          (fun t ω => B.W t ω (kitDriver M.hd))
+          S (sigVol M B) M.T) ∧
       (∀ I : Word (M.d + 1), Nonempty (IsSpecialSemimartingale P (sigFiltration B) M.T
         (fun t ω => (paperSig2 B 0 t ω).coeff I))) ∧
       (∀ u₀ : ExtTensorAlgebra.FreeTensorAlgebra (M.d + 1),
@@ -863,7 +860,10 @@ theorem not_theorem_B_unwrapped (M : SignatureVolatilityModel) (B : MultiBrownia
     ¬ ∃ S : ℝ → Ω → ℝ, IsSignaturePrice M B S ∧
       (∀ ⦃s t : ℝ⦄, 0 ≤ s → s ≤ t → t ≤ M.T →
         Integrable (S t) P ∧ P[S t | (sigFiltration B).σAlg s] =ᵐ[P] S s) ∧
-      SatisfiesNFLVR P (AdmissibleGainsUnderP P) ∧
+      SatisfiesNFLVR_DS P
+        (BoundedBelowGains (sigFiltration B).σAlg P
+          (fun t ω => B.W t ω (kitDriver M.hd))
+          S (sigVol M B) M.T) ∧
       (∀ I : Word (M.d + 1), Nonempty (IsSpecialSemimartingale P (sigFiltration B) M.T
         (fun t ω => (paperSig2 B 0 t ω).coeff I))) ∧
       (∀ u₀ : ExtTensorAlgebra.FreeTensorAlgebra (M.d + 1),

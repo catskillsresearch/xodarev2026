@@ -55,7 +55,11 @@ theorem not_theorem_B (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d
         (∀ ⦃s t : ℝ⦄, 0 ≤ s → s ≤ t → t ≤ M.T →
           Integrable (sol.S t) P ∧
           P[sol.S t | (paperSetup B M.hT).signatureFiltration.σAlg s] =ᵐ[P] sol.S s) ∧
-        SatisfiesNFLVR P (AdmissibleGainsUnderP P) ∧
+        SatisfiesNFLVR_DS P
+          (BoundedBelowGains (paperSetup B M.hT).signatureFiltration.σAlg P
+            (fun t ω => MultiBrownian.W B t ω (kitDriver M.hd))
+            (sigPriceCont M B)
+            (SignatureVolatilityModel.sigma M (paperSetup B M.hT)) M.T) ∧
         (∀ I : Word (M.d + 1),
           Nonempty (IsSpecialSemimartingale P (paperSetup B M.hT).signatureFiltration M.T
             (fun t ω => ((paperSetup B M.hT).W_hat t ω).coeff I))) ∧

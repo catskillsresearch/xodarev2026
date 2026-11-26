@@ -3,6 +3,7 @@ module
 public import SignatureVolatility.TheoremBOfSetupItoRiccatiKit
 public import SignatureVolatility.SignatureRiccatiKit.CoordSemimartingale
 public import SignatureVolatility.SignatureRiccatiKit.AffineRiccatiDualityMp
+public import SignatureVolatility.SigPriceCont
 
 
 @[expose] public section
@@ -39,7 +40,11 @@ theorem theorem_B_mp (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
       (∀ ⦃s t : ℝ⦄, 0 ≤ s → s ≤ t → t ≤ M.T →
         Integrable (sol.S t) P ∧
         P[sol.S t | (paperSetup B M.hT).signatureFiltration.σAlg s] =ᵐ[P] sol.S s) ∧
-      SatisfiesNFLVR P (AdmissibleGainsUnderP P) ∧
+      SatisfiesNFLVR_DS P
+        (BoundedBelowGains (paperSetup B M.hT).signatureFiltration.σAlg P
+          (fun t ω => MultiBrownian.W B t ω (kitDriver M.hd))
+          (sigPriceCont M B)
+          (SignatureVolatilityModel.sigma M (paperSetup B M.hT)) M.T) ∧
       (∀ I : Word (M.d + 1),
         Nonempty (IsSpecialSemimartingale P
           (paperSetup B M.hT).signatureFiltration M.T
@@ -59,7 +64,7 @@ theorem theorem_B_mp (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
   obtain ⟨sol, _⟩ := theorem_A_of_Brownian_Setup_Ito_Kit M (paperSetup B M.hT)
     (itoCalculusKit_of_mathfin B M.hT) h3
     (ae_continuousOn_sigma_of_brownian B M.hT M.w M.h2 M.ℓ M.h1)
-  exact ⟨sol, sol.is_martingale, nflvr_of_martingale_measure P,
+  exact ⟨sol, sol.is_martingale, satisfiesNFLVR_DS_sigPriceCont M B h3,
     fun I => ⟨isSpecialSemimartingale_paperSig2_coeff B I M.hT⟩,
     fun u₀ hf h => affine_riccati_duality_mp M B u₀ hf h⟩
 
