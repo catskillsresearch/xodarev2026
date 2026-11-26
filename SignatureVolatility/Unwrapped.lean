@@ -481,10 +481,11 @@ def elemGains (B : MultiBrownian Ω P 1) : Set (Lp ℝ 2 P) :=
       ∃ C : ℝ, ∀ ω, |h p ω| ≤ C) ∧
     (G : Ω → ℝ) =ᵐ[P] fun ω => ∑ p ∈ V, h p ω * (B.Wnn p.2 ω 0 - B.Wnn p.1 ω 0)}
 
-/-- **Completeness with finitely many calls** (Theorem C, left-hand side; unwrapped), for the
-Black–Scholes market: every claim `X ∈ L²(ℱ^S_T)` is a.s. equal to a cash position `c`, static
-call positions `a k` at the strikes, and dynamic gains `G` in the `L²(ℙ)`-closed span of the
-elementary Brownian gains on `[0, T]` (the space of Itô integrals `∫_0^T φ dW`). -/
+/-- **Completeness with finitely many calls** (unconditional equivalence, left-hand side;
+unwrapped), for the Black–Scholes market: every claim `X ∈ L²(ℱ^S_T)` is a.s. equal to a cash
+position `c`, static call positions `a k` at the strikes, and dynamic gains `G` in the
+`L²(ℙ)`-closed span of the elementary Brownian gains on `[0, T]` (the space of Itô integrals
+`∫_0^T φ dW`). -/
 def IsCompleteWithCallsUnwrapped (B : MultiBrownian Ω P 1) (strikes : Finset ℝ) : Prop :=
   ∀ X : Lp ℝ 2 P, X ∈ (bsMarket T s₀ σ₀ hT hs₀ hσ₀ B).L2S →
     ∃ (c : ℝ) (a : ℝ → ℝ), ∃ G ∈ (Submodule.span ℝ (elemGains T B)).topologicalClosure,
@@ -529,9 +530,9 @@ theorem bsMarket_isCompleteWithCallsUnwrapped (B : MultiBrownian Ω P 1) (strike
   rw [← (bsMarket T s₀ σ₀ hT hs₀ hσ₀ B).S_eq]
   rfl
 
-/-- **Refutation of Theorem C (unwrapped).** For the Black–Scholes market and any finite set of
-call strikes, "complete with calls ⇔ `N^*_S < ∞`" is false: the market is complete but
-`N^*_S = ∞`. -/
+/-- **Unconditional completeness iff and Black–Scholes depth (unwrapped).** For Black–Scholes
+and any finite strike set, "complete with calls ⇔ `N^*_S < ∞`" fails: complete, yet Definition 55
+gives `N^*_S = ∞`. Not a counterexample inside Theorem 56's finite-polynomial, rich-strike case. -/
 theorem not_theorem_C_unwrapped (B : MultiBrownian Ω P 1) (strikes : Finset ℝ) :
     ¬ (IsCompleteWithCallsUnwrapped T s₀ σ₀ hT hs₀ hσ₀ B strikes ↔
       (bsMarket T s₀ σ₀ hT hs₀ hσ₀ B).completenessDepth < ⊤) := fun h =>

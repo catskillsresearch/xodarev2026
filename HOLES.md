@@ -2,7 +2,7 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-26T00:40:51Z
+**Updated:** 2026-11-26T02:38:25Z
 **`sorry` occurrences:** 0 · 0 open · 0 blocked · 244 done · 0 file(s) with `sorry`.
 **Paper claims refuted:** 6 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
 
@@ -19,10 +19,10 @@ The false theorem `affine_riccati_duality_mpr` has been removed from the library
 | **counterexample** | **CounterExample_Lemma78** (`Lemma78RiccatiLipschitzFalse`) | CounterExample_Lemma78: refutes paper Lemma 78 (local Lipschitz bound for the Riccati operator); for w = 1 the operator is unbounded on the unit ball of T_w. | `SignatureVolatility/Lemma78RiccatiLipschitzFalse.lean` |
 | **counterexample** | **CounterExample_Prop58** (`Prop58BlackScholesDepthFalse`) | CounterExample_Prop58: refutes paper Prop. 58 / PDF Prop. 5.5 (Black-Scholes has completeness depth 0); Black-Scholes depth is infinite under Definition 55. | `SignatureVolatility/Prop58BlackScholesDepthFalse.lean` |
 | **counterexample** | **not_affine_riccati_duality_mpr (proved)** (`SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample`) | COUNTEREXAMPLE to a paper claim. | `SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMprCounterexample.lean` |
-| **counterexample** | **CounterExample_TheoremC** (`TheoremCCounterExample`) | CounterExample_TheoremC (proved, not_theorem_C): Black-Scholes is complete on F^S_T (vendored MathFin martingale representation, F^S = F^W) for every finite strike set, while N*_S = infinity; so the paper's 'complete iff N*_S < infinity' is false. | `SignatureVolatility/TheoremCCounterExample.lean` |
+| **counterexample** | **CounterExample_TheoremC** (`TheoremCCounterExample`) | CounterExample_TheoremC (proved, not_theorem_C): Black-Scholes is complete on F^S_T (vendored MathFin martingale representation, F^S = F^W) for every finite strike set, while N*_S = infinity under Definition 55. This refutes the unconditional equivalence 'complete iff N*_S < infinity' and the paper's Black-Scholes depth claim; it is not a counterexample inside Theorem 56's finite-polynomial / rich-strike hypotheses. | `SignatureVolatility/TheoremCCounterExample.lean` |
 | **counterexample** | **CounterExample_TheoremD** (`TheoremDCounterExample`) | CounterExample_TheoremD (theorem_D_residual_hypothesis_fails): the residual-expansion clause of Theorem 66 assumes N*_S < infinity, which fails for Black-Scholes (vacuous). | `SignatureVolatility/TheoremDCounterExample.lean` |
 | **half-proved** | **Half_TheoremD** (`TheoremD`) | Half_TheoremD: GKW projection part proved (theorem_D). The residual-expansion clause is refuted separately by CounterExample_TheoremD (TheoremDCounterExample). Paper kit / theorem goal. | `SignatureVolatility/TheoremD.lean` |
-| **refuted** | **TheoremC: refuted by CounterExample_TheoremC** (`TheoremC`) | REFUTED (CounterExample_TheoremC, theorem_C_refuted := not_theorem_C): Black-Scholes is complete with any finite set of calls but has N*_S = infinity, so 'complete iff N*_S < infinity' fails. Also: depth is infinite in every non-degenerate model; Prop. 58 refuted. Paper kit / theorem goal. | `SignatureVolatility/TheoremC.lean` |
+| **refuted** | **TheoremC: refuted by CounterExample_TheoremC** (`TheoremC`) | REFUTED as the unconditional completeness iff and the Black-Scholes depth claim (CounterExample_TheoremC, theorem_C_refuted := not_theorem_C): Black-Scholes is complete with any finite set of calls but has N*_S = infinity under Definition 55. Not a counterexample inside Theorem 56's finite-polynomial / rich-strike subcase. Also: depth is infinite in every non-degenerate model; Prop. 58 refuted. Paper kit / theorem goal. | `SignatureVolatility/TheoremC.lean` |
 
 **Live board:** [`holes.html`](holes.html) (graph embedded; open the file directly).
 

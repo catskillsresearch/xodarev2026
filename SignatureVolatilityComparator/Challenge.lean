@@ -963,15 +963,15 @@ def elemGains (B : MultiBrownian Ω P 1) : Set (Lp ℝ 2 P) :=
       Measurable[⨆ u ≤ p.1, MeasurableSpace.comap (fun ω => B.Wnn u ω 0) inferInstance] (h p) ∧
       ∃ C : ℝ, ∀ ω, |h p ω| ≤ C) ∧
     (G : Ω → ℝ) =ᵐ[P] fun ω => ∑ p ∈ V, h p ω * (B.Wnn p.2 ω 0 - B.Wnn p.1 ω 0)}
-/-- Completeness with finitely many calls (Theorem C, unwrapped). -/
+/-- Completeness with finitely many calls (unconditional Theorem C, unwrapped). -/
 def IsCompleteWithCallsUnwrapped (B : MultiBrownian Ω P 1) (strikes : Finset ℝ) : Prop :=
   ∀ X : Lp ℝ 2 P, X ∈ (bsMarket T s₀ σ₀ hT hs₀ hσ₀ B).L2S →
     ∃ (c : ℝ) (a : ℝ → ℝ), ∃ G ∈ (Submodule.span ℝ (elemGains T B)).topologicalClosure,
       (X : Ω → ℝ) =ᵐ[P] fun ω => c +
         ∑ k ∈ strikes, a k * max ((bsMarket T s₀ σ₀ hT hs₀ hσ₀ B).S T ω - k) 0 + G ω
-/-- **Refutation of Theorem C (unwrapped).** For the Black–Scholes market and any finite set of
-call strikes, "complete with calls ⇔ `N^*_S < ∞`" is false: the market is complete but
-`N^*_S = ∞`. -/
+/-- **Unconditional completeness iff and Black–Scholes depth (unwrapped).** For Black–Scholes
+and any finite strike set, "complete with calls ⇔ `N^*_S < ∞`" fails: complete, yet Definition 55
+gives `N^*_S = ∞`. Not a counterexample inside Theorem 56's finite-polynomial, rich-strike case. -/
 theorem not_theorem_C_unwrapped (B : MultiBrownian Ω P 1) (strikes : Finset ℝ) :
     ¬ (IsCompleteWithCallsUnwrapped T s₀ σ₀ hT hs₀ hσ₀ B strikes ↔
       (bsMarket T s₀ σ₀ hT hs₀ hσ₀ B).completenessDepth < ⊤) := by sorry

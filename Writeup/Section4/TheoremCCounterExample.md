@@ -1,7 +1,7 @@
-# Theorem C Counter Example
+# Refutation of the unconditional completeness equivalence
 
 @import "TheoremCCounterExample_ailean.txt" {code_block=false}
 
-Paper: Xodarev Theorem C. The paper's Theorem C says: the market of `S` and finitely many calls is complete on `ℱ^S_T` **iff** `N^*_S < ∞`. Black–Scholes is a counterexample: * `blackScholes_isCompleteWithCalls`: every `X ∈ L²(ℱ^S_T)` is `E X` plus a stochastic integral (Brownian martingale representation, vendored `MathFin.exists_itoIntegral_representation`), so the market is complete, for every finite strike set (no calls are even needed); * `blackScholes_completenessDepth_eq_top`: `N^*_S = ∞`. Hence `not_theorem_C`...
+Paper: the unconditional form of the completeness-depth equivalence, that for an arbitrary finite strike set the market of $S$ plus those calls is complete on $\mathcal F^S_T$ if and only if $N_S^\ast<\infty$. That unrestricted equivalence, and the paper's separate claim that Black--Scholes has depth $N_S^\ast=0$, fail: Black--Scholes is complete, yet Definition 55 gives $N_S^\ast=\infty$. This is not a counterexample inside Theorem 56's finite-polynomial subcase $K(N_S^\ast)<\infty$ with a sufficiently rich strike set.
 
 @import "../../SignatureVolatility/TheoremCCounterExample.lean"

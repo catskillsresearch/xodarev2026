@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-26T00:40:51Z",
+  "updated": "2026-11-26T02:38:25Z",
   "sorryCount": 0,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -2878,7 +2878,7 @@
       "status": "done",
       "kind": "refuted",
       "blocker": null,
-      "detail": "REFUTED (CounterExample_TheoremC, theorem_C_refuted := not_theorem_C): Black-Scholes is complete with any finite set of calls but has N*_S = infinity, so 'complete iff N*_S < infinity' fails. Also: depth is infinite in every non-degenerate model; Prop. 58 refuted. Paper kit / theorem goal.",
+      "detail": "REFUTED as the unconditional completeness iff and the Black-Scholes depth claim (CounterExample_TheoremC, theorem_C_refuted := not_theorem_C): Black-Scholes is complete with any finite set of calls but has N*_S = infinity under Definition 55. Not a counterexample inside Theorem 56's finite-polynomial / rich-strike subcase. Also: depth is infinite in every non-degenerate model; Prop. 58 refuted. Paper kit / theorem goal.",
       "hasSorry": false,
       "paperKitGoal": true,
       "synthetic": false,
@@ -2892,7 +2892,7 @@
       "status": "done",
       "kind": "counterexample",
       "blocker": null,
-      "detail": "CounterExample_TheoremC (proved, not_theorem_C): Black-Scholes is complete on F^S_T (vendored MathFin martingale representation, F^S = F^W) for every finite strike set, while N*_S = infinity; so the paper's 'complete iff N*_S < infinity' is false.",
+      "detail": "CounterExample_TheoremC (proved, not_theorem_C): Black-Scholes is complete on F^S_T (vendored MathFin martingale representation, F^S = F^W) for every finite strike set, while N*_S = infinity under Definition 55. This refutes the unconditional equivalence 'complete iff N*_S < infinity' and the paper's Black-Scholes depth claim; it is not a counterexample inside Theorem 56's finite-polynomial / rich-strike hypotheses.",
       "hasSorry": false,
       "paperKitGoal": false,
       "synthetic": false,

@@ -74,8 +74,13 @@ project:
     holds (HypH3 is satisfiable; it holds for constant volatility);
     not_theorem_C_unwrapped — for the Black–Scholes market (T > 0, s₀ > 0, σ₀ ≠
     0, one-dimensional Brownian motion) and every finite set of call strikes,
-    the equivalence "complete with finitely many calls on ℱ^S_T ⇔ N^*_S < ∞" is
-    false. Here complete means that every X in L²(ℱ^S_T) is almost surely c +
+    the unconditional equivalence "complete with finitely many calls on ℱ^S_T ⇔
+    N^*_S < ∞" is false, and the paper's separate claim that Black–Scholes has
+    completeness depth N^*_S = 0 is likewise false: the market is complete, but
+    under Definition 55 one has N^*_S = ∞. This is not a counterexample inside
+    Theorem 56's finite-polynomial subcase K(N^*_S) < ∞ with a strike set rich
+    enough to span polynomials in S_T of degree at most K(N^*_S). Here complete
+    means that every X in L²(ℱ^S_T) is almost surely c +
     Σ_k a_k (S_T − k)^+ + G with G in the L²-closed span of the elementary
     Brownian integrals Σ_p h_p (W_{p.2} − W_{p.1}) over intervals 0 ≤ p.1 ≤ p.2
     ≤ T with h_p bounded and σ(W_u : u ≤ p.1)-measurable;
@@ -104,7 +109,8 @@ project:
     driver and every finitely supported u₀ with finite signature transform, if
     the exponential-affine conditional-expectation formula holds through some
     classical Riccati solution, then a classical Riccati solution exists;
-    theorem_C_refuted — the same Black–Scholes iff failure as not_theorem_C;
+    theorem_C_refuted — the same refutation of the unconditional equivalence
+    and of the Black–Scholes depth claim as not_theorem_C;
     blackScholes_isCompleteWithCalls — Black–Scholes is complete on ℱ^S_T with
     finitely many calls, for every finite strike set;
     theorem_C_blackScholes_depth_infinite and
@@ -147,8 +153,8 @@ status:
     Comparator family (comparator.json): 11 theorems, all proved with no
     sorry. They are the 11 headline results below, in unwrapped form (Theorems
     A, B, D proved parts and the Lean refutations of Theorem 4.2(ii) ←,
-    Theorem B, Theorem C, the Theorem D residual hypothesis, and literal
-    and terminal-only NFLVR).
+    Theorem B, the unconditional completeness-depth equivalence, the
+    Theorem D residual hypothesis, and literal and terminal-only NFLVR).
     Further refutations (Proposition 58, Lemmas 77 and 78), the wrapped forms
     of the compared theorems and supporting results are proved in the library
     but not compared. The library and
@@ -369,9 +375,13 @@ known_gaps:
     satisfiable, e.g. constant volatility).
   - >-
     Theorem C, Proposition 58 and the Theorem D residual hypothesis: the
-    compared refutation of the completeness iff (not_theorem_C_unwrapped), the
-    non-compared library refutation of Proposition 58, and the compared failure
-    of the residual hypothesis, are for the Black–Scholes market (T > 0, s₀ > 0, σ₀ ≠ 0,
+    compared refutation not_theorem_C_unwrapped is a refutation of the
+    unconditional completeness-depth equivalence (for any finite strike set)
+    and of the paper's separate Black–Scholes depth claim, not a counterexample
+    inside Theorem 56's finite-polynomial subcase K(N^*_S) < ∞ with a
+    sufficiently rich strike set. The non-compared library refutation of
+    Proposition 58, and the compared failure of the residual hypothesis, are
+    likewise for the Black–Scholes market (T > 0, s₀ > 0, σ₀ ≠ 0,
     one-dimensional Brownian motion). In Black–Scholes, L²(ℱ^S_T) is
     infinite-dimensional, while Definition 55 depth N spans finitely many
     signature coordinates; hence N^*_S = ∞ (not 0), although the market is
@@ -424,11 +434,11 @@ alignment:
     lean: not_theorem_B_unwrapped
     module: SignatureVolatility.Unwrapped
     status: proved
-  - source: "Thm C (Thm 56): complete with finitely many calls ⇔ N^*_S < ∞ is false for Black–Scholes (T > 0, s₀ > 0, σ₀ ≠ 0, 1-dimensional Brownian motion) and every finite strike set; complete means every X in L²(F^S_T) is a.s. c + Σ_k a_k (S_T − k)^+ + G with G in the L²-closed span of elementary Brownian integrals on [0, T] (CounterExample_TheoremC)."
+  - source: "Unconditional form of Thm C (any finite strike set, no K(N^*_S)<∞ or rich-strike hypothesis): complete with finitely many calls ⇔ N^*_S < ∞ is false for Black–Scholes (T > 0, s₀ > 0, σ₀ ≠ 0, 1-dimensional Brownian motion); the market is complete, but Definition 55 gives N^*_S = ∞, so the paper's separate Black–Scholes depth claim also fails. This is not a counterexample inside Theorem 56's finite-polynomial subcase K(N^*_S)<∞ with a sufficiently rich strike set. Complete means every X in L²(F^S_T) is a.s. c + Σ_k a_k (S_T − k)^+ + G with G in the L²-closed span of elementary Brownian integrals on [0, T] (CounterExample_TheoremC)."
     lean: not_theorem_C_unwrapped
     module: SignatureVolatility.Unwrapped
     status: proved
-  - source: "Thm C refuted in headline form: same Black–Scholes iff failure as not_theorem_C."
+  - source: "Same refutation of the unconditional completeness equivalence and of the Black–Scholes depth claim as not_theorem_C. Not a counterexample inside Theorem 56's finite-polynomial, rich-strike subcase."
     lean: theorem_C_refuted
     module: SignatureVolatility.TheoremC
     status: proved

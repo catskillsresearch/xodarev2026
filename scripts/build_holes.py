@@ -68,15 +68,19 @@ COUNTEREXAMPLES: dict[str, str] = {
     "TheoremCCounterExample":
         "CounterExample_TheoremC (proved, not_theorem_C): Black-Scholes is complete on F^S_T "
         "(vendored MathFin martingale representation, F^S = F^W) for every finite strike set, "
-        "while N*_S = infinity; so the paper's 'complete iff N*_S < infinity' is false.",
+        "while N*_S = infinity under Definition 55. This refutes the unconditional equivalence "
+        "'complete iff N*_S < infinity' and the paper's Black-Scholes depth claim; it is not a "
+        "counterexample inside Theorem 56's finite-polynomial / rich-strike hypotheses.",
 }
 
 # Headline theorem modules whose paper statement is (partly) refuted. Value: (status, detail).
 REFUTED_THEOREMS: dict[str, tuple[str, str]] = {
     "TheoremC": ("refuted",
-        "REFUTED (CounterExample_TheoremC, theorem_C_refuted := not_theorem_C): Black-Scholes is "
-        "complete with any finite set of calls but has N*_S = infinity, so 'complete iff N*_S < "
-        "infinity' fails. Also: depth is infinite in every non-degenerate model; Prop. 58 refuted."),
+        "REFUTED as the unconditional completeness iff and the Black-Scholes depth claim "
+        "(CounterExample_TheoremC, theorem_C_refuted := not_theorem_C): Black-Scholes is "
+        "complete with any finite set of calls but has N*_S = infinity under Definition 55. "
+        "Not a counterexample inside Theorem 56's finite-polynomial / rich-strike subcase. "
+        "Also: depth is infinite in every non-degenerate model; Prop. 58 refuted."),
     "TheoremD": ("half-proved",
         "Half_TheoremD: GKW projection part proved (theorem_D). The residual-expansion clause is "
         "refuted separately by CounterExample_TheoremD (TheoremDCounterExample)."),

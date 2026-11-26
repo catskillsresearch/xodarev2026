@@ -9,25 +9,32 @@ open MeasureTheory
 namespace SignatureVolatility
 
 /-!
-# Theorem C (paper Theorem 56 / PDF Theorem 5.3): price-filtration completeness depth
+# Price-filtration completeness depth (paper Theorem C / Theorem 56)
 
-**The paper's claim.** The market of `S` plus finitely many calls is complete on `ℱ^S_T` iff
-`N^*_S < ∞`. Here `N^*_S` is the least `N` for which
-`closure span{⟨e_I, Ŵ_T⟩ : |I| ≤ N} ∩ L²(ℱ^S_T)` is (dense in) `L²(ℱ^S_T)` (Definition 55).
+**Definition 55.** `N^*_S` is the least `N` for which
+`closure span{⟨e_I, Ŵ_T⟩ : |I| ≤ N} ∩ L²(ℱ^S_T)` equals `L²(ℱ^S_T)`, and is `∞` if no such
+finite `N` exists (the paper also requires `K(N) < ∞` in that proviso).
 
-**What is true.** That space lies in the span of finitely many vectors, so it is
-finite-dimensional and closed. Hence the right-hand side "`N^*_S < ∞`" holds only when
+**Theorem 56** restricts the completeness-depth equivalence to the finite-polynomial subcase
+`K(N^*_S) < ∞` and to a strike set rich enough to span polynomials in `S_T` of degree at most
+`K(N^*_S)`. The **unconditional** form of the equivalence — that for an arbitrary finite strike
+set, the market of `S` plus those calls is complete on `ℱ^S_T` iff `N^*_S < ∞` — is a stronger
+claim, and is the claim formalized here.
+
+**What is true.** Each depth-`N` span is finite-dimensional. Hence `N^*_S < ∞` holds only when
 `L²(ℱ^S_T)` is finite-dimensional. In every non-degenerate model, `N^*_S = ∞` and no finite
 depth is dense (`theorem_C_depth_infinite`). This includes Black–Scholes
-(`theorem_C_blackScholes_depth_infinite`), so the paper's Proposition 58 value `N^*_S = 0` is
-false (`not_prop58_blackScholes_depth_zero`).
+(`theorem_C_blackScholes_depth_infinite`), so the paper's separate Proposition 58 claim
+`N^*_S = 0` is false (`not_prop58_blackScholes_depth_zero`).
 
-Theorem C would therefore say that every non-degenerate market with finitely many calls is
-incomplete on `ℱ^S_T`. That is false: Black–Scholes is complete on `ℱ^S_T` (Brownian martingale
-representation on `ℱ^S = ℱ^W`, `blackScholes_isCompleteWithCalls`) while `N^*_S = ∞`.
+The unconditional equivalence is therefore false: Black–Scholes is complete on `ℱ^S_T`
+(Brownian martingale representation on `ℱ^S = ℱ^W`, `blackScholes_isCompleteWithCalls`) while
+`N^*_S = ∞`. This is not a counterexample inside Theorem 56's finite-polynomial, rich-strike
+hypotheses, because the Black–Scholes witness has `N^*_S = ∞` under Definition 55.
 
 **CounterExample_TheoremC** (`theorem_C_refuted`, proved in `TheoremCCounterExample`): for the
-Black–Scholes market and every finite strike set, "complete ⇔ `N^*_S < ∞`" is false.
+Black–Scholes market and every finite strike set, the unconditional equivalence
+"complete ⇔ `N^*_S < ∞`" is false, and the paper's Black–Scholes depth claim fails.
 -/
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P]
@@ -50,8 +57,10 @@ theorem theorem_C_blackScholes_depth_infinite (T s₀ σ₀ : ℝ) (hT : 0 < T) 
         (blackScholesMarket T s₀ σ₀ hT hs₀ hσ₀ B).L2S :=
   theorem_C_depth_infinite _ (blackScholesMarket_not_finiteDimensional_L2S T s₀ σ₀ hT hs₀ hσ₀ B)
 
-/-- **CounterExample_TheoremC.** The paper's Theorem C ("complete with finitely many calls ⇔
-`N^*_S < ∞`") fails for Black–Scholes, for every finite set of strikes. -/
+/-- **Unconditional completeness iff and Black–Scholes depth.** The unconditional equivalence
+"complete with finitely many calls ⇔ `N^*_S < ∞`" (any finite strike set) fails for Black–Scholes,
+and so does the paper's separate depth claim `N^*_S = 0`. This is not a counterexample inside
+Theorem 56's finite-polynomial subcase `K(N^*_S) < ∞` with a sufficiently rich strike set. -/
 theorem theorem_C_refuted (T s₀ σ₀ : ℝ) (hT : 0 < T) (hs₀ : 0 < s₀) (hσ₀ : σ₀ ≠ 0)
     (B : MultiBrownian Ω P 1) (strikes : Finset ℝ) :
     ¬ (IsCompleteWithCalls T s₀ σ₀ hT hs₀ hσ₀ B strikes ↔

@@ -16,17 +16,20 @@ open scoped NNReal
 namespace SignatureVolatility
 
 /-!
-# CounterExample_TheoremC: Black–Scholes refutes Theorem C (paper Theorem 56 / PDF Thm 5.3)
+# CounterExample_TheoremC: Black–Scholes refutes the unconditional completeness equivalence
 
-The paper's Theorem C says: the market of `S` and finitely many calls is complete on `ℱ^S_T`
-**iff** `N^*_S < ∞`. Black–Scholes is a counterexample:
+Theorem 56 restricts "complete with finitely many calls ⇔ `N^*_S < ∞`" to the finite-polynomial
+subcase `K(N^*_S) < ∞` and a sufficiently rich strike set. The **unconditional** form of that
+equivalence — for an arbitrary finite strike set, with no `K(N^*_S) < ∞` hypothesis — is false
+for Black–Scholes, and so is the paper's separate claim that Black–Scholes has `N^*_S = 0`:
 
 * `blackScholes_isCompleteWithCalls`: every `X ∈ L²(ℱ^S_T)` is `E X` plus a stochastic integral
   (Brownian martingale representation, vendored `MathFin.exists_itoIntegral_representation`),
   so the market is complete, for every finite strike set (no calls are even needed);
-* `blackScholes_completenessDepth_eq_top`: `N^*_S = ∞`.
+* `blackScholes_completenessDepth_eq_top`: under Definition 55, `N^*_S = ∞`.
 
-Hence `not_theorem_C`: `¬ (complete ↔ N^*_S < ∞)`.
+Hence `not_theorem_C`: `¬ (complete ↔ N^*_S < ∞)`. This is not a counterexample inside
+Theorem 56's stated subcase, because the Black–Scholes witness has `N^*_S = ∞`.
 
 **Strategies.** In Black–Scholes `dS = σ₀ S dW`, so `∫ H dS = ∫ (σ₀ H S) dW`, and
 `H ↦ φ = σ₀ H S` is a bijection (`S > 0`, `σ₀ ≠ 0`) between price-integrands and Brownian
@@ -124,7 +127,7 @@ theorem blackScholes_priceFiltration_eq (B : MultiBrownian Ω P 1) {t : ℝ} (ht
   le_antisymm (blackScholes_priceFiltration_le T s₀ σ₀ hT hs₀ hσ₀ B t)
     (blackScholes_le_priceFiltration T s₀ σ₀ hT hs₀ hσ₀ B ht)
 
-/-- **Completeness with finitely many calls** (paper Theorem 56 / C, left-hand side), for the
+/-- **Completeness with finitely many calls** (unconditional equivalence, left-hand side), for the
 Black–Scholes market: every claim `X ∈ L²(ℱ^S_T)` is replicated by a cash position `c`, static
 call positions `a k` at the strikes, and a dynamic strategy with gains `∫ φ dW = ∫ H dS`
 (`φ = σ₀ H S`; see the module docstring). -/
@@ -150,9 +153,11 @@ theorem blackScholes_isCompleteWithCalls (B : MultiBrownian Ω P 1) (strikes : F
   refine ⟨∫ x, X x ∂P, 0, φ, hφ.trans (Filter.Eventually.of_forall fun ω => ?_)⟩
   simp
 
-/-- **CounterExample_TheoremC.** For the Black–Scholes market and any finite set of call strikes,
-the paper's equivalence "complete on `ℱ^S_T` ⇔ `N^*_S < ∞`" is false: the market is complete
-but `N^*_S = ∞`. -/
+/-- **Unconditional completeness iff and Black–Scholes depth.** For the Black–Scholes market and any
+finite set of call strikes, the unconditional equivalence "complete on `ℱ^S_T` ⇔ `N^*_S < ∞`" is
+false: the market is complete, but Definition 55 gives `N^*_S = ∞`. This also refutes the paper's
+separate Black–Scholes depth claim (`N^*_S = 0`). It is not a counterexample inside Theorem 56's
+finite-polynomial subcase `K(N^*_S) < ∞` with a sufficiently rich strike set. -/
 theorem not_theorem_C (B : MultiBrownian Ω P 1) (strikes : Finset ℝ) :
     ¬ (IsCompleteWithCalls T s₀ σ₀ hT hs₀ hσ₀ B strikes ↔
       (blackScholesMarket T s₀ σ₀ hT hs₀ hσ₀ B).completenessDepth < ⊤) := by

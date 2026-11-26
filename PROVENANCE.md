@@ -30,7 +30,13 @@ definition-sharpness refutations `not_literal_nflvr_unwrapped` and
 `SignatureVolatilityComparator/Solution.lean`. The unwrapped statements
 live in `SignatureVolatility/Unwrapped.lean`. Configuration:
 `comparator.json`. The field `definition_names` is empty: supporting
-lemmas in the Challenge are fully proved, not compared holes.
+lemmas in the Challenge are fully proved, not compared holes. The compared
+refutation `not_theorem_C_unwrapped` is a refutation of the unconditional
+completeness-depth equivalence (for any finite strike set) and of the
+paper's separate Black–Scholes depth claim; it is not a counterexample
+inside Theorem 56's finite-polynomial subcase `K(N^*_S) < ∞` with a
+sufficiently rich strike set, because the Black–Scholes witness has
+`N^*_S = ∞` under Definition 55.
 
 The unwrapped predicate `IsSignaturePrice` requires almost surely continuous
 paths on `[0, T]` and almost sure equality, at each time, to the Doléans

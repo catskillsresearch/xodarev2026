@@ -7,7 +7,7 @@ the ones quoted in the official project description and the comparator notes.
 | Paper claim | Lean | Narrative |
 |---|---|---|
 | Thm 4.2(ii) `←`, the iff, Theorem B | `not_affine_riccati_duality_mpr`, `not_affine_riccati_duality`, `not_theorem_B_mpr`, `not_theorem_B` (compared as `…_unwrapped`) | [affine_riccati_duality_mpr.md](affine_riccati_duality_mpr.md) |
-| Theorem C (Thm 56) | `not_theorem_C_unwrapped` (compared); `not_theorem_C`, `theorem_C_refuted` | [theorem_C.md](theorem_C.md) |
+| Unconditional completeness iff (not Thm 56's finite-polynomial subcase) | `not_theorem_C_unwrapped` (compared); `not_theorem_C`, `theorem_C_refuted` | [theorem_C.md](theorem_C.md) |
 | Proposition 58 | `not_prop58_blackScholes_depth_zero` | [prop58.md](prop58.md) |
 | Theorem D residual hypothesis | `theorem_D_residual_hypothesis_fails` (compared as `…_unwrapped`) | [theorem_D_residual.md](theorem_D_residual.md) |
 | Lemma 77 (B.1) | `not_lemma77_shuffle_estimate`, `not_lemma77_of_hypH2` | [lemma77.md](lemma77.md) |

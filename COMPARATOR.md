@@ -37,7 +37,7 @@ and in the Solution, and requires the two lists to be identical.
 | `not_affine_riccati_duality_mpr_unwrapped` | Theorem 4.2(ii), `←` direction | **refuted** |
 | `not_affine_riccati_duality_unwrapped` | Theorem 4.2(ii), the iff | **refuted** (corollary) |
 | `not_theorem_B_mpr_unwrapped`, `not_theorem_B_unwrapped` | Theorem B's `←` Riccati clause; full Theorem B conjunction | **refuted** (corollaries, each with unused `HypH3`) |
-| `not_theorem_C_unwrapped` | Theorem C (Thm 56); complete = every `X ∈ L²(ℱ^S_T)` is a.s. `c + Σ_k a_k (S_T − k)^+ + G`, `G` in the `L²`-closed span of elementary Brownian integrals `Σ_p h_p (W_{p.2} − W_{p.1})` on `[0, T]` | **refuted** for Black–Scholes |
+| `not_theorem_C_unwrapped` | Unconditional form of Theorem C (any finite strike set; not the finite-polynomial / rich-strike subcase of Thm 56); complete = every `X ∈ L²(ℱ^S_T)` is a.s. `c + Σ_k a_k (S_T − k)^+ + G`, `G` in the `L²`-closed span of elementary Brownian integrals `Σ_p h_p (W_{p.2} − W_{p.1})` on `[0, T]` | **refuted** for Black–Scholes (unconditional iff, and the BS depth claim); not a counterexample inside Thm 56's stated hypotheses |
 | `theorem_D_unwrapped` | Theorem D / Thm 66, GKW projection | proved |
 | `theorem_D_residual_hypothesis_fails_unwrapped` | Theorem D, residual expansion "if `N^*_S < ∞`" | hypothesis fails for Black–Scholes |
 | `not_literal_nflvr_unwrapped` | Defs 2.17 and 4.3, literal NFLVR (no wealth lower bound) | **refuted** for Black–Scholes |
@@ -49,7 +49,7 @@ Proved in the library (no `sorry`) but **not compared**: the wrapped forms `theo
 square-integrable predictable integrands), `theorem_D`, `theorem_D_residual_hypothesis_fails`,
 `not_literal_nflvr`, `not_terminal_bdd_nflvr`;
 `bsMarket_isCompleteWithCallsUnwrapped`; `affine_riccati_duality_mp` (Theorem
-4.2(ii) `→`), `theorem_C_refuted` (same iff failure as `not_theorem_C`),
+4.2(ii) `→`), `theorem_C_refuted` (same unconditional-iff and BS-depth failure as `not_theorem_C`),
 `blackScholes_isCompleteWithCalls`, `theorem_C_depth_infinite`,
 `theorem_C_blackScholes_depth_infinite`, `not_prop58_blackScholes_depth_zero` and
 `blackScholes_completenessDepth_eq_top` (Proposition 58 refuted), `not_lemma77_shuffle_estimate`
@@ -90,11 +90,14 @@ matches its Lean statement. The verbatim outside (Gemini "Carbon") sources are i
     `v₁ → 0`.
   - `not_affine_riccati_duality`, `not_theorem_B_mpr` and `not_theorem_B` follow from it.
     `not_theorem_B_mpr` and `not_theorem_B` carry an additional unused `HypH3` hypothesis.
-- **Theorem C** (`not_theorem_C_unwrapped`). Black–Scholes is complete, by Brownian martingale
+- **Unconditional completeness equivalence** (`not_theorem_C_unwrapped`). Black–Scholes is complete, by Brownian martingale
   representation, since `ℱ^S = ℱ^W`; every Itô integral `∫_0^T φ dW` lies in the closed span of
-  elementary integrals (density of simple integrands and continuity of the Itô isometry). But `N^*_S = ∞`, because `L²(ℱ^S_T)` is
-  infinite-dimensional while each depth-`N` span is finite-dimensional. So "complete ⇔ `N^*_S < ∞`"
-  fails.
+  elementary integrals (density of simple integrands and continuity of the Itô isometry). But under
+  Definition 55, `N^*_S = ∞`, because `L²(ℱ^S_T)` is
+  infinite-dimensional while each depth-`N` span is finite-dimensional. So the unconditional equivalence
+  "complete with calls, for any finite strike set, ⇔ `N^*_S < ∞`" fails, and so does the paper's
+  separate claim that Black–Scholes has `N^*_S = 0`. This is not a counterexample inside Theorem 56's
+  finite-polynomial subcase `K(N^*_S) < ∞` with a sufficiently rich strike set.
 - **Proposition 58** (`not_prop58_blackScholes_depth_zero`). `W_T` is a function of `S_T`. The
   events `{W_T ∈ (k, k+1]}` are disjoint and have positive probability, so `L²(ℱ^S_T)` is not the
   constants, and the depth is `∞ ≠ 0`.
