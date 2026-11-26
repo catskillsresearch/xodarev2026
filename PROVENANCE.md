@@ -12,6 +12,12 @@ under his direction and review. The source paper is cited as literature
 only and is not licensed under this repository's Apache-2.0 terms (see
 `NOTICE`).
 
+**This repository is registered with Palomar on its own**, for the Xodarev
+signature-volatility development alone, following the Challenge / Solution /
+`comparator.json` / `formalization.yaml` pattern. Registry entry:
+[PALOMAR-2026-11-26-000043](https://palomar-registry.org/entry.html?id=PALOMAR-2026-11-26-000043&version=1),
+version 1.
+
 ## Framing
 
 Primary story: **rigorous reconstruction / verification** of Xodarev’s

@@ -1,6 +1,6 @@
 # Comparator: what is compared and what it means
 
-Palomar registration: TBD.
+Palomar registration: [PALOMAR-2026-11-26-000043](https://palomar-registry.org/entry.html?id=PALOMAR-2026-11-26-000043&version=1), version 1.
 
 `comparator.json` lists 11 unwrapped theorems (Theorems A–D, their refutations, and the two NFLVR definition-sharpness refutations), all proved in this repository with no `sorry`
 (axioms: `propext`, `Quot.sound`, `Classical.choice`). They are compared in **unwrapped** form

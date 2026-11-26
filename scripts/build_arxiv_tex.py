@@ -41,7 +41,7 @@ LISTING_CHUNK_LINES = 400
 AUTHOR = "Lars Warren Ericson"
 COMPANY = "Catskills Research Company"
 GITHUB_URL = r"https://github.com/catskillsresearch/xodarev2026"
-PALOMAR_URL = r""
+PALOMAR_URL = r"https://palomar-registry.org/entry.html?id=PALOMAR-2026-11-26-000043&version=1"
 ORCID = "0000-0001-8299-9361"
 EMAIL = "lars.ericson@catskillsresearch.com"
 
