@@ -766,7 +766,7 @@ def sigVol (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d) (t : ℝ)
 def SigTransformFinite {d : ℕ} (B : MultiBrownian Ω P d) (T : ℝ)
     (u₀ : ExtTensorAlgebra (d + 1)) : Prop :=
   ∀ t ∈ Icc 0 T, Integrable (fun ω => Real.exp (dualPairing u₀ (paperSig2 B 0 t ω))) P
-/-- Signature-price solution of `dS = S σ dW`, `S_0 = s₀` (paper Theorem A). -/
+/-- Signature-price solution of `dS = S σ dW`, `S_0 = s₀`: a.s. continuous paths on `[0, T]` and a.s. Doléans representation at each time (paper Theorem A). -/
 structure IsSignaturePrice (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
     (S : ℝ → Ω → ℝ) : Prop where
   S_zero : ∀ ω, S 0 ω = M.s₀
@@ -796,8 +796,8 @@ theorem theorem_A_unwrapped (M : SignatureVolatilityModel) (B : MultiBrownian Ω
           S_tilde t ω = M.s₀ + kitItoInt B (fun s ω' => S_tilde s ω' * sigVol M B s ω') t ω) →
         ∀ t ∈ Icc 0 M.T, ∀ᵐ ω ∂P, S_tilde t ω = S t ω := by sorry
 /-- **Paper Theorem B, `→` direction (unwrapped).** The signature price is a martingale, the
-market satisfies NFLVR, every signature coordinate is a special semimartingale, and a classical
-Riccati solution exists whenever the affine transform formula holds. -/
+market satisfies Delbaen–Schachermayer NFLVR for uniformly bounded-below admissible gains,
+every signature coordinate is a special semimartingale, and a classical Riccati solution exists whenever the affine transform formula holds. -/
 theorem theorem_B_mp_unwrapped (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
     (h3 : HypH3 P M.T (sigVol M B)) :
     ∃ S : ℝ → Ω → ℝ, IsSignaturePrice M B S ∧

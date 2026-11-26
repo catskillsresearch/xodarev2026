@@ -207,8 +207,9 @@ theorem theorem_A_unwrapped (M : SignatureVolatilityModel) (B : MultiBrownian Ω
   exact h1.trans h2.symm
 
 /-- **Paper Theorem B, `→` direction (unwrapped).** The signature price is a martingale, the
-market satisfies NFLVR, every signature coordinate is a special semimartingale, and a classical
-Riccati solution exists whenever the affine transform formula holds. -/
+market satisfies Delbaen–Schachermayer NFLVR for uniformly bounded-below admissible gains,
+every signature coordinate is a special semimartingale, and a classical Riccati solution
+exists whenever the affine transform formula holds. -/
 theorem theorem_B_mp_unwrapped (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
     (h3 : HypH3 P M.T (sigVol M B)) :
     ∃ S : ℝ → Ω → ℝ, IsSignaturePrice M B S ∧

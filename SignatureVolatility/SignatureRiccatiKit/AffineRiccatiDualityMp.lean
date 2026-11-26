@@ -22,8 +22,7 @@ transform, that the conditional transform is exponential-affine,
 This file proves the `→` direction (`affine_riccati_duality_mp`): an exponential-affine
 representation through a classical Riccati solution yields such a solution. The `←` direction
 (that the positive local martingale `exp⟨ψ(T − t), Ŵ_t⟩` is the true conditional expectation)
-is false as a universal statement; see `not_affine_riccati_duality_mpr` in
-`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMprCounterexample.lean`.
+is false as a universal statement; see `not_affine_riccati_duality_mpr`.
 
 Proved supporting fact for `←` (in `RiccatiExpProcess`): along a classical solution the exponent
 `⟨ψ(T − t), Ŵ_t⟩` is a.s. summable and continuous in `t`

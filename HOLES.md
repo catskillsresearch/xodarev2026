@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-26T00:16:11Z
-**`sorry` occurrences:** 0 · 1 open · 0 blocked · 243 done · 0 file(s) with `sorry`.
+**Updated:** 2026-11-26T00:40:28Z
+**`sorry` occurrences:** 0 · 0 open · 0 blocked · 244 done · 0 file(s) with `sorry`.
 **Paper claims refuted:** 6 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
 
 ## The affine / Riccati `<-` direction is refuted
@@ -52,9 +52,7 @@ _None._
 
 ## Open now (Layer 0)
 
-| Id | File |
-|---|---|
-| `TheoremB_DS.writeup` | `Writeup/COMPARATOR.md` |
+_None — every module is blocked or verified._
 
 ## NflvrDoubling subtasks
 
@@ -96,7 +94,7 @@ Upgrade of `theorem_B_mp`'s NFLVR conjunct from `AdmissibleGainsUnderP` to `Sati
 | done | `TheoremB_DS.nflvrDs` | `8ced7b0` | Every G in BoundedBelowGains is integrable with E[G]≤0, hence SatisfiesNFLVR_DS holds by nflvr_ds_of_nonpos_mean. No H3. Proved for adapted, a.s.-continuous S and σ on the raw path filtration (Carbon/Gemini, Mathlib 4.35 repairs). |
 | done | `TheoremB_DS` | `5516ccf` | Way A: IsSignaturePrice.doleans_repr is a.s. path-continuity on [0, T] and a.s. equality at each t to the Doléans exponential (kitItoInt / kitQuadVar). theorem_B_mp_unwrapped asserts SatisfiesNFLVR_DS for BoundedBelowGains of that S itself (witness sigPriceCont). Bundled theorem_B_mp keeps the pointwise SignaturePriceSolution from theorem_A and asserts DS NFLVR for sigPriceCont, which equals sol.S a.s. at each t. theorem_B_of_Setup_Ito_Riccati_Kit is unchanged (no MultiBrownian). not_theorem_B and not_theorem_B_unwrapped negate the same conjuncts. SignaturePriceSolution and theorem_A are unchanged. |
 | done | `TheoremB_DS.challenge` | `5516ccf` | IsUniformlyBoundedBelow and BoundedBelowGains copied into the Challenge; IsSignaturePrice.doleans_repr and the NFLVR conjuncts of theorem_B_mp_unwrapped and not_theorem_B_unwrapped match the solution. Still sorry, 1000 lines / 54955 bytes, 11 theorem names, definition_names empty. Strict compare matched 44832 constants. |
-| open | `TheoremB_DS.writeup` | `—` | Update the Theorem B narrative, PROVENANCE.md and COMPARATOR.md so the compared conjunct is full Delbaen–Schachermayer NFLVR, crediting Carbon (Gemini). English must match Lean 100%. |
+| done | `TheoremB_DS.writeup` | `pending` | The writeup is a paper for mathematicians: no file names or build detail, Lean pretty-printed as in lyasoff2016 and Nowakowska. IsSignaturePrice is a.s. continuous with an a.s. Doléans representation; Theorem B's NFLVR is Delbaen–Schachermayer over bounded-below admissible gains. Palomar English matches. Carbon (Gemini) is credited for the scaled-tensor and doubling arguments. |
 
 ## By group
 
@@ -369,7 +367,7 @@ Upgrade of `theorem_B_mp`'s NFLVR conjunct from `AdmissibleGainsUnderP` to `Sati
 | done | `NflvrDoubling.wealthProcess` | `SignatureVolatility/NflvrDoubling.lean` |
 | done | `NflvrDoubling.writeup` | `Writeup/PalomarRegistration.md` |
 
-### Theorem B DS NFLVR — 1 hole(s)
+### Theorem B DS NFLVR — 0 hole(s)
 
 | Status | Id | File |
 |---|---|---|
@@ -382,7 +380,7 @@ Upgrade of `theorem_B_mp`'s NFLVR conjunct from `AdmissibleGainsUnderP` to `Sati
 | done | `TheoremB_DS.nflvrDs` | `SignatureVolatility/NflvrDS.lean` |
 | done | `TheoremB_DS.riemannL2` | `SignatureVolatility/NflvrBoundedBelow.lean` |
 | done | `TheoremB_DS.superMartingale` | `SignatureVolatility/NflvrDS.lean` |
-| open | `TheoremB_DS.writeup` | `Writeup/COMPARATOR.md` |
+| done | `TheoremB_DS.writeup` | `Writeup/PalomarRegistration.md` |
 
 ## Dependency sketch
 

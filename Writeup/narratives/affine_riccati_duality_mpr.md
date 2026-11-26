@@ -1,11 +1,8 @@
 # Why the `←` affine / Riccati duality fails (paper Thm 4.2(ii); Theorem B's Riccati clause)
 
-**Lean:** `not_affine_riccati_duality_mpr`
-(`SignatureVolatility/SignatureRiccatiKit/AffineRiccatiDualityMprCounterexample.lean`), with
-corollaries `not_affine_riccati_duality` (`SignatureRiccatiKit/AffineRiccatiDuality.lean`),
-`not_theorem_B_mpr` and `not_theorem_B` (`TheoremBMpr.lean`). Axioms: `propext`,
-`Classical.choice`, `Quot.sound`. All four are compared in unwrapped form
-(`SignatureVolatility/Unwrapped.lean`: `not_affine_riccati_duality_mpr_unwrapped`,
+**Lean:** `not_affine_riccati_duality_mpr`, with corollaries `not_affine_riccati_duality`,
+`not_theorem_B_mpr` and `not_theorem_B`. Axioms: `propext`, `Classical.choice`, `Quot.sound`.
+All four are compared in unwrapped form (`not_affine_riccati_duality_mpr_unwrapped`,
 `not_affine_riccati_duality_unwrapped`, `not_theorem_B_mpr_unwrapped`, `not_theorem_B_unwrapped`;
 same statements, with the signature, its filtration and the price written directly in terms of
 the Brownian driver).
@@ -70,6 +67,6 @@ verified** by us). These references are not Lean theorems.
 
 **Source material.** The verbatim Gemini "Carbon" narrative and Lean blueprint, as pasted by Lars
 Warren Ericson on 2026-11-24, is in
-[`appendix/carbon_affine_riccati_duality_mpr.md`](appendix/carbon_affine_riccati_duality_mpr.md).
+the appendix on arguments due to Carbon.
 The Lean route above follows it. It differs in packaging: Girsanov-free pieces, and pillars
 A–D split across `SignatureRiccatiKit/*` modules.

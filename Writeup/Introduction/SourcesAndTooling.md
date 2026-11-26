@@ -9,4 +9,3 @@
 - Palomar packaging: [`formalization.yaml`](../../formalization.yaml), [`COMPARATOR.md`](../../COMPARATOR.md), [`comparator.json`](../../comparator.json)
 - Counterexample narratives (English matched to Lean strength): [`Writeup/narratives/`](../narratives/README.md)
 - Source paper TeX: [`sources/arXiv-2605.17142v1/main.tex`](../../sources/arXiv-2605.17142v1/main.tex)
-

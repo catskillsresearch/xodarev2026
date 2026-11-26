@@ -1,7 +1,7 @@
 # Why Proposition 58 (PDF Prop. 5.5) fails
 
 **Lean:** `not_prop58_blackScholes_depth_zero`, `blackScholes_completenessDepth_eq_top`
-(`Prop58BlackScholesDepthFalse.lean`). Both are proved in the library; they are not compared.
+(`Prop58BlackScholesDepthFalse`). Both are proved in the library; they are not compared.
 
 **Claim.** Black–Scholes has `(N^*_S, K) = (0, 1)`.
 
@@ -15,5 +15,4 @@ No finite-level span is dense, so Lean proves `N^*_S = ∞`, in particular `≠ 
 is `completenessDepth ≠ 0` (with `= ⊤` alongside) for every `T > 0`, `s₀ > 0`, `σ₀ ≠ 0` and every
 driver `B`.
 
-**Source material.** No verbatim Carbon text for this refutation was found in the repository
-or `.carbon/`. See `README.md`.
+**Source material.** No verbatim Carbon text for this refutation was

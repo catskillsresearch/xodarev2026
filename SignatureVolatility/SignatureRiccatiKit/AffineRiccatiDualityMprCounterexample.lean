@@ -55,14 +55,9 @@ public import SignatureVolatility.SignatureRiccatiKit.CounterexampleV1CondExp
 /-!
 # Counterexample to the paper's `←` affine / Riccati duality
 
-Source: Gemini Carbon (outside opinion, 2026-11-24), filled-in Lean (Parts 1–5);
-verbatim text in `Writeup/narratives/appendix/carbon_affine_riccati_duality_mpr.md`,
-short accurate narrative in `Writeup/narratives/affine_riccati_duality_mpr.md`.
-Parts 1–3 and pillars A–D are sorry-free; pillars B and C are assembled here
-from the piece modules B1–B5 and C1–C3. Part 5 assembles
-`not_affine_riccati_duality_mpr` from pillars A–D (axioms: `propext`,
-`Classical.choice`, `Quot.sound`). The tensor family and `v₁` live in
-`CounterexampleTensor` and `CounterexampleV1`.
+Source: Gemini Carbon. This module assembles `not_affine_riccati_duality_mpr`
+from the supporting lemmas (axioms: `propext`, `Classical.choice`, `Quot.sound`).
+The tensor family and `v₁` live in `CounterexampleTensor` and `CounterexampleV1`.
 -/
 
 @[expose] public section

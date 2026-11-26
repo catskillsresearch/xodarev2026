@@ -734,7 +734,7 @@ theorem expectation_le_zero_of_boundedBelowGain {d : ℕ} (hd : 0 < d) (B : Mult
             (Eventually.of_forall fun r => Ioo_subset_Icc_self (hq_Ioo r)))
         exact tendsto_nhds_unique (tendsto_const_nhds.congr hq_eq) hM_lim
     rw [hMT, hMV]
-  -- 3. Apply `expectation_le_zero_of_bounded_below_local_martingale` (already in `NflvrCone.lean`!)
+  -- 3. Apply `expectation_le_zero_of_bounded_below_local_martingale`.
   choose M_seq hM_int hM_zero hM_eq using hloc_ex
   have hM_bdd : ∀ m, ∀ᵐ ω ∂P, -a ≤ M_seq m ω := fun m => by
     filter_upwards [hM_eq m, hV_bdd] with ω h1 h2

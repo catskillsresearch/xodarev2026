@@ -2,6 +2,4 @@
 
 @import "Remark219BlackScholesRiccati_ailean.txt" {code_block=false}
 
-**[SignatureVolatility/Remark219BlackScholesRiccati.lean](../../../SignatureVolatility/Remark219BlackScholesRiccati.lean)**
-
 @import "../../../SignatureVolatility/Remark219BlackScholesRiccati.lean"

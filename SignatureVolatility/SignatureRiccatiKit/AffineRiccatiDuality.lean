@@ -23,8 +23,7 @@ iff for the paper operator `riccatiOp`, has been dropped: that kit field is an a
 hypothesis, and the paper operator does not satisfy it.
 
 No `sorry` is introduced here. The proof follows from `not_affine_riccati_duality_mpr`, which is
-proved sorry-free in `AffineRiccatiDualityMprCounterexample` (see
-`Writeup/narratives/affine_riccati_duality_mpr.md`).
+proved sorry-free as `not_affine_riccati_duality_mpr`.
 -/
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P]

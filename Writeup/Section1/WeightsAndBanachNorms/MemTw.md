@@ -2,6 +2,4 @@
 
 @import "MemTw_ailean.txt" {code_block=false}
 
-**[SignatureVolatility/MemTw.lean](../../../SignatureVolatility/MemTw.lean)**
-
 @import "../../../SignatureVolatility/MemTw.lean"

@@ -2,6 +2,4 @@
 
 @import "Corollary36SigmaWellDefined_ailean.txt" {code_block=false}
 
-**[SignatureVolatility/Corollary36SigmaWellDefined.lean](../../../SignatureVolatility/Corollary36SigmaWellDefined.lean)**
-
 @import "../../../SignatureVolatility/Corollary36SigmaWellDefined.lean"

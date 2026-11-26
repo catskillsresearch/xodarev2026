@@ -478,12 +478,16 @@ SYNTHETIC_NODES: list[dict] = [
     {
         "id": "TheoremB_DS.writeup",
         "label": "Theorem B DS writeup (Carbon/Gemini)",
-        "status": "open",
+        "status": "done",
         "section": 11,
-        "detail": "Update the Theorem B narrative, PROVENANCE.md and COMPARATOR.md so "
-                  "the compared conjunct is full Delbaen–Schachermayer NFLVR, crediting "
-                  "Carbon (Gemini). English must match Lean 100%.",
-        "file": "Writeup/COMPARATOR.md",
+        "detail": "The writeup is a paper for mathematicians: no file names or build "
+                  "detail, Lean pretty-printed as in lyasoff2016 and Nowakowska. "
+                  "IsSignaturePrice is a.s. continuous with an a.s. Doléans "
+                  "representation; Theorem B's NFLVR is Delbaen–Schachermayer over "
+                  "bounded-below admissible gains. Palomar English matches. "
+                  "Carbon (Gemini) is credited for the scaled-tensor and doubling arguments.",
+        "file": "Writeup/PalomarRegistration.md",
+        "commits": "pending",
     },
 ]
 

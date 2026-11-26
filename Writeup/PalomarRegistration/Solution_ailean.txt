@@ -1,1 +1,1 @@
-This is the Palomar Solution. It proves the 9 compared theorems, with no `sorry` and with only the permitted axioms `propext`, `Classical.choice`, and `Quot.sound`. The 9 headline results are listed in `formalization.yaml`. The Lean source is `SignatureVolatilityComparator/Solution.lean`.
+This is the Palomar Solution. It proves the eleven compared theorems, with no `sorry` and with only the permitted axioms `propext`, `Classical.choice`, and `Quot.sound`.

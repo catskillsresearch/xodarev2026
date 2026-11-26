@@ -1,1 +1,1 @@
-For every `λ ≥ 1`, at `t = T - λ^{-2/3}(T/2)`, `𝔼[M_T^(λ) | ℱ_t] = M_t^(λ) * v₁(λ^{1/3} W_t)` a.s. Key declarations include lemmas `counterexampleV1_condExp`. The Lean source is `SignatureRiccatiKit/CounterexampleV1CondExp.lean`.
+For every `λ ≥ 1`, at `t = T - λ^{-2/3}(T/2)`, `𝔼[M_T^(λ) | ℱ_t] = M_t^(λ) * v₁(λ^{1/3} W_t)` a.s. Key declarations include lemmas `counterexampleV1_condExp`.

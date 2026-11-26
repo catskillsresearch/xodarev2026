@@ -8,6 +8,4 @@ Paper: Xodarev Theorem D. For every square-integrable price-filtration claim $X$
 
 Uses `GKWDecompositionSetup.replicable_hasOrthProj` and `replicableStarProjection` for the Hilbert projection; part (3) reuses the completeness-depth witness pattern from Theorem C. Entry point: `theorem_D`.
 
-**[SignatureVolatility/TheoremD.lean](../../SignatureVolatility/TheoremD.lean)**
-
 @import "../../SignatureVolatility/TheoremD.lean"

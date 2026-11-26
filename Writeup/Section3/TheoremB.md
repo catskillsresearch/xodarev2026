@@ -2,14 +2,15 @@
 
 @import "TheoremB_ailean.txt" {code_block=false}
 
-Paper: Xodarev Theorem B. Under H1–H3 and a `SignatureRiccatiKit`:
+Paper: Xodarev Theorem B. Under H1–H3:
 
-1. $S$ is a true $(\mathcal F^{\widehat W}_t,\mathbb P)$-martingale on $[0,T]$; 2. NFLVR holds for admissible gains; 3. every finite signature coordinate is a special semimartingale; 4. nonempty classical Riccati solutions are equivalent (via the kit) to the exponential-affine conditional transform representation.
+1. $S$ is a true $(\mathcal F^{\widehat W}_t,\mathbb P)$-martingale on $[0,T]$;
+2. NFLVR holds for admissible gains;
+3. every finite signature coordinate is a special semimartingale;
+4. nonempty classical Riccati solutions are equivalent to the exponential-affine conditional transform representation.
 
-The proved entry point is `theorem_B_mp` (martingale, NFLVR, special-semimartingale coordinates, and the `→` Riccati direction). Clause (3) is stated with `Nonempty (IsSpecialSemimartingale …)` because the Lean object is a structure, not a `Prop`. The paper's full Theorem B (including the `←` iff) is false; see `not_theorem_B`. The NFLVR conjunct of `theorem_B_mp` is `SatisfiesNFLVR` for `AdmissibleGainsUnderP`, not Delbaen–Schachermayer NFLVR for uniformly bounded-below admissible gains. Literal NFLVR and the terminal-only bound are refuted for Black–Scholes; see [`narratives/nflvr_literal.md`](../narratives/nflvr_literal.md).
-
-**[SignatureVolatility/TheoremB.lean](../../SignatureVolatility/TheoremB.lean)**
+The proved entry point is `theorem_B_mp` (martingale, Delbaen–Schachermayer NFLVR for `BoundedBelowGains` of a continuous version of the packaged solution, special-semimartingale coordinates, and the forward Riccati direction). Clause (3) is stated with `Nonempty (IsSpecialSemimartingale …)` because the Lean object is a structure, not a `Prop`. The compared theorem `theorem_B_mp_unwrapped` asserts the same four conjuncts for an `IsSignaturePrice` process $S$ itself, so the NFLVR statement is for $S$. The paper's full Theorem B (including the converse iff) is false; see `not_theorem_B`. Literal NFLVR and the terminal-only bound are refuted for Black–Scholes; see the narrative with the main results.
 
 @import "../../SignatureVolatility/TheoremB.lean"
 
-**The `←` direction is false.** The false theorem `affine_riccati_duality_mpr` has been removed. Its negation `not_affine_riccati_duality_mpr` is assembled in the counterexample module; `not_theorem_B_mpr` and `not_theorem_B` hang off it. All are proved sorry-free and compared. Why: [`narratives/affine_riccati_duality_mpr.md`](../narratives/affine_riccati_duality_mpr.md). See also [`SupportingModules/AffineRiccatiDualityMpr.md`](SupportingModules/AffineRiccatiDualityMpr.md) and [`Writeup/narratives/appendix/carbon_affine_riccati_duality_mpr.md`](../narratives/appendix/carbon_affine_riccati_duality_mpr.md).
+**The converse direction is false.** The false theorem `affine_riccati_duality_mpr` has been removed. Its negation `not_affine_riccati_duality_mpr` is assembled in the counterexample development; `not_theorem_B_mpr` and `not_theorem_B` hang off it. All are proved and compared. The argument is due to Gemini Carbon and is narrated with the main results.

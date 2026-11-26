@@ -1,7 +1,7 @@
 # Why Lemma 77 (Lemma B.1, weighted shuffle estimate) fails
 
 **Lean:** `not_lemma77_shuffle_estimate`, `not_lemma77_of_hypH2`
-(`Lemma77ShuffleEstimateFalse.lean`). Both are proved in the library; they are not compared.
+(`Lemma77ShuffleEstimateFalse`). Both are proved in the library; they are not compared.
 
 **Claim.** Under H2 there is `C` with `‖a ⧢ b‖_w ≤ C ‖a‖_w ‖b‖_w` on `T_w`.
 
@@ -15,4 +15,3 @@ not equivalent to `w`. The Lean statement of `not_lemma77_shuffle_estimate` is
 `not_lemma77_of_hypH2` is the same conclusion with an unused `HypH2` hypothesis, so it also covers
 every H2 weight.
 
-**Source material.** No verbatim Carbon text found. See `README.md`.

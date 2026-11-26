@@ -6,6 +6,4 @@ Paper: Xodarev Theorem C. For dense strike sets $\mathcal K_1,\mathcal K_2\subse
 
 Depth is `sInf` of levels whose truncated signature span closes to $\mathcal V_\infty$. The reverse implication uses `csInf_mem` on $\mathbb N^\infty$ and monotonicity of `V_subspace`, with `not_top_le_coe` ruling out an empty realizing set. Entry point: `theorem_C`.
 
-**[SignatureVolatility/TheoremC.lean](../../SignatureVolatility/TheoremC.lean)**
-
 @import "../../SignatureVolatility/TheoremC.lean"

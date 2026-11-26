@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-26T00:16:11Z",
+  "updated": "2026-11-26T00:40:28Z",
   "sorryCount": 0,
   "legend": {
     "open": "No unfinished import-deps \u2014 verify / prove next (TBD)",
@@ -15,7 +15,7 @@
     "Paper kit goals: ProlongedBrownianSetup.StratonovichOfBM, ItoCalculusKit.OfMathFin, PriceFiltrationSignatureSpace.OfMarket, GKWDecompositionSetup.OfPFS, TheoremA, TheoremB, TheoremC, TheoremD.",
     "Blue = done (proved, counterexample or refuted; no sorry). Green = open. Grey = blocked. Counterexample / refutation labels are shown as text on the node.",
     "Regenerate with: python3 scripts/build_holes.py",
-    "Open tips: TheoremB_DS.writeup."
+    "Open tips: (none)."
   ],
   "paperKitGoals": [
     "ProlongedBrownianSetup.StratonovichOfBM",
@@ -3434,15 +3434,15 @@
       "id": "TheoremB_DS.writeup",
       "label": "Theorem B DS writeup (Carbon/Gemini)",
       "section": 11,
-      "file": "Writeup/COMPARATOR.md",
-      "status": "open",
+      "file": "Writeup/PalomarRegistration.md",
+      "status": "done",
       "kind": null,
       "blocker": null,
-      "detail": "Update the Theorem B narrative, PROVENANCE.md and COMPARATOR.md so the compared conjunct is full Delbaen\u2013Schachermayer NFLVR, crediting Carbon (Gemini). English must match Lean 100%.",
+      "detail": "The writeup is a paper for mathematicians: no file names or build detail, Lean pretty-printed as in lyasoff2016 and Nowakowska. IsSignaturePrice is a.s. continuous with an a.s. Dol\u00e9ans representation; Theorem B's NFLVR is Delbaen\u2013Schachermayer over bounded-below admissible gains. Palomar English matches. Carbon (Gemini) is credited for the scaled-tensor and doubling arguments.",
       "hasSorry": false,
       "paperKitGoal": false,
       "synthetic": true,
-      "commits": null
+      "commits": "pending"
     }
   ],
   "edges": [

@@ -16,24 +16,27 @@ namespace SignatureVolatility
 # Paper Theorem B, `→` part (proved)
 
 Paper Theorem B: under H1–H3 the Theorem A price is a martingale on the signature filtration,
-NFLVR holds, every signature coordinate is a special semimartingale, and (part (ii)) the
+Delbaen–Schachermayer NFLVR holds for admissible strategies whose wealth is uniformly bounded
+from below, every signature coordinate is a special semimartingale, and (part (ii)) the
 conditional transform of every finitely supported `u₀` with finite signature transform is
 exponential-affine iff the Riccati equation `∂ψ = ℛ(ψ)`, `ψ(0) = u₀`, has a global classical
 solution.
 
-`theorem_B_mp` proves everything except the `←` direction of (ii): the martingale, NFLVR and
-special-semimartingale conclusions, and the `→` direction of the Riccati equivalence
-(`affine_riccati_duality_mp`). The `←` direction and the full paper conjunction are false as
-universal statements; their negations `not_theorem_B_mpr` and `not_theorem_B` are in
-`SignatureVolatility/TheoremBMpr.lean`.
+`theorem_B_mp` proves everything except the `←` direction of (ii): the martingale,
+Delbaen–Schachermayer NFLVR for a continuous version of the packaged price, special-semimartingale
+conclusions, and the `→` direction of the Riccati equivalence (`affine_riccati_duality_mp`).
+The `←` direction and the full paper conjunction are false as universal statements; their
+negations are `not_theorem_B_mpr` and `not_theorem_B`.
 -/
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P]
 
 /-- **Paper Theorem B, `→` part (proved).** Martingale property on the signature filtration,
-NFLVR, special-semimartingale signature coordinates (Lemma 43), and the `→` direction of the
-Riccati transform equivalence (Theorem 4.2(ii)): an exponential-affine conditional transform
-through a classical Riccati solution yields a global classical Riccati solution. -/
+Delbaen–Schachermayer NFLVR for uniformly bounded-below admissible gains of a continuous
+version of the packaged price, special-semimartingale signature coordinates (Lemma 43), and
+the `→` direction of the Riccati transform equivalence (Theorem 4.2(ii)): an exponential-affine
+conditional transform through a classical Riccati solution yields a global classical Riccati
+solution. -/
 theorem theorem_B_mp (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
     (h3 : HypH3 P M.T (SignatureVolatilityModel.sigma M (paperSetup B M.hT))) :
     ∃ (sol : SignaturePriceSolution M (paperSetup B M.hT) (itoCalculusKit_of_mathfin B M.hT)),

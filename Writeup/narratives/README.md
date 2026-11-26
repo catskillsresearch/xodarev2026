@@ -2,7 +2,7 @@
 
 There is one short file per refuted paper claim. Each says what the counterexample is and why it
 breaks the claim, and matches exactly what the Lean `not_X` theorem proves. These summaries are
-the ones quoted in `formalization.yaml` and `COMPARATOR.md`.
+the ones quoted in the official project description and the comparator notes.
 
 | Paper claim | Lean | Narrative |
 |---|---|---|
@@ -28,6 +28,6 @@ the ones quoted in `formalization.yaml` and `COMPARATOR.md`.
   refutations; Carbon's uniformly bounded-below "Result 1" is not formalized here.
 
 **Gaps.** No verbatim Carbon narrative for Theorem C / Proposition 58, the Theorem D residual
-hypothesis, or Lemmas 77/78 was found in the repository or in the local `.carbon/` notes. The short
+hypothesis, or Lemmas 77/78 was found in the repository or in the outside Carbon notes.
 narratives for those claims are written from the Lean proofs themselves. If Lars's pasted
 narratives for them are recovered, they belong in `appendix/`.

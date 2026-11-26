@@ -1,1 +1,1 @@
-This module is `ExtTensorAlgebra/ConcatAssoc.lean`. It contributes `sum_triangle_reindex`, `concat_assoc` to the `SignatureVolatility` library. The lemma `concat_assoc`: Associativity of word-series concatenation. The Lean source is `ExtTensorAlgebra/ConcatAssoc.lean`.
+It contributes `sum_triangle_reindex`, `concat_assoc` to the `SignatureVolatility` library. The lemma `concat_assoc`: Associativity of word-series concatenation.

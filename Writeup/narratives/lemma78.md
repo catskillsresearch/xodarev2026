@@ -1,6 +1,6 @@
 # Why Lemma 78 (Lemma B.2 / (2.20), local Lipschitz bound for `ℛ`) fails
 
-**Lean:** `not_lemma78_local_lipschitz` (`Lemma78RiccatiLipschitzFalse.lean`), proved in the library, not compared.
+**Lean:** `not_lemma78_local_lipschitz` (`Lemma78RiccatiLipschitzFalse`), proved in the library, not compared.
 
 **Claim.** The Riccati operator `ℛ` is locally Lipschitz on bounded subsets of `T_w`.
 
@@ -13,4 +13,3 @@ The Lean statement is the negation of
 `∀ ρ > 0, ∃ L, ∀ u v ∈ T_w, ‖u‖, ‖v‖ ≤ ρ → ℛu − ℛv ∈ T_w ∧ ‖ℛu − ℛv‖_w ≤ L ‖u − v‖_w`,
 for `w ≡ 1` and `d + 2` letters.
 
-**Source material.** No verbatim Carbon text found. See `README.md`.
