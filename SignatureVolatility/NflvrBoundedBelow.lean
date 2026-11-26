@@ -57,10 +57,10 @@ lemma predSigma_le_prod {σAlg : ℝ → MeasurableSpace Ω} {T : ℝ}
 lemma measurable_slice_of_predSigma {σAlg : ℝ → MeasurableSpace Ω} {T : ℝ}
     (hmono : ∀ ⦃s t : ℝ⦄, 0 ≤ s → s ≤ t → t ≤ T → σAlg s ≤ σAlg t)
     {H : ℝ → Ω → ℝ} (hH : IsPredictableProcess σAlg T H)
-    {s : ℝ} (hs0 : 0 ≤ s) (hsT : s ≤ T) :
+    {s : ℝ} (_hs0 : 0 ≤ s) (hsT : s ≤ T) :
     Measurable[σAlg s] (H s) := by
   have hsec : @Measurable Ω (ℝ × Ω) (σAlg s) (predSigma σAlg T) (fun ω => (s, ω)) := by
-    letI : MeasurableSpace Ω := σAlg s
+    let : MeasurableSpace Ω := σAlg s
     refine measurable_generateFrom ?_
     rintro _ ⟨a, b, A, ha, _, _, hA, rfl⟩
     by_cases hsab : s ∈ Ioc a b
@@ -74,6 +74,7 @@ lemma measurable_slice_of_predSigma {σAlg : ℝ → MeasurableSpace Ω} {T : �
 def dtP (P : Measure Ω) (T : ℝ) : Measure (ℝ × Ω) :=
   (volume.restrict (Icc 0 T)).prod P
 
+omit m₀ in
 /-- Membership of a predictable rectangle in the generating family of `predSigma`. -/
 lemma mem_predSigma_generators {σAlg : ℝ → MeasurableSpace Ω} {T a b : ℝ} {A : Set Ω}
     (ha : 0 ≤ a) (hab : a ≤ b) (hb : b ≤ T) (hA : MeasurableSet[σAlg a] A) :
@@ -87,6 +88,7 @@ lemma measurableSet_predSigma_rect {σAlg : ℝ → MeasurableSpace Ω} {T a b :
     MeasurableSet[predSigma σAlg T] (Ioc a b ×ˢ A) :=
   MeasurableSpace.measurableSet_generateFrom (mem_predSigma_generators ha hab hb hA)
 
+omit [IsProbabilityMeasure P] in
 /-- Any adapted, a.s.-continuous process on `[0, T]` has a `predSigma`-measurable version
 indistinguishable from it on `(0, T]`. -/
 lemma exists_pred_indistinguishable_of_ae_continuous {σAlg : ℝ → MeasurableSpace Ω}
@@ -100,7 +102,7 @@ lemma exists_pred_indistinguishable_of_ae_continuous {σAlg : ℝ → Measurable
       if (k : ℝ) * T / (2 ^ r : ℝ) < s ∧ s ≤ ((k + 1 : ℕ) : ℝ) * T / (2 ^ r : ℝ)
       then X ((k : ℝ) * T / (2 ^ r : ℝ)) ω else 0
   have happrox_pred : ∀ r, IsPredictableProcess σAlg T (approx r) := fun r => by
-    letI : MeasurableSpace (ℝ × Ω) := predSigma σAlg T
+    let : MeasurableSpace (ℝ × Ω) := predSigma σAlg T
     unfold IsPredictableProcess Function.uncurry approx
     refine Finset.measurable_sum _ fun k hk => ?_
     set a : ℝ := (k : ℝ) * T / (2 ^ r : ℝ)
@@ -129,7 +131,7 @@ lemma exists_pred_indistinguishable_of_ae_continuous {σAlg : ℝ → Measurable
       rw [heq]
       exact measurableSet_predSigma_rect ha0 hab hbT (hadapt a ⟨ha0, hab.trans hbT⟩ hB)
   refine ⟨fun s ω => limUnder atTop fun r => approx r s ω, ?_, ?_⟩
-  · letI : MeasurableSpace (ℝ × Ω) := predSigma σAlg T
+  · let : MeasurableSpace (ℝ × Ω) := predSigma σAlg T
     exact (StronglyMeasurable.limUnder fun r => (happrox_pred r).stronglyMeasurable).measurable
   · filter_upwards [hcont] with ω hω s hs
     have hlim : Tendsto (fun r => approx r s ω) atTop (𝓝 (X s ω)) := by
@@ -155,7 +157,7 @@ lemma exists_pred_indistinguishable_of_ae_continuous {σAlg : ℝ → Measurable
       have happrox_eq : approx r s ω = X ((k : ℝ) * T / (2 ^ r : ℝ)) ω := by
         unfold approx
         rw [Finset.sum_eq_single k]
-        · exact if_pos ⟨hk1, hk2⟩
+        · exact ite_eq_left ⟨hk1, hk2⟩
         · intro j _ hjk
           by_cases hcond : (j : ℝ) * T / (2 ^ r : ℝ) < s ∧ s ≤ ((j + 1 : ℕ) : ℝ) * T / (2 ^ r : ℝ)
           · exfalso; rcases lt_or_gt_of_ne hjk with hlt | hgt
@@ -167,7 +169,7 @@ lemma exists_pred_indistinguishable_of_ae_continuous {σAlg : ℝ → Measurable
                 div_le_div_of_nonneg_right
                   (mul_le_mul_of_nonneg_right (by exact_mod_cast hgt) hT.le) (by positivity)
               linarith [hcond.1, hk2]
-          · exact if_neg hcond
+          · exact ite_eq_right hcond
         · intro h; exact absurd (Finset.mem_range.mpr hk_lt) h
       rw [happrox_eq]
       have hpt_mem : (k : ℝ) * T / (2 ^ r : ℝ) ∈ Icc 0 T := ⟨by positivity, hk1.le.trans hs.2⟩
@@ -289,7 +291,7 @@ lemma JointElem.neg_ito {d : ℕ} {B : MultiBrownian Ω P d} (hd : 0 < d) {T : �
 
 lemma JointElem.measurable_pred {d : ℕ} {B : MultiBrownian Ω P d} {T : ℝ} (U : JointElem B T) :
     IsPredictableProcess (pathFiltration B).σAlg T U.toFun := by
-  letI : MeasurableSpace (ℝ × Ω) := predSigma (pathFiltration B).σAlg T
+  let : MeasurableSpace (ℝ × Ω) := predSigma (pathFiltration B).σAlg T
   unfold IsPredictableProcess Function.uncurry JointElem.toFun
   refine Finset.measurable_sum _ fun j _ => ?_
   have hrect : MeasurableSet[predSigma (pathFiltration B).σAlg T]
@@ -531,7 +533,7 @@ lemma jointElem_to_sortedElem {d : ℕ} {B : MultiBrownian Ω P d} {T : ℝ} (hT
 
 /-- Exact Itô isometry on a `SortedElem` at `t ∈ [0, T]` via `indepFun_pathFiltration_wnnIncr`. -/
 lemma integral_sortedElem_ito_sq {d : ℕ} {B : MultiBrownian Ω P d} (hd : 0 < d) {T : ℝ}
-    (G : SortedElem B T) {t : ℝ} (ht0 : 0 ≤ t) (htT : t ≤ T) :
+    (G : SortedElem B T) {t : ℝ} (ht0 : 0 ≤ t) (_htT : t ≤ T) :
     ∫ ω, G.ito hd t ω ^ 2 ∂P =
       ∑ k : Fin G.m, (∫ ω, G.c k ω ^ 2 ∂P) * (min (G.pts k.succ) t - min (G.pts k.castSucc) t) := by
   let Δ (k : Fin G.m) (ω : Ω) : ℝ :=
@@ -546,7 +548,7 @@ lemma integral_sortedElem_ito_sq {d : ℕ} {B : MultiBrownian Ω P d} (hd : 0 < 
     refine (hW.abs.const_mul (max C 0)).mono'
       (((G.hc_meas k).mono ((pathFiltration B).le_ambient _) le_rfl).mul
         (measurable_wnnIncr B (kitDriver hd) _ _)).aestronglyMeasurable (ae_of_all _ fun ω => ?_)
-    simp only [Δ, Real.norm_eq_abs, abs_mul, abs_abs, abs_of_nonneg (le_max_right C 0)]
+    simp only [Δ, Real.norm_eq_abs, abs_mul]
     exact mul_le_mul_of_nonneg_right ((hC ω).trans (le_max_left _ _)) (abs_nonneg _)
   have hcross : ∀ k₁ k₂ : Fin G.m, k₁ < k₂ → ∫ ω, Δ k₁ ω * Δ k₂ ω ∂P = 0 := fun k₁ k₂ h12 => by
     by_cases ht_ge : G.pts k₂.castSucc ≤ t
@@ -818,7 +820,6 @@ private lemma exists_jointElem_L2_approx_on_trim {d : ℕ} (B : MultiBrownian Ω
   have : IsFiniteMeasure μ := hμ_fin
   have hsq_enorm : ∀ x : ℝ, ‖x‖ₑ ^ (2 : ℝ) = ENNReal.ofReal (x ^ 2) := fun x => by
     rw [Real.enorm_eq_ofReal_abs]
-    change ENNReal.ofReal |x| ^ (2 : ℝ) = ENNReal.ofReal (x ^ 2)
     rw [ENNReal.ofReal_rpow_of_nonneg (abs_nonneg x) (by norm_num : (0 : ℝ) ≤ 2),
       Real.rpow_two, sq_abs]
   -- 1. Finite sum of `JointElem`s and finite Cauchy–Schwarz
@@ -1266,7 +1267,7 @@ lemma lintegral_riemann_sq_le {T : ℝ} (hT : 0 < T) {h : ℝ → ℝ≥0∞} (h
       by_cases huc : u ≤ c * T
       · have hu_cT : u ∈ Icc 0 (c * T) := ⟨hu.1, huc⟩
         have huc' : u ∈ {u : ℝ | u ≤ (k : ℝ) * T / ((n : ℝ) + 1)} := by
-          simpa only [Set.mem_setOf_eq, c, mul_div_right_comm] using huc
+          simpa only [Set.mem_ofPred_eq, c, mul_div_right_comm] using huc
         rw [Set.indicator_of_mem hu_cT,
           Set.indicator_of_mem (show u ∈ {u : ℝ | u ≤ c * T} from huc)]
         rw [mul_left_comm, ← ENNReal.ofReal_mul (inv_nonneg.mpr hc.le)]
@@ -1274,7 +1275,7 @@ lemma lintegral_riemann_sq_le {T : ℝ} (hT : 0 < T) {h : ℝ → ℝ≥0∞} (h
         field_simp
       · have hu_ncT : u ∉ Icc 0 (c * T) := fun h => huc h.2
         have huc' : u ∉ {u : ℝ | u ≤ (k : ℝ) * T / ((n : ℝ) + 1)} := by
-          simpa only [Set.mem_setOf_eq, c, mul_div_right_comm] using huc
+          simpa only [Set.mem_ofPred_eq, c, mul_div_right_comm] using huc
         rw [Set.indicator_of_notMem hu_ncT,
           Set.indicator_of_notMem (show u ∉ {u : ℝ | u ≤ c * T} from huc)]
     · have hnot : u ∉ Icc 0 (c * T) := fun h => hu ⟨h.1, h.2.trans (mul_le_of_le_one_left hT.le hc_le)⟩

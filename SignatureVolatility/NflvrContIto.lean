@@ -32,7 +32,7 @@ private lemma measurable_uncurry_of_continuous_left {F : ℝ → Ω → ℝ}
     have heq : approx r ⁻¹' S =
         ⋃ k : ℤ, ({t : ℝ | ⌊t * (2 ^ r : ℝ)⌋ = k} ×ˢ (F ((k : ℝ) / (2 ^ r : ℝ)) ⁻¹' S)) := by
       ext ⟨t, ω⟩
-      simp only [Set.mem_preimage, Set.mem_iUnion, Set.mem_prod, Set.mem_setOf_eq, approx]
+      simp only [Set.mem_preimage, Set.mem_iUnion, Set.mem_prod, Set.mem_ofPred_eq, approx]
       constructor
       · intro h; exact ⟨⌊t * (2 ^ r : ℝ)⌋, rfl, h⟩
       · rintro ⟨k, rfl, h⟩; exact h
@@ -40,7 +40,7 @@ private lemma measurable_uncurry_of_continuous_left {F : ℝ → Ω → ℝ}
     refine MeasurableSet.iUnion fun k => ?_
     have hfloor : {t : ℝ | ⌊t * (2 ^ r : ℝ)⌋ = k} =
         Ico ((k : ℝ) / (2 ^ r : ℝ)) (((k : ℝ) + 1) / (2 ^ r : ℝ)) := by
-      ext t; simp only [Set.mem_setOf_eq, Set.mem_Ico, Int.floor_eq_iff]
+      ext t; simp only [Set.mem_ofPred_eq, Set.mem_Ico, Int.floor_eq_iff]
       have hpos : (0 : ℝ) < (2 : ℝ) ^ r := by positivity
       rw [div_le_iff₀ hpos, lt_div_iff₀ hpos]
     rw [hfloor]
@@ -68,6 +68,7 @@ private lemma measurable_eval_prod {γ : Type*} [MeasurableSpace γ] (f : ℝ ×
 
 /-! ## Section 1: Self-Contained Cauchy–Schwarz & Discrete Doob L² Maximal Inequality -/
 
+omit [IsProbabilityMeasure P] in
 private lemma integral_mul_le_sqrt_mul_sqrt {f g : Ω → ℝ}
     (hf : MemLp f 2 P) (hg : MemLp g 2 P) :
     ∫ ω, |f ω| * |g ω| ∂P ≤ Real.sqrt (∫ ω, f ω ^ 2 ∂P) * Real.sqrt (∫ ω, g ω ^ 2 ∂P) := by
@@ -166,7 +167,7 @@ lemma doob_l2_maximal_discrete {N : ℕ} (𝒢 : Fin (N + 1) → MeasurableSpace
     have hdisj : Disjoint Ap Am := Set.disjoint_left.mpr fun ω h1 h2 =>
       not_lt.mpr (show 0 ≤ M k ω from h1.2) (show M k ω < 0 from h2.2)
     have hunion : A = Ap ∪ Am := by
-      ext ω; simp only [Ap, Am, Set.mem_union, Set.mem_inter_iff, Set.mem_setOf_eq]
+      ext ω; simp only [Ap, Am, Set.mem_union, Set.mem_inter_iff, Set.mem_ofPred_eq]
       constructor
       · intro h; rcases le_or_gt 0 (M k ω) with h0 | h0; exact Or.inl ⟨h, h0⟩; exact Or.inr ⟨h, h0⟩
       · rintro (⟨h, _⟩ | ⟨h, _⟩) <;> exact h
@@ -218,7 +219,7 @@ lemma doob_l2_maximal_discrete {N : ℕ} (𝒢 : Fin (N + 1) → MeasurableSpace
           have hi_lt : |M j ω| < lam := Set.mem_iInter.mp (Set.mem_iInter.mp hi.2 j) hgt
           exact not_le.mpr hi_lt hj1
     have hA_union : {ω | lam ≤ Mstar ω} = ⋃ k : Fin (N + 1), A k := by
-      ext ω; simp only [Set.mem_setOf_eq, Set.mem_iUnion, A, Set.mem_inter_iff, Set.mem_iInter]
+      ext ω; simp only [Set.mem_ofPred_eq, Set.mem_iUnion, A, Set.mem_inter_iff, Set.mem_iInter]
       constructor
       · intro h
         have hex : ∃ k : Fin (N + 1), lam ≤ |M k ω| := by
@@ -376,6 +377,7 @@ private lemma jointElem_ito_memLp {d : ℕ} {B : MultiBrownian Ω P d} (hd : 0 <
   simp only [Real.norm_eq_abs, abs_mul, Pi.abs_apply, abs_abs, abs_of_nonneg (le_max_right C 0)]
   exact mul_le_mul_of_nonneg_right ((hC ω).trans (le_max_left C 0)) (abs_nonneg _)
 
+omit [IsProbabilityMeasure P] in
 /-- `L²` convergence in `ℝ≥0∞` implies `TendstoInMeasure`. -/
 lemma tendstoInMeasure_of_tendsto_lintegral_sq {f : ℕ → Ω → ℝ} {g : Ω → ℝ}
     (hf : ∀ n, AEStronglyMeasurable (f n) P) (hg : AEStronglyMeasurable g P)
@@ -383,10 +385,7 @@ lemma tendstoInMeasure_of_tendsto_lintegral_sq {f : ℕ → Ω → ℝ} {g : Ω 
     TendstoInMeasure P f atTop g := by
   intro ε hε
   rcases eq_or_ne ε ⊤ with rfl | hε_top
-  · have hemp : ∀ n, {ω | (⊤ : ℝ≥0∞) ≤ edist (f n ω) (g ω)} = ∅ := fun n =>
-      Set.eq_empty_iff_forall_notMem.mpr fun ω hω =>
-        not_le.mpr (edist_lt_top (f n ω) (g ω)) hω
-    simp [hemp]
+  · simp
   · rw [ENNReal.tendsto_atTop_zero]; intro δ hδ
     have hε2_pos : (0 : ℝ≥0∞) < ε ^ 2 := by rw [sq]; exact ENNReal.mul_pos hε.ne' hε.ne'
     have hε2_top : ε ^ 2 ≠ ⊤ := ENNReal.pow_ne_top hε_top
@@ -399,7 +398,7 @@ lemma tendstoInMeasure_of_tendsto_lintegral_sq {f : ℕ → Ω → ℝ} {g : Ω 
         rw [edist_dist, Real.dist_eq]
       have hsq : ENNReal.ofReal ((f n ω - g ω) ^ 2) = edist (f n ω) (g ω) ^ 2 := by
         rw [hed, ← sq_abs (f n ω - g ω), ENNReal.ofReal_pow (abs_nonneg _)]
-      rw [Set.mem_setOf_eq, hsq, sq, sq]; exact mul_le_mul' hω hω
+      rw [Set.mem_ofPred_eq, hsq, sq, sq]; exact mul_le_mul' hω hω
     have haesm : AEMeasurable (fun ω => ENNReal.ofReal ((f n ω - g ω) ^ 2)) P :=
       (ENNReal.measurable_ofReal.comp (measurable_id.pow_const 2)).comp_aemeasurable ((hf n).sub hg).aemeasurable
     have hmarkov := mul_meas_ge_le_lintegral₀ haesm (ε ^ 2)
@@ -479,7 +478,7 @@ lemma lintegral_riemannPrime_sq_le {d : ℕ} (hd : 0 < d) (B : MultiBrownian Ω 
               have hσ : (if (k.castSucc : ℕ) ≤ n + 1 then
                     (k.castSucc : ℝ) * t / ((n : ℝ) + 1) else T) =
                   (k.1 : ℝ) * t / ((n : ℝ) + 1) := by
-                simp [Fin.coe_castSucc, hk_le]
+                simp [hk_le]
               simp only [hc, ↓reduceIte]
               rw [hσ]
               exact hDL_meas_slice L k.1 hk_le
@@ -502,9 +501,7 @@ lemma lintegral_riemannPrime_sq_le {d : ℕ} (hd : 0 < d) (B : MultiBrownian Ω 
           have hk : (k : ℕ) < n + 2 := by
             change (k : ℕ) < G.m; exact k.isLt
           simp only [g, hk, ↓reduceDIte]
-          first | rfl | (congr 1 <;> first
-            | (congr 1; exact Fin.eta k)
-            | (congr 2 <;> (apply Fin.ext; simp [Fin.val_succ, Fin.coe_castSucc])))
+          rfl
         rw [hmatch]
         have hsub : Finset.Ico 1 (n + 1) ⊆ Finset.range (n + 2) := fun k hk => by
           rw [Finset.mem_Ico] at hk; rw [Finset.mem_range]; omega
@@ -570,9 +567,7 @@ lemma lintegral_riemannPrime_sq_le {d : ℕ} (hd : 0 < d) (B : MultiBrownian Ω 
           refine Finset.sum_congr rfl fun k _ => ?_
           have hk : (k : ℕ) < G.m := k.isLt
           simp only [term, hk, ↓reduceDIte]
-          first | rfl | (congr 2 <;> first
-            | (congr 1; exact Fin.eta k)
-            | (congr 2 <;> (apply Fin.ext; simp [Fin.val_succ, Fin.coe_castSucc])))
+          rfl
         rw [hmatch]
         have hsub : Finset.Ico 1 (n + 1) ⊆ Finset.range G.m := fun i hi => by
           have := Finset.mem_Ico.mp hi; simp only [G, Finset.mem_range]; omega
@@ -1111,7 +1106,7 @@ theorem exists_contIto_and_riemann_subseq {d : ℕ} (hd : 0 < d) (B : MultiBrown
       (∀ t ∈ Icc 0 T, Measurable[(pathFiltration B).σAlg t] (M t) ∧ Integrable (M t) P) ∧
       (∫ ω, M T ω ∂P = 0) ∧
       (∀ᵐ ω ∂P, ContinuousOn (fun t => M t ω) (Icc 0 T) ∧ M 0 ω = 0) ∧
-      (∀ (q : ℝ) (hq : q ∈ Icc 0 T) (A : Set Ω),
+      (∀ (q : ℝ) (_hq : q ∈ Icc 0 T) (A : Set Ω),
         MeasurableSet[(pathFiltration B).σAlg q] A →
         (∀ s ∈ Ioc q T, ∀ ω ∈ A, Z s ω = 0) →
         ∀ᵐ ω ∂P, ω ∈ A → M T ω = M q ω) ∧
@@ -1187,8 +1182,8 @@ theorem exists_contIto_and_riemann_subseq {d : ℕ} (hd : 0 < d) (B : MultiBrown
         have hd_lt : dist (q : ℝ) t < δ := by
           rw [Real.dist_eq, abs_of_pos (sub_pos.mpr hqt)]; linarith [lt_of_lt_of_le hqb (min_le_right _ _)]
         have h1 := hball hd_lt; rw [Real.dist_eq, abs_lt] at h1
-        have h2 := hq q; rw [dif_pos hqI] at h2
-        simp only [Set.mem_setOf_eq] at h2
+        have h2 := hq q; rw [dite_eq_left hqI] at h2
+        simp only [Set.mem_ofPred_eq] at h2
         linarith [hgt]
     rw [hset]
     exact (MeasurableSet.iInter fun q => by

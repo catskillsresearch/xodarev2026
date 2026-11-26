@@ -850,7 +850,7 @@ theorem not_theorem_B_mpr_unwrapped (M : SignatureVolatilityModel) (B : MultiBro
             fun ω => Real.exp (dualPairing (rSol.ψ (M.T - t)) (paperSig2 B 0 t ω)) := by sorry
 /-- **Refutation of Theorem B as stated (unwrapped).** -/
 theorem not_theorem_B_unwrapped (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
-    (h3 : HypH3 P M.T (sigVol M B)) :
+    (_h3 : HypH3 P M.T (sigVol M B)) :
     ¬ ∃ S : ℝ → Ω → ℝ, IsSignaturePrice M B S ∧
       (∀ ⦃s t : ℝ⦄, 0 ≤ s → s ≤ t → t ≤ M.T →
         Integrable (S t) P ∧ P[S t | (sigFiltration B).σAlg s] =ᵐ[P] S s) ∧

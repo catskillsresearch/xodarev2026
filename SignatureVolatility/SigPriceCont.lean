@@ -66,7 +66,7 @@ lemma sigPriceCont_zero (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M
     have hseq : (fun n => kitItoIntRaw B (modelVol M B) (dyadicFloor n 0) ω) =
         fun _ => (0 : ℝ) := by
       funext n; simp [hfloor n, kitItoIntRaw_zero]
-    simpa [hseq] using tendsto_const_nhds (x := (0 : ℝ))
+    simp [hseq]
   simp [sigPriceCont, hI, kitQuadVarRaw_zero]
 
 lemma sigPriceCont_strictly_pos (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)

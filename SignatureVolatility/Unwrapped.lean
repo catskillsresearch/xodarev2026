@@ -278,7 +278,7 @@ theorem not_theorem_B_mpr_unwrapped (M : SignatureVolatilityModel) (B : MultiBro
 
 /-- **Refutation of Theorem B as stated (unwrapped).** -/
 theorem not_theorem_B_unwrapped (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
-    (h3 : HypH3 P M.T (sigVol M B)) :
+    (_h3 : HypH3 P M.T (sigVol M B)) :
     ¬ ∃ S : ℝ → Ω → ℝ, IsSignaturePrice M B S ∧
       (∀ ⦃s t : ℝ⦄, 0 ≤ s → s ≤ t → t ≤ M.T →
         Integrable (S t) P ∧ P[S t | (sigFiltration B).σAlg s] =ᵐ[P] S s) ∧
@@ -374,7 +374,7 @@ lemma coord_eq (mkt : Market Ω P) (I : Word (mkt.M.d + 1)) :
     mkt.coord I = mkt.toMarketData.coord I := by
   have h := memLp_coord mkt I
   unfold coord MarketData.coord
-  rw [dif_pos h]
+  rw [dite_eq_left h]
   rfl
 
 lemma coordSet_eq (mkt : Market Ω P) (N : ℕ) :
@@ -572,6 +572,7 @@ lemma bsPrice_eq_sigPrice (B : MultiBrownian Ω P 1) {t : ℝ} (ht : 0 ≤ t) (�
   simp only [sigPrice, bsPrice, hs0, max_eq_right ht]
   exact congrArg (fun z => s₀ * Real.exp z) hexp
 
+omit [IsProbabilityMeasure P] in
 lemma sAdmissible_congr_S {σAlg : ℝ → MeasurableSpace Ω}
     {S S' σ : ℝ → Ω → ℝ} {T : ℝ} {H : ℝ → Ω → ℝ}
     (hS : ∀ t ∈ Icc 0 T, S t = S' t) :
@@ -590,6 +591,7 @@ lemma sAdmissible_congr_S {σAlg : ℝ → MeasurableSpace Ω}
       intro s hs; simp [hS s hs]
     exact (integrableOn_congr_fun hEq measurableSet_Icc).mp hInt
 
+omit [MeasurableSpace Ω] in
 lemma itoRiemannSum_congr {K K' B : ℝ → Ω → ℝ} {t : ℝ} (ht0 : 0 ≤ t)
     (hK : ∀ u ∈ Icc 0 t, K u = K' u) (n : ℕ) (ω : Ω) :
     itoRiemannSum K B t n ω = itoRiemannSum K' B t n ω := by
@@ -605,6 +607,7 @@ lemma itoRiemannSum_congr {K K' B : ℝ → Ω → ℝ} {t : ℝ} (ht0 : 0 ≤ t
     exact (div_le_iff₀ (by positivity : 0 < (n + 1 : ℝ))).mpr this
   rw [hK _ ⟨hk0, hkT⟩]
 
+omit [IsProbabilityMeasure P] in
 lemma isItoIntegral_congr_K {B K K' V : ℝ → Ω → ℝ} {T : ℝ}
     (hK : ∀ u ∈ Icc 0 T, K u = K' u) :
     IsItoIntegral P B K V T ↔ IsItoIntegral P B K' V T := by
@@ -621,6 +624,7 @@ lemma isItoIntegral_congr_K {B K K' V : ℝ → Ω → ℝ} {T : ℝ}
       funext fun n => funext fun ω => hsum t ht n ω
     simpa [heq] using h.2.2 t ht
 
+omit [IsProbabilityMeasure P] in
 lemma literalGains_congr_S {σAlg : ℝ → MeasurableSpace Ω} {B S S' σ : ℝ → Ω → ℝ} {T : ℝ}
     (hS : ∀ t ∈ Icc 0 T, S t = S' t) :
     LiteralGains σAlg P B S σ T = LiteralGains σAlg P B S' σ T := by
@@ -632,6 +636,7 @@ lemma literalGains_congr_S {σAlg : ℝ → MeasurableSpace Ω} {B S S' σ : ℝ
     refine ⟨H, V, (sAdmissible_congr_S hS).mpr hadm, ?_, rfl⟩
     exact (isItoIntegral_congr_K (fun t ht => by simp [hS t ht])).mpr hIto
 
+omit [IsProbabilityMeasure P] in
 lemma terminalBoundedBelowGains_congr_S {σAlg : ℝ → MeasurableSpace Ω}
     {B S S' σ : ℝ → Ω → ℝ} {T : ℝ}
     (hS : ∀ t ∈ Icc 0 T, S t = S' t) :

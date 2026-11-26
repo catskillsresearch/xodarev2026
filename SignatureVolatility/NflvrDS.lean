@@ -23,10 +23,12 @@ variable {Ω : Type*} [m₀ : MeasurableSpace Ω] {P : Measure Ω} [IsProbabilit
 def localizedQuad (K : ℝ → Ω → ℝ) (s : ℝ) (ω : Ω) : ℝ≥0∞ :=
   ∫⁻ u in Icc 0 s, ENNReal.ofReal (K u ω ^ 2) ∂volume
 
+omit m₀ in
 lemma localizedQuad_mono (K : ℝ → Ω → ℝ) {s t : ℝ} (hst : s ≤ t) (ω : Ω) :
     localizedQuad K s ω ≤ localizedQuad K t ω :=
   lintegral_mono_set (Icc_subset_Icc_right hst)
 
+omit m₀ in
 lemma localizedQuad_zero (K : ℝ → Ω → ℝ) (ω : Ω) : localizedQuad K 0 ω = 0 := by
   simp [localizedQuad, Set.Icc_self]
 
@@ -34,7 +36,7 @@ lemma localizedQuad_zero (K : ℝ → Ω → ℝ) (ω : Ω) : localizedQuad K 0 
 for the **raw** filtration `(pathFiltration B).σAlg s`. -/
 lemma measurable_localizedQuad {d : ℕ} (B : MultiBrownian Ω P d) {T : ℝ}
     {K : ℝ → Ω → ℝ} (hKp : IsPredictableProcess (pathFiltration B).σAlg T K)
-    {s : ℝ} (hs0 : 0 ≤ s) (hsT : s ≤ T) :
+    {s : ℝ} (_hs0 : 0 ≤ s) (_hsT : s ≤ T) :
     Measurable[(pathFiltration B).σAlg s] (localizedQuad K s) := by
   -- `(u, ω) ↦ (min u s, ω)` is measurable from `ℬ(ℝ) ⊗ ℱ_s` to `predSigma ℱ T`.
   -- Do not `letI` a new `MeasurableSpace Ω`: the named instance `m₀` would clash.
@@ -98,6 +100,7 @@ lemma measurable_localizedQuad {d : ℕ} (B : MultiBrownian Ω P d) {T : ℝ}
   rw [hrew]
   exact hinter
 
+omit m₀ in
 /-- Left-continuity of `s ↦ localizedQuad K s ω` for EVERY `ω` and EVERY `s ∈ Ioc 0 T`. -/
 lemma localizedQuad_le_iff_rat {K : ℝ → Ω → ℝ} {T : ℝ} {s : ℝ} (hs : s ∈ Ioc 0 T) (ω : Ω) (m : ℝ≥0∞)
     (hK : Measurable (fun u => K u ω)) :
@@ -155,14 +158,14 @@ lemma localizedQuad_le_iff_rat {K : ℝ → Ω → ℝ} {T : ℝ} {s : ℝ} (hs 
       refine (ae_eq_set.mpr ⟨?_, ?_⟩)
       · have : Icc 0 s \ Ico 0 s = {s} := by
           ext u
-          simp only [Set.mem_diff, Set.mem_Icc, Set.mem_Ico, Set.mem_singleton_iff]
+          simp only [Set.mem_sdiff, Set.mem_Icc, Set.mem_Ico, Set.mem_singleton_iff]
           constructor
           · rintro ⟨⟨h1, h2⟩, h3⟩; exact le_antisymm h2 (not_lt.mp fun hlt => h3 ⟨h1, hlt⟩)
           · rintro rfl; exact ⟨⟨hs.1.le, le_rfl⟩, fun h => lt_irrefl _ h.2⟩
         rw [this, Real.volume_singleton]
       · have : Ico 0 s \ Icc 0 s = ∅ := by
           ext u
-          simp only [Set.mem_diff, Set.mem_Ico, Set.mem_Icc, Set.mem_empty_iff_false, iff_false]
+          simp only [Set.mem_sdiff, Set.mem_Ico, Set.mem_Icc, Set.mem_empty_iff_false, iff_false]
           intro h
           exact h.2 ⟨h.1.1, h.1.2.le⟩
         rw [this, measure_empty]
@@ -209,6 +212,7 @@ def localizedK (K : ℝ → Ω → ℝ) (T : ℝ) (m : ℕ) (s : ℝ) (ω : Ω) 
 def localizedTau (K : ℝ → Ω → ℝ) (T : ℝ) (m : ℕ) (ω : Ω) : ℝ :=
   sSup (insert (0 : ℝ) {s ∈ Ioc 0 T | localizedQuad K s ω ≤ (m : ℝ≥0∞)})
 
+omit m₀ in
 lemma localizedTau_mem {K : ℝ → Ω → ℝ} {T : ℝ} (hT : 0 < T) (m : ℕ) (ω : Ω) :
     localizedTau K T m ω ∈ Icc 0 T := by
   have hne : (insert (0 : ℝ) {s ∈ Ioc 0 T | localizedQuad K s ω ≤ (m : ℝ≥0∞)}).Nonempty := ⟨0, Set.mem_insert _ _⟩
@@ -217,6 +221,7 @@ lemma localizedTau_mem {K : ℝ → Ω → ℝ} {T : ℝ} (hT : 0 < T) (m : ℕ)
   exact ⟨le_csSup hbdd (Set.mem_insert 0 _), csSup_le hne fun s hs => by
     rcases Set.mem_insert_iff.mp hs with rfl | h; exact hT.le; exact h.1.2⟩
 
+omit m₀ in
 lemma localizedQuad_at_tau_le {K : ℝ → Ω → ℝ} {T : ℝ} (hT : 0 < T)
     (hKm : ∀ ω, Measurable (fun u => K u ω)) (m : ℕ) (ω : Ω) :
     localizedQuad K (localizedTau K T m ω) ω ≤ (m : ℝ≥0∞) := by
@@ -256,18 +261,18 @@ lemma localized_pred_and_L2 {d : ℕ} (B : MultiBrownian Ω P d) {T : ℝ} (hT :
         ⋂ q : ℚ, if hq : 0 ≤ (q : ℝ) ∧ (q : ℝ) ≤ T
           then (Ioc (q : ℝ) T ×ˢ {ω | (m : ℝ≥0∞) < localizedQuad K (q : ℝ) ω})ᶜ else Set.univ := by
       ext ⟨s, ω⟩
-      simp only [Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_prod, Set.mem_univ, and_true, Set.mem_iInter]
+      simp only [Set.mem_ofPred_eq, Set.mem_inter_iff, Set.mem_prod, Set.mem_univ, and_true, Set.mem_iInter]
       refine and_congr_right fun hs => ?_
       rw [localizedQuad_le_iff_rat hs ω m (hKm_slice ω)]
       constructor
       · intro hall q; split_ifs with hq
-        · simp only [Set.mem_compl_iff, Set.mem_prod, Set.mem_Ioc, Set.mem_setOf_eq, not_and, not_lt]
+        · simp only [Set.mem_compl_iff, Set.mem_prod, Set.mem_Ioc, Set.mem_ofPred_eq, not_and, not_lt]
           rintro ⟨hqs, _⟩; exact hall q hq.1 hqs
         · trivial
       · intro hall q hq0 hqs
         have hqI : 0 ≤ (q : ℝ) ∧ (q : ℝ) ≤ T := ⟨hq0, hqs.le.trans hs.2⟩
-        have h := hall q; rw [dif_pos hqI] at h
-        simp only [Set.mem_compl_iff, Set.mem_prod, Set.mem_Ioc, Set.mem_setOf_eq, not_and, not_lt] at h
+        have h := hall q; rw [dite_eq_left hqI] at h
+        simp only [Set.mem_compl_iff, Set.mem_prod, Set.mem_Ioc, Set.mem_ofPred_eq, not_and, not_lt] at h
         exact h ⟨hqs, hs.2⟩
     rw [heq]
     have hrect0 : MeasurableSet[predSigma (pathFiltration B).σAlg T]
@@ -291,9 +296,9 @@ lemma localized_pred_and_L2 {d : ℕ} (B : MultiBrownian Ω P d) {T : ℝ} (hT :
       dsimp only [Function.uncurry, localizedK, Set.indicator]
       by_cases h : p.1 ∈ Ioc 0 T ∧ localizedQuad K p.1 p.2 ≤ (m : ℝ≥0∞)
       · have hp : p ∈ {q : ℝ × Ω | q.1 ∈ Ioc 0 T ∧ localizedQuad K q.1 q.2 ≤ (m : ℝ≥0∞)} := h
-        rw [if_pos h, if_pos hp]
+        rw [ite_eq_left h, ite_eq_left hp]
       · have hp : p ∉ {q : ℝ × Ω | q.1 ∈ Ioc 0 T ∧ localizedQuad K q.1 q.2 ≤ (m : ℝ≥0∞)} := h
-        rw [if_neg h, if_neg hp]
+        rw [ite_eq_right h, ite_eq_right hp]
     unfold IsPredictableProcess
     rw [heq]
     exact hKp.indicator hset_pred
@@ -324,8 +329,8 @@ lemma localized_pred_and_L2 {d : ℕ} (B : MultiBrownian Ω P d) {T : ℝ} (hT :
             ⟨T, fun s hs => by rcases Set.mem_insert_iff.mp hs with rfl | h; exact hT.le; exact h.1.2⟩
             (Set.mem_insert_of_mem 0 hcond)
           have huI : u ∈ Icc 0 (localizedTau K T m ω) := ⟨hu.1, hu_le⟩
-          rw [Set.indicator_of_mem huI, localizedK, if_pos hcond]
-        · rw [localizedK, if_neg hcond, sq, mul_zero, ENNReal.ofReal_zero]
+          rw [Set.indicator_of_mem huI, localizedK, ite_eq_left hcond]
+        · rw [localizedK, ite_eq_right hcond, sq, mul_zero, ENNReal.ofReal_zero]
           exact bot_le
       calc ∫⁻ u in Icc 0 T, ENNReal.ofReal (localizedK K T m u ω ^ 2) ∂volume
           ≤ ∫⁻ u in Icc 0 T, (Icc 0 (localizedTau K T m ω)).indicator (fun u => ENNReal.ofReal (K u ω ^ 2)) u ∂volume :=
@@ -342,6 +347,7 @@ lemma localized_pred_and_L2 {d : ℕ} (B : MultiBrownian Ω P d) {T : ℝ} (hT :
 
 /-! ## Section 2: Uniqueness of Limits in Measure on an Event & Supermartingale Step -/
 
+omit [IsProbabilityMeasure P] in
 /-- If `f_j → X` and `g_j → Y` in measure and `f_j = g_j` on `E` for all `j`, then `X = Y` a.s. on `E`. -/
 private lemma ae_eq_on_of_tendstoInMeasure {f g : ℕ → Ω → ℝ} {X Y : Ω → ℝ} {E : Set Ω}
     (hf : TendstoInMeasure P f atTop X) (hg : TendstoInMeasure P g atTop Y)
@@ -375,7 +381,7 @@ private lemma ae_eq_on_of_tendstoInMeasure {f g : ℕ → Ω → ℝ} {X Y : Ω 
     measure_iUnion_null hzero
   rw [ae_iff]
   refine measure_mono_null (fun ω hω => ?_) hall
-  simp only [Set.mem_setOf_eq, not_imp] at hω
+  simp only [Set.mem_ofPred_eq, not_imp] at hω
   obtain ⟨hωE, hne⟩ := hω
   have hpos : 0 < dist (X ω) (Y ω) := dist_pos.mpr hne
   obtain ⟨k, hk⟩ := exists_nat_gt (1 / dist (X ω) (Y ω))
@@ -468,7 +474,7 @@ private lemma tendstoInMeasure_itoRiemannPrime_of_isItoIntegral {d : ℕ} (hd : 
         ⟨0, measure_ne_top P _⟩
     have hemp : (⋂ n : ℕ, ⋃ k ≥ n, {ω | ε / 2 ≤ |K 0 ω * MultiBrownian.W B (t / ((k : ℝ) + 1)) ω (kitDriver hd)|}) = ∅ := by
       ext ω
-      simp only [Set.mem_iInter, Set.mem_iUnion, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+      simp only [Set.mem_iInter, Set.mem_iUnion, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
       push Not
       obtain ⟨N, hN⟩ := (Metric.tendsto_atTop.mp (hzero_ae ω)) (ε / 2) (half_pos hε)
       refine ⟨N, fun k hk => ?_⟩
@@ -499,7 +505,7 @@ private lemma tendstoInMeasure_itoRiemannPrime_of_isItoIntegral {d : ℕ} (hd : 
     · right
       change ε / 2 ≤ |K 0 ω * MultiBrownian.W B (t / ((n : ℝ) + 1)) ω (kitDriver hd)|
       have hεle : ε ≤ dist (itoRiemannPrime B hd K t n ω) (V t ω) := by
-        simpa [Set.mem_setOf_eq] using hω
+        simpa [Set.mem_ofPred_eq] using hω
       have hsumlt : dist (itoRiemannSum K (fun s ω => MultiBrownian.W B s ω (kitDriver hd)) t n ω) (V t ω) < ε / 2 :=
         not_le.mp h1
       have hbound : ε ≤ |K 0 ω * MultiBrownian.W B (t / ((n : ℝ) + 1)) ω (kitDriver hd)| +
@@ -533,7 +539,7 @@ theorem expectation_le_zero_of_boundedBelowGain {d : ℕ} (hd : 0 < d) (B : Mult
   obtain ⟨σ', hσ'_pred, hσ'_eq⟩ := exists_pred_indistinguishable_of_ae_continuous hT hσ_adapt hσ_cont
   let K : ℝ → Ω → ℝ := fun s ω => H s ω * S' s ω * σ' s ω
   have hK_pred : IsPredictableProcess (pathFiltration B).σAlg T K := by
-    letI : MeasurableSpace (ℝ × Ω) := predSigma (pathFiltration B).σAlg T
+    let : MeasurableSpace (ℝ × Ω) := predSigma (pathFiltration B).σAlg T
     exact (hH_pred.mul hS'_pred).mul hσ'_pred
   have hK_eq_ae : ∀ᵐ ω ∂P, ∀ s ∈ Ioc 0 T, K s ω = H s ω * S s ω * σ s ω := by
     filter_upwards [hS'_eq, hσ'_eq] with ω h1 h2 s hs
@@ -544,7 +550,7 @@ theorem expectation_le_zero_of_boundedBelowGain {d : ℕ} (hd : 0 < d) (B : Mult
       refine hInt.congr_fun_ae ?_
       have hdiff : volume (Icc 0 T \ Ioc 0 T) = 0 := by
         have : Icc 0 T \ Ioc 0 T = {0} := by
-          ext s; simp only [Set.mem_diff, Set.mem_Icc, Set.mem_Ioc, Set.mem_singleton_iff]
+          ext s; simp only [Set.mem_sdiff, Set.mem_Icc, Set.mem_Ioc, Set.mem_singleton_iff]
           constructor
           · rintro ⟨⟨h1, h2⟩, h3⟩; exact le_antisymm (not_lt.mp fun hp => h3 ⟨hp, h2⟩) h1
           · rintro rfl; exact ⟨⟨le_rfl, hT.le⟩, fun h => lt_irrefl 0 h.1⟩
@@ -640,7 +646,7 @@ theorem expectation_le_zero_of_boundedBelowGain {d : ℕ} (hd : 0 < d) (B : Mult
         localizedQuad K (pick pq) ω ≤ (m : ℝ≥0∞) → M (pick pq) ω = V (pick pq) ω :=
       ae_all_iff.mpr fun pq => by
         by_cases h : goodPair pq
-        · simp only [pick, dif_pos h]
+        · simp only [pick, dite_eq_left h]
           exact (hAG _ (hex_d pq h).choose_spec.1).mono fun ω hω _ hQ => hω hQ
         · exact ae_of_all _ fun _ h' => absurd h' h
     -- Step C: Apply Clause 4 at all rational `q ∈ Ioo 0 T` on `{m < Q K q}`
@@ -651,7 +657,7 @@ theorem expectation_le_zero_of_boundedBelowGain {d : ℕ} (hd : 0 < d) (B : Mult
         · have hA_m : MeasurableSet[(pathFiltration B).σAlg q] {ω | (m : ℝ≥0∞) < localizedQuad K q ω} :=
             measurableSet_lt measurable_const (measurable_localizedQuad B hK_pred (by exact_mod_cast hq.1.le) (by exact_mod_cast hq.2.le))
           have hZ0 : ∀ s ∈ Ioc (q : ℝ) T, ∀ ω ∈ {ω | (m : ℝ≥0∞) < localizedQuad K q ω}, localizedK K T m s ω = 0 :=
-            fun s hs ω hω => if_neg fun h => not_lt.mpr h.2 (lt_of_lt_of_le hω (localizedQuad_mono K hs.1.le ω))
+            fun s hs ω hω => ite_eq_right fun h => not_lt.mpr h.2 (lt_of_lt_of_le hω (localizedQuad_mono K hs.1.le ω))
           exact (hM_tail q (Ioo_subset_Icc_self hq) _ hA_m hZ0).mono fun ω hω _ hQ => hω hQ
         · exact ae_of_all _ fun _ h' => absurd h' hq
     refine ⟨M T, (hM_int T ⟨hT.le, le_rfl⟩).2, hM_zero, ?_⟩
@@ -679,18 +685,18 @@ theorem expectation_le_zero_of_boundedBelowGain {d : ℕ} (hd : 0 < d) (B : Mult
             simpa using tendsto_const_nhds.sub h0
           refine tendsto_of_tendsto_of_tendsto_of_le_of_le hlo tendsto_const_nhds (fun r => ?_) (fun r => ?_)
           · have hsp := (hex_d (pq r) (hpq_good r)).choose_spec
-            simp only [pick, dif_pos (hpq_good r)]
+            simp only [pick, dite_eq_left (hpq_good r)]
             exact ((le_max_right _ _).trans_lt (hpq1 r)).le.trans hsp.2.1.le
           · have hsp := (hex_d (pq r) (hpq_good r)).choose_spec
-            simp only [pick, dif_pos (hpq_good r)]
+            simp only [pick, dite_eq_left (hpq_good r)]
             exact hsp.2.2.le.trans (hpq2 r).le
         have hd_mem : ∀ r, pick (pq r) ∈ Icc 0 T := fun r => by
-          simp only [pick, dif_pos (hpq_good r)]
+          simp only [pick, dite_eq_left (hpq_good r)]
           exact Ioo_subset_Icc_self (hex_d (pq r) (hpq_good r)).choose_spec.1.2
         have hd_eq : ∀ r, M (pick (pq r)) ω = V (pick (pq r)) ω := fun r => by
           refine hpick (pq r) (hpq_good r) ?_
           have hlt : pick (pq r) < τ := by
-            simp only [pick, dif_pos (hpq_good r)]
+            simp only [pick, dite_eq_left (hpq_good r)]
             exact (hex_d (pq r) (hpq_good r)).choose_spec.2.2.trans (hpq2 r)
           have hne : (insert (0 : ℝ) {s ∈ Ioc 0 T | localizedQuad K s ω ≤ (m : ℝ≥0∞)}).Nonempty := ⟨0, Set.mem_insert _ _⟩
           have hbdd : BddAbove (insert (0 : ℝ) {s ∈ Ioc 0 T | localizedQuad K s ω ≤ (m : ℝ≥0∞)}) :=
@@ -698,7 +704,7 @@ theorem expectation_le_zero_of_boundedBelowGain {d : ℕ} (hd : 0 < d) (B : Mult
           obtain ⟨s, hs_mem, hds⟩ := (lt_csSup_iff hbdd hne).mp hlt
           rcases Set.mem_insert_iff.mp hs_mem with rfl | ⟨_, hQs⟩
           · exfalso; linarith [(hd_mem r).1, (hex_d (pq r) (hpq_good r)).choose_spec.1.2.1,
-              show pick (pq r) > 0 by simp only [pick, dif_pos (hpq_good r)]; exact (hex_d (pq r) (hpq_good r)).choose_spec.1.2.1]
+              show pick (pq r) > 0 by simp only [pick, dite_eq_left (hpq_good r)]; exact (hex_d (pq r) (hpq_good r)).choose_spec.1.2.1]
           · exact (localizedQuad_mono K hds.le ω).trans hQs
         have hM_lim : Tendsto (fun r => M (pick (pq r)) ω) atTop (𝓝 (M τ ω)) :=
           (hMc τ hτI).tendsto.comp (tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ hd_lim (Eventually.of_forall hd_mem))
@@ -724,7 +730,7 @@ theorem expectation_le_zero_of_boundedBelowGain {d : ℕ} (hd : 0 < d) (B : Mult
           ⟨hτI.1.trans_lt (hq1 r), (hq2 r).trans_le (min_le_left _ _)⟩
         have hq_eq : ∀ r, M T ω = M (q r) ω := fun r => by
           refine htail (q r) (hq_Ioo r) ?_
-          by_contra hle; push_neg at hle
+          by_contra hle; push Not at hle
           have hle_τ : (q r : ℝ) ≤ τ := le_csSup
             ⟨T, fun s hs => by rcases Set.mem_insert_iff.mp hs with rfl | h; exact hT.le; exact h.1.2⟩
             (Set.mem_insert_of_mem 0 ⟨⟨(hq_Ioo r).1, (hq_Ioo r).2.le⟩, hle⟩)
