@@ -197,7 +197,9 @@ ItoCalculusKit.DoleansMoments -hard-> ItoCalculusKit.DoleansSigma
 ItoCalculusKit.DoleansQV -hard-> ItoCalculusKit.DoleansSDE
 ItoCalculusKit.DoleansQV -hard-> ItoCalculusKit.NovikovMartingale
 ItoCalculusKit.DoleansSDE -hard-> ItoCalculusKit.OfMathFin
+ItoCalculusKit.DoleansSDE -hard-> SigPriceCont
 ItoCalculusKit.DoleansSigma -hard-> ItoCalculusKit.DoleansInputs
+ItoCalculusKit.DoleansSigma -hard-> SigPriceCont
 ItoCalculusKit.DoleansStrongClass -hard-> ItoCalculusKit.OfMathFin
 ItoCalculusKit.DoobEnvelope -hard-> ItoCalculusKit.DoleansEnvelope
 ItoCalculusKit.EighthMoment -hard-> ItoCalculusKit.EighthTransform
@@ -231,6 +233,7 @@ ItoCalculusKit.ItoIncrement -hard-> ItoCalculusKit.ItoIncrementEven
 ItoCalculusKit.ItoIncrement -hard-> SignatureRiccatiKit.ItoWordTiltClosedForm
 ItoCalculusKit.ItoIncrement8 -hard-> ItoCalculusKit.FrozenIncrement8
 ItoCalculusKit.ItoIncrement8 -hard-> ItoCalculusKit.SigmaHolder8
+ItoCalculusKit.ItoIncrement8 -hard-> SigPriceCont
 ItoCalculusKit.ItoIncrementEven -hard-> ItoCalculusKit.LebIncrementEven
 ItoCalculusKit.ItoIncrementEven -hard-> SignatureRiccatiKit.CounterexampleV1LogNonpos
 ItoCalculusKit.ItoIncrementEven -hard-> SignatureRiccatiKit.ItoWordTiltClosedForm
@@ -265,6 +268,7 @@ ItoCalculusKit.MathFinBridgeSetup -hard-> ItoCalculusKit.NovikovDoob
 ItoCalculusKit.MathFinBridgeSetup -hard-> ItoCalculusKit.StoppedRaw
 ItoCalculusKit.NovikovDoob -hard-> ItoCalculusKit.DoleansStrongClass
 ItoCalculusKit.NovikovMartingale -hard-> ItoCalculusKit.DoleansEnvelope
+ItoCalculusKit.OfMathFin -hard-> SigPriceCont
 ItoCalculusKit.OfMathFin -hard-> SignatureRiccatiKit.AffineRiccatiDualityMp
 ItoCalculusKit.OfMathFin -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 ItoCalculusKit.OfMathFin -hard-> SignatureRiccatiKit.ComplexTilt
@@ -293,10 +297,12 @@ ItoCalculusKit.RiemannRate8 -hard-> ItoCalculusKit.SubseqUniform
 ItoCalculusKit.SigmaBounds -hard-> ItoCalculusKit.SigmaContinuity
 ItoCalculusKit.SigmaBounds -hard-> ItoCalculusKit.SigmaHolder
 ItoCalculusKit.SigmaContinuity -hard-> ItoCalculusKit.SigmaHolder
+ItoCalculusKit.SigmaContinuity -hard-> SigPriceCont
 ItoCalculusKit.SigmaContinuity -hard-> SignatureRiccatiKit.RiccatiExpProcess
 ItoCalculusKit.SigmaHolder -hard-> ItoCalculusKit.DoleansMoments
 ItoCalculusKit.SigmaHolder -hard-> ItoCalculusKit.EighthTransform
 ItoCalculusKit.SigmaHolder8 -hard-> ItoCalculusKit.QuadIncrement
+ItoCalculusKit.SigmaHolder8 -hard-> SigPriceCont
 ItoCalculusKit.StoppedKit -hard-> ItoCalculusKit.StoppedL2
 ItoCalculusKit.StoppedL2 -hard-> ItoCalculusKit.OfMathFin
 ItoCalculusKit.StoppedRaw -hard-> ItoCalculusKit.StoppedStep
@@ -336,8 +342,10 @@ MemTwDual -hard-> MemTwDualOfMemL2w
 MemTwDual -hard-> NormWDual
 MemTwDualOfMemL2w -hard-> Corollary36SigmaWellDefined
 NflvrBoundedBelow -hard-> NflvrContIto
+NflvrBoundedBelow -hard-> SigPriceCont
 NflvrCone -hard-> NflvrBoundedBelow
 NflvrContIto -hard-> NflvrDS
+NflvrDS -hard-> SigPriceCont
 NflvrDefs -hard-> NflvrBoundedBelow
 NflvrDefs -hard-> NflvrCone
 NflvrDefs -hard-> NflvrDoubling
@@ -397,6 +405,7 @@ ProlongedBrownianSetup.ContVersion -hard-> ItoCalculusKit.MathFinBridge
 ProlongedBrownianSetup.ContVersion -hard-> ProlongedBrownianSetup.ContVersionKolmogorov
 ProlongedBrownianSetup.ContVersion -hard-> ProlongedBrownianSetup.ItoWordIntegral
 ProlongedBrownianSetup.ContVersionKolmogorov -hard-> ItoCalculusKit.LevelBounds
+ProlongedBrownianSetup.ContVersionKolmogorov -hard-> SigPriceCont
 ProlongedBrownianSetup.ItoIntegralAgainstBM -hard-> ItoCalculusKit.BrownianQuadVarAS
 ProlongedBrownianSetup.ItoIntegralAgainstBM -hard-> ProlongedBrownianSetup.ItoIntegralProcess
 ProlongedBrownianSetup.ItoIntegralAgainstBM -hard-> SignatureRiccatiKit.CondExpMulIndepDisintegrate
@@ -424,6 +433,7 @@ ProlongedBrownianSetup.PaperSigChen -hard-> SignatureRiccatiKit.AffineRiccatiDua
 ProlongedBrownianSetup.PaperSigChen -hard-> SignatureRiccatiKit.CounterexampleTensor
 ProlongedBrownianSetup.PaperSigDynamics -hard-> NflvrBoundedBelow
 ProlongedBrownianSetup.PaperSigDynamics -hard-> ProlongedBrownianSetup.ShiftedWordIntegral
+ProlongedBrownianSetup.PaperSigDynamics -hard-> SigPriceCont
 ProlongedBrownianSetup.PaperSigDynamics -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
 ProlongedBrownianSetup.PaperSigDynamics -hard-> SignatureRiccatiKit.BrownianScalingShiftedExponent
 ProlongedBrownianSetup.PaperSigDynamics -hard-> SignatureRiccatiKit.CameronMartinC2Shift
@@ -480,6 +490,7 @@ SatisfiesNFLVR -hard-> TheoremBOfSetupItoRiccatiKit
 ShuffleFinite -hard-> Remark219BlackScholesRiccati
 ShuffleFinite -hard-> RiccatiOpBounded
 ShuffleFinite -hard-> SignatureRiccatiKit.AffineRiccatiDualityMprCounterexample
+SigPriceCont -hard-> TheoremB
 SignatureFiltrationEqBrownianFiltration -hard-> ItoCalculusKit.MathFinBridgeSetup
 SignatureFiltrationEqBrownianFiltration -hard-> SignatureRiccatiKit.CondExpMulIndepDisintegrate
 SignaturePriceSolution -hard-> TheoremAOfBrownianSetupItoKit
@@ -574,6 +585,7 @@ SignatureVolatilityModel -hard-> SignatureVolatilityModel.Sigma
 SignatureVolatilityModel -hard-> TheoremAOfBrownianSetupItoKit
 SignatureVolatilityModel -hard-> TheoremBOfSetupItoRiccatiKit
 SignatureVolatilityModel.Sigma -hard-> Corollary36SigmaWellDefined
+SignatureVolatilityModel.Sigma -hard-> SigPriceCont
 SignatureVolatilityModel.Sigma -hard-> SignaturePriceSolution
 SignatureVolatilityModel.Sigma -hard-> TheoremAOfBrownianSetupItoKit
 SmoothIteratedIntegral -hard-> SmoothSignature
