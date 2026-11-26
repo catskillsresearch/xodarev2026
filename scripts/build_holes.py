@@ -575,6 +575,15 @@ SYNTHETIC_NODES: list[dict] = [
         "file": "README.md",
         "commits": "979b359",
     },
+    {
+        "id": "Docs_DropPalomarTBD",
+        "label": "Drop Palomar registration TBD sentence",
+        "status": "done",
+        "section": 12,
+        "detail": "Dropped the sentence Palomar registration: TBD. from formalization.yaml and PalomarRegistration.md, with no registration number put in its place. The report was reprinted; Main results no longer shows TBD.",
+        "file": "formalization.yaml",
+        "commits": "1b62c72",
+    },
 ]
 
 # Edges are dep → dependent (the dependent uses / follows the dep).
@@ -620,6 +629,7 @@ SYNTHETIC_EDGES: list[tuple[str, str]] = [
     ("TheoremB_GenuineIto.prose", "TheoremB_GenuineIto"),
     ("TheoremB_GenuineIto", "TheoremB_RiccatiProse"),
     ("TheoremB_RiccatiProse", "Docs_PalomarRegistration"),
+    ("Docs_PalomarRegistration", "Docs_DropPalomarTBD"),
 ]
 
 

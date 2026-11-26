@@ -2,8 +2,8 @@
 
 File-level inventory of Lean modules. A module is **done** only if it is listed in `VERIFIED` in `scripts/build_holes.py`, all hard import-deps are done, **and** the file contains no `sorry`.
 
-**Updated:** 2026-11-26T12:26:26Z
-**`sorry` occurrences:** 0 · 0 open · 0 blocked · 253 done · 0 file(s) with `sorry`.
+**Updated:** 2026-11-26T12:35:36Z
+**`sorry` occurrences:** 0 · 0 open · 0 blocked · 254 done · 0 file(s) with `sorry`.
 **Paper claims refuted:** 6 counterexample module(s) · 1 refuted theorem(s) · 1 half-proved theorem(s). All are finished (no `sorry`) and counted as done.
 
 ## The affine / Riccati `<-` direction is refuted
@@ -110,6 +110,7 @@ Palomar follow-on: replace the Riemann-sum gain cone by a genuine `L²` Itô int
 | done | `TheoremB_GenuineIto` | `2b6ba09` | Compared Theorem B NFLVR uses the genuine L² Itô cone; the library and Challenge agree; the prose matches that strength (narrower than the paper's local class). Full lake build green, no linter warnings, strict compare 44866 constants. |
 | done | `TheoremB_RiccatiProse` | `0f975dc` | Every description of theorem_B_mp's Riccati conjunct now states the immediate implication that a classical Riccati solution satisfying the exponential dual formula yields a classical Riccati solution, recorded as stated and not a substantive forward pricing result. No Lean statements changed. |
 | done | `Docs_PalomarRegistration` | `979b359` | Lean CI and Palomar registration badges added to README.md. Documentation TBDs replaced by PALOMAR-2026-11-26-000043 version 1, linked to the registry entry. The report title page and abstract carry a clickable Palomar registration link. Palomar submission files left unchanged. |
+| done | `Docs_DropPalomarTBD` | `1b62c72` | Dropped the sentence Palomar registration: TBD. from formalization.yaml and PalomarRegistration.md, with no registration number put in its place. The report was reprinted; Main results no longer shows TBD. |
 
 ## By group
 
@@ -402,6 +403,7 @@ Palomar follow-on: replace the Riemann-sum gain cone by a genuine `L²` Itô int
 
 | Status | Id | File |
 |---|---|---|
+| done | `Docs_DropPalomarTBD` | `formalization.yaml` |
 | done | `Docs_PalomarRegistration` | `README.md` |
 | done | `TheoremB_GenuineIto` | `SignatureVolatility/TheoremB.lean` |
 | done | `TheoremB_GenuineIto.challenge` | `SignatureVolatilityComparator/Challenge.lean` |

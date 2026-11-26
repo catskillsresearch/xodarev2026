@@ -704,3 +704,4 @@ TheoremB_GenuineIto.challenge -hard-> TheoremB_GenuineIto
 TheoremB_GenuineIto.prose -hard-> TheoremB_GenuineIto
 TheoremB_GenuineIto -hard-> TheoremB_RiccatiProse
 TheoremB_RiccatiProse -hard-> Docs_PalomarRegistration
+Docs_PalomarRegistration -hard-> Docs_DropPalomarTBD
