@@ -189,8 +189,7 @@ structure SignatureVolatilityModel where
   hs₀ : 0 < s₀
   h1 : HypH1 w ℓ
   h2 : HypH2 w
-  /-- Parameter nondegeneracy (`ℓ ≠ 0`). Analytic Novikov H3 on `ξ = ⟨ℓ,Ŵ⟩` is
-  a separate hypothesis when inhabiting `ItoCalculusKit`. -/
+  /-- Parameter nondegeneracy (`ℓ ≠ 0`). Analytic Novikov H3 on `ξ = ⟨ℓ,Ŵ⟩` is a separate hypothesis when inhabiting `ItoCalculusKit`. -/
   h3 : HypH3Param hd ℓ
 end
 run_cmd Lean.modifyEnv fun env => Lean.Meta.auxLemmasExt.setState env {}
@@ -259,9 +258,7 @@ def shuffleFinite {d : ℕ} (a b : ExtTensorAlgebra (d + 1)) (supportBound : ℕ
         ∑ I ∈ wordsOfLength (d + 1) m,
           ∑ J ∈ wordsOfLength (d + 1) n,
             a.coeff I * b.coeff J * (ExtTensorAlgebra.shuffleBasis I J).coeff K⟩
-/-- A classical solution `ψ` on `[0, T]` of the Riccati equation `ψ' = R(ψ)`, `ψ(0) = u₀`: each
-`ψ t ∈ T^w`, uniformly `‖·‖_w`-bounded, with each coefficient satisfying the integral equation
-with a continuous integrand. -/
+/-- A classical solution `ψ` on `[0, T]` of the Riccati equation `ψ' = R(ψ)`, `ψ(0) = u₀`: each `ψ t ∈ T^w`, uniformly `‖·‖_w`-bounded, with each coefficient satisfying the integral equation with a continuous integrand. -/
 structure ClassicalRiccatiSolution {d : ℕ} (w : Weight) (T : ℝ)
     (R_op : ExtTensorAlgebra (d + 1) → ExtTensorAlgebra (d + 1))
     (u₀ : ExtTensorAlgebra (d + 1)) where
@@ -284,9 +281,7 @@ namespace ExtTensorAlgebra
 /-- The free tensor algebra: the finitely supported elements of `T((ℝ^d))`. -/
 abbrev FreeTensorAlgebra (d : ℕ) := {a : ExtTensorAlgebra d // IsFinitelySupported a}
 end ExtTensorAlgebra
-/-- **Special semimartingale on `[0, T]`** (paper Lemma 43): `X = X₀ + M + A` with `M₀ = A₀ = 0`,
-`M` an a.s. continuous square-integrable true martingale and `A` an a.s. continuous adapted
-finite-variation part of integrable total variation on `[0, T]`. -/
+/-- **Special semimartingale on `[0, T]`** (paper Lemma 43): `X = X₀ + M + A` with `M₀ = A₀ = 0`, `M` an a.s. continuous square-integrable true martingale and `A` an a.s. continuous adapted finite-variation part of integrable total variation on `[0, T]`. -/
 structure IsSpecialSemimartingale {Ω : Type*} [MeasurableSpace Ω]
     (ℙ : Measure Ω) (ℱ : IndexedFiltration Ω) (T : ℝ) (X : ℝ → Ω → ℝ) where
   M_part : ℝ → Ω → ℝ
@@ -478,13 +473,11 @@ lemma measurable_itoWordIntegral_cons_long (B : MultiBrownian Ω P d) (j : Fin (
 end
 section
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}
-/-- One Itô step at upper time `u` for the word `j :: I` (`I ≠ []`), given the previous
-coordinate process `H` of `I` (a Lebesgue or Itô–Riemann limit); `0` for `u < s`. -/
+/-- One Itô step at upper time `u` for the word `j :: I` (`I ≠ []`), given the previous coordinate process `H` of `I` (a Lebesgue or Itô–Riemann limit); `0` for `u < s`. -/
 def itoWordStep (B : MultiBrownian Ω P d) (j : Fin (d + 1))
     (H : ℝ → Ω → ℝ) (s u : ℝ) (ω : Ω) : ℝ :=
   if s ≤ u then itoWordIntegral_cons_long B j H s u ω else 0
-/-- Word-indexed Itô iterated integral of `wAug` over `[s,t]`. Levels `≥ 2` are taken as
-their adapted continuous versions (`contVersion`) before being integrated further. -/
+/-- Word-indexed Itô iterated integral of `wAug` over `[s,t]`. Levels `≥ 2` are taken as their adapted continuous versions (`contVersion`) before being integrated further. -/
 def itoWordIntegral (B : MultiBrownian Ω P d) (s t : ℝ) (ω : Ω) : Word (d + 1) → ℝ
   | [] => 1
   | j :: I =>
@@ -562,7 +555,6 @@ variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasur
 def pathFiltration (B : MultiBrownian Ω P d) : IndexedFiltration Ω :=
   generatedFiltration (fun u i ω => MultiBrownian.W B u ω i) (MultiBrownian.W_meas B)
 end
-
 section
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P]
 def bmCoord (B : MultiBrownian Ω P 1) : ℝ → Ω → ℝ :=
@@ -597,6 +589,32 @@ def IsItoIntegral {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω)
   (∀ ω, V 0 ω = 0) ∧
   (∀ᵐ ω ∂P, ContinuousOn (fun t => V t ω) (Icc 0 T)) ∧
   ∀ t ∈ Icc 0 T, TendstoInMeasure P (fun n => itoRiemannSum K B t n) atTop (V t)
+structure ElemPredProcess {Ω : Type*} (σAlg : ℝ → MeasurableSpace Ω) (T : ℝ) where
+  n : ℕ
+  a : Fin n → ℝ
+  b : Fin n → ℝ
+  h : Fin n → Ω → ℝ
+  hab : ∀ j, 0 ≤ a j ∧ a j ≤ b j ∧ b j ≤ T
+  h_meas : ∀ j, Measurable[σAlg (a j)] (h j)
+  h_bdd : ∀ j, ∃ C : ℝ, ∀ ω, |h j ω| ≤ C
+def ElemPredProcess.eval {Ω : Type*} {σAlg : ℝ → MeasurableSpace Ω} {T : ℝ}
+    (U : ElemPredProcess σAlg T) (s : ℝ) (ω : Ω) : ℝ :=
+  ∑ j : Fin U.n, if U.a j < s ∧ s ≤ U.b j then U.h j ω else 0
+def ElemPredProcess.itoInt {Ω : Type*} {σAlg : ℝ → MeasurableSpace Ω} {T : ℝ}
+    (U : ElemPredProcess σAlg T) (B : ℝ → Ω → ℝ) (t : ℝ) (ω : Ω) : ℝ :=
+  ∑ j : Fin U.n, U.h j ω * (B (min (U.b j) t) ω - B (min (U.a j) t) ω)
+run_cmd Lean.modifyEnv fun env => Lean.Meta.auxLemmasExt.setState env {}
+def IsL2ItoIntegral {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω)
+    (σAlg : ℝ → MeasurableSpace Ω) (B K V : ℝ → Ω → ℝ) (T : ℝ) : Prop :=
+  (∀ ω, V 0 ω = 0) ∧
+  (∀ᵐ ω ∂P, ContinuousOn (fun t => V t ω) (Icc 0 T)) ∧
+  (∀ t ∈ Icc 0 T, AEStronglyMeasurable (V t) P) ∧
+  MemLp (Function.uncurry K) 2 ((volume.restrict (Icc 0 T)).prod P) ∧
+  ∃ U : ℕ → ElemPredProcess σAlg T,
+    Tendsto (fun m => ∫⁻ p, ENNReal.ofReal ((K p.1 p.2 - (U m).eval p.1 p.2) ^ 2)
+      ∂((volume.restrict (Icc 0 T)).prod P)) atTop (𝓝 0) ∧
+    ∀ t ∈ Icc 0 T,
+      Tendsto (fun m => ∫⁻ ω, ENNReal.ofReal (((U m).itoInt B t ω - V t ω) ^ 2) ∂P) atTop (𝓝 0)
 def LiteralGains {Ω : Type*} [MeasurableSpace Ω] (σAlg : ℝ → MeasurableSpace Ω)
     (P : Measure Ω) (B S σ : ℝ → Ω → ℝ) (T : ℝ) : Set (Ω → ℝ) :=
   {G | ∃ (H V : ℝ → Ω → ℝ),
@@ -617,7 +635,7 @@ def BoundedBelowGains {Ω : Type*} [MeasurableSpace Ω]
   {G | ∃ (H V : ℝ → Ω → ℝ) (a : ℝ),
     SAdmissible σAlg P S σ T H ∧
     IsUniformlyBoundedBelow P V T a ∧
-    IsItoIntegral P B (fun t ω => H t ω * S t ω * σ t ω) V T ∧
+    IsL2ItoIntegral P σAlg B (fun t ω => H t ω * S t ω * σ t ω) V T ∧
     G = V T}
 def nflvrCone {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω) (K : Set (Ω → ℝ)) :
     Set (Ω → ℝ) :=
@@ -731,9 +749,7 @@ variable (T s₀ σ₀ : ℝ) (hT : 0 < T) (hs₀ : 0 < s₀) (hσ₀ : σ₀ �
 end
 section
 open scoped Classical RealInnerProductSpace
-/-- **NFLVR** for the given admissible terminal gains: if admissible gains `G_n` with uniformly
-vanishing negative parts, integrable with `𝔼 G_n ≤ 0`, converge a.s. to an integrable `f ≥ 0`,
-then `f = 0` a.s. -/
+/-- **NFLVR** for the given admissible terminal gains: if admissible gains `G_n` with uniformly vanishing negative parts, integrable with `𝔼 G_n ≤ 0`, converge a.s. to an integrable `f ≥ 0`, then `f = 0` a.s. -/
 def SatisfiesNFLVR {Ω : Type*} [MeasurableSpace Ω] (ℙ : Measure Ω)
     (AdmissibleTerminalGains : Set (Ω → ℝ)) : Prop :=
   ∀ (G : ℕ → Ω → ℝ) (f : Ω → ℝ),
@@ -748,15 +764,13 @@ end
 section
 open scoped RealInnerProductSpace
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P]
-/-- The signature filtration `ℱ^Ŵ_t = σ(⟨e_I, Ŵ_u⟩ : 0 ≤ u ≤ t, I a word)` generated by the
-coordinates of the signature `Ŵ_u = paperSig2 B 0 u` of the time-extended path `(u, W_u)`. -/
+/-- The signature filtration `ℱ^Ŵ_t = σ(⟨e_I, Ŵ_u⟩ : 0 ≤ u ≤ t, I a word)` generated by the coordinates of the signature `Ŵ_u = paperSig2 B 0 u` of the time-extended path `(u, W_u)`. -/
 def sigFiltration {d : ℕ} (B : MultiBrownian Ω P d) : IndexedFiltration Ω :=
   generatedFiltration (fun u I ω => (paperSig2 B 0 u ω).coeff I) (measurable_paperSig2_coeff B 0)
 /-- The signature volatility `σ_t = ⟨ℓ, Ŵ_t⟩` of the model `M` driven by `B`. -/
 def sigVol (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d) (t : ℝ) (ω : Ω) : ℝ :=
   dualPairing M.ℓ (paperSig2 B 0 t ω)
-/-- Finite signature transform on `[0, T]` for the initial datum `u₀`:
-`𝔼 exp⟨u₀, Ŵ_t⟩ < ∞` for every `t ∈ [0, T]`. -/
+/-- Finite signature transform on `[0, T]` for the initial datum `u₀`: `𝔼 exp⟨u₀, Ŵ_t⟩ < ∞` for every `t ∈ [0, T]`. -/
 def SigTransformFinite {d : ℕ} (B : MultiBrownian Ω P d) (T : ℝ)
     (u₀ : ExtTensorAlgebra (d + 1)) : Prop :=
   ∀ t ∈ Icc 0 T, Integrable (fun ω => Real.exp (dualPairing u₀ (paperSig2 B 0 t ω))) P
@@ -777,9 +791,7 @@ structure IsSignaturePrice (M : SignatureVolatilityModel) (B : MultiBrownian Ω 
     (∀ᵐ ω ∂P, ∀ t ∈ Icc 0 M.T, |S t ω| ≤ S_sup ω) ∧ Integrable (fun ω => (S_sup ω) ^ 2) P
   is_martingale : ∀ ⦃s t : ℝ⦄, 0 ≤ s → s ≤ t → t ≤ M.T →
     Integrable (S t) P ∧ P[S t | (sigFiltration B).σAlg s] =ᵐ[P] S s
-/-- **Paper Theorem A (unwrapped).** Under the analytic H3 hypothesis there is a signature-price
-solution `S`, unique (up to modification on `[0, T]`) among adapted strong solutions in
-`KitStrongSolutionClass`. -/
+/-- **Paper Theorem A (unwrapped).** Under the analytic H3 hypothesis there is a signature-price solution `S`, unique (up to modification on `[0, T]`) among adapted strong solutions in `KitStrongSolutionClass`. -/
 theorem theorem_A_unwrapped (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
     (h3 : HypH3 P M.T (sigVol M B)) :
     ∃ S : ℝ → Ω → ℝ, IsSignaturePrice M B S ∧
@@ -789,9 +801,7 @@ theorem theorem_A_unwrapped (M : SignatureVolatilityModel) (B : MultiBrownian Ω
         (∀ t ∈ Icc 0 M.T, ∀ᵐ ω ∂P,
           S_tilde t ω = M.s₀ + kitItoInt B (fun s ω' => S_tilde s ω' * sigVol M B s ω') t ω) →
         ∀ t ∈ Icc 0 M.T, ∀ᵐ ω ∂P, S_tilde t ω = S t ω := by sorry
-/-- **Paper Theorem B, `→` direction (unwrapped).** The signature price is a martingale, the
-market satisfies Delbaen–Schachermayer NFLVR for uniformly bounded-below admissible gains,
-every signature coordinate is a special semimartingale, and a classical Riccati solution exists whenever the affine transform formula holds. -/
+/-- **Paper Theorem B, `→` direction (unwrapped).** The signature price is a martingale, the market satisfies Delbaen–Schachermayer NFLVR for uniformly bounded-below admissible strategies whose integrand `H S σ` lies in `ℱ^W`-predictable `L²` and whose wealth is a continuous genuine `L²` Itô integral against `W⁰` (narrower than the paper's local class), every signature coordinate is a special semimartingale, and a classical Riccati solution exists whenever the affine transform formula holds. -/
 theorem theorem_B_mp_unwrapped (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
     (h3 : HypH3 P M.T (sigVol M B)) :
     ∃ S : ℝ → Ω → ℝ, IsSignaturePrice M B S ∧
@@ -869,16 +879,14 @@ theorem not_theorem_B_unwrapped (M : SignatureVolatilityModel) (B : MultiBrownia
               (sigFiltration B).σAlg t] =ᵐ[P]
               fun ω => Real.exp (dualPairing (rSol.ψ (M.T - t)) (paperSig2 B 0 t ω))) ↔
         Nonempty (ClassicalRiccatiSolution M.w M.T riccatiOp u₀.1))) := by sorry
-/-- The signature price `S_t = s₀ exp(∫_0^t σ dW - ½ ∫_0^t σ² ds)` (the Doléans exponential of
-Theorem A), with the Itô integral `kitItoInt B` and quadratic variation `kitQuadVar B`. -/
+/-- The signature price `S_t = s₀ exp(∫_0^t σ dW - ½ ∫_0^t σ² ds)` (the Doléans exponential of Theorem A), with the Itô integral `kitItoInt B` and quadratic variation `kitQuadVar B`. -/
 def sigPrice (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d) (t : ℝ) (ω : Ω) : ℝ :=
   M.s₀ * Real.exp (kitItoInt B (sigVol M B) t ω - (1 / 2 : ℝ) * kitQuadVar B (sigVol M B) t ω)
 lemma sigPrice_meas (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d) (t : ℝ) :
     Measurable (sigPrice M B t) :=
   measurable_const.mul ((kitItoInt_meas B _ t).sub
     (measurable_const.mul (kitQuadVar_meas B _ t))).exp
-/-- Market data for Theorems C–D (unwrapped): the model, its Brownian driver, and the analytic
-H3 hypothesis of Theorem A. -/
+/-- Market data for Theorems C–D (unwrapped): the model, its Brownian driver, and the analytic H3 hypothesis of Theorem A. -/
 structure Market (Ω : Type*) [MeasurableSpace Ω] (P : Measure Ω) [IsProbabilityMeasure P] where
   M : SignatureVolatilityModel
   B : MultiBrownian Ω P M.d
@@ -895,8 +903,7 @@ def oneLp (P : Measure Ω) [IsProbabilityMeasure P] : Lp ℝ 2 P :=
 /-- `L²(ℱ^S_T, ℙ)` as a closed subspace of `L²(ℙ)`. -/
 def L2S (mkt : Market Ω P) : Submodule ℝ (Lp ℝ 2 P) :=
   lpMeas ℝ ℝ (mkt.F_S.σAlg mkt.M.T) 2 P
-/-- Square-integrable stochastic integrals against `S`: `∫_0^T H_s S_s σ_s dW_s` with `H`
-adapted to `ℱ^S`, lying in `L²(ℱ^S_T)`. -/
+/-- Square-integrable stochastic integrals against `S`: `∫_0^T H_s S_s σ_s dW_s` with `H` adapted to `ℱ^S`, lying in `L²(ℱ^S_T)`. -/
 def gainsSet (mkt : Market Ω P) : Set (Lp ℝ 2 P) :=
   {X | X ∈ mkt.L2S ∧ ∃ H : ℝ → Ω → ℝ, (∀ t, Measurable[mkt.F_S.σAlg t] (H t)) ∧
     (X : Ω → ℝ) =ᵐ[P] kitItoInt mkt.B
@@ -911,15 +918,12 @@ def coord (mkt : Market Ω P) (I : Word (mkt.M.d + 1)) : Lp ℝ 2 P :=
 /-- The depth-`≤ N` terminal signature coordinates `{⟨e_I, Ŵ_T⟩ : |I| ≤ N}` in `L²(ℙ)`. -/
 def coordSet (mkt : Market Ω P) (N : ℕ) : Set (Lp ℝ 2 P) :=
   {f | ∃ I : Word (mkt.M.d + 1), I.length ≤ N ∧ f = mkt.coord I}
-/-- **Definition 55.** The completeness depth `N^*_S`: the least `N` with
-`closure span {⟨e_I, Ŵ_T⟩ : |I| ≤ N} ∩ L²(ℱ^S_T) = L²(ℱ^S_T)`, and `⊤` if there is none. -/
+/-- **Definition 55.** The completeness depth `N^*_S`: the least `N` with `closure span {⟨e_I, Ŵ_T⟩ : |I| ≤ N} ∩ L²(ℱ^S_T) = L²(ℱ^S_T)`, and `⊤` if there is none. -/
 def completenessDepth (mkt : Market Ω P) : ℕ∞ :=
   sInf {K : ℕ∞ | ∃ n : ℕ, K = (n : ℕ∞) ∧
     (Submodule.span ℝ (mkt.coordSet n)).topologicalClosure ⊓ mkt.L2S = mkt.L2S}
 end Market
-/-- **Paper Theorem D / Theorem 66, GKW part (unwrapped).** Every `X ∈ L²(ℱ^S_T)` splits uniquely
-as `X = 𝔼X + G + ε` with `G ∈ H0`, `G ⟂ 1`, `ε ∈ L²(ℱ^S_T)`, `ε ⟂ H0` and `ε` orthogonal to all
-gains, with the Pythagorean identity. -/
+/-- **Paper Theorem D / Theorem 66, GKW part (unwrapped).** Every `X ∈ L²(ℱ^S_T)` splits uniquely as `X = 𝔼X + G + ε` with `G ∈ H0`, `G ⟂ 1`, `ε ∈ L²(ℱ^S_T)`, `ε ⟂ H0` and `ε` orthogonal to all gains, with the Pythagorean identity. -/
 theorem theorem_D_unwrapped (mkt : Market Ω P) (X : Lp ℝ 2 P) (hX : X ∈ mkt.L2S) :
     ∃ G ε : Lp ℝ 2 P,
       G ∈ mkt.H0 ∧ ⟪G, Market.oneLp P⟫ = 0 ∧ ε ∈ mkt.L2S ∧ ε ∈ mkt.H0ᗮ ∧
@@ -954,9 +958,7 @@ theorem theorem_D_residual_hypothesis_fails_unwrapped (B : MultiBrownian Ω P 1)
 end BlackScholes
 section Completeness
 variable (T s₀ σ₀ : ℝ) (hT : 0 < T) (hs₀ : 0 < s₀) (hσ₀ : σ₀ ≠ 0)
-/-- Elementary Brownian gains on `[0, T]`: the finite sums `∑_{p ∈ V} h_p (W_{p.2} - W_{p.1})`
-over time intervals `p.1 ≤ p.2 ≤ T`, where each `h_p` is bounded and measurable for
-`σ(W_u : u ≤ p.1)`. -/
+/-- Elementary Brownian gains on `[0, T]`: the finite sums `∑_{p ∈ V} h_p (W_{p.2} - W_{p.1})` over time intervals `p.1 ≤ p.2 ≤ T`, where each `h_p` is bounded and measurable for `σ(W_u : u ≤ p.1)`. -/
 def elemGains (B : MultiBrownian Ω P 1) : Set (Lp ℝ 2 P) :=
   {G | ∃ (V : Finset (ℝ≥0 × ℝ≥0)) (h : ℝ≥0 × ℝ≥0 → Ω → ℝ),
     (∀ p ∈ V, p.1 ≤ p.2 ∧ (p.2 : ℝ) ≤ T ∧
@@ -969,9 +971,7 @@ def IsCompleteWithCallsUnwrapped (B : MultiBrownian Ω P 1) (strikes : Finset �
     ∃ (c : ℝ) (a : ℝ → ℝ), ∃ G ∈ (Submodule.span ℝ (elemGains T B)).topologicalClosure,
       (X : Ω → ℝ) =ᵐ[P] fun ω => c +
         ∑ k ∈ strikes, a k * max ((bsMarket T s₀ σ₀ hT hs₀ hσ₀ B).S T ω - k) 0 + G ω
-/-- **Unconditional completeness iff and Black–Scholes depth (unwrapped).** For Black–Scholes
-and any finite strike set, "complete with calls ⇔ `N^*_S < ∞`" fails: complete, yet Definition 55
-gives `N^*_S = ∞`. Not a counterexample inside Theorem 56's finite-polynomial, rich-strike case. -/
+/-- **Unconditional completeness iff and Black–Scholes depth (unwrapped).** For Black–Scholes and any finite strike set, "complete with calls ⇔ `N^*_S < ∞`" fails: complete, yet Definition 55 gives `N^*_S = ∞`. Not a counterexample inside Theorem 56's finite-polynomial, rich-strike case. -/
 theorem not_theorem_C_unwrapped (B : MultiBrownian Ω P 1) (strikes : Finset ℝ) :
     ¬ (IsCompleteWithCallsUnwrapped T s₀ σ₀ hT hs₀ hσ₀ B strikes ↔
       (bsMarket T s₀ σ₀ hT hs₀ hσ₀ B).completenessDepth < ⊤) := by sorry

@@ -41,9 +41,12 @@ project:
     integral equation, almost everywhere on [0, T]; theorem_B_mp_unwrapped —
     under the same HypH3, there exists such an S that is a martingale on the
     signature filtration, SatisfiesNFLVR_DS holds for the Delbaen–Schachermayer
-    cone BoundedBelowGains of admissible strategies whose wealth is uniformly
-    bounded from below, for that same process S, every signature coordinate is a
-    special semimartingale for the signature filtration, and the → direction of
+    cone BoundedBelowGains of uniformly bounded-below admissible strategies whose
+    integrand H S σ lies in the ℱ^W-predictable L² space and whose wealth is a
+    continuous genuine L² Itô integral against W⁰ (narrower than the paper's
+    local class ∫ H² d⟨S⟩ < ∞ almost surely), for that same process S, every
+    signature coordinate is a special semimartingale for the signature
+    filtration, and the → direction of
     Theorem 4.2(ii) holds (if the exponential-affine conditional-expectation
     formula holds through some classical Riccati solution, then a classical
     Riccati solution exists). This is not a proof of the paper's full Theorem B,
@@ -95,8 +98,10 @@ project:
     not_terminal_bdd_nflvr_unwrapped — the same free lunch is in the terminal-
     only bounded-below cone of Section 4.6. Neither claim refutes
     Delbaen–Schachermayer NFLVR, which requires a uniform-in-time lower bound
-    and is proved for the unwrapped signature-price process in
-    theorem_B_mp_unwrapped. The geometric-grid doubling construction and the
+    and, in the Lean statement, an integrand H S σ in ℱ^W-predictable L² with
+    wealth a continuous genuine L² Itô integral against W⁰, narrower than the
+    paper's local class, and is proved at that strength for the unwrapped
+    signature-price process in theorem_B_mp_unwrapped. The geometric-grid doubling construction and the
     distinction among the three NFLVR wordings, as well as the scaled-tensor
     disproof of the converse Riccati duality, are due to Gemini Carbon.
     Supporting results, proved in the library with no sorry but not compared:
@@ -410,7 +415,7 @@ alignment:
     lean: theorem_A_unwrapped
     module: SignatureVolatility.Unwrapped
     status: proved
-  - source: "Thm B fragment theorem_B_mp, under analytic HypH3: martingale, Delbaen–Schachermayer NFLVR (SatisfiesNFLVR_DS) for the cone BoundedBelowGains of admissible strategies whose wealth is uniformly bounded from below, for that same process S, special semimartingale coordinates, and → Riccati. The bundled theorem_B_mp asserts the same NFLVR for a continuous version of the packaged solution. Not a proof of the paper's full Theorem B conjunction."
+  - source: "Thm B fragment theorem_B_mp, under analytic HypH3: martingale, Delbaen–Schachermayer NFLVR (SatisfiesNFLVR_DS) for the cone BoundedBelowGains of uniformly bounded-below admissible strategies whose integrand H S σ lies in ℱ^W-predictable L² and whose wealth is a continuous genuine L² Itô integral against W⁰ (narrower than the paper's local class ∫ H² d⟨S⟩ < ∞ a.s.), for that same process S, special semimartingale coordinates, and → Riccati. The bundled theorem_B_mp asserts the same NFLVR for a continuous version of the packaged solution. Not a proof of the paper's full Theorem B conjunction."
     lean: theorem_B_mp_unwrapped
     module: SignatureVolatility.Unwrapped
     status: proved

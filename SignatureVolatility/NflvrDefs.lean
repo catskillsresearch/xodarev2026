@@ -1,3 +1,7 @@
+/-
+Copyright (c) 2026 Lars Warren Ericson
+Released under Apache-2.0 license as described in file LICENSE.
+-/
 module
 
 public import Mathlib
@@ -51,14 +55,50 @@ def itoRiemannSum {Ω : Type*} (K B : ℝ → Ω → ℝ) (t : ℝ) (n : ℕ) (�
     K (k * t / (n + 1 : ℝ)) ω *
       (B ((k + 1 : ℕ) * t / (n + 1 : ℝ)) ω - B (k * t / (n + 1 : ℝ)) ω)
 
-/-- `V` is an Itô integral of `K` against `B` on `[0, T]`: `V_0 = 0`, almost every path is
-continuous, and the left-point Riemann sums of `K` against `B` converge to `V_t` in
-probability for every `t ∈ [0, T]`. -/
+/-- `V` is an Itô integral of `K` against `B` on `[0, T]` in the Riemann-sum sense (used by the
+literal and terminal-bounded-below doubling-strategy refutations). -/
 def IsItoIntegral {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω)
     (B K V : ℝ → Ω → ℝ) (T : ℝ) : Prop :=
   (∀ ω, V 0 ω = 0) ∧
   (∀ᵐ ω ∂P, ContinuousOn (fun t => V t ω) (Icc 0 T)) ∧
   ∀ t ∈ Icc 0 T, TendstoInMeasure P (fun n => itoRiemannSum K B t n) atTop (V t)
+
+/-- Elementary predictable process on `[0, T]` for `σAlg`: finite sum of `h_j · 1_{(a_j, b_j]}`
+with `0 ≤ a_j ≤ b_j ≤ T` and `h_j` bounded and `σAlg (a_j)`-measurable. -/
+structure ElemPredProcess {Ω : Type*} (σAlg : ℝ → MeasurableSpace Ω) (T : ℝ) where
+  n : ℕ
+  a : Fin n → ℝ
+  b : Fin n → ℝ
+  h : Fin n → Ω → ℝ
+  hab : ∀ j, 0 ≤ a j ∧ a j ≤ b j ∧ b j ≤ T
+  h_meas : ∀ j, Measurable[σAlg (a j)] (h j)
+  h_bdd : ∀ j, ∃ C : ℝ, ∀ ω, |h j ω| ≤ C
+
+/-- Evaluation of an elementary predictable process at `(s, ω)`. -/
+def ElemPredProcess.eval {Ω : Type*} {σAlg : ℝ → MeasurableSpace Ω} {T : ℝ}
+    (U : ElemPredProcess σAlg T) (s : ℝ) (ω : Ω) : ℝ :=
+  ∑ j : Fin U.n, if U.a j < s ∧ s ≤ U.b j then U.h j ω else 0
+
+/-- Elementary Itô integral of `U` against `B` up to time `t`. -/
+def ElemPredProcess.itoInt {Ω : Type*} {σAlg : ℝ → MeasurableSpace Ω} {T : ℝ}
+    (U : ElemPredProcess σAlg T) (B : ℝ → Ω → ℝ) (t : ℝ) (ω : Ω) : ℝ :=
+  ∑ j : Fin U.n, U.h j ω * (B (min (U.b j) t) ω - B (min (U.a j) t) ω)
+
+/-- `V` is a continuous version of the genuine `L²` Itô integral of `K` against `B` on `[0, T]`
+for `σAlg`: `V 0 = 0`, a.s. continuous paths on `[0, T]`, `AEStronglyMeasurable (V t) P`,
+`K ∈ L²([0, T] × Ω)`, and elementary predictable processes `U_m → K` in `L²(dt ⊗ P)` whose
+elementary Itô integrals converge to `V t` in `L²(P)` for every `t ∈ [0, T]`. -/
+def IsL2ItoIntegral {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω)
+    (σAlg : ℝ → MeasurableSpace Ω) (B K V : ℝ → Ω → ℝ) (T : ℝ) : Prop :=
+  (∀ ω, V 0 ω = 0) ∧
+  (∀ᵐ ω ∂P, ContinuousOn (fun t => V t ω) (Icc 0 T)) ∧
+  (∀ t ∈ Icc 0 T, AEStronglyMeasurable (V t) P) ∧
+  MemLp (Function.uncurry K) 2 ((volume.restrict (Icc 0 T)).prod P) ∧
+  ∃ U : ℕ → ElemPredProcess σAlg T,
+    Tendsto (fun m => ∫⁻ p, ENNReal.ofReal ((K p.1 p.2 - (U m).eval p.1 p.2) ^ 2)
+      ∂((volume.restrict (Icc 0 T)).prod P)) atTop (𝓝 0) ∧
+    ∀ t ∈ Icc 0 T,
+      Tendsto (fun m => ∫⁻ ω, ENNReal.ofReal (((U m).itoInt B t ω - V t ω) ^ 2) ∂P) atTop (𝓝 0)
 
 /-- Terminal gains of all `S`-admissible strategies, with no lower bound on wealth
 (the paper's literal cone: Def. 2.17 together with Def. 4.3). -/
@@ -80,14 +120,15 @@ def TerminalBoundedBelowGains {Ω : Type*} [MeasurableSpace Ω]
     IsItoIntegral P B (fun t ω => H t ω * S t ω * σ t ω) V T ∧
     G = V T}
 
-/-- Terminal gains of uniformly bounded-below admissible strategies: `V_T` for some
-`S`-admissible `H` whose Itô integral `V = ∫ (H S σ) dB` stays at least `-a` on `[0, T]`. -/
+/-- Terminal gains of uniformly bounded-below admissible strategies whose integrand `H S σ`
+lies in predictable `L²` and whose wealth `V` is a continuous version of the genuine `L²` Itô
+integral `∫ (H S σ) dB` staying at least `-a` on `[0, T]`. -/
 def BoundedBelowGains {Ω : Type*} [MeasurableSpace Ω] (σAlg : ℝ → MeasurableSpace Ω)
     (P : Measure Ω) (B S σ : ℝ → Ω → ℝ) (T : ℝ) : Set (Ω → ℝ) :=
   {G | ∃ (H V : ℝ → Ω → ℝ) (a : ℝ),
     SAdmissible σAlg P S σ T H ∧
     IsUniformlyBoundedBelow P V T a ∧
-    IsItoIntegral P B (fun t ω => H t ω * S t ω * σ t ω) V T ∧
+    IsL2ItoIntegral P σAlg B (fun t ω => H t ω * S t ω * σ t ω) V T ∧
     G = V T}
 
 /-- The Delbaen–Schachermayer cone `(K - L⁰₊) ∩ L∞`. -/

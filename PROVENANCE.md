@@ -43,8 +43,11 @@ paths on `[0, T]` and almost sure equality, at each time, to the Doléans
 exponential of the signature volatility. The packaged `SignaturePriceSolution`
 remains a pointwise Doléans representation. The NFLVR conjunct of
 `theorem_B_mp_unwrapped` is Delbaen–Schachermayer NFLVR (`SatisfiesNFLVR_DS`)
-for the cone `BoundedBelowGains` of that process `S`. The two definition-sharpness
+for the cone `BoundedBelowGains` of that process `S`: uniformly bounded-below
+admissible strategies whose integrand `H S σ` lies in `ℱ^W`-predictable `L²`
+and whose wealth is a continuous genuine `L²` Itô integral against `W⁰`,
+narrower than the paper's local class. The two definition-sharpness
 refutations concern the paper's literal cone (no wealth bound) and the
-terminal-only bound; they do not refute the uniformly bounded-below statement,
-which is proved.
+terminal-only bound, which still use the Riemann-sum integral; they do not
+refute the uniformly bounded-below genuine `L²` statement, which is proved.
 

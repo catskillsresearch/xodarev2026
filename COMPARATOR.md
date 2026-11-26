@@ -33,7 +33,7 @@ and in the Solution, and requires the two lists to be identical.
 | Compared theorem | Paper item | Status |
 |---|---|---|
 | `theorem_A_unwrapped` | Theorem A: existence of an `IsSignaturePrice` process (a.s. continuous paths, a.s. Doléans representation at each time) and uniqueness up to modification | proved |
-| `theorem_B_mp_unwrapped` | Theorem B fragment, under analytic `HypH3`: martingale on the signature filtration, Delbaen–Schachermayer NFLVR for `BoundedBelowGains` of that same process `S`, every coordinate special semimartingale, and the `→` direction of the Riccati transform equivalence | proved (these clauses only; not the paper's full Theorem B conjunction) |
+| `theorem_B_mp_unwrapped` | Theorem B fragment, under analytic `HypH3`: martingale on the signature filtration, Delbaen–Schachermayer NFLVR for `BoundedBelowGains` of uniformly bounded-below strategies of that same process `S` with $HS\sigma$ in $\mathcal{F}^W$-predictable $L^2$ and wealth a continuous genuine $L^2$ Itô integral against $W^0$ (narrower than the paper's local class), every coordinate special semimartingale, and the `→` direction of the Riccati transform equivalence | proved (these clauses only; not the paper's full Theorem B conjunction, and not the paper's full local Itô class) |
 | `not_affine_riccati_duality_mpr_unwrapped` | Theorem 4.2(ii), `←` direction | **refuted** |
 | `not_affine_riccati_duality_unwrapped` | Theorem 4.2(ii), the iff | **refuted** (corollary) |
 | `not_theorem_B_mpr_unwrapped`, `not_theorem_B_unwrapped` | Theorem B's `←` Riccati clause; full Theorem B conjunction | **refuted** (corollaries, each with unused `HypH3`) |
@@ -111,7 +111,10 @@ matches its Lean statement. The verbatim outside (Gemini "Carbon") sources are i
   NFLVR. Details: [`Writeup/narratives/nflvr_literal.md`](Writeup/narratives/nflvr_literal.md);
   Carbon excerpt: [`Writeup/narratives/appendix/carbon_nflvr.md`](Writeup/narratives/appendix/carbon_nflvr.md).
   The NFLVR conjunct of `theorem_B_mp_unwrapped` is Delbaen–Schachermayer NFLVR
-  (`SatisfiesNFLVR_DS`) for the cone `BoundedBelowGains` of that same process `S`.
+  (`SatisfiesNFLVR_DS`) for the cone `BoundedBelowGains` of that same process `S`:
+  uniformly bounded-below admissible strategies whose integrand `H S σ` lies in
+  `ℱ^W`-predictable `L²` and whose wealth is a continuous genuine `L²` Itô integral
+  against `W⁰`, narrower than the paper's local class `∫ H² d⟨S⟩ < ∞` a.s.
   The bundled `theorem_B_mp` asserts the same NFLVR for a continuous version of the
   packaged solution, which equals it almost surely at each time.
 - **Lemma 77** (`not_lemma77_shuffle_estimate`). We have `ℓ^k ⧢ ℓ = (k+1)ℓ^{k+1}`, so

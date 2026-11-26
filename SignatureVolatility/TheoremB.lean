@@ -16,8 +16,10 @@ namespace SignatureVolatility
 # Paper Theorem B, `→` part (proved)
 
 Paper Theorem B: under H1–H3 the Theorem A price is a martingale on the signature filtration,
-Delbaen–Schachermayer NFLVR holds for admissible strategies whose wealth is uniformly bounded
-from below, every signature coordinate is a special semimartingale, and (part (ii)) the
+Delbaen–Schachermayer NFLVR holds for uniformly bounded-below admissible strategies whose
+integrand `H S σ` lies in `ℱ^W`-predictable `L²` and whose wealth is a continuous genuine `L²`
+Itô integral against `W⁰` (narrower than the paper's local class), every signature coordinate
+is a special semimartingale, and (part (ii)) the
 conditional transform of every finitely supported `u₀` with finite signature transform is
 exponential-affine iff the Riccati equation `∂ψ = ℛ(ψ)`, `ψ(0) = u₀`, has a global classical
 solution.
@@ -32,11 +34,12 @@ negations are `not_theorem_B_mpr` and `not_theorem_B`.
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P]
 
 /-- **Paper Theorem B, `→` part (proved).** Martingale property on the signature filtration,
-Delbaen–Schachermayer NFLVR for uniformly bounded-below admissible gains of a continuous
-version of the packaged price, special-semimartingale signature coordinates (Lemma 43), and
-the `→` direction of the Riccati transform equivalence (Theorem 4.2(ii)): an exponential-affine
-conditional transform through a classical Riccati solution yields a global classical Riccati
-solution. -/
+Delbaen–Schachermayer NFLVR for uniformly bounded-below admissible strategies of a continuous
+version of the packaged price whose integrand `H S σ` lies in `ℱ^W`-predictable `L²` and whose
+wealth is a continuous genuine `L²` Itô integral against `W⁰` (narrower than the paper's local
+class), special-semimartingale signature coordinates (Lemma 43), and the `→` direction of the
+Riccati transform equivalence (Theorem 4.2(ii)): an exponential-affine conditional transform
+through a classical Riccati solution yields a global classical Riccati solution. -/
 theorem theorem_B_mp (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
     (h3 : HypH3 P M.T (SignatureVolatilityModel.sigma M (paperSetup B M.hT))) :
     ∃ (sol : SignaturePriceSolution M (paperSetup B M.hT) (itoCalculusKit_of_mathfin B M.hT)),
