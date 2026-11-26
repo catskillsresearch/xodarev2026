@@ -447,25 +447,33 @@ SYNTHETIC_NODES: list[dict] = [
     {
         "id": "TheoremB_DS",
         "label": "theorem_B_mp / unwrapped DS NFLVR upgrade",
-        "status": "open",
+        "status": "done",
         "section": 11,
-        "detail": "Replace the SatisfiesNFLVR P (AdmissibleGainsUnderP P) conjunct of "
-                  "theorem_B_mp and theorem_B_mp_unwrapped with SatisfiesNFLVR_DS P "
-                  "(BoundedBelowGains (sigFiltration B).σAlg P (fun t ω => B.W t ω "
-                  "(kitDriver M.hd)) S (sigVol M B) M.T). Of-setup variant too. "
-                  "The DS lemma landed in 8ced7b0; next is Way A on IsSignaturePrice "
-                  "so the upgrade applies to S itself.",
+        "detail": "Way A: IsSignaturePrice.doleans_repr is a.s. path-continuity on "
+                  "[0, T] and a.s. equality at each t to the Doléans exponential "
+                  "(kitItoInt / kitQuadVar). theorem_B_mp_unwrapped asserts "
+                  "SatisfiesNFLVR_DS for BoundedBelowGains of that S itself "
+                  "(witness sigPriceCont). Bundled theorem_B_mp keeps the pointwise "
+                  "SignaturePriceSolution from theorem_A and asserts DS NFLVR for "
+                  "sigPriceCont, which equals sol.S a.s. at each t. "
+                  "theorem_B_of_Setup_Ito_Riccati_Kit is unchanged (no MultiBrownian). "
+                  "not_theorem_B and not_theorem_B_unwrapped negate the same conjuncts. "
+                  "SignaturePriceSolution and theorem_A are unchanged.",
         "file": "SignatureVolatility/TheoremB.lean",
+        "commits": "5516ccf",
     },
     {
         "id": "TheoremB_DS.challenge",
         "label": "Challenge / comparator lockstep",
-        "status": "open",
+        "status": "done",
         "section": 11,
-        "detail": "Copy IsUniformlyBoundedBelow and BoundedBelowGains into the Challenge "
-                  "(still sorry, ≤1000 lines / 100 KiB), keep the 11 theorem names and "
-                  "v0.4, and run the strict compare. Definition_names stays empty.",
+        "detail": "IsUniformlyBoundedBelow and BoundedBelowGains copied into the Challenge; "
+                  "IsSignaturePrice.doleans_repr and the NFLVR conjuncts of "
+                  "theorem_B_mp_unwrapped and not_theorem_B_unwrapped match the solution. "
+                  "Still sorry, 1000 lines / 54955 bytes, 11 theorem names, "
+                  "definition_names empty. Strict compare matched 44832 constants.",
         "file": "SignatureVolatilityComparator/Challenge.lean",
+        "commits": "5516ccf",
     },
     {
         "id": "TheoremB_DS.writeup",
@@ -736,6 +744,7 @@ VERIFIED: set[str] = {
     "SignatureFiltrationEqBrownianFiltration",
     "SignatureHestonLevel2Model",
     "SignaturePriceSolution",
+    "SigPriceCont",
     "SignatureRiccatiKit",
     "SignatureVolatilityModel",
     "SignatureVolatilityModel.Sigma",
