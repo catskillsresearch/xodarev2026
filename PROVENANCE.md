@@ -46,7 +46,10 @@ remains a pointwise Doléans representation. The NFLVR conjunct of
 for the cone `BoundedBelowGains` of that process `S`: uniformly bounded-below
 admissible strategies whose integrand `H S σ` lies in `ℱ^W`-predictable `L²`
 and whose wealth is a continuous genuine `L²` Itô integral against `W⁰`,
-narrower than the paper's local class. The two definition-sharpness
+narrower than the paper's local class. The Riccati conjunct is the immediate
+implication that a classical Riccati solution satisfying the exponential dual
+formula yields a classical Riccati solution; it is recorded as stated and is
+not a substantive forward pricing result. The two definition-sharpness
 refutations concern the paper's literal cone (no wealth bound) and the
 terminal-only bound, which still use the Riemann-sum integral; they do not
 refute the uniformly bounded-below genuine `L²` statement, which is proved.

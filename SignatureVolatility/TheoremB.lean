@@ -24,11 +24,13 @@ conditional transform of every finitely supported `u₀` with finite signature t
 exponential-affine iff the Riccati equation `∂ψ = ℛ(ψ)`, `ψ(0) = u₀`, has a global classical
 solution.
 
-`theorem_B_mp` proves everything except the `←` direction of (ii): the martingale,
-Delbaen–Schachermayer NFLVR for a continuous version of the packaged price, special-semimartingale
-conclusions, and the `→` direction of the Riccati equivalence (`affine_riccati_duality_mp`).
-The `←` direction and the full paper conjunction are false as universal statements; their
-negations are `not_theorem_B_mpr` and `not_theorem_B`.
+`theorem_B_mp` proves the martingale, Delbaen–Schachermayer NFLVR for a continuous version
+of the packaged price, and the special-semimartingale conclusions. Its Riccati conjunct is
+the immediate implication that a classical Riccati solution satisfying the exponential dual
+formula yields a classical Riccati solution (`affine_riccati_duality_mp`); it is recorded as
+stated and is not a substantive forward pricing result. The paper's `←` pricing direction and
+the full conjunction are false as universal statements; their negations are `not_theorem_B_mpr`
+and `not_theorem_B`.
 -/
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P]
@@ -37,9 +39,9 @@ variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasur
 Delbaen–Schachermayer NFLVR for uniformly bounded-below admissible strategies of a continuous
 version of the packaged price whose integrand `H S σ` lies in `ℱ^W`-predictable `L²` and whose
 wealth is a continuous genuine `L²` Itô integral against `W⁰` (narrower than the paper's local
-class), special-semimartingale signature coordinates (Lemma 43), and the `→` direction of the
-Riccati transform equivalence (Theorem 4.2(ii)): an exponential-affine conditional transform
-through a classical Riccati solution yields a global classical Riccati solution. -/
+class), special-semimartingale signature coordinates (Lemma 43), and the immediate Riccati
+implication that a classical Riccati solution satisfying the exponential dual formula yields
+a classical Riccati solution (recorded as stated, not a substantive forward pricing result). -/
 theorem theorem_B_mp (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
     (h3 : HypH3 P M.T (SignatureVolatilityModel.sigma M (paperSetup B M.hT))) :
     ∃ (sol : SignaturePriceSolution M (paperSetup B M.hT) (itoCalculusKit_of_mathfin B M.hT)),

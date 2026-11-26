@@ -19,10 +19,12 @@ transform, that the conditional transform is exponential-affine,
 `𝔼[exp⟨u₀, Ŵ_T⟩ | ℱ_t] = exp⟨ψ(T − t), Ŵ_t⟩` for a classical solution `ψ` of `∂ψ = ℛ(ψ)`,
 `ψ(0) = u₀`, **iff** a global classical Riccati solution exists.
 
-This file proves the `→` direction (`affine_riccati_duality_mp`): an exponential-affine
-representation through a classical Riccati solution yields such a solution. The `←` direction
-(that the positive local martingale `exp⟨ψ(T − t), Ŵ_t⟩` is the true conditional expectation)
-is false as a universal statement; see `not_affine_riccati_duality_mpr`.
+This file records the immediate implication (`affine_riccati_duality_mp`): a classical
+Riccati solution satisfying the exponential dual formula yields a classical Riccati
+solution. The premise already supplies that solution, so the implication is not a
+substantive forward pricing result. The `←` direction (that a classical Riccati solution
+implies the exponential dual-pricing formula) is false as a universal statement; see
+`not_affine_riccati_duality_mpr`.
 
 Proved supporting fact for `←` (in `RiccatiExpProcess`): along a classical solution the exponent
 `⟨ψ(T − t), Ŵ_t⟩` is a.s. summable and continuous in `t`
@@ -33,9 +35,10 @@ library does not yet have.
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P]
 
-/-- **Affine / Riccati duality, `→` direction** (paper Theorem 4.2(ii), p. 21). If the
-conditional signature transform of `u₀` is exponential-affine through a classical solution of the
-Riccati equation `∂ψ = ℛ(ψ)`, `ψ(0) = u₀`, then a global classical Riccati solution exists. -/
+/-- **Affine / Riccati duality, recorded implication** (paper Theorem 4.2(ii), p. 21). A
+classical Riccati solution of `∂ψ = ℛ(ψ)`, `ψ(0) = u₀`, that satisfies the exponential dual
+formula yields a classical Riccati solution. Immediate (the premise already supplies the
+solution); not a substantive forward pricing result. -/
 theorem affine_riccati_duality_mp (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
     (u₀ : ExtTensorAlgebra.FreeTensorAlgebra (M.d + 1)) :
     SignatureTransformFinite P (paperSetup B M.hT) u₀.1 →

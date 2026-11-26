@@ -33,7 +33,7 @@ and in the Solution, and requires the two lists to be identical.
 | Compared theorem | Paper item | Status |
 |---|---|---|
 | `theorem_A_unwrapped` | Theorem A: existence of an `IsSignaturePrice` process (a.s. continuous paths, a.s. Doléans representation at each time) and uniqueness up to modification | proved |
-| `theorem_B_mp_unwrapped` | Theorem B fragment, under analytic `HypH3`: martingale on the signature filtration, Delbaen–Schachermayer NFLVR for `BoundedBelowGains` of uniformly bounded-below strategies of that same process `S` with $HS\sigma$ in $\mathcal{F}^W$-predictable $L^2$ and wealth a continuous genuine $L^2$ Itô integral against $W^0$ (narrower than the paper's local class), every coordinate special semimartingale, and the `→` direction of the Riccati transform equivalence | proved (these clauses only; not the paper's full Theorem B conjunction, and not the paper's full local Itô class) |
+| `theorem_B_mp_unwrapped` | Theorem B fragment, under analytic `HypH3`: martingale on the signature filtration, Delbaen–Schachermayer NFLVR for `BoundedBelowGains` of uniformly bounded-below strategies of that same process `S` with $HS\sigma$ in $\mathcal{F}^W$-predictable $L^2$ and wealth a continuous genuine $L^2$ Itô integral against $W^0$ (narrower than the paper's local class), every coordinate special semimartingale, and the immediate Riccati implication that a classical Riccati solution satisfying the exponential dual formula yields a classical Riccati solution (recorded as stated, not a substantive forward pricing result) | proved (these clauses only; not the paper's full Theorem B conjunction, not the paper's full local Itô class, and not a forward pricing result) |
 | `not_affine_riccati_duality_mpr_unwrapped` | Theorem 4.2(ii), `←` direction | **refuted** |
 | `not_affine_riccati_duality_unwrapped` | Theorem 4.2(ii), the iff | **refuted** (corollary) |
 | `not_theorem_B_mpr_unwrapped`, `not_theorem_B_unwrapped` | Theorem B's `←` Riccati clause; full Theorem B conjunction | **refuted** (corollaries, each with unused `HypH3`) |
@@ -48,8 +48,7 @@ Proved in the library (no `sorry`) but **not compared**: the wrapped forms `theo
 `not_theorem_B_mpr`, `not_theorem_B`, `not_theorem_C` (gains: MathFin's Itô integral of
 square-integrable predictable integrands), `theorem_D`, `theorem_D_residual_hypothesis_fails`,
 `not_literal_nflvr`, `not_terminal_bdd_nflvr`;
-`bsMarket_isCompleteWithCallsUnwrapped`; `affine_riccati_duality_mp` (Theorem
-4.2(ii) `→`), `theorem_C_refuted` (same unconditional-iff and BS-depth failure as `not_theorem_C`),
+`bsMarket_isCompleteWithCallsUnwrapped`; `affine_riccati_duality_mp` (the immediate implication that a classical Riccati solution satisfying the exponential dual formula yields a classical Riccati solution; not a substantive forward pricing result), `theorem_C_refuted` (same unconditional-iff and BS-depth failure as `not_theorem_C`),
 `blackScholes_isCompleteWithCalls`, `theorem_C_depth_infinite`,
 `theorem_C_blackScholes_depth_infinite`, `not_prop58_blackScholes_depth_zero` and
 `blackScholes_completenessDepth_eq_top` (Proposition 58 refuted), `not_lemma77_shuffle_estimate`

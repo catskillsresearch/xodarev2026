@@ -210,8 +210,9 @@ theorem theorem_A_unwrapped (M : SignatureVolatilityModel) (B : MultiBrownian Ω
 market satisfies Delbaen–Schachermayer NFLVR for uniformly bounded-below admissible strategies
 whose integrand `H S σ` lies in `ℱ^W`-predictable `L²` and whose wealth is a continuous genuine
 `L²` Itô integral against `W⁰` (narrower than the paper's local class), every signature
-coordinate is a special semimartingale, and a classical Riccati solution exists whenever the
-affine transform formula holds. -/
+coordinate is a special semimartingale, and the Riccati conjunct is the immediate implication
+that a classical Riccati solution satisfying the exponential dual formula yields a classical
+Riccati solution (recorded as stated, not a substantive forward pricing result). -/
 theorem theorem_B_mp_unwrapped (M : SignatureVolatilityModel) (B : MultiBrownian Ω P M.d)
     (h3 : HypH3 P M.T (sigVol M B)) :
     ∃ S : ℝ → Ω → ℝ, IsSignaturePrice M B S ∧
