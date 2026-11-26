@@ -5,8 +5,8 @@ project:
   name: Xodarev Signature Volatility Models in Lean 4
   description: >-
     A Lean 4 / Mathlib formalization of Akmal Xodarev, "On the Structural
-    Foundations of Signature Volatility Models", arXiv:2605.17142. Palomar
-    registration: TBD. Framing: prove the paper claims that hold, at the exact
+    Foundations of Signature Volatility Models", arXiv:2605.17142. Framing:
+    prove the paper claims that hold, at the exact
     strength of the Lean theorems below, and refute the claims that do not, by
     Lean negations of those claims and nothing stronger. Theorems A–D and their
     refutations are stated in unwrapped form, using only definitions built
